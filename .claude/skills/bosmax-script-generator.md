@@ -145,6 +145,18 @@ RULES:
 
 ---
 
+### GROK DUAL-DURATION NOTE
+
+Apabila engine = GROK dan multi_block_mode = YES:
+- Block distribution (6s vs 10s per block) MESTI declared dalam work order dari BOSMAX
+- BOSMAX akan sudah confirm distribution dengan user sebelum dispatch ke sini
+- Script generator MESTI generate setiap block mengikut duration yang ditetapkan dalam distribution
+- Contoh: work order "B1=10s, B2=6s" → generate Block 1 sebagai 10s script, Block 2 sebagai 6s script
+- BLOCK MATH berbeza untuk setiap block jika mixed: recalculate I dan word budgets per block
+- ABORT jika block_distribution tidak declared dalam work order untuk GROK multi-block
+
+---
+
 ### BLOCK CONTINUITY ANCHOR RULE
 
 Setiap block MESTI declare continuity anchors dalam Section 8:
@@ -640,3 +652,5 @@ SECTION 9: Overlay
 - ABORT jika S8 dalam mana-mana block (kecuali final) tidak declare "LAST SPOKEN WORDS:"
 - JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
 - JANGAN restart story dalam Block 2+ — mesti sambung cerita yang sama
+- ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
+- Jika GROK blocks ada mixed duration: recalculate block math (I value) untuk setiap block berasingan

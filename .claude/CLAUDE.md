@@ -76,11 +76,26 @@ CHECK 6 — Google Flow Image References:
 **Trigger:** `req_duration > engine_max_per_block`
 
 ```
-STEP 3A — ANNOUNCE:
+STEP 3A — ANNOUNCE + RESOLVE BLOCK DISTRIBUTION:
   "⚠️ MULTI-BLOCK TRIGGERED
    Target: [X]s | Engine max per block: [Y]s
    Blocks required: [N] × [Y]s
    BOSMAX akan build MASTER NARRATIVE BRIEF dahulu sebelum split."
+
+  GROK SPECIAL CASE — SEBELUM announce ke user:
+  Jika engine = GROK dan block distribution tidak jelas:
+  → STOP sebelum announce.
+  → Tanya SATU soalan:
+    "Boss nak GROK [X]s tu dibahagi macam mana?
+     A) [N]×6s (semua blocks 6 saat)
+     B) [N]×10s (semua blocks 10 saat) — jika valid
+     C) Mixed: [e.g., 10s+6s] (explain combination)"
+  → TUNGGU jawapan.
+  → Selepas dapat jawapan: declare distribution, kemudian announce.
+  → JANGAN proceed ke STEP 3B tanpa block distribution confirmed.
+
+  Engines lain (VEO_3_1_LITE, KLING_3_0, SEEDANCE_2_0):
+  → Block distribution adalah fixed. Announce terus, proceed ke STEP 3B.
 
 STEP 3B — BUILD MASTER NARRATIVE BRIEF:
   Sebelum hantar ke mana-mana skill, BOSMAX mesti resolve:
@@ -88,7 +103,8 @@ STEP 3B — BUILD MASTER NARRATIVE BRIEF:
   │ MASTER NARRATIVE BRIEF                              │
   │ total_duration: [X]s                                │
   │ block_count: [N]                                    │
-  │ block_duration: [Y]s each                           │
+  │ block_duration: [Y]s each | atau mixed: B1=[Y1]s,   │
+  │                B2=[Y2]s (GROK dual-duration sahaja) │
   │                                                     │
   │ full_story_arc:                                     │
   │   [Keseluruhan cerita dari mula ke hujung]          │
@@ -134,7 +150,7 @@ Sebelum route, BOSMAX MESTI detect hidden requirements ini:
 | "[X]s + VEO Lite / VEO_3_1_LITE" | X > 8s → multi-block | Trigger STEP 3 |
 | "[X]s + KLING_3_0" | X > 15s → multi-block | Trigger STEP 3 |
 | "[X]s + SEEDANCE_2_0" | X > 20s → multi-block | Trigger STEP 3 |
-| "[X]s + GROK" | X > 10s → multi-block | Trigger STEP 3 |
+| "[X]s + GROK" | X > 10s → multi-block DUAL-DURATION | Trigger STEP 3A GROK path — tanya block distribution dulu |
 | "buat video dari gambar ni" | Mode C → source_image_handoff required | Check handoff |
 | "sambung video tadi" | Block continuation → end-state dari block sebelum required | Lock end-state |
 | "Google Flow FRAMES" | Dua gambar required | Confirm upload |
@@ -278,8 +294,11 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ║ SEEDANCE_2_0     ║ 20s      ║ 10,20s                       ║ Standard 9-section script    ║
 ║                  ║          ║                              ║ MULTI-BLOCK jika target > 20s║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
-║ GROK             ║ 10s      ║ 6,10s                        ║ FORBIDDEN: NANO BANANA       ║
-║                  ║          ║                              ║ MULTI-BLOCK jika target > 10s║
+║ GROK             ║ 10s      ║ 6s atau 10s per block        ║ FORBIDDEN: NANO BANANA       ║
+║                  ║          ║ (user pilih base unit)       ║ MULTI-BLOCK jika target > 10s║
+║                  ║          ║                              ║ DUAL-DURATION: setiap block  ║
+║                  ║          ║                              ║ boleh 6s atau 10s — user     ║
+║                  ║          ║                              ║ MESTI confirm sebelum brief  ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ GOOGLE_FLOW      ║ 60s      ║ T2V/IMAGE: up to 60s         ║ BUKAN 9-section — block arch ║
 ║                  ║          ║ FRAMES/INGREDIENTS: anchor   ║ Pre-render test: 3s/90 frames║
@@ -291,11 +310,27 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ╚══════════════════╩══════════╩══════════════════════════════╩══════════════════════════════╝
 
 MULTI-BLOCK TRIGGER MATRIX:
-  VEO_3_1_LITE + 16s → 2 blocks × 8s   ← CONFIRMED TRIGGER
-  VEO_3_1_LITE + 24s → 3 blocks × 8s
-  KLING_3_0 + 30s    → 2 blocks × 15s
-  GROK + 20s         → 2 blocks × 10s
-  (etc — formula: block_count = CEIL(target / max_per_block))
+  VEO_3_1_LITE + 16s → 2 blocks × 8s          ← CONFIRMED TRIGGER (fixed 8s)
+  VEO_3_1_LITE + 24s → 3 blocks × 8s          ← CONFIRMED TRIGGER (fixed 8s)
+  KLING_3_0 + 30s    → 2 blocks × 15s         ← CONFIRMED TRIGGER (fixed 15s)
+  SEEDANCE_2_0 + 30s → 2 blocks × 10s+10s     ← atau 1×20s+1×10s (user choice)
+
+  GROK MULTI-BLOCK — DUAL-DURATION SPECIAL CASE:
+  GROK mempunyai DUA pilihan base unit: 6s atau 10s.
+  User MESTI pilih distribution sebelum BOSMAX boleh build Master Narrative Brief.
+  BOSMAX MESTI tanya user — JANGAN assume.
+
+  GROK + 12s → OPTION A: 2×6s | OPTION B: 10s+6s  ← PRESENT KEDUA-DUA, tunggu pilihan
+  GROK + 16s → OPTION A: 10s+6s                    ← satu-satunya valid combo
+  GROK + 20s → OPTION A: 2×10s | OPTION B: 10s+10s ← sama (present kepada user)
+  GROK + 18s → OPTION A: 3×6s | OPTION B: 10s+6s+6s ← PRESENT, tunggu pilihan
+  GROK + 30s → OPTION A: 3×10s | OPTION B: 2×10s+10s ← 3×10s = paling natural
+
+  Jika user tidak specify distribution:
+  → BOSMAX STOP. Tanya: "Boss nak berapa saat setiap block? (6s each / 10s each / mixed)"
+  → JANGAN build Master Narrative Brief sebelum dapat jawapan.
+
+  (formula engine lain: block_count = CEIL(target / max_per_block))
 ```
 
 ---

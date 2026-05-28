@@ -76,9 +76,33 @@ DETECT SEMUA INI:
 IMPLICIT_01 — Duration × Engine Conflict:
   Jika duration_target > engine_max_per_block:
   → MULTI-BLOCK diperlukan
-  → block_count = CEIL(duration / max_per_block)
   → Master Narrative Brief diperlukan SEBELUM scripting
-  Contoh: "16s + VEO Lite" = 2 blocks × 8s (user tidak sebut tapi WAJIB detect)
+
+  ENGINES DENGAN FIXED BLOCK SIZE (auto-resolve tanpa tanya user):
+  → VEO_3_1_LITE: semua blocks = 8s
+    block_count = CEIL(duration / 8)
+    Contoh: 16s = 2×8s, 24s = 3×8s
+  → KLING_3_0: block max = 15s
+    block_count = CEIL(duration / 15)
+  → SEEDANCE_2_0: block max = 20s
+    block_count = CEIL(duration / 20)
+  → Announce dan proceed ke Master Narrative Brief terus.
+
+  GROK SPECIAL CASE — DUAL-DURATION (CANNOT auto-resolve):
+  GROK ada DUA pilihan base unit: 6s atau 10s per block.
+  User MESTI confirm distribution — BOSMAX tidak boleh assume.
+
+  Contoh kombinasi GROK yang mesti dipresentkan:
+    12s → A) 2×6s  B) 10s+6s
+    16s → 10s+6s (satu-satunya valid combo — masih confirm dengan user)
+    18s → A) 3×6s  B) 10s+6s+6s
+    20s → A) 2×10s  B) 10s+6s+6s (walaupun 2×10s lebih natural, confirm)
+    30s → A) 3×10s  B) 5×6s  C) 2×10s+10s
+
+  Soalan wajib untuk GROK multi-block (CONFLICT TYPE 3 — missing data):
+  "Boss nak [X]s GROK dibahagi kepada block mana?
+   Pilihan: A) [option A]  B) [option B]  [C) jika ada]"
+  STOP. Tunggu jawapan. JANGAN proceed ke WORK ORDER atau Master Narrative Brief.
 
 IMPLICIT_02 — Mode C Source Image:
   Jika user minta "video dari gambar ni" atau "animate gambar ni":
@@ -138,9 +162,20 @@ IMPLICIT_10 — Medical Claim Risk:
 Apabila conflict didetect, Requirement Analyst MESTI resolve sebelum issue work order.
 
 ```
-CONFLICT TYPE 1 — Technical (duration vs engine):
-  Resolution: Declare multi-block requirement. Calculate blocks. Insert ke work order.
-  DO NOT ask user about this — resolve secara autonomous dan announce.
+CONFLICT TYPE 1 — Technical (duration vs engine, BUKAN GROK):
+  Engine: VEO_3_1_LITE | KLING_3_0 | SEEDANCE_2_0
+  Resolution: Declare multi-block requirement. Calculate blocks (fixed size).
+  Insert ke work order. Announce kepada user.
+  DO NOT ask user — resolve secara autonomous.
+
+CONFLICT TYPE 1B — GROK Dual-Duration Block Distribution:
+  Engine: GROK + duration_target > 10s
+  Resolution: CANNOT resolve autonomously — dua pilihan block size ada (6s dan 10s).
+  STOP. Present options kepada user:
+  "Boss nak [X]s GROK dibahagi kepada:
+   A) [option A description]
+   B) [option B description]"
+  TUNGGU jawapan. Selepas dapat: insert block_distribution ke work order.
 
 CONFLICT TYPE 2 — Missing Asset (source image tiada untuk Mode C):
   Resolution: CANNOT resolve autonomously. STOP. Inform user.
@@ -230,6 +265,7 @@ Requirement Analyst emit SATU daripada dua outputs:
 ║ Engine max/block:  [Ys]                                     ║
 ║ Duration target:   [Xs]                                     ║
 ║ Multi-block:       YES → [N] blocks × [Ys] | NO             ║
+║ Block distribution:[B1=Ys, B2=Ys, ...] (GROK only) | N/A   ║
 ║ Content mode:      [T2V/FRAMES/INGREDIENTS/IMAGE]           ║
 ║ Source image:      [PRESENT: handoff_id | ABSENT]           ║
 ║ Avatar:            [id] | Silo: [STEALTH/DIRECT]            ║
