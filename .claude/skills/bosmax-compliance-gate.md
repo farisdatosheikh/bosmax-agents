@@ -360,12 +360,16 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 
 ☐ content_mode declared oleh user sebelum generation (T2V/FRAMES/INGREDIENTS/IMAGE)
 
+☐ variation_condition declared (1/2/3) sebelum Variant Plan
+
 ☐ Variant Plan dipersembahkan DAN diluluskan sebelum set pertama generated
+
+☐ SET ELEMENT MANIFEST ada dalam output (extracted dari Set 1)
 
 ☐ Total sets match requested quantity N
 
 ☐ Setiap set ada opening label tag yang betul:
-  SET [N] | MODE | PLATFORM | ENGINE | DURATION | SUBMODE | VARIANT
+  SET [N] | MODE | PLATFORM | ENGINE | DURATION | SUBMODE | VARIANT | DIALOG | AVATAR
 
 ☐ VIDEO SETS: semua mesti pass Mode B checklist di atas
 
@@ -383,6 +387,32 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 ☐ TIADA duplicate hook types dalam lebih dari 3 consecutive sets
 
 ☐ biometric_drift_threshold ≤ 0.05 untuk sets yang guna avatar sama
+
+### BULK QUALITY CONSISTENCY CHECKS (v11.2 Fix E)
+*Semua mesti PASS. Satu FAIL = ABORT.*
+
+☐ ELEMENT COUNT CONSISTENCY:
+  — Kira elemen dalam Set 1 (GOLD STANDARD) untuk setiap section
+  — Semak SETIAP set: elemen count MESTI ≥ Set 1 count
+  — ABORT jika mana-mana set ada elemen lebih sedikit dari Set 1
+  — Ini adalah quality degradation check — AI dilarang ambil jalan ringkas
+
+☐ CONDITION 1 DIALOG LOCK (jika variation_condition = 1):
+  — Semak S6 dalam SETIAP set: IDENTICAL dengan S6 Set 1 (verbatim)
+  — ABORT jika ada satu set dengan S6 yang berbeza dari Set 1
+  — WPS values boleh berbeza (kerana duration/formula mungkin adjust) — dialog text TIDAK
+
+☐ CONDITION 2 DIALOG + AVATAR LOCK (jika variation_condition = 2):
+  — Semak S6 dalam SETIAP set: IDENTICAL dengan S6 Set 1 (verbatim)
+  — Semak S1 biometric descriptor: IDENTICAL dengan Set 1 (zero drift)
+  — biometric_drift_threshold: 0.0 untuk Condition 2 (lebih strict)
+  — ABORT jika S1 ada sebarang attribute berbeza dari Set 1
+
+☐ QUALITY GATE DECLARATIONS:
+  — Output mesti ada "QUALITY GATE SET 3: PASS/FAIL" selepas Set 3
+  — Output mesti ada "QUALITY GATE SET 6: PASS/FAIL" selepas Set 6 (jika N≥6)
+  — Output mesti ada "QUALITY GATE SET 9: PASS/FAIL" selepas Set 9 (jika N≥9)
+  — ABORT jika mana-mana QUALITY GATE declared FAIL tanpa regeneration confirmed
 
 ---
 

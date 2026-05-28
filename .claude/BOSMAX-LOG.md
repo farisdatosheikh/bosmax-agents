@@ -141,4 +141,44 @@
 
 ---
 
+### Session 004 (continued) — 2026-05-29
+**Status:** Fix E — BULK QUALITY ENFORCEMENT + VARIATION CONDITIONS
+**Milestone:** Bulk generator patched for quality consistency across N sets. Three variation conditions formalized.
+
+**Problem addressed:**
+AI quality degradation across bulk sets — Set 10 consistently shorter/lower quality than Set 1.
+Three user-defined variation conditions needed explicit protocol.
+
+**Root cause analysis:**
+- No SET ELEMENT MANIFEST lock — AI could abbreviate without enforcement
+- No variation_condition declaration — system didn't know if dialog/avatar should be locked
+- No QUALITY GATE checkpoints — no mid-batch verification
+- No ATOMIC GENERATION discipline — sets treated as flowing continuation, not standalone units
+
+**Fixes implemented:**
+
+| Fix | File | Change |
+|-----|------|--------|
+| VARIATION CONDITION PROTOCOL | `bosmax-bulk-generator.md` | 3 conditions declared before Variant Plan |
+| SET ELEMENT MANIFEST | `bosmax-bulk-generator.md` | Extract element structure from Set 1, enforce on all sets |
+| DIALOG LOCK PROTOCOL | `bosmax-bulk-generator.md` | Condition 1 & 2: S6 copied verbatim from Set 1 |
+| AVATAR LOCK PROTOCOL | `bosmax-bulk-generator.md` | Condition 2: S1 biometrics frozen (threshold: 0.0) |
+| ATOMIC GENERATION RULE | `bosmax-bulk-generator.md` | Each set standalone, element count ≥ Set 1 mandatory |
+| QUALITY GATE (Set 3/6/9) | `bosmax-bulk-generator.md` | Element count check every 3 sets, regenerate if fail |
+| BULK QUALITY CONSISTENCY CHECKS | `bosmax-compliance-gate.md` | Element count audit, dialog lock audit, avatar lock audit |
+| QUALITY GATE DECLARATIONS check | `bosmax-compliance-gate.md` | Verify quality gate declarations in output |
+
+**Enhancement backlog (noted for future):**
+- **Dialogue Script Sheet** — Separate flat document listing full dialogue for all sets as one unit. User can review/edit dialogue in isolation before prompt generation begins. Reduces error, easier for copywriter review.
+
+**Files patched:**
+- `bosmax-bulk-generator.md` — VARIATION CONDITION PROTOCOL + new Steps 5-8
+- `bosmax-compliance-gate.md` — BULK QUALITY CONSISTENCY CHECKS section
+
+---
+
+*BOSMAX v11.2 | Log updated: 2026-05-29*
+
+---
+
 *BOSMAX v11.2 | Log updated: 2026-05-29*

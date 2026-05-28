@@ -260,6 +260,39 @@ Subject DNA (Layer 1) boleh consistent dengan wardrobe variation, atau rotate av
 
 ---
 
+## VARIATION CONDITION PROTOCOL
+
+**WAJIB declare sebelum Variant Plan dibina. Tanya user jika tidak declared.**
+
+```
+CONDITION 1 — DIALOG LOCKED, AVATAR ROTATE:
+  S6 Dialogue: IDENTICAL across all N sets (copied verbatim dari Set 1)
+  Variable: S1 avatar biometrics, wardrobe, S2 scene, S3 camera style, S4 action
+  Use case: Same script, different faces — maximize reach
+
+CONDITION 2 — DIALOG LOCKED, AVATAR LOCKED (Consistent Character):
+  S6 Dialogue: IDENTICAL across all N sets (copied verbatim dari Set 1)
+  S1 Biometrics: LOCKED — same character, tiada drift (threshold: 0.0)
+  Variable: wardrobe SAHAJA dalam S1, S2 scene, S3 camera, S4 action
+  Use case: Brand mascot / consistent spokesperson series
+
+CONDITION 3 — FULL VARIATION (default):
+  S6 Dialogue: DIFFERENT setiap set (rotate hook type, formula, tone)
+  S1 Avatar: rotate dari registry setiap set
+  Variable: semua elements vary mengikut Variant Plan
+  Use case: A/B test content, maximum creative diversity
+```
+
+**Soalan wajib jika tidak declared:**
+> "Boss pilih variation condition mana untuk [N] set ini?
+> 1) Dialog sama, tukar avatar/scene/camera
+> 2) Dialog sama, avatar sama (consistent character), tukar wardrobe/scene/camera
+> 3) Tukar semua — dialog, avatar, scene, camera (full variation)"
+
+**STOP. Tunggu jawapan. JANGAN proceed ke Variant Plan.**
+
+---
+
 ## BULK GENERATION PROTOCOL — IKUT SEQUENCE INI
 
 **STEP 1 — INGEST:**
@@ -273,17 +306,19 @@ Jika INGREDIENTS → confirm source_image_handoff complete. ABORT terus jika tid
 **STEP 3 — CONFIRM PARAMETERS:**
 Confirm engine_id, duration_target, submode_formula (untuk video modes).
 Confirm content_quantity (default 10). Confirm platform_target (default TikTok).
+**Confirm variation_condition (1/2/3) — WAJIB sebelum proceed.**
 
 **STEP 4 — BUILD VARIANT PLAN:**
 Sebelum generate APA-APA set, output VARIANT PLAN TABLE:
 
 ```
-═══ VARIANT PLAN — [N] SETS | MODE: [mode] | PLATFORM: [target] ═══
-SET | SUBMODE   | HOOK TYPE          | SCENE           | AVATAR PROFILE | NOTE
-----|-----------|-------------------|-----------------|----------------|-----
-1   | PAS       | Problem-Agitation  | Modern cafe     | Young female   | —
-2   | HSO       | Social Proof       | Home bathroom   | Mature female  | —
-3   | AIDA      | Transformation     | Modern kitchen  | Young male     | —
+═══ VARIANT PLAN — [N] SETS | MODE: [mode] | PLATFORM: [target] |
+    CONDITION: [1/2/3] | DIALOG: [LOCKED/VARIES] | AVATAR: [LOCKED/ROTATES/VARIES] ═══
+SET | SUBMODE | HOOK TYPE         | SCENE          | AVATAR PROFILE      | DIALOG STATUS
+----|---------|------------------|----------------|---------------------|---------------
+1   | PAS     | Problem-Agitation | Modern cafe    | Young female        | GOLD STANDARD
+2   | PAS     | Problem-Agitation | Home bathroom  | Mature female       | LOCKED (=Set 1)
+3   | PAS     | Problem-Agitation | Modern kitchen | Young male          | LOCKED (=Set 1)
 ... (semua N rows)
 ```
 
@@ -294,15 +329,66 @@ Present kepada user.
 **JANGAN generate mana-mana set sebelum approval.**
 Jika user request edits: update plan dan re-present. Tunggu lagi.
 
-**STEP 5 — GENERATE:** Produce sets dalam order mengikut approved Variant Plan.
+**STEP 5 — GENERATE SET 1 (GOLD STANDARD):**
 
-**STEP 6 — LABEL** setiap set dengan opening tag:
+Generate Set 1 secara penuh dan lengkap. Ini adalah **GOLD STANDARD SET**.
+Selepas Set 1 siap, extract dan lock **SET ELEMENT MANIFEST**:
+
+```
+╔══════════════════════════════════════════════════════════╗
+║ SET ELEMENT MANIFEST — GOLD STANDARD (Set 1)            ║
+╠══════════════════════════════════════════════════════════╣
+║ S1 elements: [bilangan descriptor attributes]           ║
+║ S2 elements: [bilangan scene + lighting attributes]     ║
+║ S3 elements: [bilangan camera parameters]               ║
+║ S4 elements: [bilangan action beats]                    ║
+║ S5 elements: [bilangan physics attributes]              ║
+║ S6 word count: [exact words] | WPS: H[x] B[x] C[x]     ║
+║ S7 elements: [bilangan audio attributes]                ║
+║ S8 formula: [timing calculation present: YES]           ║
+║ S9 overlays: [bilangan text overlays + coords]          ║
+║ TOTAL ELEMENTS: [sum]                                   ║
+╠══════════════════════════════════════════════════════════╣
+║ CONDITION: [1/2/3]                                      ║
+║ LOCKED elements: [list apa yang LOCKED untuk Set 2-N]   ║
+╚══════════════════════════════════════════════════════════╝
+```
+
+**CONDITION 1 & 2: Extract S6 dialogue dari Set 1. Lock verbatim. Copy exact ke semua sets.**
+**CONDITION 2 tambahan: Extract S1 biometric descriptor. Lock. Copy exact ke semua sets.**
+
+**STEP 6 — GENERATE SETS 2 HINGGA N (ATOMIC + QUALITY-DISCIPLINED):**
+
+```
+ATOMIC GENERATION RULE:
+Setiap set dijana sebagai unit BERDIRI SENDIRI.
+Setiap set MESTI mengandungi bilangan elemen SAMA ATAU LEBIH dengan Set 1.
+JANGAN kurangkan elemen — ini quality degradation yang dilarang.
+JANGAN rujuk set sebelumnya sebagai justifikasi untuk abbreviate.
+
+PRE-GENERATION DECLARATION (wajib sebelum setiap set):
+"[GENERATING SET N — STANDALONE UNIT]
+ [SET ELEMENT MANIFEST TARGET: S1=[x], S2=[x], ..., TOTAL=[x]]
+ [LOCKED: (list locked elements)]"
+
+BATCH DISCIPLINE — QUALITY GATE EVERY 3 SETS:
+  Selepas Set 3: bandingkan elemen count Set 3 vs Set 1.
+  Selepas Set 6: bandingkan elemen count Set 6 vs Set 1.
+  Selepas Set 9: bandingkan elemen count Set 9 vs Set 1.
+  Jika mana-mana set ada elemen count < Set 1: ABORT set tersebut.
+  Regenerate set yang gagal sebelum proceed.
+  Declare: "QUALITY GATE SET [3/6/9]: PASS / FAIL — [reason]"
+```
+
+**STEP 7 — LABEL** setiap set dengan opening tag:
 ```
 ═══ SET [N] | MODE: [T2V/FRAMES/INGREDIENTS/IMAGE] | PLATFORM: [target] |
-    ENGINE: [id] | DURATION: [Xs] | SUBMODE: [formula] | VARIANT: [hook type] ═══
+    ENGINE: [id] | DURATION: [Xs] | SUBMODE: [formula] | VARIANT: [hook type] |
+    DIALOG: [LOCKED/VARIES] | AVATAR: [LOCKED/ROTATES/VARIES] ═══
 ```
 
-**STEP 7 — EMIT** semua N sets berurutan. Tiada commentary antara sets.
+**STEP 8 — EMIT** semua N sets berurutan. Tiada commentary antara sets.
+Emit QUALITY GATE checkpoints inline (selepas Set 3, 6, 9).
 
 ---
 
@@ -424,6 +510,12 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 
 ## FAIL-CLOSED RULES
 
+- ABORT jika variation_condition tidak declared sebelum Variant Plan dibina
+- ABORT jika Condition 1 atau 2 dan S6 dialogue tidak identical dengan Set 1 dalam mana-mana set
+- ABORT jika Condition 2 dan S1 biometric descriptor berbeza dari Set 1 dalam mana-mana set
+- ABORT jika mana-mana set ada elemen count lebih rendah dari Set 1 (quality degradation)
+- ABORT jika QUALITY GATE (Set 3/6/9) gagal dan set tidak di-regenerate sebelum proceed
+- ABORT jika SET ELEMENT MANIFEST tidak diextract selepas Set 1
 - ABORT jika content_mode tidak declared dan skill teka
 - ABORT jika product_record missing product_name, category, usp_1, hook, atau cta
 - ABORT jika engine_id + duration_target pairing invalid — semak ENGINE & DURATION REGISTRY
