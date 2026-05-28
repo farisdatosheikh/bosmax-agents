@@ -178,28 +178,22 @@ ROUTE BULK→ Bulk prompts: product-registration → bulk-generator → complian
 
 ---
 
-## APA YANG BELUM DIBUAT (POTENTIAL GAPS)
+## STATUS GAPS — SEMUA DITUTUP (verified 2026-05-29)
 
-Ini adalah gaps yang diketahui semasa handoff ini ditulis (2026-05-28):
+Gaps yang dikenal pasti semasa handoff pertama ditulis (2026-05-28) — semua telah ditutup:
 
-1. **bosmax-mode-c-executor.md** — belum dikemaskini untuk multi-block Mode C.
-   Jika user request "animate 16s video dari gambar" dengan VEO Lite,
-   mode-c-executor perlu inherit source_image_handoff DAN support block continuity.
-   Fix belum dilaksanakan.
+| Gap | File | Status | Ditutup oleh |
+|-----|------|--------|--------------|
+| Multi-block Mode C protocol | `bosmax-mode-c-executor.md` | ✅ CLOSED | Session 002 (Claude Code) |
+| VEO_3_1_LITE dalam bulk generator | `bosmax-bulk-generator.md` | ✅ CLOSED | Session 002 (Claude Code) |
+| Mode C multi-block inheritance lock checks | `bosmax-compliance-gate.md` (lines 253–283) | ✅ CLOSED | Session 002 (Claude Code) |
+| v11.2 README update | `README.md` | ✅ CLOSED | Session 002 (Claude Code) |
+| Schema version update | `BOSMAX-LOG.md` | ✅ CLOSED | Session 002 (Claude Code) |
 
-2. **bosmax-bulk-generator.md** — engine registry dalam fail ini masih v11.1
-   (tiada VEO_3_1_LITE). Jika bulk generation guna VEO Lite, engine validation
-   dalam bulk generator tidak akan match. Perlu align dengan ENGINE CONSTRAINT TABLE.
-
-3. **bosmax-compliance-gate.md** — Mode C multi-block audit masih basic.
-   Hanya ada generic multi-block checklist. Mode C-specific inheritance lock
-   checks (subject_dna LOCKED across blocks) belum dimasukkan ke dalam
-   MULTI-BLOCK CONTINUITY AUDIT secara eksplisit.
-
-4. **README.md** — masih v11.1 overview. Belum reflect perubahan v11.2
-   (PRE-FLIGHT, Engine Constraint Table, Requirement Analyst, GROK dual-duration).
-
-5. **BOSMAX-LOG.md** — masih v11.1 header. Schema version belum dikemaskini.
+**Zero open gaps. Semua 3 workflows fully operational:**
+- ROUTE A — Image prompt generation ✅
+- ROUTE B — Video script dari kosong ✅
+- ROUTE A→C — Video dari gambar (image-derived) ✅
 
 ---
 
@@ -218,5 +212,5 @@ JANGAN buat perubahan pada CLAUDE.md tanpa faham kesan downstream kepada semua 8
 
 ---
 
-*Briefing ini ditulis oleh Cowork session pada 2026-05-28.*
+*Briefing ditulis: 2026-05-28 | Last updated: 2026-05-29 (gaps verified closed)*
 *GitHub: farisdatosheikh/bosmax-agents | Branch: master | Schema: v11.2*
