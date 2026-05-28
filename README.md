@@ -1,4 +1,4 @@
-# BOSMAX v11.1 — Commercial Content Command Centre
+# BOSMAX v11.2 — Commercial Content Command Centre
 
 **BOSMAX** adalah sistem penjanaan konten komersial untuk pasaran SEA (TikTok Shop MY, Shopee, Lazada, Meta).
 
@@ -20,7 +20,8 @@ BOSMAX/
 │       ├── bosmax-mode-c-executor.md     ← Image-to-video inheritance (Mode C)
 │       ├── bosmax-script-generator.md    ← Video script builder (Mode B)
 │       ├── bosmax-product-registration.md ← TikTok Shop MY product intake
-│       └── bosmax-bulk-generator.md      ← Bulk prompt factory (T2V/FRAMES/INGREDIENTS/IMAGE)
+│       ├── bosmax-bulk-generator.md      ← Bulk prompt factory (T2V/FRAMES/INGREDIENTS/IMAGE)
+│       └── bosmax-requirement-analyst.md ← Pre-dispatch intelligence layer (v11.2)
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -39,16 +40,18 @@ BOSMAX/
 | Route | Trigger | Pipeline |
 |-------|---------|----------|
 | **A** | Image generation | Subject DNA → Scene Engine → Compliance Gate |
-| **B** | Video dari zero | Script Generator → Compliance Gate |
-| **C** | Video dari gambar sedia ada | Mode-C Executor → Compliance Gate |
+| **B** | Video dari zero | [PRE-FLIGHT] → Requirement Analyst → Script Generator → Compliance Gate |
+| **C** | Video dari gambar sedia ada | [PRE-FLIGHT] → Requirement Analyst → Mode-C Executor → Compliance Gate |
 | **REG** | Daftar produk TikTok Shop | Product Registration |
 | **BULK** | 10–50 prompt sets | Product Registration → Bulk Generator → Compliance Gate |
+
+**Multi-block support:** VEO_3_1_LITE, KLING_3_0, SEEDANCE_2_0, GROK — auto-triggered apabila duration_target > engine max/block.
 
 ---
 
 ## Engines
 
-**Video:** VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+**Video:** VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
 
 **Image:** NANO_BANANA_PRO | IMAGEN_3
 
@@ -58,8 +61,18 @@ BOSMAX/
 
 Sistem ini direka untuk dijalankan melalui **Claude Cowork** dengan .claude/CLAUDE.md sebagai orchestrator.
 
-Semua output melalui osmax-compliance-gate sebelum sampai kepada pengguna.
+Semua output melalui bosmax-compliance-gate sebelum sampai kepada pengguna.
 
 ---
 
-*BOSMAX v11.1 | Schema: GRAND_MASTER_SKELETON | Private — All Rights Reserved*
+## Changelog
+
+**v11.2** — PRE-FLIGHT PROTOCOL, ENGINE CONSTRAINT TABLE (VEO_3_1_LITE ditambah), MULTI-BLOCK PROTOCOL (Master Narrative Brief), IMPLICIT REQUIREMENT DETECTION, bosmax-requirement-analyst.md (skill baru). Multi-block support untuk Mode C. Bulk generator dikemaskini dengan VEO_3_1_LITE dan GOOGLE_FLOW.
+
+**v11.1.1** — Google Flow 4 modes, GROK image reference methodology, NANO_BANANA_PRO dan IMAGEN_3 sebagai image-only engines, bosmax-compliance-gate Google Flow audit checklist.
+
+**v11.1** — Initial release. Tujuh skill files. Enam engines (VEO_3_1, SORA_2, KLING_3_0, SEEDANCE_2_0, GROK, GOOGLE_FLOW).
+
+---
+
+*BOSMAX v11.2 | Schema: GRAND_MASTER_SKELETON | Private — All Rights Reserved*

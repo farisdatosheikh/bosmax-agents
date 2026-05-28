@@ -93,11 +93,11 @@ IMPLICIT_01 — Duration × Engine Conflict:
   User MESTI confirm distribution — BOSMAX tidak boleh assume.
 
   Contoh kombinasi GROK yang mesti dipresentkan:
-    12s → A) 2×6s  B) 10s+6s
-    16s → 10s+6s (satu-satunya valid combo — masih confirm dengan user)
-    18s → A) 3×6s  B) 10s+6s+6s
-    20s → A) 2×10s  B) 10s+6s+6s (walaupun 2×10s lebih natural, confirm)
-    30s → A) 3×10s  B) 5×6s  C) 2×10s+10s
+    12s → 2×6s (satu-satunya kombinasi valid — masih confirm dengan user)
+    16s → 10s+6s (satu-satunya kombinasi valid — masih confirm dengan user)
+    18s → 3×6s (satu-satunya kombinasi valid — masih confirm dengan user)
+    20s → 2×10s (satu-satunya kombinasi valid — confirm dengan user)
+    30s → A) 3×10s  B) 5×6s  ← PRESENT KEDUA-DUA, tunggu pilihan
 
   Soalan wajib untuk GROK multi-block (CONFLICT TYPE 3 — missing data):
   "Boss nak [X]s GROK dibahagi kepada block mana?

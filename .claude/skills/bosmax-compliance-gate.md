@@ -250,6 +250,37 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 ☐ Story resolution berlaku dalam final block (tiada cerita tergantung)
 ☐ Block count selaras dengan BOSMAX WORK ORDER — tiada extra blocks, tiada missing blocks
 
+### MODE C MULTI-BLOCK INHERITANCE LOCK CHECKS
+*Aktif SAHAJA apabila output adalah Mode C (image-derived) multi-block.*
+*Semua mesti PASS. Satu FAIL = ABORT.*
+
+☐ source_image_handoff declared sebagai authority untuk ALL blocks
+  — Semak: output ada "[INHERITED DNA LOCK CONFIRMED — ALL BLOCKS]" declaration
+  — ABORT jika declaration tiada dalam Block 2+
+
+☐ Block 2+ Section 1 (Biometric Anchor DNA): IDENTICALLY inherited dari Block 1
+  — Tiada biometric attribute baru atau berbeza dari Block 1
+  — Tiada "fresh" biometric description dalam Block 2+ — MESTI copy DNA dari Block 1
+  — biometric_drift_threshold: 0.0 untuk Mode C (lebih strict dari Mode B threshold 0.05)
+
+☐ Block 2+ Section 2 (Lighting & Scene Physics): IDENTICALLY inherited dari Block 1
+  — Scene location, surface, background, Kelvin, shadow direction SAMA persis
+  — ABORT jika sebarang ambient element baru diperkenalkan dalam Block 2+
+
+☐ Block 2+ Section 5 (Product Physics): grip class dan air-gap IDENTICALLY LOCKED
+  — air_gap_mm SAMA dengan Block 1 — tiada change across any block
+  — Label orientation statement SAMA — tiada new orientation dalam Block 2+
+
+☐ Block 2+ TIADA visual elements yang tidak ada dalam source_image_handoff:
+  — Tiada props baru | tiada characters baru | tiada products baru
+  — Tiada lighting sources baru | tiada background objects baru
+  — Periksa setiap section 1–5 secara individual
+
+☐ Google Flow Mode C multi-block (jika engine = GOOGLE_FLOW):
+  — `[IMAGE_REF_ANCHOR]` block ada dalam SETIAP block (bukan hanya Block 1)
+  — `image_guidance_scale` declared dalam SETIAP block
+  — Pre-render test declaration ada dalam SETIAP block
+
 ---
 
 ## GOOGLE FLOW ENGINE AUDIT CHECKLIST

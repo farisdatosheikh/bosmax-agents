@@ -6,12 +6,14 @@ description: >
   source_image_handoff JSON with three non-null fields: subject_dna,
   context_environment, and lighting_camera. Inherits visual DNA absolutely
   and adds motion, timing, and engine selection ONLY. Invents nothing new.
-  Outputs one complete BOSMAX 9-section video motion script.
+  Outputs one or more BOSMAX 9-section video motion script blocks (multi-block
+  when duration exceeds engine max/block). Visual DNA from source_image_handoff
+  is LOCKED across ALL blocks.
 ---
 
 # BOSMAX MODE-C INHERITANCE EXECUTOR — SKILL
 ## Role: Mode C Specialist — Image DNA Lock + Motion Translation
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -114,6 +116,79 @@ Dialogue adalah untuk spoken track SAHAJA.
 - KLING_3_0: 0.92
 - GROK: 0.80
 - GOOGLE_FLOW: image_guidance_scale 0.75–0.85 (declare explicitly dalam prompt)
+
+---
+
+## MODE C MULTI-BLOCK PROTOCOL
+
+**Trigger:** BOSMAX PRE-FLIGHT mengesan duration_target > engine_max_per_block.
+BOSMAX akan hantar Mode C Executor dengan Master Narrative Brief yang telah diapprove user.
+
+**Mode C Multi-Block Adalah BERBEZA dari Mode B Multi-Block:**
+- Semua blocks INHERIT dari source_image_handoff yang SAMA (immutable)
+- subject_dna, context_environment, lighting_camera = FROZEN across ALL blocks
+- Dialogue arc mesti coherent, tapi visual world TIDAK PERNAH berubah
+- TIADA scene change, lighting change, atau character change across blocks
+
+### MULTI-BLOCK INTAKE — WAJIB SEBELUM PROCEED
+
+Jika BOSMAX hantar dengan Master Narrative Brief, executor MESTI:
+
+```
+MULTI-BLOCK INTAKE:
+  source_image_handoff: ✓ LOCKED (immutable authority for ALL blocks)
+  master_narrative_brief: ✓ RECEIVED
+  block_count: [N]
+  block_distribution: [e.g., 2 × 8s | 2 × 10s | etc.]
+  full_dialogue_arc: [dari brief]
+```
+
+ABORT jika master_narrative_brief tidak ada untuk multi-block request.
+
+### MULTI-BLOCK OUTPUT CONTRACT (Mode C)
+
+Setiap block MESTI ada header declaration di atas Section 1:
+
+```
+[BLOCK [N] OF [TOTAL] — MODE C]
+block_duration: [Xs]
+block_start_time: [Xs]
+block_end_time: [Xs]
+
+[INHERITED DNA LOCK CONFIRMED — ALL BLOCKS]
+subject_dna: ✓ LOCKED | context_environment: ✓ LOCKED | lighting_camera: ✓ LOCKED
+source_image_handoff: AUTHORITY FOR THIS AND ALL SUBSEQUENT BLOCKS
+```
+
+### BLOCK 2+ CONTINUITY — MODE C SPECIFIC RULES
+
+**S1 (Block 2+):** subject_dna IDENTICALLY FROZEN — zero drift. Copy DNA descriptor dari Block 1 verbatim.
+**S2 (Block 2+):** scene IDENTICALLY FROZEN — copy dari Block 1 verbatim. TIADA ambient change.
+**S3 (Block 2+):** camera framing INHERITED — motion additions boleh berubah (pan direction, zoom rate).
+**S4 (Block 2+):** visual action MESTI BERMULA dari "VISUAL END STATE" Block N-1 Section 8.
+**S5 (Block 2+):** grip class, air-gap, label orientation LOCKED dari Block 1. TIADA change.
+**S6 (Block 2+):** dialogue menyambung dari "LAST SPOKEN WORDS" Block N-1. TIADA restart.
+**S8 (Block 2+):** MESTI declare continuity anchors:
+```
+VISUAL END STATE: [character position] | [product position] | [lighting]
+LAST SPOKEN WORDS: "[exact phrase]"
+NEXT BLOCK OPENS FROM: [description] ← (kecuali final block)
+BLOCK [N] OF [TOTAL]
+```
+
+### SECTION 8 CONTINUITY ANCHORS (WAJIB SEMUA BLOCKS)
+
+```
+--- SECTION 8: Temporal Logic ---
+BLOCK [N] OF [TOTAL]
+block_duration: [Xs] | block_start_time: [Xs] | block_end_time: [Xs]
+I=[x]s | scenes=[x] | target=[x]w | max=[x]w | kill=[x]w | pacing=[class]
+dna_reinjection_hop: [value]
+
+VISUAL END STATE: [character position at last frame] | [product position] | [lighting state]
+LAST SPOKEN WORDS: "[exact last phrase from Section 6 dialogue]"
+NEXT BLOCK OPENS FROM: [exact starting state for Block N+1] ← (kecuali final block)
+```
 
 ---
 
@@ -368,6 +443,11 @@ SECTION 9: Overlay
 - ABORT jika GOOGLE_FLOW Frames dipilih tanpa start frame image
 - ABORT jika image_guidance_scale di luar 0.75–0.85 (GOOGLE_FLOW sahaja)
 - ABORT jika finger separation audit fail — jari tutup >15% label utama
+- ABORT jika multi-block Mode C received tanpa Master Narrative Brief dari BOSMAX
+- ABORT jika Block 2+ subject_dna berbeza dari Block 1 (drift > 0.05 threshold)
+- ABORT jika Block 2+ scene atau lighting berubah dari Block 1
+- ABORT jika Block 2+ dialogue restart dengan greeting, introduction, atau non-sequitur
+- ABORT jika Section 8 Block 2+ tiada VISUAL END STATE, LAST SPOKEN WORDS, NEXT BLOCK OPENS FROM
 - JANGAN introduce props, background objects, characters, products, atau lighting baru
 - JANGAN soften, modify, atau reinterpret inherited subject_dna
 - JANGAN biarkan dialogue atau copywriting override visual authority
@@ -378,3 +458,4 @@ SECTION 9: Overlay
 - JANGAN pilih GROK dengan submode NANO BANANA
 - JANGAN output kurang atau lebih dari 9 sections (KECUALI GOOGLE_FLOW — guna block architecture)
 - JANGAN skip pre-render test untuk GOOGLE_FLOW — wajib 3s / 90 frames dahulu
+- JANGAN allow visual DNA drift across blocks — source_image_handoff adalah authority mutlak semua blocks

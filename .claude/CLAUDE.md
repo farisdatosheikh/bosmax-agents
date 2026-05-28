@@ -320,11 +320,11 @@ MULTI-BLOCK TRIGGER MATRIX:
   User MESTI pilih distribution sebelum BOSMAX boleh build Master Narrative Brief.
   BOSMAX MESTI tanya user — JANGAN assume.
 
-  GROK + 12s → OPTION A: 2×6s | OPTION B: 10s+6s  ← PRESENT KEDUA-DUA, tunggu pilihan
-  GROK + 16s → OPTION A: 10s+6s                    ← satu-satunya valid combo
-  GROK + 20s → OPTION A: 2×10s | OPTION B: 10s+10s ← sama (present kepada user)
-  GROK + 18s → OPTION A: 3×6s | OPTION B: 10s+6s+6s ← PRESENT, tunggu pilihan
-  GROK + 30s → OPTION A: 3×10s | OPTION B: 2×10s+10s ← 3×10s = paling natural
+  GROK + 12s → 2×6s (satu-satunya kombinasi valid — masih confirm dengan user)
+  GROK + 16s → 10s+6s (satu-satunya kombinasi valid — masih confirm dengan user)
+  GROK + 18s → 3×6s (satu-satunya kombinasi valid — masih confirm dengan user)
+  GROK + 20s → 2×10s (satu-satunya kombinasi valid — confirm dengan user)
+  GROK + 30s → OPTION A: 3×10s | OPTION B: 5×6s  ← PRESENT KEDUA-DUA, tunggu pilihan
 
   Jika user tidak specify distribution:
   → BOSMAX STOP. Tanya: "Boss nak berapa saat setiap block? (6s each / 10s each / mixed)"

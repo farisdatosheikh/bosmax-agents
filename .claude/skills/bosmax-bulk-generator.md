@@ -12,7 +12,7 @@ description: >
 
 # BOSMAX BULK CONTENT GENERATOR — SKILL
 ## Role: Multi-Mode Prompt Factory — T2V / FRAMES / INGREDIENTS / IMAGE
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -52,9 +52,10 @@ Inherits visual DNA absolutely. Motion sahaja ditambah.
 - content_mode: T2V | FRAMES | INGREDIENTS | IMAGE
 - content_quantity: default 10 | max 50
 - platform_target: TikTok | Shopee | Lazada | Meta | YouTube Shorts (default: TikTok)
-- engine_id: (untuk video modes) VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK
-- duration_target: (untuk video modes) valid untuk engine dipilih
-- submode_formula: (untuk video modes) PAS | HSO | AIDA | FAB | SAVAGE_HPAS
+- engine_id: (untuk video modes) VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+- duration_target: (untuk video modes) valid untuk engine dipilih — semak ENGINE & DURATION REGISTRY
+- google_flow_submode: (GOOGLE_FLOW sahaja) T2V | FRAMES | INGREDIENTS | IMAGE
+- submode_formula: (untuk video modes, BUKAN GOOGLE_FLOW) PAS | HSO | AIDA | FAB | SAVAGE_HPAS
 - avatar_brief: (optional) jika blank, pilih dari registry per set
 - source_image_handoff: (INGREDIENTS MODE SAHAJA — WAJIB, semua 3 fields non-null)
 
@@ -62,13 +63,25 @@ Inherits visual DNA absolutely. Motion sahaja ditambah.
 
 ## ENGINE & DURATION REGISTRY
 
-| Engine | Durations | Max |
-|--------|----------|-----|
-| VEO_3_1 | 8s,16s,24s,32s,40s,48s,56s | 56s |
-| SORA_2 | 10s,15s,20s,25s,30s,45s,60s | 60s |
-| KLING_3_0 | 5s,10s,15s | 15s |
-| SEEDANCE_2_0 | 10s,20s | 20s |
-| GROK | 6s,10s | 10s — **FORBIDDEN: NANO BANANA** |
+| Engine | Durations | Max/Block | Notes |
+|--------|----------|-----------|-------|
+| VEO_3_1_LITE | 8s SAHAJA | 8s | MULTI-BLOCK jika target > 8s |
+| VEO_3_1 | 8,16,24,32,40,48,56s | 56s | Standard 9-section |
+| SORA_2 | 10,15,20,25,30,45,60s | 60s | Standard 9-section |
+| KLING_3_0 | 5,10,15s | 15s | MULTI-BLOCK jika target > 15s |
+| SEEDANCE_2_0 | 10,20s | 20s | MULTI-BLOCK jika target > 20s |
+| GROK | 6s,10s | 10s | **FORBIDDEN: NANO BANANA submode** |
+| GOOGLE_FLOW | up to 60s | 60s | BUKAN 9-section — block architecture |
+
+> **IMAGE ENGINES (bukan video — tidak masuk ENGINE REGISTRY ini):**
+> NANO_BANANA_PRO, IMAGEN_3 → IMAGE mode SAHAJA → tiada engine_id diperlukan untuk bulk IMAGE sets
+
+**MULTI-BLOCK DALAM BULK:**
+Jika engine_id = VEO_3_1_LITE/KLING_3_0/SEEDANCE_2_0 dan duration_target > engine max/block:
+→ SETIAP set dalam bulk adalah MULTI-BLOCK set
+→ Declare dalam label tag: `BLOCKS: [N] × [Ys]`
+→ Setiap set mesti ada Master Narrative Brief tersendiri
+→ Block continuity rules apply per set (BUKAN continuity antara set berlainan)
 
 ---
 
@@ -157,6 +170,58 @@ Visual world FIXED. Motion adalah variable satu-satunya.
 
 **Preferred engine: VEO_3_1** (identity_lock: HIGH_FIDELITY_INGREDIENTS)
 dna_reinjection_hop: 1 di setiap block boundary.
+
+---
+
+## VIDEO MODE — GOOGLE FLOW BULK
+
+**Trigger:** `engine_id = GOOGLE_FLOW`
+
+**Sub-mode required** — tanya user jika tidak declared:
+> "Boss pilih sub-mode mana untuk Google Flow bulk set ini?
+> T2V (text only) / FRAMES (start+end frame) / INGREDIENTS (3 images) / IMAGE (single ref)"
+
+**JANGAN teka sub-mode. STOP dan tunggu jawapan.**
+
+### GOOGLE_FLOW T2V (bulk)
+- Tiada reference image. Standard Google Flow T2V block architecture.
+- Variation: rotate action description, performance vector, dialogue tone per set.
+- Label tag format: `ENGINE: GOOGLE_FLOW | SUBMODE: T2V`
+
+### GOOGLE_FLOW FRAMES/INGREDIENTS/IMAGE (bulk — reference image sets)
+- WAJIB: `source_image_handoff` ada (minimum subject_dna, context_environment, lighting_camera).
+- `[IMAGE_REF_ANCHOR]` block MESTI ada sebagai block pertama setiap set.
+- `image_guidance_scale: [0.75–0.85]` MESTI declared dalam setiap set.
+- `frame_influence: 0.90` jika typography/text visible dalam reference frame.
+- Pre-render test: "3 seconds (90 frames @ 30fps)" MESTI dalam setiap set output.
+- **Variation strategy:** Rotate performance action dan camera motion SAHAJA.
+  Visual DNA LOCKED dari reference image — tiada visual elements baru.
+- Finger separation audit: jari tidak boleh tutup >15% permukaan label per set.
+
+**Label tag format:** `ENGINE: GOOGLE_FLOW | SUBMODE: [T2V/FRAMES/INGREDIENTS/IMAGE]`
+
+**OUTPUT FORMAT — GOOGLE FLOW SET:**
+```
+═══ SET [N] | MODE: T2V | PLATFORM: TikTok | ENGINE: GOOGLE_FLOW |
+    SUBMODE: [T2V/FRAMES/INGREDIENTS/IMAGE] | DURATION: [Xs] ═══
+
+[IMAGE_REF_ANCHOR]  ← (jika bukan T2V)
+"[visual lock statement]"
+image_guidance_scale: [0.75–0.85]
+
+[PERFORMANCE_DYNAMICS / UGC_PERFORMANCE_VECTORS]
+[action sequence, motion narrative, expression]
+
+[SPATIAL_INTERACTION_AND_PRODUCT_LOCK]
+[product lock, grip, finger separation statement]
+
+[CINEMATOGRAPHY_AND_ENVIRONMENT]
+[camera motion, scene parameters inherited]
+
+[PHYSICS_CONSTRAINTS]
+[gravity, air-gap, duration, negative prompts]
+PRE-RENDER TEST REQUIRED: 3 seconds (90 frames @ 30fps) sebelum full render.
+```
 
 ---
 
@@ -361,8 +426,15 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 
 - ABORT jika content_mode tidak declared dan skill teka
 - ABORT jika product_record missing product_name, category, usp_1, hook, atau cta
-- ABORT jika engine_id + duration_target pairing invalid
-- ABORT jika GROK + NANO BANANA detected
+- ABORT jika engine_id + duration_target pairing invalid — semak ENGINE & DURATION REGISTRY
+- ABORT jika engine_id tidak dalam ENGINE & DURATION REGISTRY (termasuk NANO_BANANA_PRO atau IMAGEN_3 sebagai video engine)
+- ABORT jika GROK + NANO BANANA submode detected
+- ABORT jika GOOGLE_FLOW dipilih tanpa google_flow_submode confirmed
+- ABORT jika GOOGLE_FLOW FRAMES/INGREDIENTS/IMAGE tanpa source_image_handoff
+- ABORT jika GOOGLE_FLOW set tiada `[IMAGE_REF_ANCHOR]` block (kecuali T2V)
+- ABORT jika GOOGLE_FLOW set tiada `image_guidance_scale` dalam range 0.75–0.85
+- ABORT jika GOOGLE_FLOW set tiada pre-render test declaration
+- ABORT jika VEO_3_1_LITE duration bukan 8s — satu-satunya valid duration per block
 - ABORT jika INGREDIENTS mode run dengan null/partial source_image_handoff
 - ABORT jika INGREDIENTS mode introduce prop, object, character, background, atau lighting baru
 - ABORT jika IMAGE mode Layer 1 produk floating atau disconnected — rebuild layer
