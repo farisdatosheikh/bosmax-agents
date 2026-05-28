@@ -48,9 +48,31 @@ project root/
 │       ├── bosmax-script-generator.md   ← Mode B: 9-section video script engine
 │       ├── bosmax-product-registration.md ← ROUTE REG: TikTok Shop MY product intake
 │       ├── bosmax-bulk-generator.md     ← ROUTE BULK: multi-set prompt factory
-│       └── bosmax-requirement-analyst.md ← PRE-DISPATCH: requirement extraction layer
-├── [sovereign files]                    ← physics classes, prompt framework YAML
-├── [satellite files]                    ← scene registry, avatar registry
+│       ├── bosmax-requirement-analyst.md ← PRE-DISPATCH: requirement extraction layer
+│       └── bosmax-product-intelligence.md ← PRE-FLIGHT STEP 0: product librarian
+├── avatars/                             ← Biometric archetype registry (v11.2 Session 006)
+│   ├── _SCHEMA.yaml                     ← Avatar YAML schema template
+│   ├── MALAY_FEMALE_YOUNG_01.yaml       ← Persona: Aina
+│   ├── MALAY_MALE_YOUNG_01.yaml         ← Persona: Haziq
+│   ├── CHINESE_FEMALE_YOUNG_01.yaml     ← Persona: Mei Ling
+│   ├── CHINESE_MALE_YOUNG_01.yaml       ← Persona: Wei Jie
+│   ├── INDIAN_FEMALE_YOUNG_01.yaml      ← Persona: Priya
+│   ├── INDIAN_MALE_YOUNG_01.yaml        ← Persona: Arjun
+│   ├── BORNEO_FEMALE_YOUNG_01.yaml      ← Persona: Evelyn
+│   ├── BORNEO_MALE_YOUNG_01.yaml        ← Persona: Raymond
+│   ├── INDONESIA_FEMALE_YOUNG_01.yaml   ← Persona: Sari
+│   ├── INDONESIA_MALE_YOUNG_01.yaml     ← Persona: Budi
+│   ├── BANGLADESH_FEMALE_YOUNG_01.yaml  ← Persona: Nadia
+│   └── BANGLADESH_MALE_YOUNG_01.yaml    ← Persona: Rafi
+├── wardrobes/                           ← Wardrobe rule engine (v11.2 Session 006)
+│   └── WARDROBE_RULES.yaml             ← ~104 rules: (avatar_id, occasion, context) → outfit
+├── shots/                              ← Shot library (v11.2 Session 006)
+│   └── SHOT_LIBRARY.yaml              ← 13 shot codes for S2 camera direction
+├── products/                           ← Product registry (v11.2 Fix G)
+│   ├── _SCHEMA.yaml                    ← Product YAML schema
+│   └── BOSMAX_SERUM.yaml              ← BOSMAX Serum (5ML + 10ML)
+├── [sovereign files]                   ← physics classes, prompt framework YAML
+├── [satellite files]                   ← scene registry
 └── README.md
 ```
 

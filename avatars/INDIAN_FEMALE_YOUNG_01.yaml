@@ -1,0 +1,51 @@
+# BOSMAX AVATAR REGISTRY — INDIAN_FEMALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Indian Female, Young Adult
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "INDIAN_FEMALE_YOUNG_01"
+ethnicity: "Indian"
+gender: "Female"
+age_range: "20-28"
+persona_name: "Priya"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium-deep, NC42 equivalent, warm reddish-brown undertone, natural luminosity at cheekbone and forehead"
+face_shape: "oval with defined high cheekbones, gently tapered jaw, slightly pointed chin, full facial volume"
+eye_shape: "large expressive double eyelid, deep dark brown-near-black iris, bold defined brow arch with medium thickness, natural lash density"
+nose: "medium bridge, slightly arched slope, well-defined tip, medium nostril width — refined structure"
+lips: "full naturally pigmented lips, deep warm-pink to berry undertone, defined Cupid's bow, prominent lower lip"
+hair_texture: "thick straight-to-wavy, dense strand, deep black with natural sheen"
+hair_length: "mid-back to waist-length"
+hair_style_default: "loose open or soft braid — long flowing straight, slight natural wave toward ends"
+build: "medium proportionate, 158-165cm frame, moderate curves, balanced shoulder-to-hip"
+distinguishing_features:
+  - "bold defined brow arch — strongest facial anchor"
+  - "deep warm eye socket giving intense expressive gaze at rest"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "expressive"
+  - "vibrant"
+  - "confident"
+  - "warm"
+  - "culturally proud"
+speaks_language:
+  - "Tamil"
+  - "English"
+  - "BM"
+content_style: "beauty and skincare, hair care, cultural fashion, festive product, lifestyle"
+
+# WARDROBE BASE
+default_wardrobe: "casual modern — fitted kurta or light blouse, palazzo pants or salwar, simple gold or silver accessories"
+hijab_wearing: false
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Malaysian Indian Tamil archetype. No bindi in default commercial content — can be
+  added for festive/occasion content via WARDROBE_RULES.yaml. Deep expressive eyes
+  are primary biometric anchor. Wardrobe resolved at runtime.

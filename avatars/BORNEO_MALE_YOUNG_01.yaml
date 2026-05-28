@@ -1,0 +1,51 @@
+# BOSMAX AVATAR REGISTRY — BORNEO_MALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Borneo Male, Young Adult (Dayak/Kadazan/Iban features)
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "BORNEO_MALE_YOUNG_01"
+ethnicity: "Borneo"
+gender: "Male"
+age_range: "22-30"
+persona_name: "Raymond"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium brown, NC36 equivalent, golden-tan undertone, slight outdoor weathered quality, natural matte finish"
+face_shape: "broad square-oval, wide flat forehead, prominent wide cheekbones, squared moderate jaw, strong chin"
+eye_shape: "round alert shape, bright dark brown iris, natural single fold or deep double eyelid, slightly narrower orbital width"
+nose: "flat wide bridge, broad rounded tip, wide nostril base — characteristic Borneo feature"
+lips: "medium-full width, moderate lip volume, warm medium-dark pigmentation"
+hair_texture: "thick straight, coarse strand, dense density, deep black"
+hair_length: "short, 2-3cm on top"
+hair_style_default: "short natural crop or buzz cut — low maintenance practical style"
+build: "medium-stocky athletic, 165-173cm frame, broad shoulders, compact powerful torso"
+distinguishing_features:
+  - "broad flat nose bridge — primary ethnicity anchor"
+  - "wide flat forehead with strong brow ridge"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "rugged"
+  - "dependable"
+  - "outdoorsy"
+  - "good-humoured"
+  - "genuine"
+speaks_language:
+  - "BM"
+  - "English"
+  - "Kadazan/Iban dialect (contextual)"
+content_style: "outdoor product, active lifestyle, food, tools, regional cultural content"
+
+# WARDROBE BASE
+default_wardrobe: "casual practical — cotton t-shirt, cargo pants or jeans, sandals or work boots"
+hijab_wearing: null
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Borneo male archetype. Features distinct from Peninsular Malay — broader, flatter facial
+  structure, stocky athletic build. Non-Muslim default. Suited for outdoor, active, and
+  regional cultural content targeting Sabah/Sarawak market. Wardrobe resolved at runtime.

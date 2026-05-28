@@ -1,0 +1,50 @@
+# BOSMAX AVATAR REGISTRY — CHINESE_MALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Chinese Male, Young Adult
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "CHINESE_MALE_YOUNG_01"
+ethnicity: "Chinese"
+gender: "Male"
+age_range: "22-30"
+persona_name: "Wei Jie"
+
+# BIOMETRIC DNA
+skin_tone: "light cool-neutral, NC20 equivalent, smooth even finish, slight warm golden cast in lower face"
+face_shape: "oval-to-rectangular, defined angular jawline, prominent cheekbones, flat medium forehead"
+eye_shape: "almond-shaped, single eyelid or natural double eyelid, dark brown-black iris, straight defined brow"
+nose: "medium bridge with slight angular slope, refined tip, medium-narrow nostril width"
+lips: "medium-thin lips, defined bow, cool-neutral natural pigmentation"
+hair_texture: "straight fine-to-medium strand, dense, deep black — occasionally dark brown tint"
+hair_length: "short, 3-4cm on top"
+hair_style_default: "neat side-swept or two-block undercut style, clean fade at sides"
+build: "lean medium build, 170-175cm frame, moderate shoulder definition, trim torso"
+distinguishing_features:
+  - "sharp defined brow arch giving focused intelligent expression"
+  - "clean sharp jawline angle"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "cool"
+  - "confident"
+  - "trend-conscious"
+  - "analytical"
+  - "modern"
+speaks_language:
+  - "Mandarin"
+  - "English"
+  - "BM"
+content_style: "tech product review, grooming demo, lifestyle, fashion-forward content, professional demo"
+
+# WARDROBE BASE
+default_wardrobe: "smart casual — minimal fitted t-shirt or clean button-down, slim-fit trousers, clean sneakers or loafers"
+hijab_wearing: null
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Malaysian Chinese male archetype. Well-suited for grooming, tech accessories,
+  and fashion categories. Neutral-cool aesthetic. Wardrobe resolved at runtime.

@@ -1,0 +1,223 @@
+# BOSMAX SHOT LIBRARY — shots/SHOT_LIBRARY.yaml
+# Version: v1.0 | Created: 2026-05-29
+# Authority: GRAND_MASTER_SKELETON v11.2
+# Usage: Reference in S2 (camera direction) of all video scripts
+# ─────────────────────────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# HOW TO USE:
+#   In S2 of video script prompt, reference shot code:
+#   "Shot: [CODE] — [brief intent]"
+#   Example: "Shot: CU — capture serum drop on fingertip"
+#
+# BOSMAX RULES:
+#   → bosmax-scene-engine injects shot code into S2 from this library
+#   → bosmax-script-generator selects shot per scene beat
+#   → Multiple shots per script are valid — declare each in S2
+
+shots:
+
+  - code: "ECU"
+    name: "Extreme Close-Up"
+    descriptor: >
+      Frame fills entirely with one specific micro-detail — single eye, lips,
+      fingertip, product nozzle, fabric texture, or skin surface. Background
+      completely eliminated. Subject occupies 90%+ of frame. Focal length
+      typically 100mm+ macro equivalent. Depth of field extremely shallow —
+      1-3mm in focus plane.
+    best_for:
+      - "Product texture reveal — serum drop, cream swatch, liquid flow"
+      - "Skin transformation — before/after pore or texture detail"
+      - "Emotional micro-expression — single tear, brow furrow, lip bite"
+      - "Ingredient hero shot — single botanical, crystal, or particle"
+      - "Authentication detail — logo emboss, serial number, seal"
+
+  - code: "CU"
+    name: "Close-Up"
+    descriptor: >
+      Frame captures face from chin to crown (or product full label + 30% surrounds).
+      Face fills 70-80% of frame. Both eyes, nose, and lips visible and clearly
+      readable. Background soft-blurred (bokeh). For product: full label legible,
+      packaging structure clear. Standard focal length: 50-85mm equivalent.
+    best_for:
+      - "Avatar emotion — trust, delight, surprise, confidence"
+      - "Product hero — full bottle/tube label legibility + brand identity"
+      - "Testimonial delivery — avatar speaking direct to camera"
+      - "Reaction shot — after applying product or receiving result"
+      - "TikTok hook frame — first 1-2 seconds to stop scroll"
+
+  - code: "MCU"
+    name: "Medium Close-Up"
+    descriptor: >
+      Frame captures from mid-chest to crown. Head, neck, shoulders, and upper
+      chest all visible. Avatar gesture space (hands near face/neck/chest) included.
+      Background visible but softly blurred. Most natural conversational framing.
+      Standard focal length: 35-50mm equivalent.
+    best_for:
+      - "Product demonstration — holding product at chest height"
+      - "Conversational content — avatar explaining, advising, recommending"
+      - "Unboxing reveal — product lifted into frame from below"
+      - "Application demo — hand gesture toward face/neck visible"
+      - "Talking head — primary interview or tutorial framing"
+
+  - code: "MS"
+    name: "Medium Shot"
+    descriptor: >
+      Frame captures from waist to crown. Full upper body visible including both
+      arms and hands. Avatar wardrobe fully readable. Background partially in
+      focus showing environment context. Natural standing or seated posture visible.
+      Standard focal length: 24-35mm equivalent.
+    best_for:
+      - "Full wardrobe showcase — outfit and accessories visible"
+      - "Product in context — avatar holding product at natural arm height"
+      - "Action + reaction — product use gesture with upper body movement"
+      - "Scene establishment — avatar in branded or lifestyle environment"
+      - "Shopee/Lazada product listing — clean background, full product + avatar"
+
+  - code: "MLS"
+    name: "Medium Long Shot"
+    descriptor: >
+      Frame captures from knees to crown. Near-full body with leg/knee line as
+      lower boundary. Full outfit and footwear partially visible. Avatar movement
+      and body language fully readable. Environment context prominent in frame.
+      Standard focal length: 18-24mm equivalent.
+    best_for:
+      - "Fashion and outfit content — full look from knee up"
+      - "Active product usage — carrying bag, applying spray, holding device"
+      - "Lifestyle scene setting — kitchen, bedroom, gym with product in hand"
+      - "Walk-and-talk content — avatar in motion through environment"
+      - "TikTok fashion GRWM — Get Ready With Me framing"
+
+  - code: "WS"
+    name: "Wide Shot"
+    descriptor: >
+      Frame captures full body head to toe with environmental surrounds. Avatar
+      occupies 40-60% of frame height. Full location context visible — room,
+      street, studio, outdoor. Costume/styling fully readable top to bottom.
+      Environment tells part of the story. Standard focal length: 14-18mm equivalent.
+    best_for:
+      - "Scene establishing — introduce location and avatar simultaneously"
+      - "Full outfit reveal — complete head-to-toe styling showcase"
+      - "Lifestyle aspiration — avatar in premium or aspirational setting"
+      - "Before/after scene — space transformation content"
+      - "Event context — Raya, CNY, Deepavali gathering scene"
+
+  - code: "OTS"
+    name: "Over-the-Shoulder"
+    descriptor: >
+      Camera positioned behind and slightly to side of one person, framing their
+      shoulder + ear as foreground anchor while subject or object faces camera.
+      Creates strong depth and conversational intimacy. Foreground shoulder occupies
+      20-30% of frame edge. Background subject/product in sharp focus.
+    best_for:
+      - "Two-person interaction — seller explaining to customer"
+      - "Product review conversation — advisor showing product to viewer"
+      - "Screen/phone content reveal — showing app, review, order confirmation"
+      - "Mirror reflection content — avatar examining self with product"
+      - "Consultation scene — beauty advisor recommending to client"
+
+  - code: "POV"
+    name: "Point-of-View"
+    descriptor: >
+      Camera positioned exactly at avatar's eye level and angle — viewer sees
+      what avatar sees. First-person perspective. Typically handheld or stabilized
+      at 160-170cm height. Creates maximum immersion and direct viewer experience.
+      Often used with slight organic camera movement for realism.
+    best_for:
+      - "Product unboxing — viewer 'receives' the package"
+      - "Application first-person — hand reaching toward camera applying product"
+      - "Shopping experience — browsing shelf or receiving order"
+      - "Tutorial instruction — viewer follows avatar's exact perspective"
+      - "TikTok immersive content — pulls viewer into scene directly"
+
+  - code: "TOP_DOWN"
+    name: "Top-Down / Flat Lay"
+    descriptor: >
+      Camera positioned directly overhead, shooting 90 degrees downward onto
+      flat surface. Zero perspective distortion. Subjects arranged compositionally
+      on surface — products, ingredients, hands, packaging. Often combined with
+      styled surface (marble, wood, fabric). Requires overhead rig or arm mount.
+    best_for:
+      - "Ingredient flat lay — botanicals, capsules, raw materials arranged"
+      - "Product family shot — full range laid out together"
+      - "Unboxing flat lay — all items from package arranged"
+      - "Recipe or preparation — food/beauty preparation from above"
+      - "Shopee/Lazada product catalogue — clean white background flat lay"
+
+  - code: "MACRO"
+    name: "Macro / Ultra-Macro"
+    descriptor: >
+      Extreme magnification beyond standard ECU — revealing microscopic detail
+      invisible to naked eye. 1:1 to 5:1 magnification. Reveals product molecular
+      texture, skin cell structure, botanical micro-detail, liquid surface tension.
+      Depth of field measured in fractions of millimeters. Requires dedicated macro
+      lens or extension tubes. Subject motion must be zero or near-zero.
+    best_for:
+      - "Serum/skincare active ingredient reveal — molecular texture"
+      - "Skin surface transformation — pore refinement, texture smoothing"
+      - "Fabric and material quality — thread count, weave structure"
+      - "Food ingredient freshness — herb pore structure, seed surface"
+      - "Premium authentication — micro-engraving, hologram detail"
+
+  - code: "DUTCH"
+    name: "Dutch Angle / Canted Frame"
+    descriptor: >
+      Camera tilted on its roll axis 15-45 degrees off horizontal. Creates
+      psychological tension, dynamic energy, or stylistic emphasis. Horizon line
+      runs diagonally across frame. Typically 15-20 degrees for subtle dynamism;
+      30-45 degrees for dramatic impact. Subject remains in standard position —
+      only camera is rotated.
+    best_for:
+      - "High-energy TikTok transitions — dynamic cut entry"
+      - "Before/after dramatic reveal — tilted problem frame corrects to straight"
+      - "Trendy fashion content — editorial styling shots"
+      - "Product launch announcement — premium reveal energy"
+      - "Youth lifestyle content — gym, street, active content"
+
+  - code: "LOW_ANGLE"
+    name: "Low Angle"
+    descriptor: >
+      Camera positioned below subject eye line, shooting upward. Creates sense
+      of power, authority, confidence, and scale. Typically 30-60cm off ground
+      shooting up at 20-45 degree angle. Subject appears larger and more dominant.
+      Background is primarily sky, ceiling, or upper environment elements.
+    best_for:
+      - "Product scale emphasis — bottle appears large and premium"
+      - "Avatar authority/confidence — avatar appears commanding"
+      - "Aspirational lifestyle — success and confidence narrative"
+      - "Product hero vs sky — outdoor product empowerment shot"
+      - "Motivational content — confidence-building narrative scenes"
+
+  - code: "HIGH_ANGLE"
+    name: "High Angle"
+    descriptor: >
+      Camera positioned above subject, shooting downward at 20-45 degree angle.
+      Creates intimacy, vulnerability, or child-like softness depending on context.
+      Shows top of head and surroundings. For products: shows label face-up and
+      environment context simultaneously. Often used at 170-200cm height looking down.
+    best_for:
+      - "Relatable/intimate avatar content — approachable, friendly energy"
+      - "Product in hand from above — packaging top + avatar together"
+      - "Seated lifestyle scene — desk, cafe, study context"
+      - "Flat surface reveal — product placed on table from slight angle"
+      - "Social media selfie aesthetic — natural phone-angle simulation"
+
+# USAGE REFERENCE FOR SCRIPT GENERATORS
+# ─────────────────────────────────────────────────────
+# Standard TikTok Video — Recommended Shot Sequence:
+#   Hook (0-2s):    CU or ECU — stop scroll, emotion or product detail
+#   Setup (2-5s):   MCU or MS — introduce avatar + context
+#   Demo (5-12s):   MCU + MACRO alternating — show product in use
+#   Result (12-18s): CU — avatar reaction, product result close
+#   CTA (18-30s):   MCU or MS — avatar direct to camera, product visible
+
+# Product Flat Lay (Shopee/Lazada):
+#   Primary:    TOP_DOWN — full product + accessories
+#   Detail:     MACRO — texture, label, ingredients
+#   Lifestyle:  MS or MCU — avatar with product
+
+# Raya/Festive Scene:
+#   Establish:  WS — full environment, full outfit
+#   Avatar:     MS or MCU — wardrobe detail + emotion
+#   Product:    CU or ECU — product in festive context

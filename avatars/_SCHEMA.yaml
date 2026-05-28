@@ -1,0 +1,67 @@
+# BOSMAX AVATAR REGISTRY — SCHEMA REFERENCE
+# Version: v1.0 | Date: 2026-05-29
+# Schema: GRAND_MASTER_SKELETON v11.2
+# Authority: SUPREME_SYSTEMS_ARCHITECT
+#
+# Each archetype gets its own YAML file: {ETHNICITY}_{GENDER}_{AGE_BRACKET}_{INDEX}.yaml
+# File naming: UPPERCASE, underscores, no spaces.
+# Index: _01 is default seed. _02, _03 reserved for future variants.
+#
+# PURPOSE:
+# This registry locks biometric DNA for AI image/video engines.
+# Descriptors MUST be injected verbatim into S1 (character description) of every prompt.
+# Wardrobe is resolved at runtime via wardrobes/WARDROBE_RULES.yaml lookup.
+# ─────────────────────────────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# ─────────────────────────────────────────────
+# IDENTIFIERS
+# ─────────────────────────────────────────────
+avatar_id: ""             # e.g. MALAY_FEMALE_YOUNG_01
+ethnicity: ""             # Malay | Chinese | Indian | Borneo | Indonesian | Bangladeshi
+gender: ""                # Female | Male
+age_range: ""             # e.g. "20-28"
+persona_name: ""          # Persona alias (NOT a real person name) — e.g. "Aina"
+
+# ─────────────────────────────────────────────
+# BIOMETRIC DNA — inject into AI image/video engine S1 verbatim
+# Descriptors must be specific, technical, and measurement-aware.
+# FORBIDDEN: "beautiful", "stunning", "average", "normal", "typical"
+# REQUIRED: tone references (NC scale), shape geometry, texture descriptors
+# ─────────────────────────────────────────────
+skin_tone: ""             # e.g. "warm medium brown, NC35 equivalent, subtle warm undertone"
+face_shape: ""            # e.g. "soft oval, gentle jawline taper, rounded chin"
+eye_shape: ""             # e.g. "almond-shaped double eyelid, dark brown iris, defined lash line"
+nose: ""                  # e.g. "soft button nose, medium-low bridge, rounded tip"
+lips: ""                  # e.g. "naturally full, soft Cupid's bow, medium-warm pigmentation"
+hair_texture: ""          # e.g. "straight fine-strand, low frizz, natural black"
+hair_length: ""           # e.g. "shoulder-length" | "chin-length" | "mid-back" | "short cropped"
+hair_style_default: ""    # e.g. "loose straight, centre-parted, slight volume at crown"
+build: ""                 # e.g. "slim proportionate, 160cm frame, narrow shoulders"
+distinguishing_features:  # Physical anchors for consistency — list 1-3 items
+  - ""                    # e.g. "small beauty mark below right eye"
+
+# ─────────────────────────────────────────────
+# PERSONA TRAITS — for copywriting tone match
+# ─────────────────────────────────────────────
+personality_keywords:     # 3-5 keywords
+  - ""                    # e.g. "friendly" | "relatable" | "aspirational" | "trusted"
+speaks_language:          # Languages for dialogue scripts
+  - ""                    # e.g. "BM" | "English" | "Mandarin" | "Tamil"
+content_style: ""         # e.g. "everyday lifestyle, beauty routine, product demo"
+
+# ─────────────────────────────────────────────
+# WARDROBE BASE
+# NOTE: Default wardrobe is overridden by WARDROBE_RULES.yaml at runtime.
+# Runtime lookup key: (ethnicity, gender, occasion, scene_context)
+# ─────────────────────────────────────────────
+default_wardrobe: ""      # e.g. "casual everyday — baju t-shirt, slim jeans, minimal accessories"
+hijab_wearing: null       # true | false | null (null = not applicable / context-dependent)
+
+# ─────────────────────────────────────────────
+# METADATA
+# ─────────────────────────────────────────────
+created_date: ""          # YYYY-MM-DD
+last_updated: ""          # YYYY-MM-DD
+notes: ""

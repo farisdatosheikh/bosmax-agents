@@ -168,6 +168,75 @@ sRGB only | no wide-gamut
 
 ---
 
+## SHOT LIBRARY — LOOKUP (v11.2)
+
+**Reference:** `shots/SHOT_LIBRARY.yaml`
+**Usage:** Declare shot code in S2 (camera direction) of every script prompt and in STEP 3 below.
+
+### QUICK REFERENCE TABLE
+
+| Code | Name | Primary Use |
+|------|------|-------------|
+| ECU | Extreme Close-Up | Micro-detail: product texture, skin surface, ingredient |
+| CU | Close-Up | Face emotion, product hero label, TikTok hook frame |
+| MCU | Medium Close-Up | Demo + conversation, product at chest height |
+| MS | Medium Shot | Full upper body, wardrobe visible, product in hand |
+| MLS | Medium Long Shot | Outfit showcase, lifestyle action, GRWM content |
+| WS | Wide Shot | Full body + environment, scene establishing |
+| OTS | Over-the-Shoulder | Two-person, mirror scene, consultation |
+| POV | Point-of-View | Unboxing, first-person application, immersive |
+| TOP_DOWN | Top-Down / Flat Lay | Product catalogue, ingredient layout, flat surface |
+| MACRO | Macro / Ultra-Macro | Molecular texture, skin cell detail, material quality |
+| DUTCH | Dutch Angle | Dynamic energy, TikTok transitions, editorial |
+| LOW_ANGLE | Low Angle | Product scale, avatar authority, aspirational |
+| HIGH_ANGLE | High Angle | Intimate, relatable, seated scene, selfie aesthetic |
+
+### SHOT SELECTION PROTOCOL
+
+```
+STEP A — Determine content type:
+  Product hero (static)    → TOP_DOWN or CU
+  Avatar testimonial       → CU or MCU
+  Demo/application         → MCU alternating with MACRO
+  Outfit/wardrobe showcase → MS or MLS
+  Scene establishing       → WS
+  Festive/cultural event   → WS (establish) → MS (detail)
+  TikTok hook              → CU or ECU (first frame)
+
+STEP B — Declare in S2 of prompt:
+  Format: "Shot: [CODE] — [intent note]"
+  Example: "Shot: MCU — avatar demonstrating serum application at chin level"
+
+STEP C — Declare technical params (from CAMERA SPECIFICATIONS REGISTRY):
+  Focal length + aperture consistent with shot code
+  ECU/MACRO → 85-100mm, f/2.0-2.8
+  CU/MCU    → 50-85mm, f/1.8-2.8
+  MS/MLS    → 35-50mm, f/1.8-2.8
+  WS/OTS    → 24-35mm, f/4.0-8.0
+```
+
+### MULTI-SHOT SEQUENCES (video scripts)
+
+```
+TikTok Standard (15-30s):
+  Hook frame:   CU or ECU
+  Setup:        MCU
+  Demo:         MCU + MACRO (alternating)
+  Result/CTA:   CU + MCU
+
+Shopee/Lazada Product Listing:
+  Primary:      TOP_DOWN
+  Detail:       MACRO
+  Lifestyle:    MCU or MS
+
+Festive / Raya / CNY / Deepavali:
+  Open:         WS (full scene)
+  Avatar:       MS or MCU
+  Product:      CU or ECU
+```
+
+---
+
 ## ASSEMBLY PROTOCOL — IKUT SEQUENCE INI
 
 **STEP 1 — RECEIVE:** Ingest subject_dna JSON dan prose dari bosmax-subject-dna.

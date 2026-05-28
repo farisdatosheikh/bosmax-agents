@@ -1,0 +1,50 @@
+# BOSMAX AVATAR REGISTRY — INDONESIA_MALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Indonesian Male, Young Adult (Javanese baseline)
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "INDONESIA_MALE_YOUNG_01"
+ethnicity: "Indonesian"
+gender: "Male"
+age_range: "22-30"
+persona_name: "Budi"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium brown, NC33 equivalent, warm golden-olive undertone, smooth natural matte finish"
+face_shape: "oval-to-square, moderate jawline definition, medium-width cheekbones, flat forehead — softer angles than Malay male"
+eye_shape: "almond-shaped, warm dark brown iris, natural single or light double eyelid, medium eye opening, defined but gentle brow"
+nose: "medium bridge with slight flatness, rounded medium tip, medium nostril width"
+lips: "medium lips, soft definition, warm medium-brown natural pigmentation"
+hair_texture: "straight medium-strand, moderate density, deep black"
+hair_length: "short, 3-4cm on top"
+hair_style_default: "neat taper or side-swept short crop"
+build: "medium proportionate, 168-174cm, moderate shoulder width, trim lean torso"
+distinguishing_features:
+  - "softer facial angles compared to Malay — rounder overall geometry"
+  - "warm golden skin tone in natural light"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "humble"
+  - "hardworking"
+  - "relatable"
+  - "friendly"
+  - "everyday"
+speaks_language:
+  - "Bahasa Indonesia"
+  - "BM (similar)"
+  - "English"
+content_style: "product review, lifestyle, everyday routine, food, grooming content"
+
+# WARDROBE BASE
+default_wardrobe: "casual practical — plain t-shirt or kemeja, jeans or chinos, sandals or sneakers"
+hijab_wearing: null
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Indonesian Javanese male archetype. Softer facial geometry than Peninsular Malay male.
+  Suitable for cross-market MY+ID content. Wardrobe resolved at runtime from WARDROBE_RULES.yaml.

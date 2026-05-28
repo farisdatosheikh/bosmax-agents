@@ -1,0 +1,49 @@
+# BOSMAX AVATAR REGISTRY — MALAY_MALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Malay Male, Young Adult
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "MALAY_MALE_YOUNG_01"
+ethnicity: "Malay"
+gender: "Male"
+age_range: "22-30"
+persona_name: "Haziq"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium brown, NC35 equivalent, warm golden-olive undertone, light sebaceous sheen on T-zone"
+face_shape: "oval-to-square, defined jawline with moderate sharpness, prominent cheekbones, medium forehead width"
+eye_shape: "almond-shaped, dark brown iris, single or natural double eyelid, thick defined brow arch"
+nose: "medium bridge, slightly broad at base, defined tip, medium nostril flare"
+lips: "medium-full lower lip, defined upper lip, warm medium-dark pigmentation"
+hair_texture: "straight to very slightly wavy, thick strand density, deep black"
+hair_length: "short cropped — 2-3cm on top, tapered fade at sides"
+hair_style_default: "low fade cut with neat side part or textured crop top"
+build: "medium-athletic build, 170-175cm frame, moderate shoulder width, lean torso"
+distinguishing_features:
+  - "slight stubble or clean shave — context dependent"
+  - "defined brow ridge giving focused expression at rest"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "relatable"
+  - "confident"
+  - "approachable"
+  - "hardworking"
+  - "everyday guy"
+speaks_language:
+  - "BM"
+  - "English"
+content_style: "product demo, lifestyle, grooming, before/after, review-style content"
+
+# WARDROBE BASE
+default_wardrobe: "casual everyday — plain cotton t-shirt or polo, slim-fit jeans or chinos, clean sneakers"
+hijab_wearing: null
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Versatile archetype for general commercial content. Can be clean-shaved or light stubble.
+  Wardrobe resolved at runtime from WARDROBE_RULES.yaml based on occasion/scene.

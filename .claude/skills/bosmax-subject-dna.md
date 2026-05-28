@@ -100,6 +100,74 @@ dalam JSON + biometric prose. Scene, lighting, camera — itu kerja bosmax-scene
 
 ---
 
+## ETHNICITY ARCHETYPE REGISTRY — LOOKUP (v11.2)
+
+**Gunakan bahagian ini apabila request menggunakan archetype (bukan named avatar).**
+Named avatars (NORA, SARA, RIZAL, dll.) → rujuk AVATAR REGISTRY di atas.
+Ethnicity archetypes (MALAY_FEMALE_YOUNG_01, dll.) → rujuk lookup di bawah.
+
+### LOOKUP PROTOCOL
+
+```
+STEP 1 — Determine avatar type:
+  Named avatar (NORA, SARA, RIZAL...) → Use AVATAR REGISTRY above (existing rules apply)
+  Archetype code (e.g. MALAY_FEMALE_YOUNG_01) → Execute ARCHETYPE LOOKUP below
+
+STEP 2 — Load archetype file:
+  Path: avatars/[AVATAR_ID].yaml
+  Fields to extract: skin_tone, face_shape, eye_shape, nose, lips,
+                     hair_texture, hair_length, hair_style_default, build,
+                     distinguishing_features, hijab_wearing
+
+STEP 3 — Load wardrobe from WARDROBE RULE ENGINE:
+  Path: wardrobes/WARDROBE_RULES.yaml
+  Lookup key: (avatar_id, occasion, scene_context)
+  Extract: outfit_descriptor, colour_palette, avoid
+  → If no match: use avatar default_wardrobe from avatars/[ID].yaml
+
+STEP 4 — Build subject_dna block:
+  Convert all fields to biometric prose (same rules as named avatars)
+  FORBIDDEN buzzwords still apply
+  JANGAN output avatar_id dalam prose — convert to biometric descriptors
+```
+
+### ARCHETYPE REGISTRY INDEX
+
+| Avatar ID | Persona | Ethnicity | Gender | Hijab |
+|---|---|---|---|---|
+| MALAY_FEMALE_YOUNG_01 | Aina | Malay | Female | true |
+| MALAY_MALE_YOUNG_01 | Haziq | Malay | Male | null |
+| CHINESE_FEMALE_YOUNG_01 | Mei Ling | Chinese | Female | false |
+| CHINESE_MALE_YOUNG_01 | Wei Jie | Chinese | Male | null |
+| INDIAN_FEMALE_YOUNG_01 | Priya | Tamil Indian | Female | false |
+| INDIAN_MALE_YOUNG_01 | Arjun | Tamil Indian | Male | null |
+| BORNEO_FEMALE_YOUNG_01 | Evelyn | Sabahan/Bidayuh | Female | false |
+| BORNEO_MALE_YOUNG_01 | Raymond | Sabahan | Male | null |
+| INDONESIA_FEMALE_YOUNG_01 | Sari | Indonesian Javanese | Female | true |
+| INDONESIA_MALE_YOUNG_01 | Budi | Indonesian Javanese | Male | null |
+| BANGLADESH_FEMALE_YOUNG_01 | Nadia | Bangladeshi | Female | true |
+| BANGLADESH_MALE_YOUNG_01 | Rafi | Bangladeshi | Male | null |
+
+### HIJAB HANDLING FOR ARCHETYPES
+
+```
+hijab_wearing: true  → declare hijab style from wardrobe rule outfit_descriptor
+                        DEFAULT if no rule match: "neatly wrapped cotton hijab,
+                        modest draped style, solid coordinating colour"
+
+hijab_wearing: false → hair descriptor applies (from hair_texture + hair_style_default)
+                        DO NOT add hijab
+
+hijab_wearing: null  → male avatar — no hijab field applies
+```
+
+### SILO ASSIGNMENT FOR ARCHETYPES
+
+Archetypes default to DIRECT silo (warm, relatable, community-facing content).
+Override to STEALTH only if explicitly requested by BOSMAX orchestrator.
+
+---
+
 ## WARDROBE REGISTRY
 
 ### Female Wardrobe Sets

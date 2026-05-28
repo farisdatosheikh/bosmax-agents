@@ -1,0 +1,1311 @@
+# BOSMAX WARDROBE RULE ENGINE — WARDROBE_RULES.yaml
+# Version: v1.0 | Date: 2026-05-29
+# Schema: GRAND_MASTER_SKELETON v11.2
+# Authority: SUPREME_SYSTEMS_ARCHITECT
+#
+# PURPOSE:
+# Runtime lookup table: (ethnicity, gender, occasion, scene_context) → outfit_descriptor
+# Used by bosmax-subject-dna to resolve wardrobe BEFORE injecting into S1.
+# Overrides avatar default_wardrobe for specific occasions.
+#
+# LOOKUP PRIORITY:
+# 1. Exact match (ethnicity + gender + occasion + scene_context)
+# 2. Partial match (ethnicity + gender + occasion) — ignore scene_context
+# 3. Fallback to avatar default_wardrobe in YAML file
+#
+# OCCASIONS COVERED:
+# Perayaan: hari_raya_aidilfitri, hari_raya_aidiladha, chinese_new_year,
+#           deepavali, gawai_kaamatan, hari_merdeka, malaysia_day,
+#           majlis_kahwin_guest, majlis_kahwin_bride_groom
+# Harian: casual_everyday, workplace_office, workplace_retail,
+#         outdoor_street, home_indoor, gym_active
+# Platform: tiktok_trendy, shopee_lazada_clean
+# ─────────────────────────────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# ═══════════════════════════════════════════════════════
+# MALAY — FEMALE
+# ═══════════════════════════════════════════════════════
+
+rules:
+
+  # ── MALAY FEMALE ──────────────────────────────────────
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Baju kurung moden in soft pastel (mint green, blush pink, or warm lilac),
+      matching tudung bawal neatly pinned at collar, subtle gold accessories
+      (small stud earrings, delicate bracelet), light warm-toned festive makeup,
+      clean pressed fabric with slight sheen
+    colour_palette: ["mint green", "blush pink", "warm lilac", "ivory", "gold accent"]
+    avoid: ["denim", "t-shirt", "dark heavy colours", "athleisure", "printed logos"]
+    notes: "Raya home scene — warm, family-friendly, approachable festive look"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Baju kurung moden or baju kurung pahang in vibrant festive colour (emerald green,
+      royal blue, or deep rose), coordinated chiffon shawl hijab loosely draped,
+      gold accessories, light festive makeup, slight movement-friendly fabric
+    colour_palette: ["emerald green", "royal blue", "deep rose", "gold"]
+    avoid: ["muted colours", "casual t-shirt", "sneakers"]
+    notes: "Outdoor Raya — slightly more vibrant than home setting"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "hari_raya_aidiladha"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Baju kurung in earthy or jewel tones (deep teal, burnt orange, olive green),
+      batik-accent or songket-trim detail, matching tudung bawal, minimal gold jewellery,
+      modest and dignified overall silhouette
+    colour_palette: ["deep teal", "burnt orange", "olive green", "gold"]
+    avoid: ["bright neon", "flashy party wear"]
+    notes: "Aidiladha — slightly more sober than Aidilfitri, dignified festive"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Baju kurung or kebaya moden in rich deep colour (burgundy, navy, deep purple),
+      chiffon or satin fabric with slight drape, structured tudung with neat pin,
+      statement gold earrings and bracelet, polished modest formal look
+    colour_palette: ["burgundy", "navy", "deep purple", "champagne gold"]
+    avoid: ["white", "all-black mourning palette", "casual fabric", "t-shirt"]
+    notes: "Wedding guest — elevated formal, avoid white (reserved for bride)"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Loose relaxed cotton baju kurung moden or wide-leg trousers with flowy blouse,
+      cotton instant shawl hijab in neutral tone, simple flat sandals or sneakers,
+      minimal accessories — practical everyday modest wear
+    colour_palette: ["neutral grey", "dusty rose", "off-white", "earth tone"]
+    avoid: ["formal heavy fabric", "excessive accessories", "restrictive silhouette"]
+    notes: "Everyday street — comfortable, modest, practical"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Tailored baju kurung or modest blazer over fitted blouse with wide-leg trousers,
+      structured premium hijab in neutral (grey, navy, cream), minimal jewellery,
+      closed-toe flats or low heels, polished professional presentation
+    colour_palette: ["navy", "grey", "cream", "black", "muted burgundy"]
+    avoid: ["casual cotton", "loud prints", "sneakers", "oversized silhouette"]
+    notes: "Professional office — structured, modest, corporate-appropriate"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose soft cotton baju kurung pesak or house-wear blouse with seluar longgar,
+      cotton bawal hijab loosely pinned, no accessories, comfortable relaxed posture,
+      simple flat indoor sandals
+    colour_palette: ["soft pastel", "white", "light grey", "light blue"]
+    avoid: ["formal fabric", "heels", "heavy accessories"]
+    notes: "Home indoor — relaxed, comfortable, modest home wear"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modest streetwear: oversized cotton sweatshirt or cropped modest hoodie over
+      high-neck inner, wide-leg joggers or mom jeans, sporty hijab or scarf in
+      contrasting colour, chunky sneakers, minimal gold hoop earrings
+    colour_palette: ["neutral tones", "earth brown", "sage green", "off-white", "contrast accent"]
+    avoid: ["traditional baju kurung", "formal fabric", "excessive accessories"]
+    notes: "TikTok Gen-Z modest streetwear — trendy but culturally appropriate"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean simple modest wear — light cotton blouse in solid neutral colour, slim
+      modest trousers or A-line skirt, neat pinned tudung bawal in matching tone,
+      no visible branding, minimal accessories — product-focused clean backdrop look
+    colour_palette: ["white", "light grey", "soft blue", "cream"]
+    avoid: ["busy patterns", "neon", "heavy accessories", "oversized silhouette"]
+    notes: "E-commerce clean look — avatar should not distract from product"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "hari_merdeka"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Baju kurung in Malaysian flag colours (red, white, blue, yellow accent) or
+      patriotic-themed outfit, small Jalur Gemilang accessory or pin, festive
+      modest look appropriate for national celebration
+    colour_palette: ["red", "white", "royal blue", "yellow"]
+    avoid: ["muted boring colours", "non-patriotic palette"]
+    notes: "Merdeka Day — patriotic modest festive"
+
+  - avatar_id: "MALAY_FEMALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Female"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Sports hijab in moisture-wicking fabric (navy or black), fitted long-sleeve
+      athletic top with modest coverage, high-waist athletic leggings or wide-leg
+      sports trousers, sports shoes — full coverage active modest wear
+    colour_palette: ["black", "navy", "grey", "pop accent colour"]
+    avoid: ["non-athletic fabric", "formal wear", "regular hijab fabric"]
+    notes: "Active modest sportswear — breathable, full coverage, athletic function"
+
+  # ── MALAY MALE ────────────────────────────────────────
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Baju Melayu cekak musang in pastel or neutral tone (sky blue, grey, cream,
+      soft yellow), matching sampin/kain pelikat neatly folded at waist, songkok
+      hitam or off-white kopiah, leather flat shoes or formal sandals
+    colour_palette: ["sky blue", "cream", "soft grey", "gold accent"]
+    avoid: ["t-shirt", "jeans", "sneakers", "casual western wear"]
+    notes: "Raya home — traditional formal Malay menswear, dignified festive"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Baju Melayu cekak musang in richer colour (deep navy, teal, burgundy),
+      songkok tilted slightly forward, sampin wrapped smartly, slight variation
+      for outdoor — same dignified silhouette
+    colour_palette: ["deep navy", "teal", "burgundy", "gold trim"]
+    avoid: ["casual wear", "sneakers", "untucked shirt"]
+    notes: "Raya outdoor — slightly bolder colour than home"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal Baju Melayu or batik shirt in deep rich colour (dark teal, charcoal,
+      navy), songkok, formal trousers, polished leather shoes — elevated male
+      wedding guest formal
+    colour_palette: ["dark teal", "charcoal", "navy", "gold"]
+    avoid: ["casual t-shirt", "sneakers", "all-white unless intentional"]
+    notes: "Wedding guest — formal elevated Malay menswear"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Plain crew-neck cotton t-shirt or polo shirt in neutral or earth tone,
+      slim-fit chinos or dark jeans, clean white sneakers or casual sandals,
+      no headwear — relaxed everyday Malaysian male casual
+    colour_palette: ["white", "navy", "grey", "earth brown"]
+    avoid: ["formal suit", "songkok", "traditional wear for casual context"]
+    notes: "Everyday casual — clean, simple, relatable"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Fitted formal batik shirt or plain button-down in corporate colour (navy, white,
+      light blue), dark slim trousers, polished leather shoes, clean neat appearance
+    colour_palette: ["navy", "white", "light blue", "charcoal"]
+    avoid: ["t-shirt", "sneakers", "loud print"]
+    notes: "Office professional — smart business casual Malaysian style"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose cotton t-shirt or simple kemeja in light colour, casual seluar panjang
+      or track pants, simple house sandals — relaxed home wear
+    colour_palette: ["white", "light grey", "soft blue", "earth tone"]
+    avoid: ["formal attire", "heavy fabric"]
+    notes: "Home casual — comfortable, relaxed"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Oversized graphic tee or premium plain tee, wide-leg cargo pants or baggy
+      jeans, chunky sneakers, optional snapback cap — Gen-Z streetwear energy
+    colour_palette: ["earth tones", "black", "cream", "muted colour palette"]
+    avoid: ["formal wear", "traditional attire for street context"]
+    notes: "TikTok street — Gen-Z aesthetic, relaxed cool"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean solid-colour t-shirt or simple polo in neutral tone (white, grey, light
+      blue), slim-fit trousers or dark jeans, no accessories — clean product-focus look
+    colour_palette: ["white", "light grey", "navy"]
+    avoid: ["graphic prints", "busy patterns", "heavy accessories"]
+    notes: "E-commerce clean — product is hero, avatar is neutral backdrop"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic performance t-shirt or muscle-fit vest, training shorts or slim
+      joggers, athletic sneakers — functional sports look
+    colour_palette: ["black", "white", "electric blue", "grey"]
+    avoid: ["formal wear", "jeans", "non-athletic footwear"]
+    notes: "Gym/active — performance athletic wear"
+
+  - avatar_id: "MALAY_MALE_YOUNG_01"
+    ethnicity: "Malay"
+    gender: "Male"
+    occasion: "hari_merdeka"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Patriotic themed: baju Melayu or smart batik shirt in Malaysian flag colour palette
+      (red, white, navy), small Jalur Gemilang pin, dignified casual-formal
+    colour_palette: ["red", "white", "navy", "yellow"]
+    avoid: ["all-black", "foreign flag colours"]
+    notes: "Merdeka — patriotic Malay male"
+
+  # ── CHINESE FEMALE ────────────────────────────────────
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "chinese_new_year"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Modern cheongsam (qipao) in deep red or gold, minimal frog button detailing,
+      gold jewellery (jade pendant optional), elegant updo or sleek straight hair,
+      festive light makeup with red lip — modern interpretation of traditional CNY wear
+    colour_palette: ["red", "gold", "deep burgundy", "jade green accent"]
+    avoid: ["black", "white (mourning)", "blue (bad luck in CNY context)", "casual wear"]
+    notes: "CNY home — festive traditional-modern, red dominates"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "chinese_new_year"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modern Chinese-inspired outfit: red floral blouse or cheongsam top with
+      wide-leg red or gold trousers, or contemporary CNY coord set in red/gold,
+      minimal jewellery, simple elegant shoes
+    colour_palette: ["red", "gold", "cream", "floral accent"]
+    avoid: ["black", "white", "dull muted tones"]
+    notes: "CNY outdoor — vibrant festive modern Chinese"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Fitted cotton crop top or camisole with high-waist wide-leg trousers or
+      midi skirt, simple white sneakers or loafers, dainty gold necklace, hair
+      loose straight or in casual half-bun — effortless modern casual
+    colour_palette: ["white", "cream", "dusty pink", "sage", "light neutral"]
+    avoid: ["heavy traditional wear", "overdressed accessories"]
+    notes: "Casual Chinese-Malaysian young woman — clean modern aesthetic"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Tailored fitted blazer over slim shirt, straight-cut trousers or pencil skirt,
+      simple pointed-toe flats or low heels, minimal gold jewellery, polished
+      professional presentation — clean corporate Chinese-Malaysian style
+    colour_palette: ["black", "navy", "white", "grey", "subtle colour pop"]
+    avoid: ["casual t-shirt", "jeans", "loud prints"]
+    notes: "Professional office — sleek modern corporate"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Comfortable home wear: soft cotton or satin pyjama-style wide-leg trousers
+      with simple fitted top, light cardigan over — relaxed home aesthetic
+    colour_palette: ["white", "cream", "pale pink", "soft grey"]
+    avoid: ["formal wear", "heavy fabric"]
+    notes: "Home comfort — relaxed minimalist"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Y2K or Korean-inspired streetwear: oversized graphic hoodie or trendy crochet
+      top, baggy wide-leg jeans, chunky sneakers, small crossbody bag, dainty
+      accessories — Gen-Z digital native aesthetic
+    colour_palette: ["pastel multi", "denim", "cream", "pop accent"]
+    avoid: ["traditional wear", "overly formal"]
+    notes: "TikTok trendy — K-inspired or Y2K Gen-Z fashion"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean minimal: white or light grey fitted blouse or t-shirt, simple trousers,
+      no visible branding, hair neat — product-forward clean commercial look
+    colour_palette: ["white", "light grey", "cream"]
+    avoid: ["busy patterns", "loud colours", "heavy accessories"]
+    notes: "E-commerce clean — product hero, neutral avatar"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Elegant cocktail dress or formal chiffon gown in jewel tones (emerald, sapphire,
+      dusty rose), simple gold jewellery, polished updo or blow-out hair, subtle
+      formal makeup
+    colour_palette: ["emerald", "sapphire", "dusty rose", "gold"]
+    avoid: ["white", "pure red (may clash with bride)", "casual wear"]
+    notes: "Wedding guest — elegant non-bridal formal"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "deepavali"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Respectful Indian-occasion guest wear: vibrant saree or salwar kameez in
+      warm jewel tones (orange, purple, gold), or smart formal in bright colours
+      as cross-cultural guest show of respect
+    colour_palette: ["orange", "purple", "gold", "deep pink"]
+    avoid: ["white", "all-black", "casual wear"]
+    notes: "Deepavali guest — respectful cross-cultural vibrant dressing"
+
+  - avatar_id: "CHINESE_FEMALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Female"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic crop top or fitted sports bra under light layer, high-waist athletic
+      leggings, athletic sneakers — clean sporty functional
+    colour_palette: ["black", "white", "grey", "pop neon accent"]
+    avoid: ["casual wear", "formal fabric"]
+    notes: "Gym active — functional modern sporty"
+
+  # ── CHINESE MALE ──────────────────────────────────────
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "chinese_new_year"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Modern Tang suit (tangshuang) in deep red or burgundy with mandarin collar,
+      or contemporary CNY coord shirt in red/gold, slim trousers, clean leather
+      shoes — modern festive Chinese male
+    colour_palette: ["red", "burgundy", "gold", "black trim"]
+    avoid: ["white", "casual t-shirt", "sneakers", "all-black"]
+    notes: "CNY — modern Chinese male festive, red dominates"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Minimal fitted t-shirt in solid colour, slim-fit jeans or chinos, clean
+      leather sneakers or loafers — simple clean modern Chinese-Malaysian casual
+    colour_palette: ["white", "grey", "navy", "black", "earth tone"]
+    avoid: ["formal attire", "loud prints", "traditional wear for casual"]
+    notes: "Everyday casual — clean minimal modern"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Slim-fit button-down shirt in white or light blue, dark fitted trousers,
+      clean leather oxford or loafer shoes — professional modern corporate
+    colour_palette: ["white", "light blue", "charcoal", "navy"]
+    avoid: ["t-shirt", "sneakers", "casual denim"]
+    notes: "Office professional — clean corporate Chinese-Malaysian"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Comfortable oversized t-shirt or minimal crew-neck, track pants or loose
+      cotton trousers, simple slippers — relaxed home wear
+    colour_palette: ["white", "grey", "light blue"]
+    avoid: ["formal wear"]
+    notes: "Home relaxed — minimal comfort wear"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Korean streetwear influence: oversized structured jacket or hoodie, baggy
+      straight-cut trousers, clean chunky sneakers, optional baseball cap —
+      clean aesthetic with fashion-forward edge
+    colour_palette: ["neutral earth", "black", "cream", "muted tone"]
+    avoid: ["formal attire", "traditional CNY wear for street"]
+    notes: "TikTok trendy — K-fashion influenced Chinese-Malaysian male"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Plain white or grey fitted t-shirt, dark slim trousers — clean neutral
+      product-forward commercial look
+    colour_palette: ["white", "grey", "navy"]
+    avoid: ["graphic print", "loud colour", "accessories"]
+    notes: "E-commerce clean — avatar neutral, product hero"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal slim-fit suit or blazer with dress shirt in jewel or neutral tone,
+      dress shoes, minimal accessories — polished wedding guest formal
+    colour_palette: ["navy", "charcoal", "deep teal", "white shirt"]
+    avoid: ["all-white", "casual wear", "sneakers"]
+    notes: "Wedding guest — polished modern formal"
+
+  - avatar_id: "CHINESE_MALE_YOUNG_01"
+    ethnicity: "Chinese"
+    gender: "Male"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Performance athletic t-shirt or muscle-fit top, training shorts or slim
+      joggers, athletic sneakers — clean minimal sporty
+    colour_palette: ["black", "white", "grey", "pop accent"]
+    avoid: ["formal wear", "jeans"]
+    notes: "Gym active — functional athletic wear"
+
+  # ── INDIAN FEMALE ─────────────────────────────────────
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "deepavali"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Traditional silk saree in jewel tones (magenta, emerald green, royal blue,
+      deep purple), gold zari border, blouse with gold detail, matching bindi,
+      heavy gold jewellery (necklace, jhumka earrings, bangles), jasmine flowers
+      in hair if loose — full traditional Deepavali look
+    colour_palette: ["magenta", "emerald green", "royal blue", "deep purple", "gold"]
+    avoid: ["white", "black (inauspicious)", "western casual wear"]
+    notes: "Deepavali home — full traditional Tamil festive attire"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "deepavali"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Salwar kameez or pattu pavadai in vibrant festive colour (orange, deep pink,
+      purple), minimal gold accessories, practical outdoor festive look
+    colour_palette: ["orange", "deep pink", "purple", "gold"]
+    avoid: ["white", "casual western wear"]
+    notes: "Deepavali outdoor — vibrant traditional but practical"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modern salwar kameez or kurta in solid or subtle print, simple dupatta,
+      or contemporary fitted blouse with palazzo pants — practical modern
+      Indian-Malaysian casual
+    colour_palette: ["dusty rose", "teal", "burnt orange", "cream"]
+    avoid: ["formal saree for casual context", "heavy jewellery"]
+    notes: "Everyday casual — modern Indian-Malaysian practical wear"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Fitted formal kurta with slim trousers, or western blazer with formal blouse —
+      professional Indian-Malaysian office wear, small gold earrings
+    colour_palette: ["navy", "black", "burgundy", "cream", "grey"]
+    avoid: ["casual salwar", "heavy festival jewellery", "t-shirt"]
+    notes: "Office professional — blend of Indian and contemporary corporate"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Comfortable loose chudidhar or simple cotton house dress, hair loosely
+      braided or in simple ponytail, minimal accessories
+    colour_palette: ["soft floral", "light blue", "white", "cream"]
+    avoid: ["formal festive wear", "heavy fabric"]
+    notes: "Home relaxed — comfortable traditional-casual"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Fusion streetwear: oversized kurta as dress with cycle shorts underneath,
+      sneakers, tiny gold earrings, hair in top bun — desi-meets-streetwear Gen-Z look
+    colour_palette: ["earth neutral", "white", "pop colour accent"]
+    avoid: ["full traditional formal wear", "excessive gold jewellery for street"]
+    notes: "TikTok desi fusion — modern Indian-Malaysian Gen-Z"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean simple blouse or fitted kurta in solid light colour, minimal
+      accessory — product-forward clean look
+    colour_palette: ["white", "cream", "light teal"]
+    avoid: ["heavy print", "bold festival jewellery", "busy pattern"]
+    notes: "E-commerce clean — neutral avatar"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal saree or lehenga choli in rich jewel tone (teal, purple, gold),
+      matching blouse, statement gold jewellery — Indian wedding guest formal
+    colour_palette: ["teal", "purple", "gold", "deep magenta"]
+    avoid: ["white", "all-black", "casual wear"]
+    notes: "Wedding guest — Indian formal festive"
+
+  - avatar_id: "INDIAN_FEMALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Female"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic crop top or fitted sports top, high-waist leggings, athletic
+      sneakers — functional sporty look
+    colour_palette: ["black", "deep teal", "electric blue", "grey"]
+    avoid: ["traditional wear", "jewellery in gym context"]
+    notes: "Gym — functional athletic"
+
+  # ── INDIAN MALE ───────────────────────────────────────
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "deepavali"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Traditional dhoti veshti in white or cream with gold border, matched with
+      silk kurta in jewel tone (deep blue, maroon, emerald), sacred thread (if
+      applicable), simple gold ring or chain — formal traditional Deepavali male
+    colour_palette: ["white/cream veshti", "deep blue", "maroon", "emerald", "gold border"]
+    avoid: ["casual wear", "western shirt with veshti mismatch", "sneakers"]
+    notes: "Deepavali traditional — Tamil male formal festive"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Fitted t-shirt or polo in solid colour, slim-fit jeans or chinos, casual
+      leather sandals or clean sneakers — modern Indian-Malaysian casual
+    colour_palette: ["navy", "white", "grey", "dark green"]
+    avoid: ["traditional formal for casual context"]
+    notes: "Everyday casual — practical modern"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Formal button-down shirt with slim trousers, or smart blazer combo —
+      professional corporate Indian-Malaysian male
+    colour_palette: ["white", "navy", "charcoal", "light blue"]
+    avoid: ["casual wear", "traditional dhoti for office"]
+    notes: "Office — professional corporate"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Simple lungi or track pants with plain t-shirt — relaxed home wear
+    colour_palette: ["white", "grey", "blue plaid"]
+    avoid: ["formal wear"]
+    notes: "Home relaxed — comfortable casual"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Oversized graphic hoodie or minimal luxury streetwear tee, wide-leg joggers,
+      fresh sneakers — modern Indian-Malaysian Gen-Z street aesthetic
+    colour_palette: ["black", "cream", "earth neutral", "pop accent"]
+    avoid: ["traditional formal", "overdressed"]
+    notes: "TikTok trendy — modern South Asian Gen-Z streetwear"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Plain solid t-shirt or polo, slim trousers, minimal — product-forward
+    colour_palette: ["white", "grey", "navy"]
+    avoid: ["graphic print", "heavy accessories"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal kurta with slim churidar pants or formal slim trousers, clean leather
+      shoes — semi-formal Indian male wedding guest
+    colour_palette: ["teal", "navy", "maroon", "cream"]
+    avoid: ["all-white", "casual western"]
+    notes: "Wedding guest — semi-formal Indian"
+
+  - avatar_id: "INDIAN_MALE_YOUNG_01"
+    ethnicity: "Indian"
+    gender: "Male"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic performance vest or fitted t-shirt, training shorts, athletic shoes
+    colour_palette: ["black", "white", "electric blue"]
+    avoid: ["formal wear", "casual jeans"]
+    notes: "Gym — functional athletic"
+
+  # ── BORNEO FEMALE ─────────────────────────────────────
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "gawai_kaamatan"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Traditional Kadazan-Dusun baju kurung sumazau in black with copper/gold trim
+      and traditional headpiece (sigah), or Iban festival costume in rich colours
+      with beaded accessories and woven belt — full traditional Borneo festive attire
+    colour_palette: ["black base", "copper", "gold", "red accent", "natural beading"]
+    avoid: ["modern western wear", "plain casual top"]
+    notes: "Gawai/Kaamatan — traditional Sabah/Sarawak indigenous festive costume"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Relaxed cotton blouse or t-shirt with wide-leg trousers or casual skirt,
+      simple sandals — practical everyday Borneo casual
+    colour_palette: ["earth tone", "forest green", "warm brown", "cream"]
+    avoid: ["formal traditional for casual context"]
+    notes: "Everyday Borneo casual — practical outdoor-ready"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Smart casual blouse with trousers or fitted skirt, simple flat shoes,
+      minimal natural accessories
+    colour_palette: ["navy", "grey", "forest green", "cream"]
+    avoid: ["traditional festival attire", "casual t-shirt"]
+    notes: "Office professional"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Comfortable cotton house dress or loose blouse with sarong — relaxed home wear
+    colour_palette: ["floral print", "cream", "light blue"]
+    avoid: ["formal attire"]
+    notes: "Home relaxed"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modern fusion: oversized t-shirt with fitted shorts, ethnic-print accessories
+      (bag or bracelet), chunky sneakers — modern Borneo identity expressed casually
+    colour_palette: ["earth neutral", "pop colour accent", "natural print detail"]
+    avoid: ["full traditional for casual content"]
+    notes: "TikTok trendy — modern Borneo identity"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean solid-colour blouse, simple trousers, minimal accessories
+    colour_palette: ["white", "cream", "forest green"]
+    avoid: ["busy pattern", "heavy accessories"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "hari_merdeka"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Smart casual with Malaysian flag colour palette, optional batik-print item —
+      patriotic modern Borneo style
+    colour_palette: ["red", "white", "navy", "yellow"]
+    avoid: ["non-patriotic palette"]
+    notes: "Merdeka — patriotic Borneo female"
+
+  - avatar_id: "BORNEO_FEMALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Female"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic sports top, leggings or shorts, functional sneakers
+    colour_palette: ["black", "forest green", "white"]
+    avoid: ["traditional wear", "formal fabric"]
+    notes: "Gym — functional athletic"
+
+  # ── BORNEO MALE ───────────────────────────────────────
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "gawai_kaamatan"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Traditional Kadazan-Dusun or Iban warrior costume — dark indigo or black
+      jacket with gold embroidery, traditional sash, woven headpiece (tangkolok),
+      beaded belt — full traditional male Borneo festive costume
+    colour_palette: ["deep indigo", "black", "gold embroidery", "natural fibre"]
+    avoid: ["modern western wear", "casual t-shirt"]
+    notes: "Gawai/Kaamatan — traditional Borneo male festive costume"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Plain cotton t-shirt or casual polo, cargo shorts or jeans, practical
+      sandals or sneakers
+    colour_palette: ["earth brown", "olive green", "navy", "grey"]
+    avoid: ["formal attire", "traditional for casual context"]
+    notes: "Everyday casual — practical outdoor-ready"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Smart casual button-down or fitted polo, slim trousers, practical shoes
+    colour_palette: ["navy", "white", "grey"]
+    avoid: ["casual t-shirt", "traditional costume for office"]
+    notes: "Office professional"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose cotton t-shirt, track pants or shorts — relaxed home wear
+    colour_palette: ["white", "grey", "light blue"]
+    avoid: ["formal attire"]
+    notes: "Home relaxed"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Outdoor streetwear: utility jacket or hoodie, cargo pants, boots or chunky
+      sneakers — rugged Gen-Z outdoor aesthetic
+    colour_palette: ["olive", "earth brown", "black", "rust"]
+    avoid: ["formal wear", "traditional costume for casual content"]
+    notes: "TikTok — outdoor adventurer streetwear"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Plain solid t-shirt, dark trousers — clean product-forward look
+    colour_palette: ["white", "grey", "navy"]
+    avoid: ["print", "heavy accessories"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "hari_merdeka"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Smart casual with Malaysian flag colours or traditional batik shirt with
+      patriotic pin
+    colour_palette: ["red", "white", "navy", "yellow"]
+    avoid: ["non-patriotic palette"]
+    notes: "Merdeka — patriotic Borneo male"
+
+  - avatar_id: "BORNEO_MALE_YOUNG_01"
+    ethnicity: "Borneo"
+    gender: "Male"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic vest or performance t-shirt, training shorts, functional sneakers
+    colour_palette: ["black", "olive", "grey"]
+    avoid: ["formal wear", "jeans"]
+    notes: "Gym — functional athletic"
+
+  # ── INDONESIA FEMALE ──────────────────────────────────
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Baju kurung or gamis syari in soft earth or warm pastel (dusty rose, sage green,
+      warm cream), matching hijab shawl in matching fabric, subtle gold accessories —
+      Indonesian modest festive Raya look, slightly more flowing silhouette than Malaysian
+    colour_palette: ["dusty rose", "sage green", "warm cream", "gold"]
+    avoid: ["bright neon", "non-modest cut", "casual t-shirt"]
+    notes: "Indonesian Raya — flowing modest festive, Javanese aesthetic"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Loose modest cotton blouse or long top over wide-leg trousers, casual hijab
+      in neutral tone, simple sandals or sneakers — Indonesian everyday modest casual
+    colour_palette: ["neutral earth", "cream", "dusty teal", "warm grey"]
+    avoid: ["non-modest cut", "traditional formal for casual"]
+    notes: "Indonesian casual modest — practical flowing everyday wear"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Formal batik blouse with modest trousers or skirt, structured hijab in
+      corporate tone, minimal accessories — Indonesian professional look
+    colour_palette: ["batik print", "navy", "cream", "warm grey"]
+    avoid: ["casual loose top", "loud print for office"]
+    notes: "Indonesian office — batik-influenced professional modest"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose cotton daster (house dress) or simple kaftan, casual indoor hijab or
+      bare hair — relaxed Indonesian home wear
+    colour_palette: ["floral soft", "cream", "light blue"]
+    avoid: ["formal attire"]
+    notes: "Home relaxed — Indonesian daster/kaftan"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modest streetwear: pastel oversized outer layer with inner layer coverage,
+      chunky sneakers, trendy hijab with modern pin style — Indonesian modest Gen-Z
+    colour_palette: ["pastel", "earth neutral", "pop colour"]
+    avoid: ["traditional formal", "non-modest cut"]
+    notes: "TikTok modest Indonesian — modern hijabi fashion"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean modest blouse in solid light colour, neat hijab, minimal accessories
+    colour_palette: ["white", "cream", "light teal"]
+    avoid: ["busy pattern", "heavy accessories"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal kebaya with batik skirt or gamis formal in rich jewel tone, matching
+      shawl hijab, gold jewellery — Indonesian wedding guest modest formal
+    colour_palette: ["deep teal", "burgundy", "purple", "gold"]
+    avoid: ["white", "casual wear"]
+    notes: "Wedding guest — Indonesian formal modest"
+
+  - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Female"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Sports hijab, long-sleeve athletic inner, modest sports trousers, sneakers
+    colour_palette: ["black", "navy", "grey", "pop accent"]
+    avoid: ["non-athletic fabric"]
+    notes: "Gym — modest Indonesian active wear"
+
+  # ── INDONESIA MALE ────────────────────────────────────
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Baju Koko (long-sleeved collarless kurta top) in white or light neutral,
+      slim trousers, peci (Muslim cap) — traditional Indonesian Muslim male Raya wear
+    colour_palette: ["white", "cream", "light grey", "muted colour"]
+    avoid: ["baju Melayu Malaysian style", "casual t-shirt"]
+    notes: "Indonesian Raya — baju koko is distinctly Indonesian male festive"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Simple cotton t-shirt or kemeja in neutral colour, jeans or chinos,
+      casual sandals or sneakers — everyday Indonesian male casual
+    colour_palette: ["white", "grey", "earth brown", "navy"]
+    avoid: ["formal attire", "traditional for casual"]
+    notes: "Indonesian everyday casual"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Batik shirt in corporate pattern, slim trousers, leather shoes —
+      Indonesian professional batik office style
+    colour_palette: ["batik print", "dark base", "cream"]
+    avoid: ["casual t-shirt", "traditional peci for office"]
+    notes: "Indonesian office — batik kemeja professional"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose cotton t-shirt, sarung or track pants, simple sandals
+    colour_palette: ["white", "grey", "light blue plaid sarung"]
+    avoid: ["formal attire"]
+    notes: "Home relaxed — Indonesian sarung casual"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Oversized t-shirt or hoodie, baggy jeans, sneakers — Gen-Z Indonesian
+      youth aesthetic
+    colour_palette: ["earth neutral", "black", "cream", "pop accent"]
+    avoid: ["formal traditional for casual"]
+    notes: "TikTok trendy — Indonesian Gen-Z"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Plain t-shirt, dark slim trousers — product-forward clean
+    colour_palette: ["white", "grey", "navy"]
+    avoid: ["loud print", "accessories"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Batik shirt or formal baju koko with formal trousers, leather shoes
+    colour_palette: ["batik", "navy", "dark grey"]
+    avoid: ["casual t-shirt", "sneakers"]
+    notes: "Wedding guest — Indonesian formal"
+
+  - avatar_id: "INDONESIA_MALE_YOUNG_01"
+    ethnicity: "Indonesian"
+    gender: "Male"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic t-shirt, training shorts, sneakers
+    colour_palette: ["black", "white", "grey"]
+    avoid: ["formal wear", "jeans"]
+    notes: "Gym — functional athletic"
+
+  # ── BANGLADESH FEMALE ─────────────────────────────────
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modest salwar kameez or simple kurta with dupatta, comfortable coverage,
+      casual sandals — practical modest Bangladeshi casual
+    colour_palette: ["warm earth", "dusty rose", "teal", "cream"]
+    avoid: ["non-modest cut", "formal traditional for casual"]
+    notes: "Bangladeshi everyday modest casual"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Long festive salwar kameez or abaya-style dress in rich jewel tone (deep teal,
+      emerald, rose gold), matching hijab neatly draped, simple gold jewellery
+    colour_palette: ["deep teal", "emerald", "rose gold", "navy"]
+    avoid: ["casual wear", "non-festive muted tones"]
+    notes: "Eid festive — Bangladeshi Muslim female"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Formal kurta over slim trousers or modest western blouse with trousers,
+      structured hijab in corporate tone, minimal accessories
+    colour_palette: ["navy", "grey", "black", "cream"]
+    avoid: ["casual salwar", "heavy jewellery"]
+    notes: "Office — modest professional Bangladeshi"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose comfortable salwar or cotton house dress, casual hijab or bare hair,
+      simple sandals
+    colour_palette: ["soft floral", "cream", "light grey"]
+    avoid: ["formal attire"]
+    notes: "Home relaxed — comfortable"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Modest modern streetwear: long outer layer or modest maxi dress with hijab,
+      chunky sneakers, dainty accessories — modern modest Gen-Z
+    colour_palette: ["earth neutral", "deep colour", "pop accent"]
+    avoid: ["non-modest cut", "traditional heavy attire for casual"]
+    notes: "TikTok trendy modest — modern Bangladeshi Gen-Z"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Clean modest blouse, neat hijab, minimal accessories — product-forward
+    colour_palette: ["white", "cream", "soft blue"]
+    avoid: ["busy pattern", "heavy accessories"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal salwar kameez or anarkali in rich jewel tone, matching hijab,
+      gold jewellery — Bangladeshi wedding guest
+    colour_palette: ["deep purple", "teal", "maroon", "gold"]
+    avoid: ["white", "casual wear"]
+    notes: "Wedding guest — Bangladeshi formal"
+
+  - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Female"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Sports hijab, long-sleeve athletic coverage, modest sports trousers, sneakers
+    colour_palette: ["black", "navy", "grey"]
+    avoid: ["non-athletic fabric", "traditional wear"]
+    notes: "Gym — modest Bangladeshi active"
+
+  # ── BANGLADESH MALE ───────────────────────────────────
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "casual_everyday"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Simple cotton t-shirt or polo, slim jeans or trousers, simple sandals
+      or sneakers — practical everyday Bangladeshi casual
+    colour_palette: ["white", "navy", "grey", "earth brown"]
+    avoid: ["formal attire", "traditional for casual context"]
+    notes: "Everyday casual — practical Bangladeshi male"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "hari_raya_aidilfitri"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Panjabi (long tunic kurta) in white or light colour with slim trousers,
+      taqiyah (Muslim cap), simple sandals — traditional Bangladeshi Muslim Eid male
+    colour_palette: ["white", "cream", "soft blue", "light colour"]
+    avoid: ["casual t-shirt", "western casual"]
+    notes: "Eid — traditional panjabi Bangladeshi male"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "workplace_office"
+    scene_context: "workplace_office"
+    outfit_descriptor: >
+      Formal button-down or slim kurta with trousers, leather shoes — professional
+    colour_palette: ["white", "navy", "charcoal"]
+    avoid: ["casual t-shirt", "traditional panjabi for office"]
+    notes: "Office — professional corporate"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "home_indoor"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Loose cotton lungi and t-shirt — traditional relaxed Bangladeshi home wear
+    colour_palette: ["white", "plaid lungi", "grey t-shirt"]
+    avoid: ["formal attire"]
+    notes: "Home relaxed — lungi home wear"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "tiktok_trendy"
+    scene_context: "outdoor_street"
+    outfit_descriptor: >
+      Oversized hoodie or minimal tee, joggers or baggy jeans, sneakers — Gen-Z casual
+    colour_palette: ["black", "earth neutral", "cream", "grey"]
+    avoid: ["formal traditional", "overdressed"]
+    notes: "TikTok trendy — Bangladeshi Gen-Z youth"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "shopee_lazada_clean"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Plain t-shirt or polo, dark trousers — product-forward clean
+    colour_palette: ["white", "grey", "navy"]
+    avoid: ["heavy accessories", "print"]
+    notes: "E-commerce clean"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "majlis_kahwin_guest"
+    scene_context: "home_indoor"
+    outfit_descriptor: >
+      Formal panjabi or kurta in jewel tone with slim trousers, leather shoes
+    colour_palette: ["navy", "maroon", "deep green"]
+    avoid: ["all-white", "casual wear"]
+    notes: "Wedding guest — Bangladeshi formal"
+
+  - avatar_id: "BANGLADESH_MALE_YOUNG_01"
+    ethnicity: "Bangladeshi"
+    gender: "Male"
+    occasion: "gym_active"
+    scene_context: "gym_active"
+    outfit_descriptor: >
+      Athletic vest or t-shirt, training shorts, sneakers
+    colour_palette: ["black", "white", "grey"]
+    avoid: ["formal wear", "jeans"]
+    notes: "Gym — functional athletic"

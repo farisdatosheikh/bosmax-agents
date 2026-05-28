@@ -270,4 +270,59 @@ Physical reference keywords anchor AI to correct scale.
 
 ---
 
+### Session 006 — 2026-05-29
+**Status:** AVATAR REGISTRY + WARDROBE RULE ENGINE + SHOT LIBRARY — SEEDED
+**Active Mode:** null
+**Milestone:** Biometric archetype registry, wardrobe rule engine, and shot library deployed. BOSMAX now supports multi-ethnicity SEA archetype lookup at runtime.
+
+**Components created:**
+
+| Component | Path | Count | Status |
+|-----------|------|-------|--------|
+| Avatar Schema | `avatars/_SCHEMA.yaml` | 1 | ✅ CREATED |
+| Malay Female Archetype | `avatars/MALAY_FEMALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Malay Male Archetype | `avatars/MALAY_MALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Chinese Female Archetype | `avatars/CHINESE_FEMALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Chinese Male Archetype | `avatars/CHINESE_MALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Indian Female Archetype | `avatars/INDIAN_FEMALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Indian Male Archetype | `avatars/INDIAN_MALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Borneo Female Archetype | `avatars/BORNEO_FEMALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Borneo Male Archetype | `avatars/BORNEO_MALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Indonesia Female Archetype | `avatars/INDONESIA_FEMALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Indonesia Male Archetype | `avatars/INDONESIA_MALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Bangladesh Female Archetype | `avatars/BANGLADESH_FEMALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Bangladesh Male Archetype | `avatars/BANGLADESH_MALE_YOUNG_01.yaml` | 1 | ✅ CREATED |
+| Wardrobe Rule Engine | `wardrobes/WARDROBE_RULES.yaml` | ~104 rules | ✅ CREATED |
+| Shot Library | `shots/SHOT_LIBRARY.yaml` | 13 shot codes | ✅ CREATED |
+
+**Avatar archetypes seeded:** 12 (6 ethnicities × 2 genders)
+**Wardrobe rules count:** ~104 (12 archetypes × 8+ occasions each)
+**Shot codes count:** 13 (ECU, CU, MCU, MS, MLS, WS, OTS, POV, TOP_DOWN, MACRO, DUTCH, LOW_ANGLE, HIGH_ANGLE)
+
+**Skill files patched:**
+- `bosmax-subject-dna.md` — ETHNICITY ARCHETYPE REGISTRY LOOKUP section added (v11.2)
+- `bosmax-scene-engine.md` — SHOT LIBRARY LOOKUP section added (v11.2)
+
+**Architecture note:**
+Ethnicity archetypes (MALAY_FEMALE_YOUNG_01, etc.) are SEPARATE from named campaign
+avatars (NORA, SARA, RIZAL, etc.). Named avatars continue to work as before.
+Archetypes are runtime-loaded from `avatars/[ID].yaml` with wardrobe resolved
+from `wardrobes/WARDROBE_RULES.yaml` via (avatar_id, occasion, scene_context) key.
+
+**Occasions covered in wardrobe rules:**
+hari_raya_aidilfitri, hari_raya_aidiladha, chinese_new_year, deepavali,
+gawai_kaamatan, hari_merdeka, malaysia_day, majlis_kahwin_guest, casual_everyday,
+workplace_office, workplace_retail, outdoor_street, home_indoor, gym_active,
+tiktok_trendy, shopee_lazada_clean
+
+**Hijab policy enforced:**
+- Malay Female: true (hijab default for commercial)
+- Chinese Female: false
+- Indian Female: false
+- Borneo Female: false
+- Indonesia Female: true
+- Bangladesh Female: true
+
+---
+
 *BOSMAX v11.2 | Log updated: 2026-05-29*

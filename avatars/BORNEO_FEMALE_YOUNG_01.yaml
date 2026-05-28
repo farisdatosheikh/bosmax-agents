@@ -1,0 +1,52 @@
+# BOSMAX AVATAR REGISTRY — BORNEO_FEMALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Borneo Female, Young Adult (Dayak/Kadazan/Iban features)
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "BORNEO_FEMALE_YOUNG_01"
+ethnicity: "Borneo"
+gender: "Female"
+age_range: "20-28"
+persona_name: "Evelyn"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium brown with golden undertone, NC33 equivalent, light natural tan quality, smooth even finish"
+face_shape: "round-to-broad oval, wide forehead, fuller cheekbones, gently rounded jaw, soft broad chin"
+eye_shape: "round-to-almond, bright alert dark brown iris, natural double eyelid or deep single fold, slightly upturned outer corner"
+nose: "wider medium bridge, flat-to-moderate bridge height, broad rounded tip, wide nostril base — distinct Borneo feature"
+lips: "medium-full lips, defined natural bow, warm pink-brown pigmentation, slightly wide mouth width"
+hair_texture: "thick straight to coarse, dense strand density, deep black with slight reddish tint in sunlight"
+hair_length: "mid-back"
+hair_style_default: "loose straight open or side-braided — natural volume and slight thickness"
+build: "medium proportionate, 155-162cm frame, moderate curves, broad shoulder relative to waist"
+distinguishing_features:
+  - "wide bright eyes with distinctive Borneo orbital structure"
+  - "broad forehead as primary facial proportion anchor"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "energetic"
+  - "cheerful"
+  - "nature-connected"
+  - "culturally proud"
+  - "genuine"
+speaks_language:
+  - "BM"
+  - "English"
+  - "Kadazan/Iban dialect (contextual)"
+content_style: "lifestyle, outdoor/nature product, traditional craft, food, regional cultural content"
+
+# WARDROBE BASE
+default_wardrobe: "casual everyday — cotton blouse or baju kurung, comfortable bottoms, natural material accessories"
+hijab_wearing: false
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Borneo archetype representing Kadazan-Dusun/Iban/Dayak features from Sabah/Sarawak.
+  Distinct from Peninsular Malay — wider facial structure, brighter eyes, broader nose bridge.
+  Non-Muslim default. No hijab. For festive content (Gawai/Kaamatan), traditional attire
+  resolved via WARDROBE_RULES.yaml. Wardrobe resolved at runtime.

@@ -1,0 +1,50 @@
+# BOSMAX AVATAR REGISTRY — INDIAN_MALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Indian Male, Young Adult
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "INDIAN_MALE_YOUNG_01"
+ethnicity: "Indian"
+gender: "Male"
+age_range: "22-30"
+persona_name: "Arjun"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium-deep, NC43 equivalent, warm reddish-brown undertone, slight natural oil sheen on forehead and nose"
+face_shape: "square-oval, strong defined jawline, angular cheekbone structure, medium-wide forehead"
+eye_shape: "large double eyelid, deep dark brown-black iris, prominent heavy brow arch, defined thick brow"
+nose: "medium-prominent bridge with slight downward curve, defined firm tip, medium-wide nostril"
+lips: "medium-full lips, defined bow, deep warm-berry natural pigmentation"
+hair_texture: "thick slightly wavy to straight, dense strand, deep black"
+hair_length: "short-medium, 3-5cm on top"
+hair_style_default: "neat side-part crop or textured quiff with taper fade"
+build: "athletic medium build, 170-178cm frame, broad shoulders, V-taper torso"
+distinguishing_features:
+  - "strong defined jawline — primary structural anchor"
+  - "heavy prominent brow arch giving focused authoritative expression"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "confident"
+  - "athletic"
+  - "trustworthy"
+  - "ambitious"
+  - "culturally grounded"
+speaks_language:
+  - "Tamil"
+  - "English"
+  - "BM"
+content_style: "fitness, grooming, lifestyle, tech, professional product demo"
+
+# WARDROBE BASE
+default_wardrobe: "smart casual — fitted polo or button-down, slim chinos or trousers, clean leather sneakers"
+hijab_wearing: null
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Malaysian Indian Tamil male archetype. Athletic build suits fitness/grooming categories.
+  Strong facial structure is primary consistency anchor. Wardrobe resolved at runtime.

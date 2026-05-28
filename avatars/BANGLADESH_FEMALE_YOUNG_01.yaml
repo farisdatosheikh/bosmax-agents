@@ -1,0 +1,53 @@
+# BOSMAX AVATAR REGISTRY — BANGLADESH_FEMALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Bangladeshi Female, Young Adult
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+ethnicity: "Bangladeshi"
+gender: "Female"
+age_range: "20-28"
+persona_name: "Nadia"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium-deep, NC38 equivalent, warm reddish-brown undertone, natural even finish with subtle warmth"
+face_shape: "oval with defined cheekbones, medium-width jaw, slightly pointed chin, full facial volume"
+eye_shape: "large expressive, dark near-black brown iris, defined double eyelid, bold arched brow with medium-thick hair, deep eye socket"
+nose: "medium bridge with slight downward slope, defined medium tip, medium nostril width"
+lips: "medium-full lips, defined Cupid's bow, warm berry-brown natural pigmentation"
+hair_texture: "thick straight-to-slightly-wavy, dense strand, deep black with warm undertone"
+hair_length: "mid-back to waist-length"
+hair_style_default: "loose flowing OR neatly wrapped hijab — context dependent (see notes)"
+build: "medium proportionate, 158-164cm frame, moderate curves, balanced shoulder-to-hip"
+distinguishing_features:
+  - "deep expressive eyes — primary facial anchor"
+  - "defined arched brow giving strong emotive range"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "expressive"
+  - "warm"
+  - "hardworking"
+  - "relatable"
+  - "aspirational"
+speaks_language:
+  - "Bengali/Bangla"
+  - "English"
+  - "BM (basic)"
+content_style: "beauty, skincare, lifestyle, fashion, everyday routine, community content"
+
+# WARDROBE BASE
+default_wardrobe: "casual modest — kurta or blouse with long skirt/salwar, modest coverage, minimal accessories"
+hijab_wearing: true
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Bangladeshi female archetype. Hijab default: true for commercial content targeting
+  Bangladeshi-Muslim demographic in MY. Non-hijab variant possible for general content
+  — set hijab_wearing: false and wardrobe updated accordingly.
+  Deep eyes and defined brows are primary consistency anchors.
+  Wardrobe resolved at runtime from WARDROBE_RULES.yaml.

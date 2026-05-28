@@ -1,0 +1,52 @@
+# BOSMAX AVATAR REGISTRY — INDONESIA_FEMALE_YOUNG_01
+# Version: v1.0 | Created: 2026-05-29
+# Archetype: Indonesian Female, Young Adult (Javanese baseline)
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+ethnicity: "Indonesian"
+gender: "Female"
+age_range: "20-27"
+persona_name: "Sari"
+
+# BIOMETRIC DNA
+skin_tone: "warm medium brown, NC30-NC33 equivalent, Javanese warm-golden undertone, smooth natural finish with subtle warmth"
+face_shape: "soft oval, gently tapering jawline, smooth rounded chin, slightly fuller cheeks — softer than Peninsular Malay"
+eye_shape: "almond-to-round, warm dark brown iris, natural single or light double eyelid, softer eye opening than Malay, defined gentle brow"
+nose: "soft medium nose, low-moderate bridge, gently rounded tip, medium nostril width"
+lips: "medium-full lips, warm pink-brown natural pigmentation, softly defined bow"
+hair_texture: "straight fine-to-medium, smooth low-frizz, deep black"
+hair_length: "shoulder to mid-back"
+hair_style_default: "loose straight with gentle natural wave, or neat hijab style with soft fabric drape"
+build: "slim-medium proportionate, 155-163cm, gentle curves, balanced frame"
+distinguishing_features:
+  - "softer rounder facial geometry compared to Malay — fuller cheeks"
+  - "warm-toned skin that leans golden in direct light"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "warm"
+  - "gentle"
+  - "relatable"
+  - "expressive"
+  - "hardworking"
+speaks_language:
+  - "Bahasa Indonesia"
+  - "BM (similar)"
+  - "English"
+content_style: "beauty, skincare, hijab fashion, lifestyle, product review, everyday routine"
+
+# WARDROBE BASE
+default_wardrobe: "casual everyday — light cotton blouse, long skirt or trousers, modest coverage, soft accessories"
+hijab_wearing: true
+
+# METADATA
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Indonesian Javanese female archetype. Slight distinctions from Malay: softer rounder
+  facial geometry, fuller cheeks, warmer golden skin cast. Hijab default true.
+  Language: Bahasa Indonesia (near-identical to BM). Suitable for cross-market
+  MY+ID content. Wardrobe resolved at runtime from WARDROBE_RULES.yaml.
