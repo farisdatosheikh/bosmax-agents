@@ -388,50 +388,133 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 
 ☐ biometric_drift_threshold ≤ 0.05 untuk sets yang guna avatar sama
 
-### BULK QUALITY CONSISTENCY CHECKS (v11.2 Fix E)
-*Semua mesti PASS. Satu FAIL = ABORT.*
+### BULK QUALITY CONSISTENCY CHECKS (v11.2 Fix E+F)
+*Auto-heal dulu. ABORT hanya jika auto-heal gagal atau tidak mungkin.*
 
 ☐ ELEMENT COUNT CONSISTENCY:
   — Kira elemen dalam Set 1 (GOLD STANDARD) untuk setiap section
   — Semak SETIAP set: elemen count MESTI ≥ Set 1 count
-  — ABORT jika mana-mana set ada elemen lebih sedikit dari Set 1
-  — Ini adalah quality degradation check — AI dilarang ambil jalan ringkas
+  — AUTO-HEAL jika elemen count < Set 1: expand set tersebut ikut SET ELEMENT MANIFEST
+  — Log: [AUTO-HEAL SET N S[x]: expanded from [x] to [x] elements]
 
 ☐ CONDITION 1 DIALOG LOCK (jika variation_condition = 1):
   — Semak S6 dalam SETIAP set: IDENTICAL dengan S6 Set 1 (verbatim)
-  — ABORT jika ada satu set dengan S6 yang berbeza dari Set 1
-  — WPS values boleh berbeza (kerana duration/formula mungkin adjust) — dialog text TIDAK
+  — AUTO-HEAL jika S6 berbeza: replace dengan S6 dari Set 1 verbatim
+  — Log: [AUTO-HEAL SET N S6: dialog replaced with Set 1 locked dialog]
 
 ☐ CONDITION 2 DIALOG + AVATAR LOCK (jika variation_condition = 2):
   — Semak S6 dalam SETIAP set: IDENTICAL dengan S6 Set 1 (verbatim)
   — Semak S1 biometric descriptor: IDENTICAL dengan Set 1 (zero drift)
-  — biometric_drift_threshold: 0.0 untuk Condition 2 (lebih strict)
-  — ABORT jika S1 ada sebarang attribute berbeza dari Set 1
+  — AUTO-HEAL jika S6 berbeza: replace dengan S6 Set 1 verbatim
+  — AUTO-HEAL jika S1 drift: replace dengan S1 Set 1 verbatim
+  — Log: [AUTO-HEAL SET N S1/S6: locked descriptor/dialog restored]
 
-☐ QUALITY GATE DECLARATIONS:
-  — Output mesti ada "QUALITY GATE SET 3: PASS/FAIL" selepas Set 3
-  — Output mesti ada "QUALITY GATE SET 6: PASS/FAIL" selepas Set 6 (jika N≥6)
-  — Output mesti ada "QUALITY GATE SET 9: PASS/FAIL" selepas Set 9 (jika N≥9)
-  — ABORT jika mana-mana QUALITY GATE declared FAIL tanpa regeneration confirmed
+☐ QUALITY GATE (Set 3/6/9):
+  — Semak element count setiap 3 sets
+  — AUTO-HEAL jika fail: regenerate set tersebut dengan full manifest sebelum proceed
+  — Log: [QUALITY GATE SET N: HEALED — set regenerated]
+
+---
+
+## AUTO-HEAL REGISTRY
+
+**Ini adalah senarai isu yang MESTI di-auto-heal. JANGAN ABORT untuk isu ini.**
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║ ISSUE                        │ AUTO-HEAL ACTION                     ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ Element count < Set 1        │ Expand set ikut SET ELEMENT MANIFEST ║
+║ Dialog drift (Cond 1/2)      │ Replace S6 dengan Set 1 S6 verbatim  ║
+║ Avatar drift (Cond 2)        │ Replace S1 dengan Set 1 S1 verbatim  ║
+║ WPS over limit (≤2.0 rule)   │ Trim dialogue, recalculate WPS       ║
+║ Raw internal token leaked    │ Replace dengan biometric descriptor  ║
+║ Character name in output     │ Replace dengan biometric DNA prose   ║
+║ S9 coordinate out of zone    │ Recalculate ke nearest valid coord   ║
+║ biometric drift > threshold  │ Re-anchor biometrics kepada Set 1    ║
+║ Greeting/restart in Block 2+ │ Remove greeting, sambung dari anchor ║
+║ Section count wrong (Mode B) │ Rebuild missing/extra section        ║
+╚══════════════════════════════════════════════════════════════════════╝
+```
+
+**AUTO-HEAL PROCESS:**
+```
+STEP 1 — Detect isu
+STEP 2 — Apply fix dari AUTO-HEAL REGISTRY (refer SOP dalam skill file)
+STEP 3 — Verify fix resolved isu
+STEP 4 — Log: [AUTO-HEAL: issue | set/section | fix applied | verified]
+STEP 5 — Continue — JANGAN stop, JANGAN report ke user mid-generation
+STEP 6 — Selepas semua N sets selesai: emit HEAL REPORT
+```
+
+**HEAL REPORT (emit di hujung output, sebelum VERIFICATION PASSED):**
+```
+╔══════════════════════════════════════════════════════╗
+║ AUTO-HEAL REPORT                                    ║
+╠══════════════════════════════════════════════════════╣
+║ Sets affected: [N sets yang ada isu]                ║
+║ Total issues healed: [N]                            ║
+║ Issues:                                             ║
+║  [SET N] [S6]: dialog replaced with Set 1 lock      ║
+║  [SET N] [S1]: biometric re-anchored to Set 1       ║
+║  [SET N] [S3]: WPS trimmed from 2.3 → 1.8          ║
+╠══════════════════════════════════════════════════════╣
+║ All healed. Output delivered.                       ║
+╚══════════════════════════════════════════════════════╝
+```
+
+---
+
+## HARD BLOCK — ABORT KEKAL (tiada auto-heal)
+
+**ABORT hanya untuk isu yang sistem TIDAK BOLEH resolve tanpa input user.**
+
+```
+MANDATORY USER INPUT MISSING:
+  → source_image_handoff null atau partial untuk Mode C / INGREDIENTS
+  → product_record missing untuk BULK
+  → engine_id tidak dalam ENGINE CONSTRAINT TABLE
+  → platform tidak declared
+  → variation_condition tidak declared
+  → content_mode tidak declared
+  → GROK block distribution tidak confirmed
+
+INVALID DECLARATION YANG SISTEM TAK BOLEH TEKA:
+  → Engine declared tidak dalam registry (ABORT — inform user)
+  → Duration invalid untuk engine declared (ABORT — inform user)
+  → GOOGLE_FLOW submode tidak declared (ABORT — tanya user)
+
+AUTO-HEAL GAGAL (selepas cuba fix, masalah kekal):
+  → Jika selepas auto-heal, isu masih ada → ABORT dengan exact reason
+  → Format: ABORT: [issue] | [heal attempted] | [heal failed because] | [user action required]
+```
 
 ---
 
 ## VERDICT PROTOCOL
 
-**SEMUA checks PASS:**
+**SEMUA checks PASS (tiada isu atau semua isu healed):**
 ```
+[HEAL REPORT — jika ada isu yang di-heal]
 VERIFICATION PASSED
 [clean approved asset blocks]
 ```
 
-**ADA check FAIL:**
+**HARD BLOCK — input wajib tiada:**
 ```
-ABORT: [exact rule breached] | [skill responsible] | [specific field/section/set number]
+ABORT: [exact missing input] | [what user must provide] | [exact field name]
+```
+
+**AUTO-HEAL GAGAL selepas attempt:**
+```
+ABORT: [issue] | [heal attempted: description] | [heal failed: reason] | [user action: exact instruction]
 ```
 
 **Peraturan mutlak:**
-- JANGAN show partial results
-- JANGAN soften ABORT kepada suggestion atau warning
-- JANGAN output creative content
-- JANGAN suggest fixes — report failure sahaja
-- Compliance Gate melaporkan. Orchestrator BOSMAX yang decide next action.
+- JANGAN ABORT untuk isu yang ada dalam AUTO-HEAL REGISTRY
+- JANGAN stop mid-generation untuk isu yang boleh difix
+- JANGAN report isu ke user sebelum cuba heal dulu
+- JANGAN output partial results tanpa heal attempt
+- JANGAN output creative content baru — heal bermaksud fix, bukan rewrite
+- Compliance Gate fix dan deliver. BOSMAX orchestrator only notified via HEAL REPORT.
+- ABORT hanya sebagai last resort — apabila missing mandatory input atau heal gagal.

@@ -1,0 +1,67 @@
+# BOSMAX PRODUCT REGISTRY — SCHEMA REFERENCE
+# Version: v1.0 | Date: 2026-05-29
+# Each product gets its own YAML file: {brand}_{product_code}.yaml
+# File naming: UPPERCASE, underscores, no spaces.
+
+# ─────────────────────────────────────────────
+# SCHEMA FIELDS (all fields, annotated)
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# IDENTIFIERS
+product_id: ""            # Internal BOSMAX ID. Format: BRAND_PRODUCTCODE (e.g. BOSMAX_SERUM)
+product_name: ""          # Full commercial name as listed on TikTok Shop
+brand: ""                 # Brand name
+shop_name: ""             # TikTok Shop store name
+tiktok_product_id: ""     # TikTok Shop product ID (from URL)
+fastmoss_product_name: "" # Exact name in Fastmoss for cross-reference lookup
+
+# CLASSIFICATION
+category: ""              # TikTok Shop main category
+sub_category: ""          # TikTok Shop sub category
+raw_category: ""          # Full path: e.g. "Beauty & Personal Care-Skincare-Serums"
+product_status: ""        # Available | Discontinued | Draft
+
+# MARKET DATA (from Fastmoss — auto-populated on lookup)
+avg_price_rm: null        # Average selling price in RM
+commission_rate: null     # Commission rate (decimal, e.g. 0.10 = 10%)
+total_orders: null        # Total orders (lifetime)
+total_units_sold: null    # Total units sold
+total_revenue_rm: null    # Total revenue in RM
+estimated_launch_date: "" # YYYY-MM-DD
+
+# VARIANTS — list, one entry per size/variant
+variants:
+  - variant_id: ""        # e.g. "5ML", "10ML", "STANDARD"
+    variant_name: ""      # Human-readable: e.g. "5ml Travel Size"
+    price_rm: null        # Selling price for this variant
+
+    # SCALE ANCHOR DESCRIPTOR — CRITICAL FOR VIDEO/IMAGE AI GENERATION
+    # Purpose: Prevents AI engines (GROK, Google Flow) from rendering product
+    # at wrong scale. TikTok penalises misleading product size representations.
+    # Write as physical reference comparison: "EXACTLY [known object] size, [how it fits in hand]"
+    scale_anchor_descriptor: ""
+
+    # Additional variant-specific prompt keywords
+    prompt_keywords: []   # List of keywords for this variant
+
+# COPYWRITING ANGLES (from Fastmoss Copywriting_Product_Map or manual)
+copywriting:
+  angle: ""               # Main copywriting angle / hook direction
+  hook: ""                # Opening hook sentence
+  usp_1: ""              # Unique selling point 1
+  usp_2: ""              # Unique selling point 2
+  usp_3: ""              # Unique selling point 3
+  body: ""               # Body copy direction
+  cta: ""                # Call to action
+
+# VISUAL IDENTITY (from Mode A DNA — populated after first image generation)
+subject_dna: null         # Populated by bosmax-subject-dna. Locked for Mode C.
+last_source_image_handoff: null  # Populated after Mode A. Locked for Mode C.
+
+# METADATA
+registered_by: ""         # Email of registrant
+registered_date: ""       # YYYY-MM-DD
+last_updated: ""          # YYYY-MM-DD
+notes: ""                 # Any additional notes

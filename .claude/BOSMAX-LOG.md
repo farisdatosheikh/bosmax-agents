@@ -34,7 +34,14 @@
 
 ## PRODUCT REGISTRY
 
-*[Kosong — belum ada produk didaftarkan]*
+⚠️ **PRODUCT REGISTRY TELAH DIPINDAH KE `products/` FOLDER (v11.2 Fix G)**
+
+Semua product records kini dalam structured YAML files:
+- `products/_SCHEMA.yaml` — schema reference
+- `products/BOSMAX_SERUM.yaml` — BOSMAX Serum (5ML + 10ML variants)
+
+Rujuk `bosmax-product-intelligence.md` untuk lookup protocol.
+**Jangan tambah product records dalam fail ini.**
 
 ---
 
@@ -174,6 +181,88 @@ Three user-defined variation conditions needed explicit protocol.
 **Files patched:**
 - `bosmax-bulk-generator.md` — VARIATION CONDITION PROTOCOL + new Steps 5-8
 - `bosmax-compliance-gate.md` — BULK QUALITY CONSISTENCY CHECKS section
+
+---
+
+### Session 004 (continued) — Fix F: AUTO-HEAL PROTOCOL
+**Status:** ABORT redesigned into two-tier system across all skill files
+**Milestone:** System no longer abandons work mid-generation for fixable issues.
+
+**Problem:** ABORT for fixable issues (dialog drift, element count, WPS, token leak) = system abandons work and returns incomplete output. User receives error instead of result.
+
+**Architecture change:**
+```
+BEFORE: All rule violations → ABORT → report to user → stop
+AFTER:
+  Fixable issues → AUTO-HEAL → fix silently → log → continue → deliver result
+  User input missing → HARD BLOCK → ABORT (still correct, cannot proceed)
+```
+
+**AUTO-HEAL REGISTRY (fixable without user):**
+- Element count drift → expand to manifest
+- Dialog drift (Cond 1/2) → copy from Set 1 verbatim
+- Avatar drift (Cond 2) → restore Set 1 biometrics
+- WPS over limit → trim dialogue
+- Raw token leaked → replace with descriptor
+- Character name leaked → replace with biometric DNA
+- S9 coordinate out of zone → recalculate
+- Visual noun in S6 → remove and rephrase
+- Section count wrong → rebuild
+- Multi-block anchor missing → extract and inject
+- Re-introduction phrase in Block 2+ → remove, re-anchor
+
+**HARD BLOCK stays as ABORT:**
+- Missing mandatory user input (source_image, product_record, engine, platform, variation_condition)
+- Engine/platform declared but invalid (system cannot guess intent)
+- Auto-heal attempted and failed
+
+**HEAL REPORT** emitted at end of output — transparent log of all auto-corrections made.
+
+**Files patched:**
+- `bosmax-compliance-gate.md` — AUTO-HEAL REGISTRY, two-tier VERDICT PROTOCOL, HARD BLOCK list
+- `bosmax-bulk-generator.md` — FAIL-CLOSED RULES split into HARD BLOCK vs AUTO-HEAL
+- `bosmax-script-generator.md` — FAIL-CLOSED RULES split into HARD BLOCK vs AUTO-HEAL
+
+---
+
+### Session 005 — 2026-05-29
+**Status:** Fix G — PRODUCT INTELLIGENCE LAYER
+**Milestone:** Product Librarian skill + structured YAML registry. System no longer asks user to re-explain own products.
+
+**Problem addressed:**
+User forced to explain product details on every request. No auto-lookup.
+Product scale misrepresentation risk on TikTok (AI engines render wrong size).
+Flat markdown product registry in BOSMAX-LOG.md — hard to maintain.
+
+**Architecture added:**
+```
+PRE-FLIGHT STEP 0 (NEW):
+  Request mentions product → bosmax-product-intelligence
+  Lookup: TIER 1 (products/*.yaml) → TIER 2 (Fastmoss xlsx) → TIER 3 (Ask user)
+  Returns: product_record + scale_anchor_descriptor
+  scale_anchor_descriptor injected into ALL content generation skills
+```
+
+**scale_anchor_descriptor — why:**
+Google Flow + GROK render products at arbitrary scale even with reference images.
+TikTok penalises misleading product size in commercial content.
+Physical reference keywords anchor AI to correct scale.
+
+| Variant | scale_anchor_descriptor |
+|---------|------------------------|
+| BOSMAX 5ML | "EXACTLY lip balm size, fit into fingers naturally" |
+| BOSMAX 10ML | "EXACTLY chapstick size, fit into fingers naturally" |
+
+**Files created:**
+- `bosmax-product-intelligence.md` — Product Librarian skill (Skill #9)
+- `products/_SCHEMA.yaml` — Full product YAML schema with all fields
+- `products/BOSMAX_SERUM.yaml` — BOSMAX Serum (5ML + 10ML variants)
+
+**Files patched:**
+- `CLAUDE.md` — STEP 0 added to PRE-FLIGHT, skill list updated to 9 skills, new fail-closed rules
+- `BOSMAX-LOG.md` — Product registry section replaced with pointer to products/ folder
+
+**Product registry count:** 1 product (BOSMAX_SERUM — 2 variants)
 
 ---
 

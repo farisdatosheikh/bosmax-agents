@@ -621,36 +621,39 @@ SECTION 9: Overlay
 
 ## FAIL-CLOSED RULES
 
-### Standard Rules
-- ABORT jika engine + duration pairing invalid
+### HARD BLOCK — ABORT (mandatory user input tiada)
+- ABORT jika engine + duration pairing invalid (sistem tak boleh teka intent user)
 - ABORT jika GROK dipilih dengan submode NANO BANANA
-- ABORT jika MAK_TOK atau HAJI_MAN dipilih dengan SAVAGE_HPAS
-- ABORT jika Section 6 ada visual noun selepas self-audit
-- ABORT jika Section 9 ada overlay tanpa COORD: X:%, Y:%
-- ABORT jika Section 9 COORD di luar X:4–96%, Y:0–80%
-- ABORT jika WPS exceed 2.0 (kill-switch: 3.0)
-- ABORT jika output kurang atau lebih dari 9 sections (KECUALI GOOGLE_FLOW — guna block architecture)
-- ABORT jika forbidden token ada dalam prose
-- ABORT jika character name ada dalam prose
 - ABORT jika GOOGLE_FLOW Frames/Ingredients/Image dipilih tanpa uploaded reference image
 - ABORT jika GOOGLE_FLOW F2V dipilih tanpa KEDUA-DUA start frame dan end frame
-- ABORT jika image_guidance_scale di luar range 0.75–0.85 (GOOGLE_FLOW sahaja)
 - ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
-- JANGAN mix STEALTH dan DIRECT dalam satu script
+- ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
+- JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
 - JANGAN hasilkan image prompts (kecuali sebagai bahagian GOOGLE_FLOW block)
 - JANGAN hasilkan product records
 
-### Multi-Block Rules (v11.2 — aktif apabila multi_block_mode = YES)
-- ABORT jika Block 2+ generate tanpa `visual_start_state` dari Block N-1 S8 confirmed
-- ABORT jika Block 2+ generate tanpa `dialogue_carry_over` dari Block N-1 S8 confirmed
-- ABORT jika Block 2+ S1 ada biometric drift dari Block N-1 (age/skin/wardrobe/headwear berubah)
-- ABORT jika Block 2+ S2 introduce scene element baru yang tidak ada dalam Block N-1
-- ABORT jika Block 2+ S6 ada re-introduction phrase ("Assalamualaikum", "Hai semua", "Macam tadi")
-- ABORT jika Block 2+ S6 dialogue tidak menyambung dari `dialogue_carry_over`
-- ABORT jika S8 dalam mana-mana multi-block script tidak declare "BLOCK [N] OF [TOTAL]"
-- ABORT jika S8 dalam mana-mana block (kecuali final) tidak declare "VISUAL END STATE:"
-- ABORT jika S8 dalam mana-mana block (kecuali final) tidak declare "LAST SPOKEN WORDS:"
-- JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
-- JANGAN restart story dalam Block 2+ — mesti sambung cerita yang sama
-- ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
-- Jika GROK blocks ada mixed duration: recalculate block math (I value) untuk setiap block berasingan
+### AUTO-HEAL — Fix dan teruskan (jangan ABORT)
+- Section 6 ada visual noun → remove noun, rephrase dialogue, log, teruskan
+- Section 9 ada overlay tanpa COORD → infer dari safe zone centre, declare, log, teruskan
+- Section 9 COORD di luar safe zone → recalculate ke nearest valid coord, log, teruskan
+- WPS exceed 2.0 (bukan kill-switch) → trim dialogue, recalculate, log, teruskan
+- WPS exceed 3.0 (kill-switch) → rebuild Section 6 ikut target WPS, log, teruskan
+- Section count ≠ 9 (bukan GOOGLE_FLOW) → rebuild missing/remove extra, log, teruskan
+- Forbidden token dalam prose → replace dengan descriptor, log, teruskan
+- Character name dalam prose → replace dengan biometric DNA, log, teruskan
+- image_guidance_scale di luar 0.75–0.85 (GOOGLE_FLOW) → adjust ke 0.80, log, teruskan
+- MAK_TOK + SAVAGE_HPAS conflict → swap formula ke HSO atau PAS, log, teruskan
+- STEALTH/DIRECT mix dalam satu script → enforce dominant silo, rephrase, log, teruskan
+
+### Multi-Block Auto-Heal (v11.2 — aktif apabila multi_block_mode = YES)
+- Block 2+ S1 biometric drift → re-anchor ke Block 1 S1 biometrics verbatim, log, teruskan
+- Block 2+ S2 introduce scene element baru → remove element, revert, log, teruskan
+- Block 2+ S6 ada re-introduction phrase → remove phrase, sambung dari carry-over, log, teruskan
+- Block 2+ S6 tidak menyambung dari carry-over → prepend carry-over anchor, log, teruskan
+- S8 tiada "BLOCK [N] OF [TOTAL]" declaration → inject declaration, log, teruskan
+- S8 tiada "VISUAL END STATE:" (bukan final block) → extract dan declare dari S4, log, teruskan
+- S8 tiada "LAST SPOKEN WORDS:" (bukan final block) → extract last line dari S6, log, teruskan
+- Block 2+ generate tanpa visual_start_state → extract dari Block N-1 S8, inject, log, teruskan
+- Block 2+ generate tanpa dialogue_carry_over → extract dari Block N-1 S8, inject, log, teruskan
+- GROK blocks mixed duration → recalculate block math (I value) per block berasingan, log, teruskan
+- JANGAN restart story dalam Block 2+ — mesti sambung — auto-heal: remove restart, sambung semula

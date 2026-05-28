@@ -510,36 +510,38 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 
 ## FAIL-CLOSED RULES
 
+### HARD BLOCK — ABORT (mandatory user input tiada, sistem tidak boleh teka)
 - ABORT jika variation_condition tidak declared sebelum Variant Plan dibina
-- ABORT jika Condition 1 atau 2 dan S6 dialogue tidak identical dengan Set 1 dalam mana-mana set
-- ABORT jika Condition 2 dan S1 biometric descriptor berbeza dari Set 1 dalam mana-mana set
-- ABORT jika mana-mana set ada elemen count lebih rendah dari Set 1 (quality degradation)
-- ABORT jika QUALITY GATE (Set 3/6/9) gagal dan set tidak di-regenerate sebelum proceed
-- ABORT jika SET ELEMENT MANIFEST tidak diextract selepas Set 1
-- ABORT jika content_mode tidak declared dan skill teka
+- ABORT jika content_mode tidak declared
 - ABORT jika product_record missing product_name, category, usp_1, hook, atau cta
-- ABORT jika engine_id + duration_target pairing invalid — semak ENGINE & DURATION REGISTRY
-- ABORT jika engine_id tidak dalam ENGINE & DURATION REGISTRY (termasuk NANO_BANANA_PRO atau IMAGEN_3 sebagai video engine)
+- ABORT jika engine_id tidak dalam ENGINE & DURATION REGISTRY
+- ABORT jika engine_id + duration_target pairing invalid
 - ABORT jika GROK + NANO BANANA submode detected
 - ABORT jika GOOGLE_FLOW dipilih tanpa google_flow_submode confirmed
 - ABORT jika GOOGLE_FLOW FRAMES/INGREDIENTS/IMAGE tanpa source_image_handoff
-- ABORT jika GOOGLE_FLOW set tiada `[IMAGE_REF_ANCHOR]` block (kecuali T2V)
-- ABORT jika GOOGLE_FLOW set tiada `image_guidance_scale` dalam range 0.75–0.85
-- ABORT jika GOOGLE_FLOW set tiada pre-render test declaration
-- ABORT jika VEO_3_1_LITE duration bukan 8s — satu-satunya valid duration per block
 - ABORT jika INGREDIENTS mode run dengan null/partial source_image_handoff
-- ABORT jika INGREDIENTS mode introduce prop, object, character, background, atau lighting baru
-- ABORT jika IMAGE mode Layer 1 produk floating atau disconnected — rebuild layer
 - ABORT jika Variant Plan belum approved sebelum set pertama generated
-- ABORT jika mana-mana video set ada ≠ 9 sections atau wrong section titles
-- ABORT jika Section 6 dalam mana-mana set ada visual noun
-- ABORT jika WPS exceed 2.0 dalam mana-mana segment (kill-switch: 3.0)
-- ABORT jika Section 9 overlay missing COORD: X:%, Y:% dalam mana-mana set
-- ABORT jika Section 9 coordinate di luar X:4–96%, Y:0–80%
-- ABORT jika IMAGE set missing mana-mana dari 3 layers
-- ABORT jika JSON Metadata Handoff missing mana-mana dari 5 required keys
-- ABORT jika biometric_drift_threshold > 0.05 untuk sets dengan avatar sama
-- ABORT jika duplicate hook types dalam >3 consecutive sets
-- ABORT jika raw internal token dalam mana-mana set output
-- ABORT jika character name dalam mana-mana set output
 - Jika N > 50: split kepada batches, inform user — jangan exceed 50 per run
+
+### AUTO-HEAL (jangan ABORT — fix dan teruskan)
+- S6 dialogue drift (Cond 1/2) → replace dengan Set 1 S6 verbatim, log, teruskan
+- S1 biometric drift (Cond 2) → replace dengan Set 1 S1 verbatim, log, teruskan
+- Element count < Set 1 → expand set ikut SET ELEMENT MANIFEST, log, teruskan
+- Quality gate fail (Set 3/6/9) → regenerate set yang gagal, log, teruskan
+- WPS exceed 2.0 → trim dialogue, recalculate, log, teruskan
+- Raw internal token dalam output → replace dengan descriptor, log, teruskan
+- Character name dalam output → replace dengan biometric DNA prose, log, teruskan
+- S9 coordinate out of safe zone → recalculate ke nearest valid coord, log, teruskan
+- biometric drift > 0.05 → re-anchor kepada Set 1 biometrics, log, teruskan
+- GOOGLE_FLOW set tiada [IMAGE_REF_ANCHOR] (bukan T2V) → inject block, log, teruskan
+- GOOGLE_FLOW set tiada image_guidance_scale → inject default 0.80, log, teruskan
+- GOOGLE_FLOW set tiada pre-render test → inject declaration, log, teruskan
+- Section count ≠ 9 → rebuild missing section atau remove extra, log, teruskan
+- Section 6 ada visual noun → remove visual noun, rephrase, log, teruskan
+- Section 9 missing COORD → infer dari safe zone centre, declare, log, teruskan
+- IMAGE mode Layer 1 produk floating → rebuild Layer 1 dengan anchor, log, teruskan
+- duplicate hook types dalam >3 consecutive sets → swap hook type, log, teruskan
+- INGREDIENTS mode introduce new element → remove element, revert, log, teruskan
+
+**Selepas semua sets selesai: emit HEAL REPORT (jika ada isu yang di-heal).**
+**Format: lihat AUTO-HEAL REGISTRY dalam bosmax-compliance-gate.md.**

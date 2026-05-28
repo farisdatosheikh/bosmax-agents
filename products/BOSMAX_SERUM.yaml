@@ -1,0 +1,82 @@
+# BOSMAX PRODUCT REGISTRY — BOSMAX_SERUM
+# Version: v1.0 | Registered: 2026-05-29
+# Product: BOSMAX Serum (Lip/Skin Care)
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# IDENTIFIERS
+product_id: "BOSMAX_SERUM"
+product_name: "BOSMAX Serum"
+brand: "BOSMAX"
+shop_name: ""             # TODO: fill in TikTok Shop store name
+tiktok_product_id: ""     # TODO: fill in after listing
+fastmoss_product_name: "" # TODO: fill in exact Fastmoss product name when listed
+
+# CLASSIFICATION
+category: "Beauty & Personal Care"
+sub_category: "Skincare"
+raw_category: "Beauty & Personal Care-Skincare"
+product_status: "Available"
+
+# MARKET DATA — to be auto-populated by bosmax-product-intelligence on Fastmoss lookup
+avg_price_rm: null
+commission_rate: null
+total_orders: null
+total_units_sold: null
+total_revenue_rm: null
+estimated_launch_date: ""
+
+# VARIANTS
+variants:
+  - variant_id: "5ML"
+    variant_name: "5ml Travel Size"
+    price_rm: null        # TODO: fill in actual price
+
+    # SCALE ANCHOR DESCRIPTOR
+    # Source: User-defined (2026-05-29) — prevents TikTok scale misrepresentation penalty
+    scale_anchor_descriptor: "EXACTLY lip balm size, fit into fingers naturally"
+
+    prompt_keywords:
+      - "lip balm sized bottle"
+      - "fits between two fingers"
+      - "compact travel size"
+      - "small enough to rest on a fingertip"
+
+  - variant_id: "10ML"
+    variant_name: "10ml Standard Size"
+    price_rm: null        # TODO: fill in actual price
+
+    # SCALE ANCHOR DESCRIPTOR
+    # Source: User-defined (2026-05-29) — prevents TikTok scale misrepresentation penalty
+    scale_anchor_descriptor: "EXACTLY chapstick size, fit into fingers naturally"
+
+    prompt_keywords:
+      - "chapstick sized bottle"
+      - "slim tube fits in one hand"
+      - "finger-length product"
+      - "lightweight handheld size"
+
+# COPYWRITING ANGLES — to be populated from Fastmoss or manual entry
+copywriting:
+  angle: ""               # TODO: fill in after Fastmoss lookup or manual
+  hook: ""
+  usp_1: ""
+  usp_2: ""
+  usp_3: ""
+  body: ""
+  cta: ""
+
+# VISUAL IDENTITY
+subject_dna: null
+last_source_image_handoff: null
+
+# METADATA
+registered_by: "pldsb.faris@gmail.com"
+registered_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Scale anchor descriptors defined by owner to prevent AI video engine scale drift.
+  Google Flow and GROK require physical reference keywords to maintain consistent
+  product scale even when reference images are provided.
+  TikTok penalises misleading product size in commercial content.

@@ -24,6 +24,33 @@ Saya **tidak** output kepada user tanpa Compliance Gate mengesahkan dahulu.
 **Ini adalah lapisan pertama BOSMAX. Setiap request MESTI melalui semua checks ini
 sebelum mana-mana skill diappoint. Tiada pengecualian.**
 
+### STEP 0 — PRODUCT INTELLIGENCE LOOKUP (WAJIB jika ada product mention)
+
+**Trigger:** Request menyebut nama produk, brand, atau kod produk.
+**Sebelum extract requirements** → appoint `bosmax-product-intelligence` untuk resolve product data.
+
+```
+LOOKUP HIERARCHY (strict order):
+  TIER 1: products/*.yaml (BOSMAX Registry) — match product_id, product_name, variant
+  TIER 2: FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx (Copywriting_Product_Map, Product Search Data)
+  TIER 3: Tanya user (last resort sahaja)
+
+ON LOOKUP SUCCESS:
+  → product_record populated
+  → scale_anchor_descriptor extracted per variant (INJECT ke semua content generation skills)
+  → subject_dna loaded (jika exist — untuk Route C continuity)
+  → copywriting data available (hook, USP 1-3, body, CTA)
+
+SCALE ANCHOR — HARD BLOCK jika missing + TikTok platform:
+  "⚠️ Tiada scale anchor descriptor untuk [product] [variant].
+   TikTok penalises scale misrepresentation. Sila tambah sebelum generate."
+  → Tunggu user input sebelum proceed.
+
+FORMAT scale_anchor_descriptor: "EXACTLY [everyday object] size, [how it fits in hand]"
+  Contoh BOSMAX 5ML:  "EXACTLY lip balm size, fit into fingers naturally"
+  Contoh BOSMAX 10ML: "EXACTLY chapstick size, fit into fingers naturally"
+```
+
 ### STEP 1 — EXTRACT REQUIREMENTS
 
 Baca request user dan extract semua fields ini:
@@ -260,7 +287,7 @@ Saya maintain state ini sepanjang session. Update setiap kali skill return outpu
 active_mode:              null  → "A" | "B" | "C" | "REG" | "BULK"
 platform:                 null  → TikTok | Shopee | Lazada | Meta | YouTube Shorts
 category:                 null  → string
-product_record:           null  → populated by bosmax-product-registration
+product_record:           null  → populated by bosmax-product-intelligence (STEP 0) atau bosmax-product-registration
 content_mode_selected:    null  → "T2V" | "FRAMES" | "INGREDIENTS" | "IMAGE"
 subject_dna:              null  → populated by bosmax-subject-dna
 scene_composition:        null  → populated by bosmax-scene-engine
@@ -414,6 +441,14 @@ User → BOSMAX [PRE-FLIGHT] → [Mode A pipeline] → [source_image_handoff sav
 - JANGAN assume user tahu engine limits — BOSMAX mesti detect dan announce
 - JIKA engine tidak dalam ENGINE CONSTRAINT TABLE: ABORT terus, inform user
 
+### Rules Baru (v11.2 Fix G — Product Intelligence)
+- JANGAN assume product knowledge — MESTI jalankan bosmax-product-intelligence lookup (STEP 0) bila ada product mention
+- JANGAN generate content tanpa scale_anchor_descriptor confirmed (platform TikTok)
+- JANGAN skip TIER 1 registry lookup — products/*.yaml adalah authority utama
+- JANGAN hardcode product data dalam CLAUDE.md — semua data product dalam products/*.yaml
+- JIKA scale_anchor_descriptor null + platform TikTok → WARN user, tunggu input
+- JIKA product baru (tiada dalam TIER 1 dan TIER 2) → offer registration selepas content selesai
+
 ---
 
 ## NOTA PENTING UNTUK COWORK
@@ -426,13 +461,20 @@ Skill files berikut MESTI ada dalam `.claude/skills/` folder:
 5. `bosmax-script-generator.md`
 6. `bosmax-product-registration.md`
 7. `bosmax-bulk-generator.md`
-8. `bosmax-requirement-analyst.md` ← (v11.2 Fix B — akan ditambah)
+8. `bosmax-requirement-analyst.md`
+9. `bosmax-product-intelligence.md` ← (v11.2 Fix G — Product Librarian)
 
 Memory file: `BOSMAX-LOG.md` dalam `.claude/` folder root.
 
-### EXECUTION ORDER v11.2
+Product Registry: `products/` folder dalam project root.
+- `products/_SCHEMA.yaml` — template dan schema reference
+- `products/[BRAND_CODE].yaml` — satu file per produk
+- Field wajib per variant: `scale_anchor_descriptor`
+- Fastmoss data di-cache dalam products YAML selepas first lookup
+
+### EXECUTION ORDER v11.2 (dengan Product Intelligence)
 ```
-Request masuk → PRE-FLIGHT PROTOCOL → WORK ORDER issued → Route ke skill → Compliance Gate → User
+Request masuk → [STEP 0: bosmax-product-intelligence] → PRE-FLIGHT PROTOCOL → WORK ORDER issued → Route ke skill → Compliance Gate → User
 ```
 PRE-FLIGHT adalah tanggungjawab BOSMAX orchestrator (fail ini).
 PRE-FLIGHT MESTI selesai sebelum mana-mana skill diappoint.
