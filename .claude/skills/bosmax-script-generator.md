@@ -5,13 +5,15 @@ description: >
   TikTok commercial video script built from zero — from product brief,
   product image, or raw product specs. No prior image inheritance required.
   Builds scene, character, and all 9 sections from scratch using BOSMAX
-  v11.1 logic, physics DNA, and approved script formulas. Outputs one
-  complete deterministic 9-section video script.
+  v11.2 logic, physics DNA, and approved script formulas. Supports single-block
+  and MULTI-BLOCK work orders. In multi-block mode, ingests Master Narrative
+  Brief and generates each block with strict dialogue continuity and visual
+  state handoff between blocks.
 ---
 
 # BOSMAX SCRIPT GENERATOR — SKILL
-## Role: Mode B Specialist — Deterministic BOSMAX v11.1 Video Script Engine
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Role: Mode B Specialist — Deterministic BOSMAX v11.2 Video Script Engine
+## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -38,31 +40,122 @@ cta                   → call to action text
 avatar_id             → NORA | SARA | JULIA | BELLA | SOFIA_FIT | MAK_TOK |
                         RIZAL | AZMAN | HAJI_MAN | CHEF_DANIAL
 headwear_style        → AUTO | HIJAB | NON_HIJAB
-engine_id             → VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
-duration_target       → valid untuk engine yang dipilih
+engine_id             → VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 |
+                        SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+duration_target       → valid untuk engine yang dipilih (per block jika multi-block)
 submode_formula       → PAS | HSO | AIDA | FAB | SAVAGE_HPAS
 camera_style          → UGC_IPHONE_RAW | CINEMATIC_PRO
 scene_context         → pilih dari scene registry
 target_language       → Malay | English
+
+--- MULTI-BLOCK FIELDS (diisi oleh BOSMAX — null untuk single-block) ---
+multi_block_mode      → YES | NO
+block_number          → [N] (e.g., 1, 2, 3)
+total_blocks          → [N] (total blocks dalam session)
+block_duration        → duration untuk block ini (e.g., 8s)
+block_start_time      → [Xs] dari total video (e.g., Block 2 = 8s)
+block_end_time        → [Xs] (e.g., Block 2 end = 16s)
+master_narrative_brief → ATTACHED (full brief dari BOSMAX)
+visual_start_state    → INHERITED dari Block N-1 end state (null untuk Block 1)
+dialogue_carry_over   → last spoken words dari Block N-1 (null untuk Block 1)
 ```
 
 ---
 
 ## ENGINE & DURATION REGISTRY
 
-| Engine | Durations | Max | Notes |
-|--------|----------|-----|-------|
-| VEO_3_1 | 8s,16s,24s,32s,40s,48s,56s | 56s | Standard 9-section script |
-| SORA_2 | 10s,15s,20s,25s,30s,45s,60s | 60s | Standard 9-section script |
-| KLING_3_0 | 5s,10s,15s | 15s | Standard 9-section script |
-| SEEDANCE_2_0 | 10s,20s | 20s | Standard 9-section script |
-| GROK | 6s,10s | 10s | Standard 9-section script — **FORBIDDEN: NANO BANANA submode** |
-| GOOGLE_FLOW | T2V: up to 60s | F2V/Frames: anchor-based | 60s | Google Flow prompt architecture — BUKAN 9-section |
+| Engine | Max/Block | Durations | Notes |
+|--------|----------|----------|-------|
+| VEO_3_1_LITE | 8s | 8s SAHAJA per block | MULTI-BLOCK jika target > 8s |
+| VEO_3_1 | 56s | 8,16,24,32,40,48,56s | Standard 9-section script |
+| SORA_2 | 60s | 10,15,20,25,30,45,60s | Standard 9-section script |
+| KLING_3_0 | 15s | 5,10,15s | MULTI-BLOCK jika target > 15s |
+| SEEDANCE_2_0 | 20s | 10,20s | MULTI-BLOCK jika target > 20s |
+| GROK | 10s | 6,10s | MULTI-BLOCK jika target > 10s — **FORBIDDEN: NANO BANANA** |
+| GOOGLE_FLOW | 60s | T2V: up to 60s; FRAMES/INGREDIENTS: anchor-based | Google Flow block architecture — BUKAN 9-section |
 
 > **NOTA:** NANO_BANANA_PRO dan IMAGEN_3 adalah IMAGE ENGINES sahaja.
 > Mereka TIDAK melalui script generator. Route ke bosmax-scene-engine untuk image generation.
 
 **ABORT jika engine + duration pairing tidak valid.**
+
+---
+
+## MULTI-BLOCK MODE — BLOCK-SPECIFIC WORK ORDER PROTOCOL
+
+**Trigger:** `multi_block_mode = YES` dalam work order dari BOSMAX.
+
+Apabila multi-block mode aktif, script generator MESTI ikut protocol ini.
+**Jangan generate seperti single-block biasa.**
+
+---
+
+### BLOCK 1 — OPENING BLOCK
+
+```
+DECLARE di atas Section 1:
+  ┌──────────────────────────────────────────────────┐
+  │ BLOCK 1 OF [N] | [block_duration]s              │
+  │ Story window: [block_start_time]s–[block_end_time]s │
+  │ Narrative beat: [from Master Narrative Brief]   │
+  │ Visual start state: FRESH — build dari zero      │
+  │ Dialogue opens: "[first words dari full arc]"   │
+  └──────────────────────────────────────────────────┘
+
+RULES:
+→ S1–S5: Build scene, character, physics dari zero (normal Mode B)
+→ S6: Dialogue MESTI open dengan hook yang ditentukan dalam Master Narrative Brief
+→ S6: Dialogue MESTI end dengan natural "continuation phrase" — ayat yang boleh disambung
+→ S8: Declare "BLOCK 1 OF [N]" | block_duration | block_start_time–block_end_time
+→ S8: Declare "VISUAL END STATE:" — exact position character, produk, dan lighting
+   pada saat terakhir block ini (ini adalah visual_start_state untuk Block 2)
+→ S8: Declare "LAST SPOKEN WORDS:" — exact last phrase dari S6
+   (ini adalah dialogue_carry_over untuk Block 2)
+```
+
+---
+
+### BLOCK 2+ — CONTINUATION BLOCKS
+
+```
+DECLARE di atas Section 1:
+  ┌──────────────────────────────────────────────────┐
+  │ BLOCK [N] OF [TOTAL] | [block_duration]s        │
+  │ Story window: [block_start_time]s–[block_end_time]s │
+  │ [CONTINUES FROM BLOCK N-1]                      │
+  │ Narrative beat: [from Master Narrative Brief]   │
+  │ Visual start state: INHERITED — [exact state]   │
+  │ Dialogue continues from: "[last words Block N-1]" │
+  └──────────────────────────────────────────────────┘
+
+RULES:
+→ S1: Character description MUST match Block N-1 biometric — TIADA drift dibenarkan
+   (sama age render, sama skin tone, sama wardrobe, sama headwear)
+→ S2: Scene physics LOCKED dari Block N-1 end state — TIADA new elements
+→ S3: Camera parameters KONSISTEN — TIADA sudden angle change tanpa motivation
+→ S4: Visual action DIMULAKAN dari exact position yang declared dalam Block N-1 S8
+→ S5: Product physics INHERITED — grip mechanics, air-gap, label orientation LOCKED
+→ S6: Dialogue MESTI sambung TERUS dari Block N-1 — tiada restart, tiada re-introduction
+      FORBIDDEN: "Assalamualaikum", "Hai semua", "Macam yang kita cakap tadi"
+      HANYA sambung naturally: "[last words Block N-1]... [continuation]..."
+→ S8: Declare "BLOCK [N] OF [TOTAL]" | "INHERITED FROM BLOCK N-1"
+→ S8: Declare "VISUAL END STATE:" (untuk block seterusnya jika ada)
+→ S8: Declare "LAST SPOKEN WORDS:" (untuk block seterusnya jika ada)
+```
+
+---
+
+### BLOCK CONTINUITY ANCHOR RULE
+
+Setiap block MESTI declare continuity anchors dalam Section 8:
+
+```
+CONTINUITY ANCHORS — BLOCK [N]:
+  Visual end state:   [character position] | [product position] | [lighting state]
+  Last spoken words:  "[exact last phrase from S6]"
+  Next block opens:   [brief visual action to start from]
+  Status: [CONTINUES → Block N+1 | FINAL BLOCK]
+```
 
 ---
 
@@ -439,6 +532,11 @@ Music energy class (low/mid/high), BPM range, SFX triggers, silence gap, tail si
 Declare: duration_target, engine_id, I value, scene_count, target words, max words, kill-switch.
 Declare: dna_reinjection_hop (1 untuk VEO_3_1 di setiap block boundary).
 Declare: pacing class (fast/medium/slow).
+**MULTI-BLOCK MANDATORY (jika multi_block_mode = YES):**
+Declare: "BLOCK [X] OF [N]" | block_start_time–block_end_time
+Declare: "VISUAL END STATE: [character position] | [product position] | [lighting]"
+Declare: "LAST SPOKEN WORDS: [exact last phrase from S6]"
+Declare: "NEXT BLOCK OPENS FROM: [brief description]" jika bukan final block.
 
 **S9 — Overlay:**
 SETIAP on-screen text element dengan COORD mapping.
@@ -465,6 +563,8 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 ```
 ENGINE: [engine_id] | DURATION: [Xs] | SUBMODE: [formula] |
 PLATFORM: [target] | CAMERA STYLE: [prose description]
+[BLOCK [N] OF [TOTAL] — omit line jika single-block]
+[CONTINUES FROM BLOCK N-1 — omit line jika Block 1 atau single-block]
 
 ---
 SECTION 1: Biometric Anchor DNA
@@ -509,6 +609,7 @@ SECTION 9: Overlay
 
 ## FAIL-CLOSED RULES
 
+### Standard Rules
 - ABORT jika engine + duration pairing invalid
 - ABORT jika GROK dipilih dengan submode NANO BANANA
 - ABORT jika MAK_TOK atau HAJI_MAN dipilih dengan SAVAGE_HPAS
@@ -526,3 +627,16 @@ SECTION 9: Overlay
 - JANGAN mix STEALTH dan DIRECT dalam satu script
 - JANGAN hasilkan image prompts (kecuali sebagai bahagian GOOGLE_FLOW block)
 - JANGAN hasilkan product records
+
+### Multi-Block Rules (v11.2 — aktif apabila multi_block_mode = YES)
+- ABORT jika Block 2+ generate tanpa `visual_start_state` dari Block N-1 S8 confirmed
+- ABORT jika Block 2+ generate tanpa `dialogue_carry_over` dari Block N-1 S8 confirmed
+- ABORT jika Block 2+ S1 ada biometric drift dari Block N-1 (age/skin/wardrobe/headwear berubah)
+- ABORT jika Block 2+ S2 introduce scene element baru yang tidak ada dalam Block N-1
+- ABORT jika Block 2+ S6 ada re-introduction phrase ("Assalamualaikum", "Hai semua", "Macam tadi")
+- ABORT jika Block 2+ S6 dialogue tidak menyambung dari `dialogue_carry_over`
+- ABORT jika S8 dalam mana-mana multi-block script tidak declare "BLOCK [N] OF [TOTAL]"
+- ABORT jika S8 dalam mana-mana block (kecuali final) tidak declare "VISUAL END STATE:"
+- ABORT jika S8 dalam mana-mana block (kecuali final) tidak declare "LAST SPOKEN WORDS:"
+- JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
+- JANGAN restart story dalam Block 2+ — mesti sambung cerita yang sama

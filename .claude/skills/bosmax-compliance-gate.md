@@ -4,14 +4,16 @@ description: >
   BOSMAX Compliance Gate — Final quality auditor for ALL outputs before
   they reach the user. Invoke LAST in every pipeline, after all other
   BOSMAX skills have completed. Audits Mode A image prompts, Mode B/C
-  video scripts, Agent 07 product records, and Agent 08 bulk content sets.
+  video scripts (single-block and multi-block), product records, and bulk
+  content sets. Multi-block outputs trigger additional MULTI-BLOCK CONTINUITY
+  AUDIT — dialogue continuity, visual state handoff, biometric lock across blocks.
   Outputs only VERIFICATION PASSED or ABORT with exact reason.
   Never generates, modifies, or interprets creative content.
 ---
 
 # BOSMAX COMPLIANCE GATE — SKILL
 ## Role: Fail-Closed Quality Auditor | Final Gate Before User Output
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -58,14 +60,15 @@ Safe zone: top 270px, bottom 380px clear | Text overlay max 20%
 
 ## ENGINE DURATION LIMITS
 
-| Engine | Durations Dibenarkan | Max | Notes |
-|--------|---------------------|-----|-------|
-| VEO_3_1 | 8s, 16s, 24s, 32s, 40s, 48s, 56s | 56s | Standard 9-section |
-| SORA_2 | 10s, 15s, 20s, 25s, 30s, 45s, 60s | 60s | Standard 9-section |
-| KLING_3_0 | 5s, 10s, 15s | 15s | Standard 9-section |
-| SEEDANCE_2_0 | 10s, 20s | 20s | Standard 9-section |
-| GROK | 6s, 10s | 10s | FORBIDDEN: NANO BANANA submode |
-| GOOGLE_FLOW | T2V/IMAGE: up to 60s; FRAMES/INGREDIENTS: anchor-based | 60s | Block architecture — BUKAN 9-section |
+| Engine | Max/Block | Durations Dibenarkan | Notes |
+|--------|----------|---------------------|-------|
+| VEO_3_1_LITE | 8s | 8s SAHAJA per block | MULTI-BLOCK jika target > 8s |
+| VEO_3_1 | 56s | 8s, 16s, 24s, 32s, 40s, 48s, 56s | Standard 9-section |
+| SORA_2 | 60s | 10s, 15s, 20s, 25s, 30s, 45s, 60s | Standard 9-section |
+| KLING_3_0 | 15s | 5s, 10s, 15s | MULTI-BLOCK jika target > 15s |
+| SEEDANCE_2_0 | 20s | 10s, 20s | MULTI-BLOCK jika target > 20s |
+| GROK | 10s | 6s, 10s | MULTI-BLOCK jika target > 10s — FORBIDDEN: NANO BANANA |
+| GOOGLE_FLOW | 60s | T2V/IMAGE: up to 60s; FRAMES/INGREDIENTS: anchor-based | Block architecture — BUKAN 9-section |
 
 > **IMAGE ENGINES (bukan video — exempt dari video audit):**
 > NANO_BANANA_PRO, IMAGEN_3 → audit under MODE A checklist SAHAJA.
@@ -136,10 +139,13 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
   CLASS_A: 2.0mm | CLASS_B: 1.5mm | CLASS_C: 2.0mm |
   CLASS_D: 4.0mm | CLASS_E: 0.0mm | CLASS_GENERIC: 1.5mm
 
-☐ engine_id valid: VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+☐ engine_id valid: VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
   (NANO_BANANA_PRO dan IMAGEN_3 BUKAN video engines — ABORT jika digunakan untuk video)
 
-☐ duration_target dalam engine-specific allowed list
+☐ duration_target dalam engine-specific allowed list (per block jika multi-block)
+
+☐ MULTI-BLOCK DETECTION: Jika output mengandungi lebih dari satu 9-section script:
+  → WAJIB run MULTI-BLOCK CONTINUITY AUDIT CHECKLIST di bawah sebagai tambahan
 
 ☐ WPS dalam limits — tiada scene melebihi 2.0 WPS
 
@@ -193,6 +199,56 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 ☐ Engine valid dan duration dalam engine limits
 
 ☐ TIADA raw internal tokens atau character names
+
+---
+
+## MULTI-BLOCK CONTINUITY AUDIT CHECKLIST
+
+*Aktif HANYA apabila output mengandungi 2 atau lebih blocks (Mode B atau C).*
+*Semua mesti PASS. Satu FAIL = ABORT.*
+
+### BLOCK HEADER CHECKS (semua blocks)
+☐ Setiap block ada header declaration di atas Section 1:
+  — "BLOCK [N] OF [TOTAL]" — format betul
+  — block_duration, block_start_time, block_end_time declared
+
+☐ Setiap block ada continuity anchors dalam Section 8:
+  — "VISUAL END STATE: [character position] | [product position] | [lighting]"
+  — "LAST SPOKEN WORDS: [exact phrase]"
+  — "NEXT BLOCK OPENS FROM: [description]" (kecuali final block)
+
+### BLOCK 2+ BIOMETRIC CONTINUITY CHECKS
+☐ Block 2+ Section 1: age render SAMA dengan Block 1 — tiada drift
+☐ Block 2+ Section 1: skin tone SAMA — tiada drift
+☐ Block 2+ Section 1: wardrobe SAMA (fabric, colour, drape) — tiada change
+☐ Block 2+ Section 1: headwear SAMA (hijab/non-hijab/style) — tiada change
+☐ Block 2+ Section 1: gender, phenotype SAMA — tiada change
+
+### BLOCK 2+ SCENE CONTINUITY CHECKS
+☐ Block 2+ Section 2: scene location SAMA — tiada new scene diperkenalkan
+☐ Block 2+ Section 2: lighting profile LOCKED — Kelvin, shadow direction unchanged
+☐ Block 2+ Section 2: background elements SAMA — tiada new elements
+☐ Block 2+ Section 3: camera parameters KONSISTEN — tiada sudden angle change
+
+### BLOCK 2+ PRODUCT CONTINUITY CHECKS
+☐ Block 2+ Section 4: visual action DIMULAKAN dari exact position declared dalam Block N-1 S8 "VISUAL END STATE"
+☐ Block 2+ Section 5: grip mechanics LOCKED — tiada grip change
+☐ Block 2+ Section 5: air-gap value SAMA seperti Block 1
+☐ Block 2+ Section 5: label orientation LOCKED
+
+### BLOCK 2+ DIALOGUE CONTINUITY CHECKS
+☐ Block 2+ Section 6: TIADA restart phrases:
+  Forbidden: "Assalamualaikum", "Hai semua", "Macam yang kita cakap tadi",
+  "Seperti yang saya sebut", any greeting, any re-introduction
+☐ Block 2+ Section 6: dialogue MENYAMBUNG dari "LAST SPOKEN WORDS" Block N-1
+  — Semak: last words Block N-1 S8 → first words Block 2+ S6 → natural continuation
+☐ TIADA gap atau non-sequitur antara last words Block N-1 dan first words Block 2+
+☐ Full dialogue arc dari Block 1 ke Block N membentuk SATU cerita kohesif
+
+### MASTER NARRATIVE BRIEF COMPLIANCE
+☐ Narrative beat untuk setiap block selaras dengan Master Narrative Brief
+☐ Story resolution berlaku dalam final block (tiada cerita tergantung)
+☐ Block count selaras dengan BOSMAX WORK ORDER — tiada extra blocks, tiada missing blocks
 
 ---
 
