@@ -1,0 +1,88 @@
+# BOSMAX AVATAR REGISTRY — NAMED PERSONA: RIZAL
+# Version: v1.0 | Created: 2026-05-29
+# Type: Named Persona (extends archetype)
+# Base Archetype: MALAY_MALE_YOUNG_01
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+persona_type: "NAMED_PERSONA"
+
+# IDENTITY
+persona_id: "RIZAL"
+persona_name: "Rizal"
+base_archetype: "MALAY_MALE_YOUNG_01"   # inherit full biometrics from here
+
+# PERSONA OVERRIDES (only declare if different from base archetype)
+age_range: "27-34"
+build: "medium-athletic build, 172-177cm, moderate shoulder width, lean with slight muscle definition"
+hair_style_default: "low fade, textured crop, clean side part — well-groomed professional look"
+distinguishing_features:
+  - "clean shave preferred — more polished, less street"
+  - "calm, composed default expression — trustworthy without being stiff"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "trustworthy"
+  - "composed"
+  - "professional-casual"
+  - "health-conscious"
+  - "relatable everyman"
+speaks_language:
+  - "BM"
+  - "English"
+content_style: "health & wellness demo, product testimonial, before/after lifestyle, STEALTH metaphor content"
+
+# SILO COMPATIBILITY
+compatible_silos:
+  - "STEALTH"
+  - "DIRECT"
+  - "LIFESTYLE"
+compliance_notes: |
+  Primary avatar for STEALTH silo products (e.g., BOSMAX_SERUM).
+  Rizal delivers sensitive product messaging through metaphor and lifestyle framing
+  without triggering platform compliance flags. Calm demeanor suits indirect messaging.
+
+# WARDROBE CATALOGUE
+wardrobe_catalogue:
+  - wardrobe_id: "RIZAL_CASUAL_01"
+    occasion: casual_everyday
+    scene_context: home_indoor
+    outfit: "plain cotton t-shirt (white/grey/navy), slim chinos, clean minimal sneakers"
+
+  - wardrobe_id: "RIZAL_ACTIVE_01"
+    occasion: gym_active
+    scene_context: outdoor_street
+    outfit: "fitted athletic tee, track pants or sport shorts, running shoes"
+    notes: "For lifestyle/health content — park, gym, morning jog context"
+
+  - wardrobe_id: "RIZAL_SMART_01"
+    occasion: workplace_office
+    scene_context: office_interior
+    outfit: "smart casual — plain button-down shirt (pastel/white), dark chinos, leather belt, clean shoes"
+
+  - wardrobe_id: "RIZAL_RAYA_01"
+    occasion: hari_raya_aidilfitri
+    scene_context: home_indoor
+    outfit: "baju Melayu modern — light grey or soft beige, songkok hitam, sampin simple pattern"
+
+# ASSIGNED PRODUCTS
+assigned_products:
+  - "BOSMAX_SERUM"
+
+# VISUAL DNA PROMPT FRAGMENT
+# Inject this directly into [SUBJECT_INITIALIZATION] or [REFERENCE_IMAGE_LOCK] prose
+prompt_fragment: >
+  A Southeast Asian (Malay) man, age late 20s to early 30s, warm medium brown skin tone
+  with golden-olive undertone, oval-to-square face with defined jawline, almond-shaped
+  dark brown eyes with thick brow arch, clean-shaved, short cropped hair with low fade
+  and neat side part, medium-athletic build, composed and trustworthy expression,
+  direct eye contact with camera.
+
+# METADATA
+registered_by: "pldsb.faris@gmail.com"
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Primary male persona for BOSMAX_SERUM and STEALTH silo products.
+  Positioned as a health-conscious, credible everyday guy — not a celebrity,
+  not a gym bro. Approachable enough for mass market, composed enough for premium.

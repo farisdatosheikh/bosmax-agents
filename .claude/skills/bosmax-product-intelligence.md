@@ -282,6 +282,57 @@ def search_fastmoss(product_name_raw, workbook_path):
 
 ---
 
+## AVATAR LOOKUP PROTOCOL
+
+**Trigger:** Bila product_record ada `recommended_avatars` field yang non-empty.
+
+```
+AVATAR LOOKUP SEQUENCE:
+
+STEP 1 — Read recommended_avatars dari product_record
+  e.g., recommended_avatars: ["RIZAL", "AZMAN"]
+
+STEP 2 — Lookup setiap persona dalam avatars/ folder
+  → Cari avatars/[NAME].yaml (case-insensitive)
+  → Jika found: load persona file
+  → Read: base_archetype field
+  → Load biometrics dari avatars/[BASE_ARCHETYPE].yaml
+  → Merge: archetype biometrics + persona overrides = full avatar DNA
+
+STEP 3 — Offer kepada user (jika lebih dari satu persona):
+  "Produk ini ada [N] avatar yang disyorkan:
+   1. RIZAL — [persona_traits summary] — [content_style]
+   2. AZMAN — [persona_traits summary] — [content_style]
+   Pilih mana satu? Atau nak guna avatar lain / upload gambar sendiri?"
+
+STEP 4 — Jika user pilih persona:
+  → Load wardrobe_catalogue dari persona YAML
+  → Match wardrobe_id berdasarkan occasion + scene_context dari request
+  → Return: full avatar_record (DNA + wardrobe + prompt_fragment)
+
+STEP 5 — Jika user upload gambar sendiri:
+  → Use sebagai Ref 1 dalam [REFERENCE_IMAGE_LOCK] (Tier 3 — ad-hoc)
+  → JANGAN load dari registry
+
+AVATAR RECORD OUTPUT FORMAT:
+  avatar_record:
+    source: "NAMED_PERSONA"        # NAMED_PERSONA | ARCHETYPE | USER_UPLOAD
+    persona_id: "RIZAL"
+    base_archetype: "MALAY_MALE_YOUNG_01"
+    prompt_fragment: "[verbatim dari RIZAL.yaml]"
+    wardrobe_selected:
+      wardrobe_id: "RIZAL_CASUAL_01"
+      outfit: "[outfit descriptor]"
+    full_biometric_dna: "[merged archetype + overrides]"
+```
+
+**AUTO-HEAL:**
+- Persona tidak jumpa dalam avatars/ folder → fall back ke base archetype ikut ethnicity product target market
+- Satu persona sahaja dalam recommended_avatars → auto-select tanpa tanya user
+- recommended_avatars kosong → tanya user pilih dari ethnicity list atau upload
+
+---
+
 ## INTEGRATION DENGAN BOSMAX ROUTES
 
 ### Route A (Image) — PRE-FLIGHT lookup:
@@ -290,7 +341,9 @@ PRE-FLIGHT STEP 0 (NEW):
   → Call bosmax-product-intelligence
   → Receive product_record
   → Extract: scale_anchor_descriptor → inject ke bosmax-scene-engine
+  → Extract: recommended_avatars → run AVATAR LOOKUP PROTOCOL
   → Extract: subject_dna (jika exist) → pre-populate bosmax-subject-dna
+  → Pass: avatar_record → bosmax-subject-dna (skip DNA generation jika registry hit)
 ```
 
 ### Route B (Video Script) — PRE-FLIGHT lookup:
@@ -299,6 +352,8 @@ PRE-FLIGHT STEP 0 (NEW):
   → Call bosmax-product-intelligence  
   → Receive product_record
   → Extract: scale_anchor_descriptor → inject ke S1 dan S3 dalam bosmax-script-generator
+  → Extract: recommended_avatars → run AVATAR LOOKUP PROTOCOL
+  → Extract: avatar_record.prompt_fragment → inject ke [SUBJECT_INITIALIZATION] atau S1
   → Extract: copywriting.hook → suggest sebagai S6 opening
   → Extract: copywriting.usp_1/2/3 → suggest sebagai S5 benefit points
   → Extract: copywriting.cta → suggest sebagai S9 overlay text

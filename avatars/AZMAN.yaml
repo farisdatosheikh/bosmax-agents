@@ -1,0 +1,94 @@
+# BOSMAX AVATAR REGISTRY — NAMED PERSONA: AZMAN
+# Version: v1.0 | Created: 2026-05-29
+# Type: Named Persona (extends archetype)
+# Base Archetype: MALAY_MALE_YOUNG_01
+# ─────────────────────────────────────────────
+
+schema_version: "1.0"
+persona_type: "NAMED_PERSONA"
+
+# IDENTITY
+persona_id: "AZMAN"
+persona_name: "Azman"
+base_archetype: "MALAY_MALE_YOUNG_01"   # inherit full biometrics from here
+
+# PERSONA OVERRIDES (only declare if different from base archetype)
+age_range: "30-38"
+build: "medium build, 168-173cm, broader shoulder width, slightly stockier than Rizal — mature, settled frame"
+hair_style_default: "short neat cut, minimal styling — clean professional look, no fade"
+distinguishing_features:
+  - "light stubble (3-5 day growth) — adds maturity and relatability"
+  - "slight laugh lines — warmer, more experienced expression"
+  - "heavier brow — more authoritative resting expression"
+
+# PERSONA TRAITS
+personality_keywords:
+  - "authoritative"
+  - "warm"
+  - "experienced"
+  - "family man energy"
+  - "aspirational but grounded"
+speaks_language:
+  - "BM"
+  - "English"
+content_style: "testimonial, results-driven content, social proof, husband/father lifestyle framing, STEALTH metaphor"
+
+# SILO COMPATIBILITY
+compatible_silos:
+  - "STEALTH"
+  - "DIRECT"
+  - "LIFESTYLE"
+  - "SAVAGE_HPAS"
+compliance_notes: |
+  Secondary male persona for BOSMAX_SERUM. Azman skews older than Rizal —
+  appeals to 30s-40s demographic who respond to "proven results" and
+  "this worked for me" messaging. Light stubble adds authenticity.
+  Strong fit for SAVAGE_HPAS formula due to authoritative delivery.
+
+# WARDROBE CATALOGUE
+wardrobe_catalogue:
+  - wardrobe_id: "AZMAN_CASUAL_01"
+    occasion: casual_everyday
+    scene_context: home_indoor
+    outfit: "round-neck cotton tee (dark colours: navy, charcoal, maroon), casual trousers, house sandals"
+
+  - wardrobe_id: "AZMAN_SMART_01"
+    occasion: workplace_office
+    scene_context: office_interior
+    outfit: "formal batik shirt or plain collared shirt, dark slacks, leather shoes"
+    notes: "More formal than Rizal — reflects seniority"
+
+  - wardrobe_id: "AZMAN_ACTIVE_01"
+    occasion: gym_active
+    scene_context: outdoor_street
+    outfit: "fitted sports shirt (short sleeve), track pants, training shoes"
+    notes: "Weekend workout / jogging park context"
+
+  - wardrobe_id: "AZMAN_RAYA_01"
+    occasion: hari_raya_aidilfitri
+    scene_context: home_indoor
+    outfit: "baju Melayu classic — deep teal or maroon, sampin batik, songkok"
+    notes: "Family man Raya setting — patriarch energy"
+
+# ASSIGNED PRODUCTS
+assigned_products:
+  - "BOSMAX_SERUM"
+
+# VISUAL DNA PROMPT FRAGMENT
+# Inject this directly into [SUBJECT_INITIALIZATION] or [REFERENCE_IMAGE_LOCK] prose
+prompt_fragment: >
+  A Southeast Asian (Malay) man, age early to mid 30s, warm medium brown skin tone
+  with golden-olive undertone, oval face with defined jawline and slight laugh lines,
+  almond-shaped dark brown eyes with heavy brow arch, light 3-5 day stubble,
+  short neat cropped hair with minimal styling, medium-stocky build with broader
+  shoulders, warm and authoritative expression, direct confident eye contact.
+
+# METADATA
+registered_by: "pldsb.faris@gmail.com"
+created_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Secondary male persona for BOSMAX_SERUM. Older, more mature counterpart to Rizal.
+  Use Azman when content needs credibility through experience and social proof.
+  Use Rizal when content needs aspirational relatability for younger demographic.
+  RIZAL + AZMAN as a pair covers the full 25-40 male target audience for BOSMAX_SERUM.

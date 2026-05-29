@@ -1,16 +1,32 @@
 # BOSMAX AVATAR REGISTRY — SCHEMA REFERENCE
-# Version: v1.0 | Date: 2026-05-29
+# Version: v1.1 | Date: 2026-05-29
 # Schema: GRAND_MASTER_SKELETON v11.2
 # Authority: SUPREME_SYSTEMS_ARCHITECT
 #
-# Each archetype gets its own YAML file: {ETHNICITY}_{GENDER}_{AGE_BRACKET}_{INDEX}.yaml
-# File naming: UPPERCASE, underscores, no spaces.
-# Index: _01 is default seed. _02, _03 reserved for future variants.
+# TWO FILE TYPES dalam registry ini:
+#
+# TYPE 1 — BASE ARCHETYPE
+#   Naming: {ETHNICITY}_{GENDER}_{AGE_BRACKET}_{INDEX}.yaml
+#   Example: MALAY_MALE_YOUNG_01.yaml
+#   Contains: Full biometric DNA. Generic — no persona name, no product assignment.
+#   Index: _01 is default seed. _02, _03 reserved for future variants.
+#
+# TYPE 2 — NAMED PERSONA
+#   Naming: {PERSONA_NAME}.yaml (uppercase)
+#   Example: RIZAL.yaml, AZMAN.yaml, HANA.yaml
+#   Contains: persona_type: NAMED_PERSONA + base_archetype pointer + overrides + wardrobe catalogue
+#   Inherits: Full biometrics from base_archetype — only declare fields that differ
+#   Use when: Product registry references specific persona (recommended_avatars field)
+#
+# AVATAR SOURCE HIERARCHY (lookup order):
+#   TIER 1 → Named Persona YAML (avatars/[NAME].yaml) — most specific
+#   TIER 2 → Base Archetype YAML (avatars/[ETHNICITY_GENDER_AGE].yaml) — generic biometrics
+#   TIER 3 → User-uploaded reference image — ad-hoc, session only
 #
 # PURPOSE:
 # This registry locks biometric DNA for AI image/video engines.
-# Descriptors MUST be injected verbatim into S1 (character description) of every prompt.
-# Wardrobe is resolved at runtime via wardrobes/WARDROBE_RULES.yaml lookup.
+# Descriptors MUST be injected verbatim into S1 / [SUBJECT_INITIALIZATION] of every prompt.
+# Wardrobe is resolved from wardrobe_catalogue (named persona) or wardrobes/WARDROBE_RULES.yaml (archetype).
 # ─────────────────────────────────────────────────────────────────────
 
 schema_version: "1.0"
