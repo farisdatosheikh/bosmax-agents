@@ -288,6 +288,53 @@ sharp focus on avatar eyes and product label,
 [platform_format from Platform Registry — e.g., TikTok 9:16].
 ```
 
+**2-Asset Composite Workflow (Avatar + Product — NO wardrobe change):**
+```
+Ref 1 = Raw Avatar image    → [REFERENCE_IMAGE_LOCK] — identity anchor
+Ref 2 = Product isolated    → [TYPOGRAPHY_AND_BRANDING_LOCK] + [SPATIAL_MATH]
+
+PERBEZAAN dari 3-asset:
+  → TIADA [LOCAL_EDIT_DELTA] — outfit dari Ref 1 KEKAL as-is, JANGAN tanya wardrobe
+  → TIADA Ref mannequin — wardrobe bukan tujuan
+  → Fokus: avatar identity lock + product integration + spatial math sahaja
+
+Block structure untuk 2-asset:
+
+[REFERENCE_IMAGE_LOCK]
+Using Ref 1 as absolute identity anchor. Preserve 100% of facial
+structure, skin tone, eye shape, hair texture, outfit, and body
+proportions from the reference image. No clothing changes.
+
+[PRODUCT_INTEGRATION]
+Avatar now holds the product from Ref 2 at [position: chest / waist / eye-level].
+[physics_class grip descriptor from subject_dna].
+EXACTLY [scale_anchor_descriptor from products/*.yaml].
+Strict 1:4 product-to-hand ratio.
+
+[TYPOGRAPHY_AND_BRANDING_LOCK]
+Preserve 100% of product label from Ref 2. Zero character morphing,
+zero text distortion, zero label warping.
+
+[SPATIAL_MATH_AND_PROPORTIONS]
+[physics_class grip: pinch / wrap / edge-hold].
+2mm visual air gap between fingertips and label text.
+Boundary between organic skin and product surface: perfectly sharp,
+zero texture bleeding, zero edge-smudging.
+
+[OUTPUT_SPECIFICATION]
+[platform_format] | [lighting consistent with Ref 1 environment] |
+[shot_code from SHOT_LIBRARY] | 4K resolution | sRGB |
+natural skin texture | no synthetic airbrushing.
+
+Detect trigger untuk 2-asset (BOSMAX mesti auto-detect):
+  → User upload 2 images (avatar + product) tanpa mannequin
+  → User sebut "pegang produk" / "hold product" / "sambung gambar avatar ni dengan produk"
+  → source_image_handoff ada + product_record ada (tiada wardrobe_id declared)
+  → JANGAN tanya wardrobe — proceed terus ke 2-asset flow
+```
+
+---
+
 **3-Asset Composite Workflow (Avatar + Wardrobe + Product):**
 ```
 Ref 1 = Raw Avatar image    → [REFERENCE_IMAGE_LOCK] — identity anchor
@@ -370,17 +417,29 @@ CASE 1 — T2V / No reference images (NANO_BANANA / IMAGEN_3 tanpa Ref):
   → SATU continuous English Master Image Prompt paragraph
   → TIADA fragmented lists. Structured prose. TIADA buzzwords.
 
-CASE 2 — Reference-Guided Mode (ada reference image — DIUTAMAKAN):
-  → Apply SENIBINA PROMPT tagged block architecture (section atas)
-  → [REFERENCE_IMAGE_LOCK] → [LOCAL_EDIT_DELTA] → [TYPOGRAPHY_AND_BRANDING_LOCK]
-  → [SPATIAL_MATH_AND_PROPORTIONS] → [OUTPUT_SPECIFICATION]
-  → Inject scale_anchor_descriptor dari products/*.yaml ke [SPATIAL_MATH] block
+CASE 2 — 2-Asset Composite (Avatar + Product, TIADA wardrobe change):
+  Trigger: User upload avatar + product | "pegang produk" | "hold product" | no wardrobe_id
+  → [REFERENCE_IMAGE_LOCK]: Lock avatar identity dari Ref 1
+  → [PRODUCT_INTEGRATION]: Product grip dari Ref 2
+  → [TYPOGRAPHY_AND_BRANDING_LOCK]: Lock product label dari Ref 2
+  → [SPATIAL_MATH_AND_PROPORTIONS]: Inject scale_anchor_descriptor dari products/*.yaml
+  → [OUTPUT_SPECIFICATION]: Match environment dari Ref 1
+  → JANGAN tanya wardrobe. JANGAN apply [LOCAL_EDIT_DELTA].
   → Jalankan PRE-RENDER CHECKLIST sebelum output
 
-CASE 3 — 3-Asset Composite (Raw Avatar + Ghost Mannequin + Product):
-  → Announce kepada user: "3 reference images diperlukan: Ref 1 (avatar), Ref 2 (mannequin), Ref 3 (product)"
-  → Apply senibina: Ref 1 → [REFERENCE_IMAGE_LOCK], Ref 2 → [LOCAL_EDIT_DELTA], Ref 3 → [TYPOGRAPHY_AND_BRANDING_LOCK]
+CASE 3 — 3-Asset Composite (Avatar + Wardrobe + Product):
+  Trigger: User upload avatar + mannequin + product | wardrobe_id declared | "tukar baju"
+  → Announce: "3 reference images diperlukan: Ref 1 (avatar), Ref 2 (mannequin), Ref 3 (product)"
+  → [REFERENCE_IMAGE_LOCK]: Ref 1 avatar
+  → [LOCAL_EDIT_DELTA]: Ref 2 mannequin wardrobe
+  → [TYPOGRAPHY_AND_BRANDING_LOCK]: Ref 3 product
   → Inject scale_anchor_descriptor ke [SPATIAL_MATH] block
+
+CASE 4 — Reference-Guided Single Edit (ada reference image, edit satu elemen):
+  Trigger: "tukar background" | "tukar pakaian sahaja" | "ganti scene"
+  → Apply [REFERENCE_IMAGE_LOCK] + [LOCAL_EDIT_DELTA] (target element sahaja)
+  → Inject scale_anchor_descriptor ke [SPATIAL_MATH] block
+  → Jalankan PRE-RENDER CHECKLIST sebelum output
 ```
 
 **STEP 7 — BUILD JSON HANDOFF:** Assemble semua fields ke dalam source_image_handoff.
