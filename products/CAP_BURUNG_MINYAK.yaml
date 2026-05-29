@@ -1,0 +1,444 @@
+# BOSMAX PRODUCT REGISTRY — CAP_BURUNG_MINYAK
+# Version: v1.0 | Registered: 2026-05-29
+# Authority: GRAND_MASTER_SKELETON v11.2
+# ─────────────────────────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# ─────────────────────────────────────────────
+# IDENTIFIERS
+# ─────────────────────────────────────────────
+product_id: "CAP_BURUNG_MINYAK"
+product_name: "Minyak Cap Burung"
+brand: "Cap Burung"
+shop_name: ""                    # TBD — update when TikTok Shop registered
+tiktok_product_id: ""            # TBD
+fastmoss_product_name: ""        # TBD — update after Fastmoss lookup
+
+# ─────────────────────────────────────────────
+# CLASSIFICATION
+# ─────────────────────────────────────────────
+category: "Health & Wellness"
+sub_category: "Traditional Remedy / Minyak Urut"
+raw_category: "Health-Traditional Medicine-Minyak Angin & Urut"
+product_status: "Available"
+
+# ─────────────────────────────────────────────
+# PRODUCT PROFILE
+# ─────────────────────────────────────────────
+tagline: "Sejak 1958, Khasiat Turun Temurun."
+heritage_year: 1958
+product_type: "Roll-on essential oil blend — traditional Malay herbal remedy"
+packaging_type: "30ML square glass bottle with stainless steel roller ball applicator"
+packaging_color: "Clear glass, silver roller, black cap"
+scent_profile: "Herbal-eucalyptus-menthol warm aromatic blend"
+texture: "Lightweight oil, non-greasy, fast-absorb"
+application_method: "Roll-on direct application to skin"
+halal_status: "Halal-compatible (no alcohol, no animal-derived ingredients)"
+heritage_note: >
+  Produk warisan keluarga sejak 1958. Diwarisi turun-temurun sebagai
+  simpanan wajib rumah tangga Melayu. 60+ tahun kepercayaan.
+
+# ─────────────────────────────────────────────
+# MARKET DATA
+# ─────────────────────────────────────────────
+avg_price_rm: null
+commission_rate: null
+total_orders: null
+total_units_sold: null
+total_revenue_rm: null
+estimated_launch_date: ""
+
+# ─────────────────────────────────────────────
+# VARIANTS
+# ─────────────────────────────────────────────
+variants:
+  - variant_id: "30ML_ROLLON"
+    variant_name: "30ml Square Glass Roll-On"
+    price_rm: null
+    scale_anchor_descriptor: "EXACTLY standard roll-on deodorant size, fit snugly in closed palm, square-bodied glass bottle with metal roller ball on top"
+    prompt_keywords:
+      - "30ml clear square glass roll-on bottle"
+      - "stainless steel roller ball applicator"
+      - "black cap"
+      - "clear amber-tinted oil inside"
+      - "small palm-sized bottle"
+      - "traditional Malay herbal oil packaging"
+
+# ─────────────────────────────────────────────
+# MANFAAT / BENEFITS MASTER LIST
+# ─────────────────────────────────────────────
+# Source: Product label — 14 kegunaan rasmi
+benefits_master:
+  - id: "B01"
+    benefit: "Menyegarkan & Menghilangkan Stres"
+    sub_note: "Aroma Terapi"
+    target_audience: "Pekerja, ibu rumah tangga, semua orang"
+
+  - id: "B02"
+    benefit: "Meredakan Resdung dan Hidung Tersumbat"
+    sub_note: "Sesak nafas, sinusitis, hidung berair"
+    target_audience: "Penghidap resdung, musim hujan"
+
+  - id: "B03"
+    benefit: "Melegakan Pernafasan, Batuk, Selesema dan Sakit Dada"
+    sub_note: "Sakit dada, sesak dada"
+    target_audience: "Kanak-kanak, orang dewasa, musim sejuk"
+
+  - id: "B04"
+    benefit: "Meredakan Gatal-Gatal dan Gigitan Serangga"
+    sub_note: "Mencegah Gigitan Nyamuk"
+    target_audience: "Aktiviti luar, kanak-kanak, kawasan tropika"
+
+  - id: "B05"
+    benefit: "Merawat Luka-Luka Kecil dan Surut Bengkak"
+    sub_note: "Lebam, bengkak kecil"
+    target_audience: "Ibu bapa, sukan, outdoor"
+
+  - id: "B06"
+    benefit: "Meredakan Masalah Sakit Gigi & Bengkak Gusi"
+    sub_note: "Relief sementara gigi ngilu"
+    target_audience: "Semua umur, kanak-kanak gigi tumbuh"
+
+  - id: "B07"
+    benefit: "Menghindarkan Bayi dari Kembung Perut"
+    sub_note: "Selamat untuk bayi"
+    target_audience: "Ibu muda, ibu baru bersalin"
+
+  - id: "B08"
+    benefit: "Sendal Sendi, Saraf, Massage (Urutan Badan)"
+    sub_note: "Melegakan sakit otot dan sendi"
+    target_audience: "Pekerja fizikal, warga emas, atlet"
+
+  - id: "B09"
+    benefit: "Meredakan Pening Kepala dan Sakit Kepala (Migrain)"
+    sub_note: "Sapukan di pelipis dan dahi"
+    target_audience: "Pekerja office, penghidap migrain"
+
+  - id: "B10"
+    benefit: "Meredakan Kembung Perut, Sakit Perut & Senggugut"
+    sub_note: "Kitaran haid, angin dalam perut"
+    target_audience: "Wanita, remaja perempuan"
+
+  - id: "B11"
+    benefit: "Mengurang Rasa Mual / Muntah"
+    sub_note: "Mabuk kenderaan, mabuk laut, morning sickness"
+    target_audience: "Ibu mengandung, penumpang kenderaan"
+
+  - id: "B12"
+    benefit: "Mengurangkan Kencing Malam"
+    sub_note: "Lumur di kawasan perut dan ari-ari"
+    target_audience: "Warga emas, orang dewasa"
+
+  - id: "B13"
+    benefit: "Sesuai Urutan Sebelum & Selepas Bersalin"
+    sub_note: "Melegakan sakit otot, sendi dan lenguh-lenguh"
+    target_audience: "Ibu hamil, ibu baru bersalin"
+
+  - id: "B14"
+    benefit: "Rawatan Param / Bengkung"
+    sub_note: "Membantu mengecutkan rahim dan mengempiskan perut"
+    target_audience: "Ibu selepas bersalin, rawatan pantang"
+
+# ─────────────────────────────────────────────
+# COPYWRITING ANGLES — 20 SETS
+# Format per set:
+#   angle_id, angle_name, target_segment, hook, usp_1, usp_2, usp_3, body, cta
+# Language: Bahasa Malaysia (natural, conversational TikTok tone)
+# ─────────────────────────────────────────────
+copywriting_angles:
+
+  # ── SET 01 — STRES & AROMATERAPI ──────────────────────────
+  - angle_id: "A01"
+    angle_name: "Stres & Aroma Terapi"
+    benefit_ref: "B01"
+    target_segment: "Pekerja, ibu rumah tangga, semua dewasa"
+    hook: "Dah lama tak rasa tenang? Satu roll je, kepala terus sejuk."
+    usp_1: "Aroma herba semulajadi — terus activate deria bau, hantar signal rileks ke otak"
+    usp_2: "Tak perlu diffuser, tak perlu masa — roll, hidu, rasa bezanya dalam 10 saat"
+    usp_3: "Bukan ubat, bukan supplement — rawatan aroma semulajadi yang diakui 60 tahun"
+    body: "Hari-hari stress takkan habis. Tapi dengan Minyak Cap Burung, setidaknya otak boleh bernafas kejap. Roll kat belakang telinga, bawah hidung, dada. Hidu dalam-dalam. Biar aroma herba buat kerjanya."
+    cta: "Scroll bawah, tekan Add to Cart. Bau dulu, putuskan kemudian."
+
+  # ── SET 02 — RESDUNG & HIDUNG TERSUMBAT ───────────────────
+  - angle_id: "A02"
+    angle_name: "Resdung & Hidung Tersumbat"
+    benefit_ref: "B02"
+    target_segment: "Penghidap resdung kronik, musim hujan, jerebu"
+    hook: "Hidung tersumbat dari pagi sampai malam? Mak nenek pun ada masalah ni. Ubat dia tak jauh."
+    usp_1: "Minyak kayu putih dan herba panas buka saluran hidung dari luar — tanpa telan ubat"
+    usp_2: "Roll kat batang hidung, cuping hidung, dan dahi — kerja dalam minit"
+    usp_3: "Boleh guna berulang kali sepanjang hari — tiada dos, tiada kesan mengantuk"
+    body: "Resdung buat hidup susah — tidur tak lena, kerja tak fokus, nafas pun penat. Minyak Cap Burung bukan penawar kekal, tapi ia bagi relief yang betul-betul kau perlukan masa serangan datang."
+    cta: "Letak dalam poket sekarang. Bila resdung datang, kau dah ready."
+
+  # ── SET 03 — BATUK, SELESEMA & SESAK DADA ─────────────────
+  - angle_id: "A03"
+    angle_name: "Batuk, Selesema & Sakit Dada"
+    benefit_ref: "B03"
+    target_segment: "Keluarga, ibu bapa, musim hujan"
+    hook: "Satu keluarga batuk selesema, ubat mahal-mahal pun tak habis. Cuba cara nenek dulu."
+    usp_1: "Sapu dada dan belakang — haba minyak tembus masuk, longgarkan kahak, buka nafas"
+    usp_2: "Selamat untuk kanak-kanak — tiada bahan kimia keras, formula tradisional sejak 1958"
+    usp_3: "Guna malam sebelum tidur — bagi anak tidur lena tanpa batuk-batuk"
+    body: "Bila anak batuk malam-malam, kita pun tak boleh tidur. Sebelum terus lari ke farmasi, cuba Minyak Cap Burung. Sapu dada, leher, dan belakang anak. Biar haba semulajadi buat kerjanya malam tu."
+    cta: "Simpan satu kat bilik anak. Tahu-tahu je nanti kau perlukan."
+
+  # ── SET 04 — GATAL & GIGITAN SERANGGA ─────────────────────
+  - angle_id: "A04"
+    angle_name: "Gatal-Gatal & Gigitan Serangga"
+    benefit_ref: "B04"
+    target_segment: "Outdoor, kanak-kanak, kawasan tropika, nyamuk"
+    hook: "Gigit nyamuk sampai bengkak? Jangan garuk. Roll dulu."
+    usp_1: "Anti-gatal instant — cooling sensation terus padamkan rasa gatal dalam 30 saat"
+    usp_2: "Aroma herba halau nyamuk — guna sebelum keluar, bukan selepas dah kena"
+    usp_3: "Selamat untuk kulit sensitif — tiada steroid, tiada antihistamin, semulajadi"
+    body: "Malaysia ni memang negara nyamuk. Tapi tak semua orang nak sapu bahan kimia setiap hari. Minyak Cap Burung — aroma semulajadi yang nyamuk tak suka, kulit kau pun selamat."
+    cta: "Masuk dalam beg sekolah anak. Outdoor trip pun jangan lupa."
+
+  # ── SET 05 — LUKA KECIL & BENGKAK ─────────────────────────
+  - angle_id: "A05"
+    angle_name: "Luka Kecil & Surut Bengkak"
+    benefit_ref: "B05"
+    target_segment: "Ibu bapa aktif, atlet, kanak-kanak lasak"
+    hook: "Jatuh lutut, lebam main futsal, kena piring panas — first aid box kau dah cukup ke?"
+    usp_1: "Haba minyak pecahkan tumpukan darah di bawah kulit — bengkak surut lebih laju"
+    usp_2: "Antiseptik semulajadi — bersihkan sekitar luka kecil, kurangkan risiko jangkitan"
+    usp_3: "Roll-on applicator — sentuh terus tanpa kotor tangan, hygienic untuk luka"
+    body: "Bengkak dan lebam kecil memang biasa dalam kehidupan aktif. Tapi duduk tunggu surut sendiri buang masa. Roll Minyak Cap Burung, urut perlahan-lahan, biar herba masuk kerja."
+    cta: "Letak kat first aid kit kau sekarang. Murah tapi kerja."
+
+  # ── SET 06 — SAKIT GIGI & BENGKAK GUSI ────────────────────
+  - angle_id: "A06"
+    angle_name: "Sakit Gigi & Bengkak Gusi"
+    benefit_ref: "B06"
+    target_segment: "Semua umur, kanak-kanak gigi tumbuh, emergency"
+    hook: "Sakit gigi tengah malam. Klinik tutup. Ubat dah habis. Satu benda boleh tolong."
+    usp_1: "Eugenol semulajadi dalam minyak herba — numbing agent tradisional untuk gusi dan gigi"
+    usp_2: "Roll tepi pipi luar dan urut perlahan — rasa sejuk masuk, sakit kurang dalam minit"
+    usp_3: "Bukan penawar kekal — tapi cukup untuk tahan malam tu dan pergi klinik esok pagi"
+    body: "Sakit gigi memang boleh buat orang gila. Tengah malam lagi teruk. Minyak Cap Burung bukan ganti pergigian — tapi ia bagi kau relief masa paling desperate tu. Nenek dah guna cara ni lama."
+    cta: "Simpan satu dalam laci ubat. Malam tak ada warning."
+
+  # ── SET 07 — BAYI KEMBUNG PERUT ───────────────────────────
+  - angle_id: "A07"
+    angle_name: "Bayi Kembung Perut"
+    benefit_ref: "B07"
+    target_segment: "Ibu muda, ibu baru bersalin, bayi 0-24 bulan"
+    hook: "Bayi nangis tak berhenti. Kembung? Ini yang mak-mak senior selalu guna."
+    usp_1: "Urut perlahan-lahan perut bayi dengan minyak — tekanan + haba longgarkan gas dalam usus"
+    usp_2: "Formula tradisional — digunakan oleh generasi ibu Melayu selama 60+ tahun untuk bayi"
+    usp_3: "Roll-on mudah — takde risiko terlampau banyak, aplikasi tepat dan terkawal"
+    body: "Bayi kembung adalah perkara biasa, tapi dengar dia nangis sakit memang buat hati ibu luluh. Minyak Cap Burung — sapukan kat perut bayi, urut ikut arah jam, tengok dia bertenang semula."
+    cta: "Letakkan dalam beg hospital sekarang. Guna dari hari pertama balik rumah."
+
+  # ── SET 08 — URUTAN BADAN & SARAF ─────────────────────────
+  - angle_id: "A08"
+    angle_name: "Urutan Badan & Saraf"
+    benefit_ref: "B08"
+    target_segment: "Pekerja fizikal, warga emas, atlet, orang leher/bahu sakit"
+    hook: "Leher keras macam papan selepas kerja. 5 minit sebelum tidur, roll dan urut. Esok pagi rasa beza."
+    usp_1: "Minyak meresap ke dalam lapisan otot — beri haba deep-relief untuk saraf yang tegang"
+    usp_2: "Sesuai untuk urutan harian — bahu, leher, pinggang, lutut, tapak kaki"
+    usp_3: "Lebih berkesan dengan urutan tekanan sederhana — aktifkan peredaran darah, kurangkan kekakuan"
+    body: "Orang tua kita guna minyak urut tradisional sebab ia memang berkesan. Minyak Cap Burung bukan ubat farmasi — tapi panas semulajadinya masuk dalam otot, bagi badan rasa hidup balik selepas hari yang penat."
+    cta: "Satu botol untuk seluruh keluarga. Roll, urut, tidur lena."
+
+  # ── SET 09 — SAKIT KEPALA & MIGRAIN ───────────────────────
+  - angle_id: "A09"
+    angle_name: "Sakit Kepala & Migrain"
+    benefit_ref: "B09"
+    target_segment: "Pekerja office, penghidap migrain, ibu rumah tangga"
+    hook: "Kepala berdenyut masa meeting. Ubat panadol tak ada. Tapi poket selalu ada ini."
+    usp_1: "Roll kat pelipis kiri kanan + dahi — menthol dan herba sejukkan tekanan dalam kepala"
+    usp_2: "Kerja dalam 2-3 minit — lebih laju dari tunggu panadol dissolve dalam perut"
+    usp_3: "Boleh guna atas meja kerja — tak perlu air, tak perlu henti aktiviti"
+    body: "Migrain datang tanpa warning. Dan masa dia datang, semua orang sekeliling pun rasa terkesan. Minyak Cap Burung — bukan ubat keras, tapi roll kat tempat yang betul, ia bagi relief yang cukup untuk kau teruskan hari tu."
+    cta: "Masuk dalam drawer meja kerja sekarang. Sakit kepala tak tunggu masa sesuai."
+
+  # ── SET 10 — KEMBUNG PERUT & SENGGUGUT ────────────────────
+  - angle_id: "A10"
+    angle_name: "Kembung Perut & Senggugut (Haid)"
+    benefit_ref: "B10"
+    target_segment: "Wanita dewasa, remaja perempuan, senggugut bulanan"
+    hook: "Senggugut sampai baring atas lantai. Ada cara lebih cepat dari tunggu painkiller."
+    usp_1: "Roll dan urut perut bawah — haba minyak relakskan otot uterus yang berkontraksi"
+    usp_2: "Bantu kempeskan angin dalam perut — kembung berkurang, badan rasa lebih ringan"
+    usp_3: "Guna sebelum cramp teruk — preventive massage lebih efektif dari tunggu sakit dulu"
+    body: "Setiap bulan mesti datang. Setiap bulan mesti sakit. Tapi tak semua orang nak telan painkiller setiap kali. Minyak Cap Burung — cara nenek-nenek kita handle senggugut. Urut, haba, bernafas."
+    cta: "Simpan dalam almari ubat bilik. Bulan depan kau dah ready."
+
+  # ── SET 11 — MUAL & MUNTAH ─────────────────────────────────
+  - angle_id: "A11"
+    angle_name: "Mual & Muntah / Mabuk Kenderaan"
+    benefit_ref: "B11"
+    target_segment: "Ibu mengandung, mabuk kenderaan, gastrik, morning sickness"
+    hook: "Mabuk bas. Nak muntah tapi malu. Sapu bawah hidung dulu."
+    usp_1: "Hidu aroma herba kuat — override signal mual dari otak, distract sistem saraf dari rasa nak muntah"
+    usp_2: "Roll kat pergelangan tangan (titik P6) — teknik akupresur + aroma therapy gabungan"
+    usp_3: "Selamat untuk ibu mengandung — tiada bahan larangan, guna dengan bimbingan doktor"
+    body: "Mabuk kenderaan buatkan perjalanan jadi azab. Morning sickness buat ibu mengandung terseksa setiap pagi. Minyak Cap Burung — aroma herba pekat yang boleh bantu tenangkan sistem saraf dan kurangkan signal mual."
+    cta: "Simpan dalam beg tangan. Jangan tunggu dah nak muntah baru cari."
+
+  # ── SET 12 — KENCING MALAM ─────────────────────────────────
+  - angle_id: "A12"
+    angle_name: "Kencing Malam (Nocturia)"
+    benefit_ref: "B12"
+    target_segment: "Warga emas, orang dewasa 40+, masalah pundi kencing"
+    hook: "Bangun 3-4 kali malam nak kencing. Tidur tak cukup. Ada rawatan tradisional yang mungkin boleh bantu."
+    usp_1: "Lumur kawasan perut bawah dan ari-ari sebelum tidur — haba herba stimulate peredaran darah di kawasan pundi kencing"
+    usp_2: "Cara rawatan tradisional Melayu yang diwarisi — bukan klaim perubatan, tapi amalan yang dipercayai"
+    usp_3: "Tiada kesan sampingan — selamat untuk guna harian, konsisten adalah kunci"
+    body: "Kencing malam bukan semata-mata masalah tua — ia ganggu kualiti tidur, buat badan penat siang hari. Rawatan tradisional dengan minyak herba adalah amalan yang telah digunakan dalam masyarakat Melayu lama. Cuba, konsisten, pantau sendiri hasilnya."
+    cta: "Cuba 2 minggu konsisten. Roll sebelum tidur tiap malam."
+
+  # ── SET 13 — URUTAN SEBELUM & SELEPAS BERSALIN ────────────
+  - angle_id: "A13"
+    angle_name: "Urutan Sebelum & Selepas Bersalin"
+    benefit_ref: "B13"
+    target_segment: "Ibu hamil trimester 3, ibu baru bersalin"
+    hook: "Badan lenguh-lenguh masa mengandung. Badan sakit-sakit selepas bersalin. Ini yang mak-mak pakai."
+    usp_1: "Melegakan sakit otot dan sendi yang terbeban semasa mengandung — selamat untuk trimester 3"
+    usp_2: "Selepas bersalin — urutan dengan minyak Cap Burung bantu keluarkan angin, relakskan otot yang tertekan masa bersalin"
+    usp_3: "Boleh digunakan oleh bidan dan orang tua semasa urutan tradisional — formula dipercayai"
+    body: "Bersalin adalah pengalaman yang paling mencabar badan wanita. Sebelum masuk, badan dah penat mengandung. Selepas keluar, badan perlu recover. Minyak Cap Burung adalah teman setia proses ni — pegang satu dalam bag hospital."
+    cta: "Masuk dalam hospital bag kau. Guna dari hari pertama."
+
+  # ── SET 14 — PARAM & BENGKUNG ──────────────────────────────
+  - angle_id: "A14"
+    angle_name: "Param & Bengkung Postnatal"
+    benefit_ref: "B14"
+    target_segment: "Ibu selepas bersalin, bidan, rawatan pantang 44 hari"
+    hook: "Nak kempiskan perut selepas bersalin? Minyak param adalah asas yang selalu dilupa."
+    usp_1: "Membantu mengecutkan rahim — haba minyak tembus bantu proses involution uterus semulajadi"
+    usp_2: "Wajib guna sebelum bengkung — minyak jadikan kulit lebih reseptif, bengkung lebih berkesan"
+    usp_3: "Digunakan dalam rawatan param tradisional Melayu — formula yang bidan kenal dan amalkan"
+    body: "Pantang 44 hari adalah pelaburan untuk kesihatan jangka panjang ibu. Dan param adalah bahagian yang paling penting. Minyak Cap Burung — lumur seluruh perut, pinggang dan punggung sebelum bengkung. Biar haba herba buat kerjanya dulu."
+    cta: "Order sebelum due date. Wajib dalam kit pantang kau."
+
+  # ── SET 15 — TRAVEL ESSENTIAL ──────────────────────────────
+  - angle_id: "A15"
+    angle_name: "Travel Essential / Simpanan Poket"
+    benefit_ref: "MULTI"
+    target_segment: "Traveller, penumpang bas/kapal terbang, haji/umrah"
+    hook: "Satu botol kecil. 14 kegunaan. Bawak dalam beg dah settle separuh masalah perjalanan."
+    usp_1: "Saiz travel-friendly — 30ML, muat dalam poket seluar, beg tangan, pouch haji"
+    usp_2: "Cover semua emergency asas: sakit kepala, mabuk, kembung, gigitan, luka kecil"
+    usp_3: "Tiada had liquid untuk penerbangan domestik — bawak naik kapal terbang tanpa masalah"
+    body: "Bila travel, kita tak boleh bawa semua ubat. Tapi satu Minyak Cap Burung boleh cover banyak situasi. Mabuk dalam bas? Roll. Kepala pening sebab cuaca? Roll. Gigit nyamuk kat hotel? Roll."
+    cta: "Satu untuk rumah, satu untuk beg travel. Jangan keluar rumah tanpa."
+
+  # ── SET 16 — WARISAN KELUARGA / HERITAGE ──────────────────
+  - angle_id: "A16"
+    angle_name: "Warisan 1958 / Heritage Trust"
+    benefit_ref: "MULTI"
+    target_segment: "Orang Melayu semua umur, nostalgia, kepercayaan warisan"
+    hook: "Arwah nenek kau simpan ni dalam laci dia. Mak kau pun ada. Sekarang giliran kau."
+    usp_1: "Sejak 1958 — bukan trend baru, bukan viral seminggu. 60+ tahun ia berkesan untuk keluarga Melayu"
+    usp_2: "Formula turun-temurun — bukan diubah ikut trend, tapi dikekalkan sebab ia memang kerja"
+    usp_3: "Kepercayaan yang tak boleh dibeli dengan iklan — ia dibina satu generasi ke satu generasi"
+    body: "Ada benda yang tak perlu kita proof dengan kajian saintifik sebab ia dah proven oleh masa. Minyak Cap Burung adalah antara warisan rumah tangga Melayu yang survive 3 generasi. Bukan kerana pemasaran. Kerana ia berkesan."
+    cta: "Beli untuk kau. Beli untuk mak. Teruskan tradisi keluarga."
+
+  # ── SET 17 — SATU BOTOL BANYAK KEGUNAAN ───────────────────
+  - angle_id: "A17"
+    angle_name: "Multi-Fungsi / Value Proposition"
+    benefit_ref: "MULTI"
+    target_segment: "Pengguna value-conscious, keluarga, budget-savvy"
+    hook: "Kalau nak beli ubat sakit kepala, ubat kembung, ubat gatal, ubat mual berasingan — berapa dah habis? Ini satu untuk semua."
+    usp_1: "14 kegunaan dalam satu botol 30ML — jimat ruang, jimat duit, jimat masa"
+    usp_2: "Ganti 5-6 jenis ubat luar yang selalu habis — satu restock, semua covered"
+    usp_3: "Harga unit rendah berbanding nilai yang diberi — ROI tertinggi dalam first aid kit kau"
+    body: "Kotak ubat rumah yang lengkap tak semestinya penuh dengan kotak-kotak besar. Kadang-kadang satu botol kecil yang betul cover lebih banyak situasi dari 10 produk berbeza. Minyak Cap Burung adalah botol kecil itu."
+    cta: "Kira balik berapa kau belanja ubat-ubatan sebulan. Lepas tu tengok harga ni."
+
+  # ── SET 18 — IBU BERSALIN / POSTNATAL RECOVERY ────────────
+  - angle_id: "A18"
+    angle_name: "Postnatal Recovery Comprehensive"
+    benefit_ref: "B13+B14"
+    target_segment: "Ibu baru bersalin 0-3 bulan, komuniti ibu online"
+    hook: "Selepas bersalin, badan macam dah perang. Ini cara mak-mak zaman dulu recover tanpa 10 jenis supplement."
+    usp_1: "3 in 1 untuk postnatal: urutan badan + param perut + bengkung — semua guna Minyak Cap Burung"
+    usp_2: "Selamat untuk ibu menyusu — formula herba semulajadi tanpa bahan sintetik berbahaya"
+    usp_3: "Jimat kos pantang — satu botol cover urutan harian selama tempoh pantang penuh"
+    body: "Pantang bukan saja tentang rehat. Ia tentang recovery aktif — urut, param, bengkung setiap hari. Minyak Cap Burung adalah asas untuk semua tu. Ibu-ibu yang pantang dengan betul cakap beza dia memang ketara."
+    cta: "Masuk dalam wishlist pantang kau sekarang. Share dengan mak dan ibu mertua."
+
+  # ── SET 19 — KANAK-KANAK & BABY CARE ─────────────────────
+  - angle_id: "A19"
+    angle_name: "Baby & Kids Care"
+    benefit_ref: "B03+B07"
+    target_segment: "Ibu bapa anak bawah 12 tahun, generasi muda ibu bapa"
+    hook: "Kau nak sapu produk apa kat anak kau yang tak tau bahan-bahannya? Ini nenek kau dah guna 60 tahun."
+    usp_1: "Formula tradisional yang generasi demi generasi guna untuk kanak-kanak — rekod keselamatan 60+ tahun"
+    usp_2: "Cover kegunaan biasa untuk kanak-kanak: selesema, kembung, gatal gigitan, lelah"
+    usp_3: "Orang tua dan mak mertua confirm faham — tak payah argue pasal produk apa nak guna"
+    body: "Ibu bapa muda sekarang pun ada dilema — produk moden atau cara tradisional? Minyak Cap Burung dah prove dirinya. Kalau ibu bapa kita besarkan kita dengan ini, dan kita sehat, ada sesuatu yang memang works."
+    cta: "Tanya mak kau dulu. Lepas tu order satu untuk rumah kau sendiri."
+
+  # ── SET 20 — WANITA AKTIF / BUSY MOM ─────────────────────
+  - angle_id: "A20"
+    angle_name: "Wanita Aktif / Busy Mom"
+    benefit_ref: "MULTI"
+    target_segment: "Ibu bekerja, wanita aktif 25-45 tahun, superwomen"
+    hook: "Masak, kerja, jaga anak, jaga mak — badan kau penat tapi kau tak boleh berhenti. Setidaknya ada yang boleh bantu."
+    usp_1: "Cover 5 masalah biasa wanita aktif: stres, sakit kepala, senggugut, kembung, badan lenguh"
+    usp_2: "Guna dalam masa 30 saat — tak perlu henti kerja, tak perlu minum ubat, terus sambung"
+    usp_3: "Muat dalam handbag — sentiasa ada bila diperlukan, tak perlu storage besar"
+    body: "Wanita Malaysia memang kuat. Tapi kuat pun ada hadnya. Bila badan bagi signal — kepala pening, perut kembung, bahu keras — jangan ignore. Roll Minyak Cap Burung, ambil nafas dalam, teruskan. Kau boleh."
+    cta: "Satu untuk dalam handbag. Satu untuk laci meja kerja. Jangan kehabisan."
+
+# ─────────────────────────────────────────────
+# VISUAL IDENTITY (populated after Mode A)
+# ─────────────────────────────────────────────
+subject_dna: null
+last_source_image_handoff: null
+
+# ─────────────────────────────────────────────
+# RECOMMENDED AVATAR ARCHETYPES FOR THIS PRODUCT
+# ─────────────────────────────────────────────
+recommended_archetypes:
+  primary:
+    - avatar_id: "MALAY_FEMALE_YOUNG_01"
+      reason: "Core demographic — Malay female ibu muda, senggugut, pantang, baby care angles"
+    - avatar_id: "MALAY_MALE_YOUNG_01"
+      reason: "Male angles — urutan badan, sakit kepala, outdoor/travel"
+  secondary:
+    - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
+      reason: "Cross-market MY+ID — similar heritage product positioning"
+    - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
+      reason: "Migrant demographic — traditional remedy familiarity"
+
+# ─────────────────────────────────────────────
+# RECOMMENDED NAMED AVATARS (bosmax-subject-dna.md)
+# ─────────────────────────────────────────────
+recommended_named_avatars:
+  - avatar: "SARA"
+    angles: ["A01", "A02", "A09", "A10", "A17"]
+    reason: "Trustworthy advisor — soft sell, informational angles"
+  - avatar: "JULIA"
+    angles: ["A13", "A14", "A18"]
+    reason: "Professional Malay woman — postnatal / bersalin angles"
+  - avatar: "BELLA"
+    angles: ["A04", "A15", "A19", "A20"]
+    reason: "Gen-Z energy — travel, multi-use, youthful lifestyle angles"
+  - avatar: "MAK_TOK"
+    angles: ["A16", "A07", "A08"]
+    reason: "Heritage authority — warisan, urutan tradisional, baby care"
+  - avatar: "AZMAN"
+    angles: ["A05", "A08", "A15"]
+    reason: "Active male — luka, urutan badan, travel angles"
+
+# ─────────────────────────────────────────────
+# METADATA
+# ─────────────────────────────────────────────
+registered_by: "farisdatosheikh@gmail.com"
+registered_date: "2026-05-29"
+last_updated: "2026-05-29"
+notes: |
+  Produk tradisional Melayu sejak 1958. 30ML square glass roll-on.
+  14 manfaat rasmi dari label produk.
+  20 copywriting angles disusun oleh BOSMAX (A01-A20).
+  Angles A15-A20 adalah creative expansion dari benefit asas.
+  Fastmoss data belum diisi — update selepas lookup.
+  TikTok Shop listing belum aktif — update product_id dan shop_name apabila daftar.

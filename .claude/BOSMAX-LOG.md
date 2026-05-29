@@ -325,4 +325,49 @@ tiktok_trendy, shopee_lazada_clean
 
 ---
 
+### Session 007 — 2026-05-29
+**Status:** PRODUCT REGISTRATION — CAP_BURUNG_MINYAK
+**Active Mode:** REG
+**Milestone:** Minyak Cap Burung didaftarkan dalam product registry dengan 20 copywriting angles.
+
+**Product registered:**
+
+| Field | Value |
+|-------|-------|
+| Product ID | CAP_BURUNG_MINYAK |
+| Product Name | Minyak Cap Burung |
+| Brand | Cap Burung |
+| Heritage | Sejak 1958 |
+| Category | Health & Wellness — Traditional Remedy |
+| Variant | 30ML Square Glass Roll-On |
+| Scale Anchor | "EXACTLY standard roll-on deodorant size, fit snugly in closed palm" |
+| Benefits count | 14 (dari label produk) |
+| Copywriting angles | 20 sets (A01–A20) |
+
+**Copywriting angles breakdown:**
+
+| Range | Coverage |
+|-------|----------|
+| A01–A14 | 14 angles terus dari 14 manfaat label produk |
+| A15 | Travel Essential (multi-benefit convenience angle) |
+| A16 | Warisan 1958 / Heritage Trust |
+| A17 | Satu Botol Banyak Kegunaan (value proposition) |
+| A18 | Postnatal Recovery Comprehensive |
+| A19 | Baby & Kids Care |
+| A20 | Wanita Aktif / Busy Mom |
+
+**Avatar recommendations disertakan dalam YAML:**
+- Primary archetypes: MALAY_FEMALE_YOUNG_01, MALAY_MALE_YOUNG_01
+- Named avatars: SARA (informational), JULIA (postnatal), BELLA (lifestyle), MAK_TOK (heritage), AZMAN (active male)
+
+**Files created:**
+- `products/CAP_BURUNG_MINYAK.yaml` — full product registry + 20 copywriting sets
+
+**Pending (kemaskini bila sedia):**
+- TikTok Shop product_id dan shop_name
+- Fastmoss data (avg_price, orders, revenue)
+- subject_dna dan source_image_handoff (selepas Mode A)
+
+---
+
 *BOSMAX v11.2 | Log updated: 2026-05-29*
