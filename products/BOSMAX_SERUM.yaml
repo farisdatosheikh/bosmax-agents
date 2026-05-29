@@ -14,9 +14,14 @@ tiktok_product_id: ""     # TODO: fill in after listing
 fastmoss_product_name: "" # TODO: fill in exact Fastmoss product name when listed
 
 # CLASSIFICATION
-category: "Beauty & Personal Care"
-sub_category: "Skincare"
-raw_category: "Beauty & Personal Care-Skincare"
+category: "Health & Wellness"
+sub_category: "Men's Health / Vitaliti Lelaki"
+raw_category: "Health-Men's Health-Minyak Urut Lelaki"
+product_type: "Minyak urutan lelaki untuk bahagian sensitif — meningkatkan pengedaran darah"
+compliance_class: "STEALTH_METAPHOR_REQUIRED"
+silo: "STEALTH"
+recommended_formula: "SAVAGE_HPAS | PAS | HSO"
+recommended_avatars: ["RIZAL", "AZMAN"]
 product_status: "Available"
 
 # MARKET DATA — to be auto-populated by bosmax-product-intelligence on Fastmoss lookup
