@@ -237,6 +237,112 @@ Festive / Raya / CNY / Deepavali:
 
 ---
 
+## SENIBINA PROMPT — ENGINE-SPECIFIC ARCHITECTURE
+### Authority: manual_senibina_prompt_v1.pdf (MFR Marketing Resources SOP)
+
+---
+
+### A. NANO BANANA PRO / IMAGEN 3 — Reference-Guided Mode (Image Generation)
+
+**Method:** Penjanaan berpandukan imej rujukan menggunakan Delta Instruction.
+Modifikasi setempat tanpa menjejaskan integriti struktur global.
+
+**Trigger:** Bila engine = NANO_BANANA_PRO atau IMAGEN_3
+
+**Structure Format:**
+```
+[REFERENCE_IMAGE_LOCK] → [LOCAL_EDIT_DELTA] → [TYPOGRAPHY_AND_BRANDING_LOCK] →
+[SPATIAL_MATH_AND_PROPORTIONS] → [OUTPUT_SPECIFICATION]
+```
+
+**Tagged Block Definitions:**
+
+```
+[REFERENCE_IMAGE_LOCK]
+Using the uploaded reference image as the absolute foundation for subject identity.
+Preserve 100% of the facial structure, facial features, and natural skin tone of
+the avatar. Maintain the exact physical shape and material properties of the product.
+
+[LOCAL_EDIT_DELTA]
+Modify ONLY: [clothing] and/or [background environment].
+[wardrobe change] — reference Ref 2 mannequin image for exact outfit.
+[scene change] — replace background with [scene descriptor from Scene Registry].
+Preserve: face, skin tone, hair, body proportions, product identity.
+
+[TYPOGRAPHY_AND_BRANDING_LOCK]
+The text and brand markings on the product label must remain perfectly legible,
+crisp, and high-fidelity. Enforce exact typographic preservation from the reference
+image with zero character morphing or text distortion.
+
+[SPATIAL_MATH_AND_PROPORTIONS]
+Maintain strict [1:4] product-to-hand ratio to prevent enlargement hallucinations.
+[physics_class_descriptor from subject_dna] — pinch grip at base.
+Enforce 2mm visual air gap between fingertips and main printed label text.
+Boundary between organic skin texture and product surface must remain perfectly
+sharp with zero texture bleeding, zero warping, zero edge-smudging.
+
+[OUTPUT_SPECIFICATION]
+Studio-quality commercial photography, shallow depth of field,
+sharp focus on avatar eyes and product label,
+4K resolution fidelity, clean digital rendering without synthetic artifacts,
+[platform_format from Platform Registry — e.g., TikTok 9:16].
+```
+
+**3-Asset Composite Workflow (Avatar + Wardrobe + Product):**
+```
+Ref 1 = Raw Avatar image    → [REFERENCE_IMAGE_LOCK] — identity anchor
+Ref 2 = Ghost Mannequin     → [LOCAL_EDIT_DELTA] — wardrobe reference
+Ref 3 = Product isolated    → [TYPOGRAPHY_AND_BRANDING_LOCK] + [SPATIAL_MATH]
+
+Usage in prompt:
+  [REFERENCE_IMAGE_LOCK]: Lock Ref 1 facial identity.
+  [LOCAL_EDIT_DELTA]: Apply outfit from Ref 2 as wardrobe delta.
+  [TYPOGRAPHY_AND_BRANDING_LOCK]: Lock Ref 3 product label.
+  [SPATIAL_MATH]: Inject scale_anchor_descriptor from products/*.yaml.
+```
+
+**⚠️ AMARAN TEKNIKAL — NANO BANANA:**
+- Sensitive kepada trailing whitespaces → Fetch Deadlock
+- Bersihkan semua whitespace sebelum paste ke konsol
+- image_guidance_scale WAJIB: 0.75–0.85 (JANGAN biarkan default 0.50)
+
+---
+
+### B. Ghost Mannequin Prompt — Wardrobe Asset Generation
+
+**Purpose:** Generate wardrobe asset untuk digunakan sebagai Ref 2 dalam 3-asset composite.
+**Engine:** NANO_BANANA_PRO atau IMAGEN_3 (image only)
+
+**Mannequin Prompt Template:**
+```
+Ghost mannequin fashion photography, full body front view,
+[outfit descriptor dari wardrobe registry atau user input].
+Invisible mannequin effect — garment holds full 3D human body shape
+with natural drape and fabric movement.
+Clean pure white background, soft diffused studio lighting,
+no shadows, no visible mannequin parts, no face, no hands,
+high resolution product photography, e-commerce ready.
+```
+
+**Registry storage:** Selepas ghost mannequin dihasilkan, simpan dalam:
+`wardrobes/renders/[WARDROBE_ID].jpg`
+Update `avatars/[AVATAR_ID].yaml` → `wardrobe_catalogue[].mannequin_image_ref`
+
+---
+
+### C. PRE-RENDER CHECKLIST (Wajib sebelum eksekusi)
+
+| No | Audit Point | Standard | Failsafe |
+|----|-------------|---------|---------|
+| 1 | image_guidance_scale | 0.75–0.85 | Laraskan manual, jangan auto/0.50 |
+| 2 | Spatial Math present | '2mm air gap' + '1:4 ratio' dalam prompt | Inject semula [SPATIAL_MATH] block |
+| 3 | Trailing whitespace | Tiada whitespace di hujung baris | Text stripper sebelum paste |
+| 4 | Edge boundary | Kulit tangan vs produk — sharp | Inject 'rigid-body physics constraint' |
+| 5 | Typography | Label teks tidak swimming/morph | Switch ke F2V atau naikkan frame_influence ke 0.90 |
+| 6 | scale_anchor_descriptor | Loaded dari products/*.yaml | ABORT jika null + TikTok platform |
+
+---
+
 ## ASSEMBLY PROTOCOL — IKUT SEQUENCE INI
 
 **STEP 1 — RECEIVE:** Ingest subject_dna JSON dan prose dari bosmax-subject-dna.
@@ -256,11 +362,26 @@ Confirm produk TIDAK floating.
 **STEP 5 — PLATFORM COMPLIANCE:** Apply safe zone, resolution, format, file size.
 Confirm sRGB. Confirm TIADA HDR.
 
-**STEP 6 — ASSEMBLE PROMPT:** Merge subject_dna prose + scene + lighting +
-camera + product integration menjadi SATU continuous English Master Image Prompt paragraph.
-TIADA fragmented lists. Structured prose sahaja.
-TIADA buzzwords: photorealistic, stunning, beautiful, amazing.
-Technical, material-specific language throughout.
+**STEP 6 — ASSEMBLE PROMPT:** Pilih format berdasarkan engine dan asset availability:
+
+```
+CASE 1 — T2V / No reference images (NANO_BANANA / IMAGEN_3 tanpa Ref):
+  → Merge subject_dna prose + scene + lighting + camera + product integration
+  → SATU continuous English Master Image Prompt paragraph
+  → TIADA fragmented lists. Structured prose. TIADA buzzwords.
+
+CASE 2 — Reference-Guided Mode (ada reference image — DIUTAMAKAN):
+  → Apply SENIBINA PROMPT tagged block architecture (section atas)
+  → [REFERENCE_IMAGE_LOCK] → [LOCAL_EDIT_DELTA] → [TYPOGRAPHY_AND_BRANDING_LOCK]
+  → [SPATIAL_MATH_AND_PROPORTIONS] → [OUTPUT_SPECIFICATION]
+  → Inject scale_anchor_descriptor dari products/*.yaml ke [SPATIAL_MATH] block
+  → Jalankan PRE-RENDER CHECKLIST sebelum output
+
+CASE 3 — 3-Asset Composite (Raw Avatar + Ghost Mannequin + Product):
+  → Announce kepada user: "3 reference images diperlukan: Ref 1 (avatar), Ref 2 (mannequin), Ref 3 (product)"
+  → Apply senibina: Ref 1 → [REFERENCE_IMAGE_LOCK], Ref 2 → [LOCAL_EDIT_DELTA], Ref 3 → [TYPOGRAPHY_AND_BRANDING_LOCK]
+  → Inject scale_anchor_descriptor ke [SPATIAL_MATH] block
+```
 
 **STEP 7 — BUILD JSON HANDOFF:** Assemble semua fields ke dalam source_image_handoff.
 
