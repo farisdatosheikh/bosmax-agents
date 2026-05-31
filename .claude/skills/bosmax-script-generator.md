@@ -818,4 +818,101 @@ JANGAN ada COORD mapping, Z_ZONE, atau typography instructions.
 ## TOKEN SUPPRESSION
 
 **JANGAN output tokens ini dalam final prose:**
-CLASS_A/B/C/D/E/GENERIC | CA
+CLASS_A/B/C/D/E/GENERIC | CAM_xxx | CTX_xxx | SHOT_xxx | SAVAGE_xxx |
+PREDATOR_CORE | AUTHENTIC_WHISPER | PHYSICS_LOCK_MANDATORY |
+KINEMATIC_DISENTANGLEMENT | PRECISION_PINCH | UGC_IPHONE_RAW | CINEMATIC_PRO
+
+**JANGAN output character names:**
+NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | CHEF_DANIAL
+
+---
+
+## OUTPUT CONTRACT
+
+```
+ENGINE: [engine_id] | DURATION: [Xs] | SUBMODE: [formula] |
+PLATFORM: [target] | CAMERA STYLE: [prose description]
+[BLOCK [N] OF [TOTAL] — omit line jika single-block]
+[CONTINUES FROM BLOCK N-1 — omit line jika Block 1 atau single-block]
+
+---
+SECTION 1: Biometric Anchor DNA
+[content]
+
+---
+SECTION 2: Lighting & Scene Physics
+[content]
+
+---
+SECTION 3: Camera & Framing
+[content]
+
+---
+SECTION 4: Visual Action
+[content]
+
+---
+SECTION 5: Product Physics
+[content]
+
+---
+SECTION 6: Dialogue
+[content]
+WPS AUDIT: Hook [x.x] | Body [x.x] | CTA [x.x]
+
+---
+SECTION 7: Audio Tone
+[content]
+
+---
+SECTION 8: Temporal Logic
+I=[x]s | scenes=[x] | lang=[BM/EN/ID/ZH/HI/BN/AR] | wps_optimum=[x] | wps_safe_max=[x] | wps_ceiling=[x]
+dialog_budget=[x]w (Safe Max) | target=[x]w/scene | max=[x]w/scene | kill=[x]w/scene
+[content]
+
+---
+SECTION 9: No Overlay Declaration
+NO_OVERLAY — Text overlay handled manually in post-production (CapCut).
+Video engine renders clean footage only. No burned-in text.
+```
+
+---
+
+## FAIL-CLOSED RULES
+
+### HARD BLOCK — ABORT (mandatory user input tiada)
+- ABORT jika engine + duration pairing invalid (sistem tak boleh teka intent user)
+- ABORT jika GROK dipilih dengan submode NANO BANANA
+- ABORT jika GOOGLE_FLOW Frames/Ingredients/Image dipilih tanpa uploaded reference image
+- ABORT jika GOOGLE_FLOW F2V dipilih tanpa KEDUA-DUA start frame dan end frame
+- ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
+- ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
+- JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
+- JANGAN hasilkan image prompts (kecuali sebagai bahagian GOOGLE_FLOW block)
+- JANGAN hasilkan product records
+
+### AUTO-HEAL — Fix dan teruskan (jangan ABORT)
+- Section 6 ada visual noun → remove noun, rephrase dialogue, log, teruskan
+- Section 9 ada overlay text dijana → buang semua overlay content, output "NO_OVERLAY — post-production CapCut", log, teruskan
+- WPS exceed wps_safe_max (bukan ceiling) → trim dialogue ke dalam Safe Max budget, recalculate, log, teruskan
+  [BM: > 2.5 | EN: > 3.0 | ID: > 2.6 | ZH: > 2.6 | HI/BN: > 2.4 | AR: > 2.2]
+- WPS exceed wps_ceiling (hard ceiling) → rebuild Section 6 sepenuhnya ikut optimum WPS, log, teruskan
+  [BM: > 2.8 | EN: > 3.3 | ID: > 2.9 | ZH: > 2.9 | HI/BN: > 2.7 | AR: > 2.5]
+- Section count ≠ 9 (bukan GOOGLE_FLOW) → rebuild missing/remove extra, log, teruskan
+- Forbidden token dalam prose → replace dengan descriptor, log, teruskan
+- Character name dalam prose → replace dengan biometric DNA, log, teruskan
+- MAK_TOK + SAVAGE_HPAS conflict → swap formula ke HSO atau PAS, log, teruskan
+- STEALTH/DIRECT mix dalam satu script → enforce dominant silo, rephrase, log, teruskan
+
+### Multi-Block Auto-Heal (v11.2 — aktif apabila multi_block_mode = YES)
+- Block 2+ S1 biometric drift → re-anchor ke Block 1 S1 biometrics verbatim, log, teruskan
+- Block 2+ S2 introduce scene element baru → remove element, revert, log, teruskan
+- Block 2+ S6 ada re-introduction phrase → remove phrase, sambung dari carry-over, log, teruskan
+- Block 2+ S6 tidak menyambung dari carry-over → prepend carry-over anchor, log, teruskan
+- S8 tiada "BLOCK [N] OF [TOTAL]" declaration → inject declaration, log, teruskan
+- S8 tiada "VISUAL END STATE:" (bukan final block) → extract dan declare dari S4, log, teruskan
+- S8 tiada "LAST SPOKEN WORDS:" (bukan final block) → extract last line dari S6, log, teruskan
+- Block 2+ generate tanpa visual_start_state → extract dari Block N-1 S8, inject, log, teruskan
+- Block 2+ generate tanpa dialogue_carry_over → extract dari Block N-1 S8, inject, log, teruskan
+- GROK blocks mixed duration → recalculate block math (I value) per block berasingan, log, teruskan
+- JANGAN restart story dalam Block 2+ — mesti sambung — auto-heal: remove restart, sambung semula

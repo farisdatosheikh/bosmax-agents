@@ -544,4 +544,3 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 
 **Selepas semua sets selesai: emit HEAL REPORT (jika ada isu yang di-heal).**
 **Format: lihat AUTO-HEAL REGISTRY dalam bosmax-compliance-gate.md.**
-               

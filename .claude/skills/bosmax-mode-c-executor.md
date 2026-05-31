@@ -457,4 +457,5 @@ Video engine renders clean footage only. No burned-in text.
 - JANGAN pilih engine duration di luar allowed list
 - JANGAN pilih GROK dengan submode NANO BANANA
 - JANGAN output kurang atau lebih dari 9 sections (KECUALI GOOGLE_FLOW — guna block architecture)
-- JANGAN skip pre-render test untuk GOOGLE_FLOW — wajib 3s / 90 
+- JANGAN skip pre-render test untuk GOOGLE_FLOW — wajib 3s / 90 frames dahulu
+- JANGAN allow visual DNA drift across blocks — source_image_handoff adalah authority mutlak semua blocks

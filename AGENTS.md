@@ -1,13 +1,10 @@
-# BOSMAX v11.3 — CLAUDE.md
+# BOSMAX v11.2 — AGENTS.md
 # Sistem: BOSMAX Command Centre
-# Versi: v11.3 | Schema: GRAND_MASTER_SKELETON
+# Versi: v11.2 | Schema: GRAND_MASTER_SKELETON
 # Authority: SUPREME_SYSTEMS_ARCHITECT
-# Format: Claude Cowork Skill Orchestrator
+# Format: Codex Cowork Skill Orchestrator
 # Changelog v11.2: Added PRE-FLIGHT PROTOCOL, ENGINE CONSTRAINT TABLE (full),
 #                  IMPLICIT REQUIREMENT DETECTION, MULTI-BLOCK PROTOCOL
-# Changelog v11.3: Added ROUTE D (Analysis Intelligence) — bosmax-image-analyst +
-#                  bosmax-video-analyst. A→B Concept Inheritance with 3-phase
-#                  processing, silo/compliance/scene compatibility checks.
 
 ---
 
@@ -187,9 +184,6 @@ Sebelum route, BOSMAX MESTI detect hidden requirements ini:
 | "Google Flow INGREDIENTS" | Tiga gambar required | Confirm upload |
 | "10 set / bulk prompts" | BULK route → product_record required | Check registry |
 | duration dalam detik (e.g. "saat") | Tukar kepada engine block math | Validate |
-| upload gambar + "analisa/tiru/reverse" | Route D → bosmax-image-analyst | 3-phase A→B |
-| upload video/frames + "analisa/tiru/reverse" | Route D → bosmax-video-analyst | 3-phase A→B |
-| "buat macam ni" + image/video | Route D → detect input type, route analyst | A→B process |
 
 ### STEP 5 — ISSUE WORK ORDER
 
@@ -279,38 +273,6 @@ subject_dna, context_environment, lighting_camera.
 3. Pass output ke `bosmax-compliance-gate`
 4. Output kepada user HANYA selepas VERIFICATION PASSED
 
-### ROUTE D — Analysis Intelligence (v11.3)
-**Trigger:** User upload gambar ATAU video + keyword analisis:
-`analisa` | `analisis` | `analysis` | `reverse` | `tiru konsep` |
-`copy konsep` | `buat macam ni` | `buat macam video ni`
-
-**PRINSIP UTAMA — A→B SEPARATION:**
-- Concept DNA (visual/structure) → BORROW dari input A
-- Content DNA (product/copy) → REPLACE sepenuhnya dengan Product B
-- TIADA copy direct dari A ke output B
-- TIADA brand/product identity dari A dalam output B
-
-**Action (jika input = GAMBAR):**
-1. Appoint `bosmax-image-analyst`
-2. Image analyst jalankan 3-phase: Deconstruct → Compatibility → Synthesis
-3. Pass output ke `bosmax-scene-engine` (poster) dan/atau `bosmax-mode-c-executor` (video)
-4. Pass ke `bosmax-compliance-gate`
-5. Output kepada user HANYA selepas VERIFICATION PASSED
-
-**Action (jika input = VIDEO / FRAMES):**
-1. Appoint `bosmax-video-analyst`
-2. Video analyst jalankan 3-phase: Deconstruct → Compatibility → Synthesis
-3. Video analyst akan offer: gambar dulu (→ `bosmax-image-analyst`) atau terus video
-4. Pass ke `bosmax-script-generator` dengan work order dari analyst
-5. Pass ke `bosmax-compliance-gate`
-6. Output kepada user HANYA selepas VERIFICATION PASSED
-
-**COMPATIBILITY CHECKS (wajib dalam Route D):**
-- Silo compatibility (A vs B) → auto-adapt jika conflict
-- Compliance compatibility (inject B's compliance_class)
-- Scene/context compatibility (swap scene jika incompatible, keep mood/lighting)
-- Formula compatibility (video) → auto-swap SAVAGE_HPAS jika B = DIRECT silo
-
 ### ROUTE AMBIGUOUS
 **Trigger:** Request tidak jelas.
 **Action:** Tanya SATU soalan sahaja. Stop. Jangan teka. Jangan proceed.
@@ -347,9 +309,7 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ║ ENGINE ID        ║ MAX/BLOCK║ ALLOWED DURATIONS            ║ NOTES                        ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ VEO_3_1_LITE     ║ 8s       ║ 8s SAHAJA per block          ║ MULTI-BLOCK jika target > 8s ║
-║                  ║          ║ (16s = 2 blocks, 24s = 3)    ║ API=durationSeconds:8 tapi   ║
-║                  ║          ║                              ║ render actual=7s. Dialog     ║
-║                  ║          ║                              ║ budget: guna 7s bukan 8s.    ║
+║                  ║          ║ (16s = 2 blocks, 24s = 3)    ║ Standard 9-section per block ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ VEO_3_1          ║ 56s      ║ 8,16,24,32,40,48,56s         ║ Standard 9-section script    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
@@ -369,8 +329,8 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ GOOGLE_FLOW      ║ 60s      ║ T2V/IMAGE: up to 60s         ║ BUKAN 9-section — block arch ║
 ║                  ║          ║ FRAMES/INGREDIENTS: anchor   ║ Pre-render test: 3s/90 frames║
-║                  ║          ║ based                        ║ image_guidance_scale TIDAK   ║
-║                  ║          ║                              ║ WUJUD dalam API — UI only    ║
+║                  ║          ║ based                        ║ image_guidance_scale: 0.75-  ║
+║                  ║          ║                              ║ 0.85 WAJIB declared          ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ NANO_BANANA_PRO  ║ IMAGE    ║ N/A (image only)             ║ Route ke bosmax-scene-engine ║
 ║ IMAGEN_3         ║ IMAGE    ║ N/A (image only)             ║ Route ke bosmax-scene-engine ║
@@ -485,7 +445,7 @@ User → BOSMAX [PRE-FLIGHT] → [Mode A pipeline] → [source_image_handoff sav
 - JANGAN assume product knowledge — MESTI jalankan bosmax-product-intelligence lookup (STEP 0) bila ada product mention
 - JANGAN generate content tanpa scale_anchor_descriptor confirmed (platform TikTok)
 - JANGAN skip TIER 1 registry lookup — products/*.yaml adalah authority utama
-- JANGAN hardcode product data dalam CLAUDE.md — semua data product dalam products/*.yaml
+- JANGAN hardcode product data dalam AGENTS.md — semua data product dalam products/*.yaml
 - JIKA scale_anchor_descriptor null + platform TikTok → WARN user, tunggu input
 - JIKA product baru (tiada dalam TIER 1 dan TIER 2) → offer registration selepas content selesai
 
@@ -493,7 +453,7 @@ User → BOSMAX [PRE-FLIGHT] → [Mode A pipeline] → [source_image_handoff sav
 
 ## NOTA PENTING UNTUK COWORK
 
-Skill files berikut MESTI ada dalam `.claude/skills/` folder:
+Skill files berikut MESTI ada dalam `.Codex/skills/` folder:
 1. `bosmax-compliance-gate.md`
 2. `bosmax-subject-dna.md`
 3. `bosmax-scene-engine.md`
@@ -503,10 +463,8 @@ Skill files berikut MESTI ada dalam `.claude/skills/` folder:
 7. `bosmax-bulk-generator.md`
 8. `bosmax-requirement-analyst.md`
 9. `bosmax-product-intelligence.md` ← (v11.2 Fix G — Product Librarian)
-10. `bosmax-image-analyst.md`       ← (v11.3 — Route D Image Reverse Engineering)
-11. `bosmax-video-analyst.md`       ← (v11.3 — Route D Video Reverse Engineering)
 
-Memory file: `BOSMAX-LOG.md` dalam `.claude/` folder root.
+Memory file: `BOSMAX-LOG.md` dalam `.Codex/` folder root.
 
 Product Registry: `products/` folder dalam project root.
 - `products/_SCHEMA.yaml` — template dan schema reference
@@ -517,22 +475,6 @@ Product Registry: `products/` folder dalam project root.
 ### EXECUTION ORDER v11.2 (dengan Product Intelligence)
 ```
 Request masuk → [STEP 0: bosmax-product-intelligence] → PRE-FLIGHT PROTOCOL → WORK ORDER issued → Route ke skill → Compliance Gate → User
-```
-
-### EXECUTION ORDER v11.3 (Route D — Analysis Intelligence)
-```
-Image upload + trigger → [STEP 0: detect product mention jika ada] → Route D → bosmax-image-analyst [3-phase] → bosmax-scene-engine → Compliance Gate → User
-
-Video upload + trigger → [STEP 0: detect product mention jika ada] → Route D → bosmax-video-analyst [3-phase] → [optional: bosmax-image-analyst] → bosmax-script-generator → Compliance Gate → User
-```
-
-### A→B PIPELINE (v11.3 — Concept Inheritance)
-```
-A→A (same product rebuild):
-User upload ref image/video → analyst deconstruct → same product data → rebuild dengan original copy
-
-A→B (concept transfer ke produk lain):
-User upload ref (A) → analyst deconstruct → user identify Product B → 3 compatibility checks → generate new Content DNA → rebuild dengan B's identity + original copy
 ```
 PRE-FLIGHT adalah tanggungjawab BOSMAX orchestrator (fail ini).
 PRE-FLIGHT MESTI selesai sebelum mana-mana skill diappoint.

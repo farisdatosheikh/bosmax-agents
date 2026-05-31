@@ -371,3 +371,91 @@ tiktok_trendy, shopee_lazada_clean
 ---
 
 *BOSMAX v11.2 | Log updated: 2026-05-29*
+
+---
+
+### Session 008 — 2026-05-31
+**Status:** v11.3 PATCH — 3 CRITICAL FIXES
+**Active Mode:** null
+**Milestone:** Video script quality fixes based on real output analysis.
+
+**Root cause per issue:**
+
+| Issue | Root Cause | Fix |
+|-------|-----------|-----|
+| Text overlay muncul dalam video | Section 9 active — AI generate overlay yang video engine burn-in terus | S9 DEACTIVATED — output NO_OVERLAY sahaja |
+| Dialog tak habis dalam video | Tiada dialog pre-budget dikira sebelum tulis S6 — AI masuk Hook+3USP+CTA tanpa check WPS ceiling | DIALOG PRE-BUDGET block wajib: FLOOR(duration × 1.6) words max, priority Hook > CTA > USP |
+| GROK render botol terlalu besar | image_strength 0.80 tidak cukup kuat — GROK reinterpret scale secara agresif | SCALE_AUTHORITY_OVERRIDE block + image_strength 0.90 + explicit negative scale prompts |
+
+**Diagnosis contoh (8s video @ 1.6 WPS):**
+- Word budget: FLOOR(8 × 1.6) = 12 words maximum
+- ChatGPT output dialog sebelum fix: 43 words = 5.4 WPS (jauh exceed kill-switch 3.0)
+- Selepas fix: Hook (8w) + CTA (2w) = 10 words ✅
+
+**Files patched:**
+- `bosmax-script-generator.md` — v11.2 → v11.3 (S9 deactivated, Dialog Pre-Budget, GROK Scale Override)
+- `bosmax-mode-c-executor.md` — S9 deactivated (consistency patch)
+
+---
+
+*BOSMAX v11.3 | Log updated: 2026-05-31*
+
+---
+
+### Session 009 — 2026-05-31
+**Status:** WPS GOVERNANCE OVERHAUL — LANGUAGE-SPECIFIC TABLES
+**Active Mode:** null
+**Milestone:** Old WPS values (1.6/2.0/3.0) deprecated. Replaced with verified language-specific tables.
+
+**Root cause:**
+Old values tidak mengambil kira kepadatan suku kata BM (3–4 suku kata/perkataan).
+1.6 WPS terlalu konservatif, 3.0 WPS kill-switch terlalu tinggi untuk BM.
+
+**New WPS values (VERIFIED):**
+
+| Language | Optimum | Safe Max | Hard Ceiling |
+|----------|---------|----------|--------------|
+| BM | 2.2 WPS | 2.5 WPS | 2.8 WPS |
+| EN | 2.6 WPS | 3.0 WPS | ~3.3 WPS |
+| ID | 2.2 WPS | 2.6 WPS | ~2.9 WPS |
+| ZH | 2.2 CPS | 2.6 CPS | ~2.9 CPS |
+| HI | 2.0 WPS | 2.4 WPS | ~2.7 WPS |
+| BN | 2.0 WPS | 2.4 WPS | ~2.7 WPS |
+| AR | 1.8 WPS | 2.2 WPS | ~2.5 WPS |
+
+**Key impact — BM 8s dialog budget:**
+- SEBELUM: FLOOR(8 × 1.6) = 12 words (too tight)
+- SELEPAS: FLOOR(8 × 2.5) = 20 words (correct — matches table)
+
+**Files patched:**
+- bosmax-script-generator.md — WPS Governance full replacement, BLOCK MATH, DIALOG PRE-BUDGET, S6 instructions, OUTPUT CONTRACT S8, AUTO-HEAL rules
+
+*BOSMAX v11.3 | Log updated: 2026-05-31*
+
+---
+
+### Session 010 — 2026-05-31
+**Status:** CAP BURUNG — PACKAGING + LABEL DNA FIX
+**Active Mode:** null
+**Milestone:** Correct packaging and label visual identity captured from actual product photo.
+
+**Root cause:**
+Prompt template kata "stainless steel roller ball on top" — AI tunjuk roller ball exposed.
+Tiada label DNA dalam prompt — AI reka label hijau botanical sendiri.
+Produk sebenar (rujuk TikTok photo): sepia/kraft vintage label, burung terbang, black dome cap tertutup.
+
+**Corrections:**
+
+| Field | SALAH (sebelum) | BETUL (selepas) |
+|-------|----------------|----------------|
+| Cap | "stainless steel roller ball on top" | "black rounded dome cap — TERTUTUP, roller ball hidden" |
+| Label color | (tiada spec → AI generate hijau) | Warm sepia/tan/kraft paper tone — FORBIDDEN: green, white, botanical green |
+| Bird design | (AI generate hinggap atas dahan) | Soaring bird IN FLIGHT, wings spread, inside circular medallion |
+| Label text | (AI generate "MINYAK CAP BURUNG" sahaja) | "CAP BURUNG (BIRD BRAND)" + "MINYAK CAP HERBAL OIL" + "30ML" + "ESTD 2023" |
+| Oil color | "clear amber-tinted" (vague) | Warm amber/golden-brown visible through clear glass |
+
+**Files patched:**
+- products/CAP_BURUNG_MINYAK.yaml — packaging_type, packaging_color, scale_anchor_descriptor, label_dna field baru
+- Notion: CAP BURUNG MINYAK Plug & Play Templates — all Poster A1-A5 updated + all scale anchor references
+
+*BOSMAX v11.3 | Log updated: 2026-05-31*

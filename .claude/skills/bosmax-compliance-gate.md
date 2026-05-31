@@ -516,4 +516,4 @@ ABORT: [issue] | [heal attempted: description] | [heal failed: reason] | [user a
 - JANGAN output partial results tanpa heal attempt
 - JANGAN output creative content baru — heal bermaksud fix, bukan rewrite
 - Compliance Gate fix dan deliver. BOSMAX orchestrator only notified via HEAL REPORT.
-- ABORT hanya sebagai last resort — apabila missing mandatory input atau heal ga
+- ABORT hanya sebagai last resort — apabila missing mandatory input atau heal gagal.

@@ -1,0 +1,5 @@
+{
+  "terminal.integrated.env.windows": {
+    "Path": "C:\\Users\\USER\\.grok\\bin;${env:Path}"
+  }
+}
