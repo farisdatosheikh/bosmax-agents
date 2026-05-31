@@ -29,8 +29,8 @@ product_status: "Available"
 tagline: "Sejak 1958, Khasiat Turun Temurun."
 heritage_year: 1958
 product_type: "Roll-on essential oil blend — traditional Malay herbal remedy"
-packaging_type: "30ML clear square glass bottle, roll-on applicator with stainless steel roller ball, sealed with black rounded dome cap"
-packaging_color: "Clear glass body showing warm amber/golden-brown oil inside, black rounded dome cap on top"
+packaging_type: "30ML compact square glass bottle, roll-on applicator with stainless steel roller ball, sealed with black cylindrical cap — NOT deodorant-sized, NOT perfume-bottle-sized"
+packaging_color: "Clear glass body showing warm amber/golden-brown oil inside, black cylindrical cap on top"
 
 # ─────────────────────────────────────────────
 # PACKAGING NOTE — CRITICAL FOR AI IMAGE GENERATION
@@ -70,7 +70,7 @@ variants:
     # SCALE ANCHOR — CORRECT VERSION
     # Roller ball is HIDDEN. Cap is on. Do NOT describe exposed roller ball.
     # ─────────────────────────────────────────────
-    scale_anchor_descriptor: "EXACTLY standard roll-on deodorant size, fit snugly in closed palm, square-bodied clear glass bottle with black rounded dome cap on top"
+    scale_anchor_descriptor: "EXACTLY small 30ML glass roll-on size, compact square glass fits in shirt pocket, NOT deodorant-sized, NOT perfume-bottle-sized"
 
     # ─────────────────────────────────────────────
     # LABEL DNA — AUTHORITY FOR ALL IMAGE GENERATION
