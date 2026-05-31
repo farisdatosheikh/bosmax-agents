@@ -303,7 +303,7 @@ Selepas bosmax-scene-engine return output:
 ```
 → source_image_handoff = LOCKED dari gambar yang baru siap
 → Tanya:
-    "Engine apa? (VEO_3_1_LITE / KLING_3_0 / GROK / SORA_2)"
+    "Engine apa? (VEO_3_1_LITE / KLING_3_0 / SEEDANCE_2_0 / GROK / GOOGLE_FLOW)"
     "Duration berapa? (ikut engine yang dipilih)"
     "Formula: SAVAGE_HPAS / PAS / HSO / AIDA / FAB?"
 → BOSMAX orchestrator handle PRE-FLIGHT untuk Mode C

@@ -98,7 +98,6 @@
 ```json
 [
   "VEO_3_1",
-  "SORA_2",
   "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
@@ -122,7 +121,6 @@
 ```json
 [
   "VEO_3_1",
-  "SORA_2",
   "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
@@ -173,12 +171,6 @@
     - **memory_lock** (string): `ENFORCE fixed uint32 seed across extension context`
     - **sync_method** (string): `FIRST_LAST_FRAME_STITCHING (Max 8s per block)`
     - **illumination_lock** (string): `LOCK_LUMINANCE_LEVELS_PERSISTENT`
-  - **sora_2_extension_logic** (object):
-    - **temporal_anchor** (string): `LAST_FRAME_TO_FIRST_FRAME_STITCH`
-    - **continuity_syntax** (string): `BIOMETRIC_DESCRIPTOR_ANCHORING, 24-FRAME_TEMPORAL_BRIDGE applied. DNA Anchor locked.`
-    - **memory_lock** (string): `ENFORCE fixed temporal physics across extension context`
-    - **sync_method** (string): `DUAL_STITCHING_LOGIC (Max 15s per block)`
-    - **illumination_lock** (string): `LOCK_LUMINANCE_LEVELS_PERSISTENT`
 - **dna_restoration_schedule** (object):
   - **hop_1** (object):
     - **action** (string): `MANDATORY_RECURSIVE_REFRESH`
@@ -193,14 +185,6 @@
 {
   "image_strength": 0.88,
   "motion_bucket_id": "LOCKED_TO_STATIC_ANCHOR"
-}
-```
-
-    - **sora_2** (object):
-```json
-{
-  "image_strength": 0.85,
-  "continuity_mode": "PHYSICS_STABLE"
 }
 ```
 
@@ -513,7 +497,7 @@
   - Item 24:
     `ENFORCE: Section_6 dialogue remains non-authoritative for Sections_1_2_3_4_5_7_8_9`
   - Item 25:
-    `ENFORCE: supported_engines INCLUDE [VEO_3_1, SORA_2, KLING_3_0, SEEDANCE_2_0, GROK]`
+    `ENFORCE: supported_engines INCLUDE [VEO_3_1, KLING_3_0, SEEDANCE_2_0, GROK]`
   - Item 26:
     `ABORT IF engine_id == GROK AND execution_submode == 'NANO BANANA'`
   - Item 27:

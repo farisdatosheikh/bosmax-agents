@@ -52,7 +52,7 @@ Inherits visual DNA absolutely. Motion sahaja ditambah.
 - content_mode: T2V | FRAMES | INGREDIENTS | IMAGE
 - content_quantity: default 10 | max 50
 - platform_target: TikTok | Shopee | Lazada | Meta | YouTube Shorts (default: TikTok)
-- engine_id: (untuk video modes) VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+- engine_id: (untuk video modes) VEO_3_1_LITE | VEO_3_1 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
 - duration_target: (untuk video modes) valid untuk engine dipilih — semak ENGINE & DURATION REGISTRY
 - google_flow_submode: (GOOGLE_FLOW sahaja) T2V | FRAMES | INGREDIENTS | IMAGE
 - submode_formula: (untuk video modes, BUKAN GOOGLE_FLOW) PAS | HSO | AIDA | FAB | SAVAGE_HPAS
@@ -66,10 +66,9 @@ Inherits visual DNA absolutely. Motion sahaja ditambah.
 | Engine | Durations | Max/Block | Notes |
 |--------|----------|-----------|-------|
 | VEO_3_1_LITE | 8s SAHAJA | 8s | MULTI-BLOCK jika target > 8s |
-| VEO_3_1 | 8,16,24,32,40,48,56s | 56s | Standard 9-section |
-| SORA_2 | 10,15,20,25,30,45,60s | 60s | Standard 9-section |
-| KLING_3_0 | 5,10,15s | 15s | MULTI-BLOCK jika target > 15s |
-| SEEDANCE_2_0 | 10,20s | 20s | MULTI-BLOCK jika target > 20s |
+| VEO_3_1 | 4,6,8,16,24,32,40,48,56s | 56s | Standard 9-section |
+| KLING_3_0 | 3,5,10,15s | 15s | MULTI-BLOCK jika target > 15s |
+| SEEDANCE_2_0 | 5,10,15s | 15s | MULTI-BLOCK jika target > 15s |
 | GROK | 6s,10s | 10s | **FORBIDDEN: NANO BANANA submode** |
 | GOOGLE_FLOW | up to 60s | 60s | BUKAN 9-section — block architecture |
 

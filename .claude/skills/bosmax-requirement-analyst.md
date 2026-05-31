@@ -84,8 +84,8 @@ IMPLICIT_01 — Duration × Engine Conflict:
     Contoh: 16s = 2×8s, 24s = 3×8s
   → KLING_3_0: block max = 15s
     block_count = CEIL(duration / 15)
-  → SEEDANCE_2_0: block max = 20s
-    block_count = CEIL(duration / 20)
+  → SEEDANCE_2_0: block max = 15s
+    block_count = CEIL(duration / 15)
   → Announce dan proceed ke Master Narrative Brief terus.
 
   GROK SPECIAL CASE — DUAL-DURATION (CANNOT auto-resolve):

@@ -176,7 +176,7 @@ Sebelum route, BOSMAX MESTI detect hidden requirements ini:
 |----|----|----|
 | "[X]s + VEO Lite / VEO_3_1_LITE" | X > 8s → multi-block | Trigger STEP 3 |
 | "[X]s + KLING_3_0" | X > 15s → multi-block | Trigger STEP 3 |
-| "[X]s + SEEDANCE_2_0" | X > 20s → multi-block | Trigger STEP 3 |
+| "[X]s + SEEDANCE_2_0" | X > 15s → multi-block | Trigger STEP 3 |
 | "[X]s + GROK" | X > 10s → multi-block DUAL-DURATION | Trigger STEP 3A GROK path — tanya block distribution dulu |
 | "buat video dari gambar ni" | Mode C → source_image_handoff required | Check handoff |
 | "sambung video tadi" | Block continuation → end-state dari block sebelum required | Lock end-state |
@@ -313,12 +313,11 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ VEO_3_1          ║ 56s      ║ 8,16,24,32,40,48,56s         ║ Standard 9-section script    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
-║ SORA_2           ║ 60s      ║ 10,15,20,25,30,45,60s        ║ Standard 9-section script    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ KLING_3_0        ║ 15s      ║ 5,10,15s                     ║ Standard 9-section script    ║
 ║                  ║          ║                              ║ MULTI-BLOCK jika target > 15s║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
-║ SEEDANCE_2_0     ║ 20s      ║ 10,20s                       ║ Standard 9-section script    ║
+║ SEEDANCE_2_0     ║ 15s      ║ 5,10,15s                     ║ Standard 9-section script    ║
 ║                  ║          ║                              ║ MULTI-BLOCK jika target > 20s║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ GROK             ║ 10s      ║ 6s atau 10s per block        ║ FORBIDDEN: NANO BANANA       ║
@@ -340,7 +339,7 @@ MULTI-BLOCK TRIGGER MATRIX:
   VEO_3_1_LITE + 16s → 2 blocks × 8s          ← CONFIRMED TRIGGER (fixed 8s)
   VEO_3_1_LITE + 24s → 3 blocks × 8s          ← CONFIRMED TRIGGER (fixed 8s)
   KLING_3_0 + 30s    → 2 blocks × 15s         ← CONFIRMED TRIGGER (fixed 15s)
-  SEEDANCE_2_0 + 30s → 2 blocks × 10s+10s     ← atau 1×20s+1×10s (user choice)
+  SEEDANCE_2_0 + 30s → 2 blocks × 15s         ← CONFIRMED TRIGGER (fixed 15s)
 
   GROK MULTI-BLOCK — DUAL-DURATION SPECIAL CASE:
   GROK mempunyai DUA pilihan base unit: 6s atau 10s.
@@ -478,3 +477,4 @@ Request masuk → [STEP 0: bosmax-product-intelligence] → PRE-FLIGHT PROTOCOL 
 ```
 PRE-FLIGHT adalah tanggungjawab BOSMAX orchestrator (fail ini).
 PRE-FLIGHT MESTI selesai sebelum mana-mana skill diappoint.
+                                                                                                        

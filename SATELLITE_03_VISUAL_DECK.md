@@ -60,9 +60,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -123,9 +121,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -186,9 +182,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -249,9 +243,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -312,9 +304,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -378,9 +368,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -442,9 +430,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -505,9 +491,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -568,9 +552,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -631,9 +613,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]

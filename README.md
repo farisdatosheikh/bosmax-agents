@@ -51,7 +51,7 @@ BOSMAX/
 
 ## Engines
 
-**Video:** VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+**Video:** VEO_3_1_LITE | VEO_3_1 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
 
 **Image:** NANO_BANANA_PRO | IMAGEN_3
 
@@ -71,7 +71,7 @@ Semua output melalui bosmax-compliance-gate sebelum sampai kepada pengguna.
 
 **v11.1.1** — Google Flow 4 modes, GROK image reference methodology, NANO_BANANA_PRO dan IMAGEN_3 sebagai image-only engines, bosmax-compliance-gate Google Flow audit checklist.
 
-**v11.1** — Initial release. Tujuh skill files. Enam engines (VEO_3_1, SORA_2, KLING_3_0, SEEDANCE_2_0, GROK, GOOGLE_FLOW).
+**v11.1** — Initial release. Tujuh skill files. Enam engines (VEO_3_1, KLING_3_0, SEEDANCE_2_0, GROK, GOOGLE_FLOW).
 
 ---
 

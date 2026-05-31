@@ -42,7 +42,7 @@ cta                   → call to action text
 avatar_id             → NORA | SARA | JULIA | BELLA | SOFIA_FIT | MAK_TOK |
                         RIZAL | AZMAN | HAJI_MAN | CHEF_DANIAL
 headwear_style        → AUTO | HIJAB | NON_HIJAB
-engine_id             → VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 |
+engine_id             → VEO_3_1_LITE | VEO_3_1 | KLING_3_0 |
                         SEEDANCE_2_0 | GROK | GOOGLE_FLOW
 duration_target       → valid untuk engine yang dipilih (per block jika multi-block)
 submode_formula       → PAS | HSO | AIDA | FAB | SAVAGE_HPAS
@@ -69,10 +69,9 @@ dialogue_carry_over   → last spoken words dari Block N-1 (null untuk Block 1)
 | Engine | Max/Block | Durations | Notes |
 |--------|----------|----------|-------|
 | VEO_3_1_LITE | 8s | 8s SAHAJA per block | MULTI-BLOCK jika target > 8s. API param = durationSeconds:8 tapi actual render = **7s** (1 frame dropped). Budget dialog untuk 7s. |
-| VEO_3_1 | 56s | 8,16,24,32,40,48,56s | Standard 9-section script |
-| SORA_2 | 60s | 10,15,20,25,30,45,60s | Standard 9-section script |
-| KLING_3_0 | 15s | 5,10,15s | MULTI-BLOCK jika target > 15s |
-| SEEDANCE_2_0 | 20s | 10,20s | MULTI-BLOCK jika target > 20s |
+| VEO_3_1 | 56s | 4,6,8,16,24,32,40,48,56s | Standard 9-section script |
+| KLING_3_0 | 15s | 3,5,10,15s | MULTI-BLOCK jika target > 15s |
+| SEEDANCE_2_0 | 15s | 5,10,15s | MULTI-BLOCK jika target > 15s |
 | GROK | 10s | 6,10s | MULTI-BLOCK jika target > 10s — **FORBIDDEN: NANO BANANA** |
 | GOOGLE_FLOW | 60s | T2V: up to 60s; FRAMES/INGREDIENTS: anchor-based | Google Flow block architecture — BUKAN 9-section |
 

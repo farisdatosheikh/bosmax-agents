@@ -101,10 +101,9 @@ Dialogue adalah untuk spoken track SAHAJA.
 
 | Engine | Durations | Max | Notes |
 |--------|----------|-----|-------|
-| VEO_3_1 | 8s,16s,24s,32s,40s,48s,56s | 56s | **PREFERRED untuk Mode C** — HIGH_FIDELITY_INGREDIENTS |
-| SORA_2 | 10s,15s,20s,25s,30s,45s,60s | 60s | PHYSICS_STABLE |
-| KLING_3_0 | 5s,10s,15s | 15s | image_strength 0.92 |
-| SEEDANCE_2_0 | 10s,20s | 20s | — |
+| VEO_3_1 | 4s,6s,8s,16s,24s,32s,40s,48s,56s | 56s | **PREFERRED untuk Mode C** — HIGH_FIDELITY_INGREDIENTS |
+| KLING_3_0 | 3s,5s,10s,15s | 15s | image_strength 0.92 |
+| SEEDANCE_2_0 | 5s,10s,15s | 15s | — |
 | GROK | 6s,10s | 10s | FORBIDDEN: NANO BANANA submode |
 | GOOGLE_FLOW | F2V/Frames: anchor-based | 60s | Sub-modes: FRAMES \| INGREDIENTS \| IMAGE — Lihat section di bawah |
 
@@ -112,7 +111,6 @@ Dialogue adalah untuk spoken track SAHAJA.
 
 **Image-to-Video Strength Curves:**
 - VEO_3_1: 0.88 | First Frame Match 98%
-- SORA_2: 0.85
 - KLING_3_0: 0.92
 - GROK: UI slider only — tiada nilai official (xAI API: parameter ini tidak wujud)
 - GOOGLE_FLOW: image_guidance_scale TIDAK WUJUD dalam Veo 3.1 API — UI only, no official value

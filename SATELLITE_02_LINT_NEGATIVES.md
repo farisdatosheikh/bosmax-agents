@@ -54,8 +54,7 @@
 ]
 ```
 
-  - **SORA_2_KILL_LIST** (object):
-    - **vertex_drifting** (string): `[physics_hallucination]`
+  - **vertex_drifting** (string): `[physics_hallucination]`
     - **digit_blending** (string): `[mesh_fusion]`
     - **kelvin_drift** (string): `[lighting_inconsistency]`
     - **semantic_merging** (string): `[causality_break]`
@@ -124,11 +123,9 @@
   - **KLING_3_0** (object):
     - **max_duration_seconds** (number): `15`
   - **SEEDANCE_2_0** (object):
-    - **max_duration_seconds** (number): `20`
+    - **max_duration_seconds** (number): `15`
   - **VEO_3_1** (object):
     - **max_block_seconds** (number): `8`
-  - **SORA_2** (object):
-    - **max_block_seconds** (number): `15`
   - **GROK** (object):
     - **max_duration_seconds** (number): `10`
 - **metadata_leak_prevention** (object):
@@ -461,7 +458,7 @@
   - Item 11:
     `ENFORCE: KLING_3_0_KILL_LIST hard_lock == 15s`
   - Item 12:
-    `ENFORCE: SEEDANCE_2_0_KILL_LIST hard_lock == 20s`
+    `ENFORCE: SEEDANCE_2_0_KILL_LIST hard_lock == 15s`
   - Item 13:
     `ENFORCE: GROK_KILL_LIST hard_lock == 10s`
   - Item 14:
@@ -506,3 +503,4 @@
       `Temporal Logic`
     - Item 9:
       `Overlay`
+                                     

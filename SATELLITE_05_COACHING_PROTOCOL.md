@@ -132,8 +132,8 @@
 ```json
 {
   "variable": "engine_id",
-  "query": "Engine video mana? (VEO_3_1, SORA_2, GROK, KLING_3_0, SEEDANCE_2_0)",
-  "validation": "ENUM:[VEO_3_1, SORA_2, GROK, KLING_3_0, SEEDANCE_2_0]",
+  "query": "Engine video mana? (VEO_3_1, GROK, KLING_3_0, SEEDANCE_2_0)",
+  "validation": "ENUM:[VEO_3_1, GROK, KLING_3_0, SEEDANCE_2_0]",
   "required": true
 }
 ```
@@ -152,7 +152,7 @@
 ```json
 {
   "variable": "duration_target",
-  "query": "Berapa saat? [VEO_3_1: 8s-56s | SORA_2: 10s, 15s, 20s, 25s, 30s, 45s, 60s | GROK: 6s, 10s | KLING_3_0: 5s, 10s, 15s | SEEDANCE_2_0: 10s, 20s]",
+  "query": "Berapa saat? [VEO_3_1: 4s,6s,8s,16s-56s | GROK: 6s,10s | KLING_3_0: 3s,5s,10s,15s | SEEDANCE_2_0: 5s,10s,15s]",
   "validation": "FETCH FROM MASTER_IGNITION_TEMPLATE.duration_target",
   "required": true
 }
@@ -244,22 +244,20 @@
   - Item 16:
     `ABORT IF language_context_selector missing for target_language/product_type`
   - Item 17:
-    `ABORT IF engine_id NOT IN [VEO_3_1, GROK, SORA_2, KLING_3_0, SEEDANCE_2_0]`
+    `ABORT IF engine_id NOT IN [VEO_3_1, GROK, KLING_3_0, SEEDANCE_2_0]`
   - Item 18:
     `ABORT IF submode_formula NOT IN [PAS, HSO, AIDA, FAB, SAVAGE_HPAS]`
   - Item 19:
-    `ABORT IF engine_id == VEO_3_1 AND duration_target NOT IN [8s, 16s, 24s, 32s, 40s, 48s, 56s]`
+    `ABORT IF engine_id == VEO_3_1 AND duration_target NOT IN [4s, 6s, 8s, 16s, 24s, 32s, 40s, 48s, 56s]`
   - Item 20:
     `ABORT IF engine_id == VEO_3_1 AND duration_target > 56s`
   - Item 21:
-    `ABORT IF engine_id == SORA_2 AND duration_target NOT IN [10s, 15s, 20s, 25s, 30s, 45s, 60s]`
-  - Item 22:
     `ABORT IF engine_id == GROK AND duration_target NOT IN [6s, 10s]`
+  - Item 22:
+    `ABORT IF engine_id == KLING_3_0 AND duration_target NOT IN [3s, 5s, 10s, 15s]`
   - Item 23:
-    `ABORT IF engine_id == KLING_3_0 AND duration_target NOT IN [5s, 10s, 15s]`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [5s, 10s, 15s]`
   - Item 24:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [10s, 20s]`
-  - Item 25:
     `ENFORCE: Bimodal Lock Check (STEALTH vs DIRECT)`
   - Item 26:
     `VALIDATE: biometric_drift_threshold == 0.05`

@@ -13,9 +13,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0",
   "SEEDANCE_2_0"
 ]
@@ -29,9 +27,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2"
-]
+  "VEO_3_1",]
 ```
 
   - **BLOCK_3_SOLUTION** (object):
@@ -42,9 +38,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "SEEDANCE_2_0"
+  "VEO_3_1",  "SEEDANCE_2_0"
 ]
 ```
 
@@ -56,9 +50,7 @@
     - **supported_engines** (array):
 ```json
 [
-  "VEO_3_1",
-  "SORA_2",
-  "GROK",
+  "VEO_3_1",  "GROK",
   "KLING_3_0"
 ]
 ```
@@ -103,23 +95,21 @@
   - **duration_increment** (string): `ENGINE_SPECIFIC`
   - **stitching_math** (object):
     - **VEO_3_1** (string): `Max 8s per block (Deterministic DNA Re-injection)`
-    - **SORA_2** (string): `Max 15s per block (Allowed durations: 10s, 15s, 20s, 25s, 30s, 45s, 60s)`
     - **GROK** (string): `Max 10s single block (Allowed durations: 6s, 10s; No sharding permitted)`
     - **KLING_3_0** (string): `Max 15s single block`
-    - **SEEDANCE_2_0** (string): `Max 10s per block (20s via dual-block chaining)`
+    - **SEEDANCE_2_0** (string): `Max 15s single block (Allowed: 5s, 10s, 15s)`
   - **validation** (array):
     - Item 1:
       `ABORT IF scene_count < 1`
     - Item 2:
       `ABORT IF engine_id == VEO_3_1 AND duration_target > 56s`
     - Item 3:
-      `ABORT IF engine_id == SORA_2 AND duration_target NOT IN [10s, 15s, 20s, 25s, 30s, 45s, 60s]`
     - Item 4:
       `ABORT IF engine_id == GROK AND duration_target NOT IN [6s, 10s]`
     - Item 5:
       `ABORT IF engine_id == KLING_3_0 AND duration_target NOT IN [5s, 10s, 15s]`
     - Item 6:
-      `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [10s, 20s]`
+      `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [5s, 10s, 15s]`
     - Item 7:
       `ENFORCE: I >= 1.25 for minimum scene duration`
     - Item 8:
@@ -203,10 +193,9 @@
 ```json
 {
   "VEO_3_1": "max_duration=56s",
-  "SORA_2": "allowed_durations=[10s, 15s, 20s, 25s, 30s, 45s, 60s]",
   "GROK": "allowed_durations=[6s, 10s]",
   "KLING_3_0": "allowed_durations=[5s, 10s, 15s]",
-  "SEEDANCE_2_0": "allowed_durations=[10s, 20s]"
+  "SEEDANCE_2_0": "allowed_durations=[5s, 10s, 15s]"
 }
 ```
 
@@ -343,13 +332,12 @@
   - Item 2:
     `ABORT IF engine_id == VEO_3_1 AND duration_target > 56s`
   - Item 3:
-    `ABORT IF engine_id == SORA_2 AND duration_target NOT IN [10s, 15s, 20s, 25s, 30s, 45s, 60s]`
   - Item 4:
     `ABORT IF engine_id == GROK AND duration_target NOT IN [6s, 10s]`
   - Item 5:
     `ABORT IF engine_id == KLING_3_0 AND duration_target NOT IN [5s, 10s, 15s]`
   - Item 6:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [10s, 20s]`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [5s, 10s, 15s]`
   - Item 7:
     `ENFORCE: wps_limit per scene_block (HOOK/CTA: 2.0, PROBLEM/SOLUTION: 1.6)`
   - Item 8:
@@ -385,7 +373,6 @@
   - Item 23:
     `ENFORCE: IF engine_id == VEO_3_1 THEN single_prompt_block_duration <= 8s`
   - Item 24:
-    `ENFORCE: IF engine_id == SORA_2 THEN single_prompt_block_duration <= 15s`
   - Item 25:
     `ENFORCE: dna_reinjection_hop == 1 for every block boundary`
   - Item 26:
@@ -425,3 +412,4 @@
     - Item 9:
       `Overlay`
   - **safe_zone** (string): `STRICT_LOCK (X:6-94%, Y:15-65%) FOR TIKTOK_SHOP`
+                                                                                                                                                                                                                                                                                                                                                                                                             

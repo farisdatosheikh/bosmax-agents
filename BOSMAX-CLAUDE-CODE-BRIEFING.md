@@ -145,9 +145,8 @@ STEP 5 → Issue WORK ORDER
 ```
 VEO_3_1_LITE  → max 8s/block   (multi-block auto: fixed 8s)
 VEO_3_1       → max 56s/block
-SORA_2        → max 60s/block
 KLING_3_0     → max 15s/block  (multi-block auto: fixed 15s)
-SEEDANCE_2_0  → max 20s/block  (multi-block auto: fixed 20s)
+SEEDANCE_2_0  → max 15s/block  [OFFICIAL_VERIFIED_2026-06-01]
 GROK          → max 10s/block  (multi-block: TANYA user — 6s atau 10s base unit)
 GOOGLE_FLOW   → max 60s, bukan 9-section, guna block architecture
 ```
@@ -236,3 +235,4 @@ JANGAN buat perubahan pada CLAUDE.md tanpa faham kesan downstream kepada semua 8
 
 *Briefing ditulis: 2026-05-28 | Last updated: 2026-05-29 (gaps verified closed)*
 *GitHub: farisdatosheikh/bosmax-agents | Branch: master | Schema: v11.2*
+                                

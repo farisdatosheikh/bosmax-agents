@@ -63,10 +63,9 @@ Safe zone: top 270px, bottom 380px clear | Text overlay max 20%
 | Engine | Max/Block | Durations Dibenarkan | Notes |
 |--------|----------|---------------------|-------|
 | VEO_3_1_LITE | 8s | 8s SAHAJA per block | MULTI-BLOCK jika target > 8s |
-| VEO_3_1 | 56s | 8s, 16s, 24s, 32s, 40s, 48s, 56s | Standard 9-section |
-| SORA_2 | 60s | 10s, 15s, 20s, 25s, 30s, 45s, 60s | Standard 9-section |
-| KLING_3_0 | 15s | 5s, 10s, 15s | MULTI-BLOCK jika target > 15s |
-| SEEDANCE_2_0 | 20s | 10s, 20s | MULTI-BLOCK jika target > 20s |
+| VEO_3_1 | 56s | 4s, 6s, 8s, 16s, 24s, 32s, 40s, 48s, 56s | Standard 9-section |
+| KLING_3_0 | 15s | 3s, 5s, 10s, 15s | MULTI-BLOCK jika target > 15s |
+| SEEDANCE_2_0 | 15s | 5s, 10s, 15s | SINGLE-BLOCK (max 15s) |
 | GROK | 10s | 6s, 10s | MULTI-BLOCK jika target > 10s — FORBIDDEN: NANO BANANA |
 | GOOGLE_FLOW | 60s | T2V/IMAGE: up to 60s; FRAMES/INGREDIENTS: anchor-based | Block architecture — BUKAN 9-section |
 
@@ -139,7 +138,7 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
   CLASS_A: 2.0mm | CLASS_B: 1.5mm | CLASS_C: 2.0mm |
   CLASS_D: 4.0mm | CLASS_E: 0.0mm | CLASS_GENERIC: 1.5mm
 
-☐ engine_id valid: VEO_3_1_LITE | VEO_3_1 | SORA_2 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
+☐ engine_id valid: VEO_3_1_LITE | VEO_3_1 | KLING_3_0 | SEEDANCE_2_0 | GROK | GOOGLE_FLOW
   (NANO_BANANA_PRO dan IMAGEN_3 BUKAN video engines — ABORT jika digunakan untuk video)
 
 ☐ duration_target dalam engine-specific allowed list (per block jika multi-block)

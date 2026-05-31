@@ -96,7 +96,6 @@
   "ENGINE_STEALTH": {
     "supported_engines": [
       "VEO_3_1",
-      "SORA_2",
       "GROK",
       "KLING_3_0",
       "SEEDANCE_2_0"
@@ -105,7 +104,6 @@
   "ENGINE_DIRECT": {
     "supported_engines": [
       "VEO_3_1",
-      "SORA_2",
       "GROK",
       "KLING_3_0",
       "SEEDANCE_2_0"
@@ -179,12 +177,10 @@
     - Item 1:
       `VEO_3_1`
     - Item 2:
-      `SORA_2`
-    - Item 3:
       `GROK`
-    - Item 4:
+    - Item 3:
       `KLING_3_0`
-    - Item 5:
+    - Item 4:
       `SEEDANCE_2_0`
   - **silo_definitions** (object):
     - **ENGINE_STEALTH** (object):
@@ -192,7 +188,6 @@
 {
   "supported_engines": [
     "VEO_3_1",
-    "SORA_2",
     "GROK",
     "KLING_3_0",
     "SEEDANCE_2_0"
@@ -211,7 +206,6 @@
 {
   "supported_engines": [
     "VEO_3_1",
-    "SORA_2",
     "GROK",
     "KLING_3_0",
     "SEEDANCE_2_0"
@@ -377,7 +371,7 @@
   - Item 54:
     `ABORT IF engine_id == KLING_3_0 AND duration_target > 15s`
   - Item 55:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 20s`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 15s`
   - Item 56:
     `ABORT IF engine_id == GROK AND duration_target NOT IN FETCH_FROM MASTER_IGNITION_TEMPLATE.engine_configuration.GROK.supported_durations`
   - Item 57:

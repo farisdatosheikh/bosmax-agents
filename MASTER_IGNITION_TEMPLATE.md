@@ -153,12 +153,10 @@
   - Item 1:
     `VEO_3_1`
   - Item 2:
-    `SORA_2`
-  - Item 3:
     `KLING_3_0`
-  - Item 4:
+  - Item 3:
     `SEEDANCE_2_0`
-  - Item 5:
+  - Item 4:
     `GROK`
 - **submode_formula** (array):
   - Item 1:
@@ -174,46 +172,39 @@
 - **duration_target** (object):
   - **VEO_3_1** (array):
     - Item 1:
+      `4s`
+    - Item 2:
+      `6s`
+    - Item 3:
       `8s`
-    - Item 2:
+    - Item 4:
       `16s`
-    - Item 3:
+    - Item 5:
       `24s`
-    - Item 4:
+    - Item 6:
       `32s`
-    - Item 5:
+    - Item 7:
       `40s`
-    - Item 6:
+    - Item 8:
       `48s`
-    - Item 7:
+    - Item 9:
       `56s`
-  - **SORA_2** (array):
-    - Item 1:
-      `10s`
-    - Item 2:
-      `15s`
-    - Item 3:
-      `20s`
-    - Item 4:
-      `25s`
-    - Item 5:
-      `30s`
-    - Item 6:
-      `45s`
-    - Item 7:
-      `60s`
   - **KLING_3_0** (array):
+    - Item 1:
+      `3s`
+    - Item 2:
+      `5s`
+    - Item 3:
+      `10s`
+    - Item 4:
+      `15s`
+  - **SEEDANCE_2_0** (array):
     - Item 1:
       `5s`
     - Item 2:
       `10s`
     - Item 3:
       `15s`
-  - **SEEDANCE_2_0** (array):
-    - Item 1:
-      `10s`
-    - Item 2:
-      `20s`
   - **GROK** (array):
     - Item 1:
       `6s`
@@ -271,6 +262,8 @@
     - **supported_durations** (array):
 ```json
 [
+  "4s",
+  "6s",
   "8s",
   "16s",
   "24s",
@@ -278,30 +271,6 @@
   "40s",
   "48s",
   "56s"
-]
-```
-
-  - **SORA_2** (object):
-    - **visual_en** (string): `Sora 2 with Spatiotemporal Physics Simulation.`
-    - **max_duration** (string): `60s`
-    - **block_max** (string): `15s`
-    - **chaining** (string): `UI_DRAFT_STITCHING_SEQUENCE`
-    - **context_management** (string): `MULTI_BLOCK_STITCHING_FOR_GT_BLOCK_MAX`
-    - **i2v_support** (boolean): `true`
-    - **identity_lock** (string): `WORLD_CONSISTENCY`
-    - **cfg_range** (string): `4.0-6.0`
-    - **special_case** (string): `60s = MULTI_BLOCK_STITCHED_OUTPUT`
-    - **dna_reinjection_interval_time** (string): `15s`
-    - **supported_durations** (array):
-```json
-[
-  "10s",
-  "15s",
-  "20s",
-  "25s",
-  "30s",
-  "45s",
-  "60s"
 ]
 ```
 
@@ -315,11 +284,12 @@
     - **identity_lock** (string): `ELEMENT_BINDING`
     - **cfg_range** (string): `3.5-5.5`
     - **dna_reinjection_interval_time** (string): `5s`
-    - **label** (string): `[BOSMAX_HEURISTIC]`
+    - **label** (string): `[OFFICIAL_VERIFIED_2026-06-01]`
     - **note** (string): `HARD_LOCK_15S_TO_PREVENT_BIOMETRIC_DRIFT`
     - **supported_durations** (array):
 ```json
 [
+  "3s",
   "5s",
   "10s",
   "15s"
@@ -328,20 +298,21 @@
 
   - **SEEDANCE_2_0** (object):
     - **visual_en** (string): `Seedance 2.0 with 2K Texture & Multi-shot Consistency.`
-    - **max_duration** (string): `20s`
-    - **block_max** (string): `10s`
-    - **chaining** (string): `EXTEND_FRAME_REFERENCE`
-    - **context_management** (string): `DUAL_BLOCK_CHAINING_IF_GT_10S`
+    - **max_duration** (string): `15s`
+    - **block_max** (string): `15s`
+    - **chaining** (string): `SINGLE_BLOCK_EXECUTION`
+    - **context_management** (string): `SINGLE_BLOCK_EXECUTION`
     - **i2v_support** (boolean): `true`
     - **identity_lock** (string): `WORLD_ID`
     - **cfg_range** (string): `4.0-6.5`
     - **dna_reinjection_interval_time** (string): `5s`
-    - **label** (string): `[EXTERNAL_ENGINE_ADDED]`
+    - **label** (string): `[OFFICIAL_VERIFIED_2026-06-01]`
     - **supported_durations** (array):
 ```json
 [
+  "5s",
   "10s",
-  "20s"
+  "15s"
 ]
 ```
 
@@ -354,7 +325,7 @@
     - **i2v_support** (boolean): `true`
     - **identity_lock** (string): `FAST_RENDER`
     - **cfg_range** (string): `2.0-5.0`
-    - **label** (string): `[EXTERNAL_ENGINE_ADDED]`
+    - **label** (string): `[OFFICIAL_VERIFIED_2026-06-01]`
     - **supported_durations** (array):
 ```json
 [
@@ -424,7 +395,7 @@
     - Item 10:
       `Execute BLOCK_N Sharding Math (IF engine_id != GROK)`
     - Item 11:
-      `Generate Multi-Block Array (IF engine_id IN [VEO_3_1, SORA_2, SEEDANCE_2_0] AND duration_target > block_max)`
+      `Generate Multi-Block Array (IF engine_id IN [VEO_3_1, SEEDANCE_2_0] AND duration_target > block_max)`
     - Item 12:
       `Generate Single-Block Output (IF engine_id IN [GROK, KLING_3_0] OR duration_target <= block_max)`
     - Item 13:
@@ -492,7 +463,7 @@
   - Item 6:
     `ABORT IF trigger_id NOT IN [SCARCITY_01, SOCIAL_PROOF_01, AUTHORITY_01, RECIPROCITY_01, FOMO_01, TRANSFORMATION_01, MARUAH_01, EGO_01, TRUST_01, CONFIDENCE_01]`
   - Item 7:
-    `ABORT IF engine_id NOT IN [VEO_3_1, GROK, SORA_2, KLING_3_0, SEEDANCE_2_0]`
+    `ABORT IF engine_id NOT IN [VEO_3_1, GROK, KLING_3_0, SEEDANCE_2_0]`
   - Item 8:
     `ABORT IF route_mode NOT IN [MODE_A, MODE_B, MODE_C]`
   - Item 9:
@@ -502,15 +473,13 @@
   - Item 11:
     `ABORT IF submode_formula NOT IN [PAS, HSO, AIDA, FAB, SAVAGE_HPAS]`
   - Item 12:
-    `ABORT IF engine_id == VEO_3_1 AND duration_target NOT IN [8s, 16s, 24s, 32s, 40s, 48s, 56s]`
+    `ABORT IF engine_id == VEO_3_1 AND duration_target NOT IN [4s, 6s, 8s, 16s, 24s, 32s, 40s, 48s, 56s]`
   - Item 13:
     `ABORT IF engine_id == VEO_3_1 AND duration_target > 56s`
   - Item 14:
-    `ABORT IF engine_id == SORA_2 AND duration_target NOT IN [10s, 15s, 20s, 25s, 30s, 45s, 60s]`
+    `ABORT IF engine_id == KLING_3_0 AND duration_target NOT IN [3s, 5s, 10s, 15s]`
   - Item 15:
-    `ABORT IF engine_id == KLING_3_0 AND duration_target NOT IN [5s, 10s, 15s]`
-  - Item 16:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [10s, 20s]`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target NOT IN [5s, 10s, 15s]`
   - Item 17:
     `ABORT IF engine_id == GROK AND duration_target NOT IN [6s, 10s]`
   - Item 18:

@@ -187,7 +187,7 @@
   - Item 26:
     `ENFORCE: dna_reinjection_hop == 1 for every block boundary`
   - Item 27:
-    `ENFORCE: supported_engines INCLUDE [VEO_3_1, SORA_2, KLING_3_0, SEEDANCE_2_0, GROK]`
+    `ENFORCE: supported_engines INCLUDE [VEO_3_1, KLING_3_0, SEEDANCE_2_0, GROK]`
   - Item 28:
     `VALIDATE: biometric_drift_threshold == 0.05 per SOV_03 Section 7`
   - Item 29:
@@ -197,7 +197,7 @@
   - Item 31:
     `ABORT IF engine_id == KLING_3_0 AND duration_target > 15s`
   - Item 32:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 20s`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 15s`
   - Item 33:
     `ABORT IF engine_id == GROK AND duration_target NOT IN [6s, 10s]`
   - Item 34:
@@ -224,3 +224,4 @@
       `Temporal Logic`
     - Item 9:
       `Overlay`
+        

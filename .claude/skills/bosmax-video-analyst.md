@@ -397,9 +397,9 @@ Tanya user (jika belum declared):
 ```
 "Engine mana?
   A) VEO_3_1_LITE (8s per block, realistic)
-  B) KLING_3_0 (5/10/15s, cinematic)
+  B) KLING_3_0 (3/5/10/15s, cinematic)
   C) GROK (6s atau 10s, versatile)
-  D) SORA_2 (hingga 60s, premium)
+  D) SEEDANCE_2_0 (5/10/15s, crisp motion)
   E) GOOGLE_FLOW (T2V hingga 60s)"
 
 "Duration berapa? [ikut engine constraint]"

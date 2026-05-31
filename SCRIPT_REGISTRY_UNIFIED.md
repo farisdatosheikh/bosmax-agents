@@ -818,7 +818,7 @@
   - Item 31:
     `ABORT IF engine_id == KLING_3_0 AND duration_target > 15s`
   - Item 32:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 20s`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 15s`
   - Item 33:
     `ABORT IF engine_id == GROK AND duration_target NOT IN FETCH_FROM MASTER_IGNITION_TEMPLATE.engine_configuration.GROK.supported_durations`
   - Item 34:

@@ -640,7 +640,6 @@
 ```json
 {
   "VEO_3_1": "8s",
-  "SORA_2": "15s",
   "KLING_3_0": "5s",
   "SEEDANCE_2_0": "5s",
   "GROK": "10s"
@@ -1078,7 +1077,7 @@
   - Item 12:
     `ENFORCE: expansion_ratio == 1:5 (Min 50 words per section)`
   - Item 13:
-    `ENFORCE: supported_engines INCLUDE [VEO_3_1, SORA_2, KLING_3_0, SEEDANCE_2_0, GROK]`
+    `ENFORCE: supported_engines INCLUDE [VEO_3_1, KLING_3_0, SEEDANCE_2_0, GROK]`
   - Item 14:
     `ABORT IF camera_style == UGC_IPHONE_RAW AND lighting == STUDIO_5600K`
   - Item 15:
@@ -1112,7 +1111,7 @@
   - Item 29:
     `ABORT IF engine_id == KLING_3_0 AND duration_target > 15s`
   - Item 30:
-    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 20s`
+    `ABORT IF engine_id == SEEDANCE_2_0 AND duration_target > 15s`
   - Item 31:
     `ABORT IF engine_id == GROK AND duration_target NOT IN [6s, 10s]`
   - Item 32:
@@ -1120,7 +1119,6 @@
   - Item 33:
     `ABORT IF engine_id == GROK AND execution_submode == 'NANO BANANA'`
   - Item 34:
-    `ENFORCE: IF engine_id == SORA_2 THEN output == UI_DRAFT_SEQUENCE`
   - Item 35:
     `ENFORCE: BIOMETRIC_DESCRIPTOR_ANCHORING on all block boundaries`
   - Item 36:
@@ -1150,3 +1148,4 @@
     - Item 9:
       `Overlay`
   - **safe_zone** (string): `STRICT_LOCK (X:6-94%, Y:15-65%) FOR TIKTOK_SHOP`
+                                                                                                  
