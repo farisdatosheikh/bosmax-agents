@@ -29,8 +29,17 @@ product_status: "Available"
 tagline: "Sejak 1958, Khasiat Turun Temurun."
 heritage_year: 1958
 product_type: "Roll-on essential oil blend — traditional Malay herbal remedy"
-packaging_type: "30ML square glass bottle with stainless steel roller ball applicator"
-packaging_color: "Clear glass, silver roller, black cap"
+packaging_type: "30ML clear square glass bottle, roll-on applicator with stainless steel roller ball, sealed with black rounded dome cap"
+packaging_color: "Clear glass body showing warm amber/golden-brown oil inside, black rounded dome cap on top"
+
+# ─────────────────────────────────────────────
+# PACKAGING NOTE — CRITICAL FOR AI IMAGE GENERATION
+# ─────────────────────────────────────────────
+# The roller ball is HIDDEN under the black dome cap when the product is capped.
+# In ALL product images, the bottle appears with the BLACK DOME CAP CLOSED.
+# DO NOT show exposed silver roller ball in product shots — cap is always on.
+# ─────────────────────────────────────────────
+
 scent_profile: "Herbal-eucalyptus-menthol warm aromatic blend"
 texture: "Lightweight oil, non-greasy, fast-absorb"
 application_method: "Roll-on direct application to skin"
@@ -56,14 +65,100 @@ variants:
   - variant_id: "30ML_ROLLON"
     variant_name: "30ml Square Glass Roll-On"
     price_rm: null
-    scale_anchor_descriptor: "EXACTLY standard roll-on deodorant size, fit snugly in closed palm, square-bodied glass bottle with metal roller ball on top"
+
+    # ─────────────────────────────────────────────
+    # SCALE ANCHOR — CORRECT VERSION
+    # Roller ball is HIDDEN. Cap is on. Do NOT describe exposed roller ball.
+    # ─────────────────────────────────────────────
+    scale_anchor_descriptor: "EXACTLY standard roll-on deodorant size, fit snugly in closed palm, square-bodied clear glass bottle with black rounded dome cap on top"
+
+    # ─────────────────────────────────────────────
+    # LABEL DNA — AUTHORITY FOR ALL IMAGE GENERATION
+    # Source: Actual product photo (verified against real product)
+    # Updated: 2026-06-01 — corrected from incorrect sepia/apothecary description
+    # AI MUST reproduce this label EXACTLY — no creative liberty on label design
+    # ─────────────────────────────────────────────
+    label_dna:
+      label_shape: "Rectangular paper label covering most of bottle body"
+      label_base_color: "Dark forest green outer panel with cream/ivory center panel"
+      border: "Gold decorative border separating green outer from cream center panel"
+      layout: "Vertically structured — cream center panel carries main branding"
+      brand_name_text: "MINYAK CAP BURUNG — bold serif, centered on cream panel"
+      bird_illustration: "Bird PERCHED on leafy branch — sitting pose, NOT flying, NOT soaring, NOT in flight"
+      tagline_text: "Sejak 1958, Khasiat Turun Temurun. — printed on label"
+      overall_palette: "Dark green, cream/ivory, gold — NOT sepia, NOT brown kraft, NOT apothecary amber"
+      label_style: "Heritage Malay traditional — clean structured label, NOT vintage apothecary"
+
+      # FORBIDDEN — AI MUST NOT generate any of these
+      label_forbidden:
+        - "sepia label"
+        - "kraft paper / tan / brown parchment label"
+        - "bird in flight / soaring bird / wings spread"
+        - "circular medallion with flying bird"
+        - "ESTD 2023"
+        - "BIRD BRAND in parentheses"
+        - "HERBAL OIL text"
+        - "30ML text on label"
+        - "amber apothecary bottle"
+        - "dome cap redesign"
+        - "spray nozzle"
+        - "logo distortion or label morphing"
+
     prompt_keywords:
       - "30ml clear square glass roll-on bottle"
-      - "stainless steel roller ball applicator"
-      - "black cap"
-      - "clear amber-tinted oil inside"
-      - "small palm-sized bottle"
+      - "black rounded dome cap on top — cap is CLOSED, roller ball hidden underneath"
+      - "warm amber golden-brown oil visible through clear glass body"
+      - "dark forest green label with cream center panel and gold border"
+      - "MINYAK CAP BURUNG printed on label"
+      - "bird perched on leafy branch on label — NOT flying"
+      - "Sejak 1958 Khasiat Turun Temurun printed on label"
       - "traditional Malay herbal oil packaging"
+      - "compact palm-size bottle — NOT tall, NOT perfume-sized"
+
+    # ─────────────────────────────────────────────
+    # IMAGE PROMPT LOCKS — FOR AI IMAGE GENERATION
+    # Insert these blocks verbatim into every image generation prompt
+    # for this product. Overrides any generic scene-engine defaults.
+    # ─────────────────────────────────────────────
+    image_prompt_locks:
+      reference_image_lock: >
+        [REFERENCE_IMAGE_LOCK]
+        Use the uploaded product image as the absolute source of truth.
+        Preserve the original Minyak Cap Burung bottle, cap, roller ball,
+        sticker, logo, bird illustration, label text, glass shape, and real
+        product proportions exactly as shown.
+
+      local_edit_delta: >
+        [LOCAL_EDIT_DELTA]
+        Change only the background, lighting, surface, and camera styling.
+        Do not redesign the product.
+
+      typography_and_branding_lock: >
+        [TYPOGRAPHY_AND_BRANDING_LOCK]
+        Keep the sticker crisp and unchanged: dark green label, cream center
+        panel, gold border, "MINYAK CAP BURUNG", perched bird on leafy branch,
+        and "Sejak 1958, Khasiat Turun Temurun." No new text, no rewritten
+        logo, no flying bird.
+
+      spatial_math_and_proportions: >
+        [SPATIAL_MATH_AND_PROPORTIONS]
+        Maintain real compact 30ML roll-on scale. Bottle must remain short,
+        compact, palm-size, not tall, not elongated, not perfume-sized. Keep
+        the exact product-to-cap proportion from the reference image. Preserve
+        rigid glass geometry with no stretching.
+
+      output_specification: >
+        [OUTPUT_SPECIFICATION]
+        Photorealistic TikTok Shop MY commercial product image, 9:16,
+        1080x1920px, sRGB, soft warm studio lighting, shallow depth of field,
+        sharp label, realistic glass reflections.
+
+      negative_lock: >
+        [NEGATIVE_LOCK]
+        No tall bottle, no perfume bottle, no spray nozzle, no dome cap
+        redesign, no amber apothecary redesign, no sepia label, no medallion
+        bird, no ESTD 2023, no BIRD BRAND, no HERBAL OIL, no 30ML added text,
+        no logo distortion, no label morphing, no flying bird, no soaring bird.
 
 # ─────────────────────────────────────────────
 # MANFAAT / BENEFITS MASTER LIST
@@ -396,49 +491,4 @@ last_source_image_handoff: null
 
 # ─────────────────────────────────────────────
 # RECOMMENDED AVATAR ARCHETYPES FOR THIS PRODUCT
-# ─────────────────────────────────────────────
-recommended_archetypes:
-  primary:
-    - avatar_id: "MALAY_FEMALE_YOUNG_01"
-      reason: "Core demographic — Malay female ibu muda, senggugut, pantang, baby care angles"
-    - avatar_id: "MALAY_MALE_YOUNG_01"
-      reason: "Male angles — urutan badan, sakit kepala, outdoor/travel"
-  secondary:
-    - avatar_id: "INDONESIA_FEMALE_YOUNG_01"
-      reason: "Cross-market MY+ID — similar heritage product positioning"
-    - avatar_id: "BANGLADESH_FEMALE_YOUNG_01"
-      reason: "Migrant demographic — traditional remedy familiarity"
-
-# ─────────────────────────────────────────────
-# RECOMMENDED NAMED AVATARS (bosmax-subject-dna.md)
-# ─────────────────────────────────────────────
-recommended_named_avatars:
-  - avatar: "SARA"
-    angles: ["A01", "A02", "A09", "A10", "A17"]
-    reason: "Trustworthy advisor — soft sell, informational angles"
-  - avatar: "JULIA"
-    angles: ["A13", "A14", "A18"]
-    reason: "Professional Malay woman — postnatal / bersalin angles"
-  - avatar: "BELLA"
-    angles: ["A04", "A15", "A19", "A20"]
-    reason: "Gen-Z energy — travel, multi-use, youthful lifestyle angles"
-  - avatar: "MAK_TOK"
-    angles: ["A16", "A07", "A08"]
-    reason: "Heritage authority — warisan, urutan tradisional, baby care"
-  - avatar: "AZMAN"
-    angles: ["A05", "A08", "A15"]
-    reason: "Active male — luka, urutan badan, travel angles"
-
-# ─────────────────────────────────────────────
-# METADATA
-# ─────────────────────────────────────────────
-registered_by: "farisdatosheikh@gmail.com"
-registered_date: "2026-05-29"
-last_updated: "2026-05-29"
-notes: |
-  Produk tradisional Melayu sejak 1958. 30ML square glass roll-on.
-  14 manfaat rasmi dari label produk.
-  20 copywriting angles disusun oleh BOSMAX (A01-A20).
-  Angles A15-A20 adalah creative expansion dari benefit asas.
-  Fastmoss data belum diisi — update selepas lookup.
-  TikTok Shop listing belum aktif — update product_id dan shop_name apabila daftar.
+# ─────────────────────────────────────────�

@@ -5,15 +5,17 @@ description: >
   TikTok commercial video script built from zero — from product brief,
   product image, or raw product specs. No prior image inheritance required.
   Builds scene, character, and all 9 sections from scratch using BOSMAX
-  v11.2 logic, physics DNA, and approved script formulas. Supports single-block
+  v11.3 logic, physics DNA, and approved script formulas. Supports single-block
   and MULTI-BLOCK work orders. In multi-block mode, ingests Master Narrative
   Brief and generates each block with strict dialogue continuity and visual
-  state handoff between blocks.
+  state handoff between blocks. v11.3: S9 overlay deactivated (user handles
+  in CapCut), dialog pre-budget enforcement, GROK scale authority override.
 ---
 
 # BOSMAX SCRIPT GENERATOR — SKILL
-## Role: Mode B Specialist — Deterministic BOSMAX v11.2 Video Script Engine
-## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Role: Mode B Specialist — Deterministic BOSMAX v11.3 Video Script Engine
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Changelog v11.3: S9 Overlay DEACTIVATED | Dialog Pre-Budget Enforcement | GROK Scale Authority Override
 
 ---
 
@@ -66,7 +68,7 @@ dialogue_carry_over   → last spoken words dari Block N-1 (null untuk Block 1)
 
 | Engine | Max/Block | Durations | Notes |
 |--------|----------|----------|-------|
-| VEO_3_1_LITE | 8s | 8s SAHAJA per block | MULTI-BLOCK jika target > 8s |
+| VEO_3_1_LITE | 8s | 8s SAHAJA per block | MULTI-BLOCK jika target > 8s. API param = durationSeconds:8 tapi actual render = **7s** (1 frame dropped). Budget dialog untuk 7s. |
 | VEO_3_1 | 56s | 8,16,24,32,40,48,56s | Standard 9-section script |
 | SORA_2 | 60s | 10,15,20,25,30,45,60s | Standard 9-section script |
 | KLING_3_0 | 15s | 5,10,15s | MULTI-BLOCK jika target > 15s |
@@ -229,8 +231,10 @@ All character biometrics, scene geometry, lighting, product position, and grip m
 in the start frame are LOCKED and must not drift throughout the sequence.
 Using the uploaded end frame image as the exact visual anchor at t=[duration].
 Interpolate motion naturally between start and end frame."
-image_guidance_scale: 0.75–0.85  ← declare ini untuk geometry consistency
 frame_influence: 0.90             ← declare ini jika typography dalam frame (failsafe)
+NOTE: image_guidance_scale adalah UI-only parameter (Google Flow web interface) — ia TIDAK wujud
+dalam Veo 3.1 API. Jangan declare dalam API prompt. UI users: slider adalah visual control sahaja,
+tiada nilai official disyorkan — test sendiri.
 
 [PERFORMANCE_DYNAMICS]
 Describe the motion arc dari start ke end. What changes? What stays locked?
@@ -272,7 +276,7 @@ Using uploaded scene image as environment reference: all spatial geometry,
 lighting profile, surface materials, and background elements LOCKED from this image.
 Using uploaded style image as visual treatment reference: color palette, texture quality,
 and rendering aesthetic LOCKED from this image."
-image_guidance_scale: 0.75–0.85
+NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan inject dalam API prompt.
 
 [UGC_PERFORMANCE_VECTORS]
 Action sequence. Expression. Camera engagement. Silo-consistent behaviour.
@@ -298,8 +302,8 @@ Google Flow generate video berdasarkan gambar tersebut.
 [IMAGE_REF_ANCHOR]
 "Using the uploaded image as the primary visual reference.
 All character biometrics, scene composition, lighting, product position,
-and spatial relationships in the uploaded image are LOCKED.
-image_guidance_scale: [0.75–0.85] — specify value untuk geometry lock strength."
+and spatial relationships in the uploaded image are LOCKED."
+NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan inject dalam API prompt.
 
 [PERFORMANCE_DYNAMICS]
 Describe what moves dalam video. What action is introduced?
@@ -333,8 +337,20 @@ GROK tidak auto-inherit visual tanpa arahan.
 Lock: character appearance, skin tone, attire, facial structure, expression class.
 Lock: scene environment, background geometry, surface materials, lighting direction.
 Lock: product position, grip mechanics, label orientation.
-Do NOT reinterpret, stylize, or drift from the uploaded reference.
-image_strength: 0.80 — maintain visual fidelity to reference throughout duration."
+Do NOT reinterpret, stylize, or drift from the uploaded reference."
+
+[SCALE_AUTHORITY_OVERRIDE — WAJIB UNTUK GROK, inject selepas VISUAL_LOCK]
+"PRODUCT SCALE IS LOCKED FROM REFERENCE IMAGE.
+The uploaded reference image shows the product at its exact real-world size.
+The scale anchor descriptor is: [SCALE_ANCHOR_DESCRIPTOR dari product_record]
+This scale must be reproduced EXACTLY as shown in the reference image.
+Do NOT enlarge the product. Do NOT treat the product as larger than shown.
+Do NOT rescale the product based on cinematic convention or visual proportion guessing.
+The product size relative to the human hand in the reference image is the AUTHORITY.
+Any scale drift from the reference image is a critical generation error.
+Negative scale prompts: no oversized product | no enlarged bottle | no scale drift
+from reference image | no product bigger than shown in uploaded image |
+maintain exact reference image scale throughout all frames."
 
 [then proceed dengan standard 9-section prose untuk GROK]
 ```
@@ -342,8 +358,107 @@ image_strength: 0.80 — maintain visual fidelity to reference throughout durati
 **INGAT:** GROK standard 9-section format masih digunakan.
 Image reference block ini adalah TAMBAHAN di bahagian atas, bukan ganti.
 
+> **NOTA — image_strength untuk GROK:** Parameter `image_strength` adalah UI slider dalam
+> Grok web interface SAHAJA. Ia **tidak wujud dalam xAI API**. Tiada nilai official disyorkan
+> oleh xAI. Nilai lama (0.90) dalam BOSMAX adalah heuristic tanpa basis — **buang dari semua prompts**.
+> UI users: adjust slider sendiri mengikut hasil render — tiada nilai "betul" yang universal.
+
+---
+
+## GROK ENGINE — AUDIO & SETTINGS (VERIFIED)
+
+**AUTO-GENERATION — WAJIB OFF sebelum generate:**
+> Settings: Grok profile → Settings → Behavior → Auto-generation → **OFF**
+> Jika auto-gen ON, Grok akan auto-generate audio menggunakan model default yang
+> tidak konsisten dengan video tone. OFF = full control.
+
+**AUDIO ISOLATION PER BLOCK (VERIFIED — xAI official):**
+> GROK audio adalah **isolated per block**. Tiada audio inheritance antara blocks.
+> Block 1 audio dan Block 2 audio adalah dua tracks berasingan — pitch, tone, energy class
+> TIDAK carry over secara automatic.
+>
+> **IMPLIKASI untuk multi-block:**
+> - Jangan expect audio continuity antara GROK blocks secara automatic
+> - Untuk voice continuity: gunakan **ElevenLabs** untuk generate VO terlebih dahulu,
+>   kemudian inject sebagai audio track dalam GROK (external audio input)
+> - Tanpa ElevenLabs: declare audio energy class + BPM dalam S7 setiap block,
+>   tapi jangan claim audio akan seamless — ia tidak akan seamless secara native
+
 **FORBIDDEN untuk GROK:** NANO BANANA sebagai submode atau engine variant.
 NANO_BANANA_PRO adalah image engine berasingan — ia TIDAK beroperasi melalui GROK.
+
+---
+
+## VEO ENGINE — VERIFIED TECHNICAL CONSTRAINTS
+
+### VEO_3_1_LITE — 7s Actual Duration
+> API parameter: `durationSeconds: 8`
+> Actual rendered video: **7 seconds** (1 frame dropped by model)
+> **BOSMAX script budgeting: guna 7s untuk dialog calculation, bukan 8s**
+> WPS budget untuk VEO_3_1_LITE block = FLOOR(7 × wps_safe_max)
+
+### VEO Extension — 720p Hard Lock
+> **VEO extension (temporal context chaining) adalah LOCKED ke 720p.**
+> Block 1 MESTI dirender dalam 720p. Jika Block 1 dirender dalam resolusi lain,
+> extension chain tidak akan match dan output quality akan inconsistent.
+> **HARD RULE: Semua VEO multi-block → declare 720p dari Block 1.**
+
+### VEO Extension — Token Expiry (48 Jam)
+> Token dari Block 1 render (digunakan untuk extension/chaining) expire dalam **48 jam**.
+> Jika user delay antara Block 1 dan Block 2 melebihi 48 jam → token invalid → chain broken.
+> **BOSMAX MESTI warn user:** "Complete all extension blocks within 48 hours of Block 1 render."
+
+### VEO Extension — Audio Continuity Rule (VERIFIED — Official Doc)
+> "Voice is not able to be effectively extended if it's not present in the last 1 second of video."
+> **Implikasi untuk multi-block dialog budgeting:**
+> - Dialog dalam setiap block MESTI ada ambient audio (breathing, room tone, natural sound)
+>   yang berterusan sehingga frame terakhir
+> - Jika dialog habis awal (e.g., pada 6.5s dari 8s block), ambient/natural audio MESTI
+>   masih aktif dari saat 6.5s ke saat 7s (frame terakhir)
+> - Silence penuh dalam 1 saat terakhir = extension audio akan reset pitch dan tone
+> **S7 Audio Tone MESTI include:** "Ambient audio continues through final frame —
+>   room tone/breathing maintained to end of clip."
+>
+> **NOTA — Audio safety margins (6.5s/5.5s/9.0s):** Nilai-nilai ini adalah heuristic
+> community/tidak verified. Guna sebagai **soft guideline** sahaja, bukan hard rule.
+> Official rule yang VERIFIED adalah 1-second ambient presence rule di atas.
+
+### VEO API — JSON Payload Reference (VERIFIED — ai.google.dev)
+
+**Block 1 (fresh generation):**
+```json
+{
+  "instances": [{
+    "prompt": "[full prose prompt]"
+  }],
+  "parameters": {
+    "aspectRatio": "9:16",
+    "durationSeconds": 8,
+    "generateAudio": true,
+    "resolution": "720p"
+  }
+}
+```
+
+**Block 2+ (extension via temporal context chaining):**
+```json
+{
+  "instances": [{
+    "prompt": "[continuation prompt — INHERIT from Block N-1 end state]",
+    "video": {
+      "videoUri": "[gs:// URI of Block N-1 output]"
+    }
+  }],
+  "parameters": {
+    "aspectRatio": "9:16",
+    "durationSeconds": 8,
+    "generateAudio": true,
+    "resolution": "720p"
+  }
+}
+```
+> **NOTE:** `resolution: "720p"` MESTI sama antara Block 1 dan extension blocks.
+> `videoUri` adalah URI dari rendered output Block N-1 (bukan input image).
 
 ---
 
@@ -432,14 +547,83 @@ no full hand grip
 
 ---
 
-## WPS GOVERNANCE — WAJIB
+## WPS GOVERNANCE — WAJIB (v11.3 — LANGUAGE-SPECIFIC)
 
-- Target: 1.6 WPS | Hard max: 2.0 WPS | **Kill-switch: 3.0 WPS**
-- Hook segment: ≤2.0 WPS
-- Body/Problem: ≤1.6 WPS
-- CTA: ≤2.0 WPS
+WPS limits adalah **language-specific**. MESTI rujuk bahasa dialog sebelum set word budget.
+Nilai lama (1.6/2.0/3.0) adalah DEPRECATED — JANGAN guna lagi.
 
-**ABORT dan rewrite mana-mana scene yang exceed 2.0 WPS sebelum output.**
+---
+
+### BAHASA MELAYU (BM) — PRIMARY LANGUAGE
+
+> Kepadatan suku kata BM: purata 3–4 suku kata per perkataan (contoh: "pemasaran" = 4 suku kata).
+> Kadar ini VERIFIED untuk Google Veo 3.1 dan semua engines dalam BOSMAX registry.
+
+| Durasi | Optimum (2.2 WPS) | Safe Max (2.5 WPS) | Hard Ceiling (2.8 WPS) |
+|--------|-------------------|---------------------|------------------------|
+| 6s     | 13 patah perkataan | 15 patah perkataan | 17 patah perkataan |
+| 8s     | 17 patah perkataan | 20 patah perkataan | 22 patah perkataan |
+| 10s    | 22 patah perkataan | 25 patah perkataan | 28 patah perkataan |
+| 12s    | 26 patah perkataan | 30 patah perkataan | 33 patah perkataan |
+| 15s    | 33 patah perkataan | 37 patah perkataan | 42 patah perkataan |
+| 16s    | 35 patah perkataan | 40 patah perkataan | 45 patah perkataan |
+
+```
+BM WPS RULES:
+  Optimum target   : 2.2 WPS  ← Natural & jelas, recommended untuk storytelling
+  Safe Maximum     : 2.5 WPS  ← Padat / pacing iklan — CEILING yang digunakan dalam DIALOG PRE-BUDGET
+  Hard Ceiling     : 2.8 WPS  ← Paling laju — AUTO-HEAL trim jika dicapai
+  ABORT threshold  : > 2.8 WPS ← Rebuild S6 sepenuhnya
+```
+
+---
+
+### MULTI-LANGUAGE WPS MATRIX (VERIFIED)
+
+> NOTA: Nilai berikut adalah Safe Maximum (bukan hard ceiling) untuk setiap bahasa.
+> Hard ceiling = Safe Max + ~0.3 WPS di atas.
+
+| Bahasa | Safe Max WPS | Nota |
+|--------|-------------|------|
+| English (EN) | 3.0 WPS | Suku kata pendek, penjimatan ruang sebutan tinggi |
+| Indonesian (ID) | 2.6 WPS | Struktur mirip BM, sedikit lebih padat dalam media komersial |
+| Chinese (ZH) | 2.6 CPS | Pengiraan dalam **Characters Per Second** — setiap logogram = satu suku kata bertons |
+| Hindi (HI) | 2.4 WPS | Kandungan suku kata per perkataan tinggi |
+| Bengali (BN) | 2.4 WPS | Sistem fonetik berkluster, pacing sederhana |
+| Arabic (AR) | 2.2 WPS | Kepadatan maklumat per kata sangat tinggi — paling rendah |
+
+**Word limit table (Safe Maximum) mengikut durasi:**
+
+| Durasi | EN (3.0) | ID (2.6) | ZH (2.6 char) | HI (2.4) | BN (2.4) | AR (2.2) |
+|--------|----------|----------|---------------|----------|----------|----------|
+| 6s     | 18       | 15       | 15 char       | 14       | 14       | 13       |
+| 8s     | 24       | 21       | 21 char       | 19       | 19       | 17       |
+| 10s    | 30       | 26       | 26 char       | 24       | 24       | 22       |
+| 12s    | 36       | 31       | 31 char       | 28       | 28       | 26       |
+| 15s    | 45       | 39       | 39 char       | 36       | 36       | 33       |
+| 16s    | 48       | 41       | 41 char       | 38       | 38       | 35       |
+
+> **NOT VERIFIED:** Penggunaan 3.0 WPS ke atas untuk dialog penuh dalam model T2V AI generasi semasa
+> belum stabil dan sering menyebabkan audio truncation atau model memotong sebutan.
+> RECOMMENDATION: Kunci pada Safe Maximum untuk semua video <15s.
+
+---
+
+### WPS LOOKUP RULE
+
+Sebelum tulis S6, script generator MESTI:
+1. Identify `target_language` dari work order
+2. Lookup Safe Maximum WPS dan word limit dari table di atas mengikut bahasa + duration
+3. Guna nilai tersebut sebagai ceiling dalam DIALOG PRE-BUDGET
+
+**LANGKAH MUDAH:**
+```
+Bahasa Melayu + 8s → ceiling = 20 words (Safe Max 2.5 WPS)
+English + 8s       → ceiling = 24 words (Safe Max 3.0 WPS)
+Arabic + 8s        → ceiling = 17 words (Safe Max 2.2 WPS)
+```
+
+**JANGAN guna nilai 1.6/2.0/3.0 lama. Nilai tersebut DEPRECATED.**
 
 ---
 
@@ -463,12 +647,80 @@ seks, zakar, vagina, pancut, kongkek, blowjob, ubat tahan lama
 ```
 I = duration_target / scene_count
 scene_count: 4 untuk 5–30s | 8 untuk 31–60s
-target_words_per_scene: ROUND(I × 1.6)
-max_words_per_scene: FLOOR(I × 2.0)
-kill_switch: FLOOR(I × 3.0)
+
+--- LOOKUP WPS DARI TABLE (guna target_language) ---
+wps_optimum  = [dari WPS table — e.g. BM=2.2, EN=3.0, AR=2.2]
+wps_safe_max = [dari WPS table — e.g. BM=2.5, EN=3.0, AR=2.2]
+wps_ceiling  = [dari WPS table — e.g. BM=2.8, EN=3.3, AR=2.5]
+
+--- WORD BUDGETS ---
+target_words_per_scene: ROUND(I × wps_optimum)
+max_words_per_scene:    FLOOR(I × wps_safe_max)
+kill_switch:            FLOOR(I × wps_ceiling)
+
+--- TOTAL DIALOG BUDGET (untuk DIALOG PRE-BUDGET) ---
+total_dialog_budget = FLOOR(duration_target × wps_safe_max)
+  ← Ini adalah ceiling yang digunakan dalam S6 pre-budget calculation
 ```
 
-Declare I, scene_count, dan word budgets dalam Section 8.
+Declare I, scene_count, language, wps values, dan word budgets dalam Section 8.
+
+---
+
+## DIALOG PRE-BUDGET — WAJIB KIRA SEBELUM TULIS SECTION 6
+
+**Ini MESTI dilakukan sebelum menulis satu patah pun dialog dalam Section 6.**
+Jika tidak dikira dahulu, dialog akan overflow dan tidak habis dalam video.
+
+```
+STEP A — LOOKUP LANGUAGE + KIRA WORD BUDGET:
+  1. Identify target_language dari work order
+  2. Lookup wps_safe_max dari WPS GOVERNANCE table atas
+     BM=2.5 | EN=3.0 | ID=2.6 | ZH=2.6 | HI=2.4 | BN=2.4 | AR=2.2
+  3. dialog_budget_words = FLOOR(duration_target × wps_safe_max)
+  ← INI adalah ceiling mutlak. Tiada pengecualian.
+  ← Untuk durasi standard, rujuk word limit table terus (lebih cepat).
+
+STEP B — KIRA BEBAN SEMASA:
+  hook_words    = [kira perkataan dalam hook]
+  cta_words     = [kira perkataan dalam CTA]
+  fixed_words   = hook_words + cta_words
+
+STEP C — KIRA BAKI UNTUK USP:
+  usp_budget    = dialog_budget_words - fixed_words
+  ← Jika usp_budget ≤ 0: ONLY hook + CTA dibenarkan. Buang semua USP.
+  ← Jika usp_budget > 0: PILIH USP satu per satu, kira perkataan, stop bila budget habis.
+
+STEP D — PRIORITY ORDER (bila budget paksa pilih):
+  1. Hook       ← WAJIB, tidak boleh dibuang
+  2. CTA        ← WAJIB, tidak boleh dibuang
+  3. USP_1      ← Ambil jika ada baki budget
+  4. USP_2      ← Ambil jika ada baki budget selepas USP_1
+  5. USP_3      ← Ambil jika ada baki budget selepas USP_2
+
+STEP E — DECLARE SEBELUM TULIS:
+  "DIALOG PRE-BUDGET:
+   Duration: [X]s | Budget: [N] words
+   Hook: [N]w | CTA: [N]w | USP budget: [N]w remaining
+   Selected: Hook + [USP_1/tiada] + CTA"
+
+CONTOH (8s video, Bahasa Melayu):
+  target_language = BM | wps_safe_max = 2.5
+  dialog_budget = FLOOR(8 × 2.5) = 20 words ← (atau rujuk table: BM 8s = 20 words)
+  Hook: "Berapa lama lagi kau nak buat-buat okay?" = 8 words
+  CTA: "Diam-diam order. Kau tahu kenapa." = 5 words
+  fixed = 13 words | usp_budget = 7 words remaining
+  USP terpendek: "Kecil macam lip balm, simpan private." = 6 words → muat ✅
+  Output S6: Hook + USP_1 + CTA = 19 words. Di bawah ceiling 20. ✅
+
+CONTOH (8s video, English):
+  target_language = EN | wps_safe_max = 3.0
+  dialog_budget = FLOOR(8 × 3.0) = 24 words
+  Lebih banyak ruang untuk USP berbanding BM.
+```
+
+**INGAT: Dialog yang tidak habis diucap dalam video = video yang kelihatan terpotong.
+Lebih baik dialog pendek tetapi lengkap daripada dialog panjang yang terhenti separuh jalan.**
 
 ---
 
@@ -499,7 +751,7 @@ Declare I, scene_count, dan word budgets dalam Section 8.
 6. Dialogue
 7. Audio Tone
 8. Temporal Logic
-9. Overlay
+9. No Overlay Declaration
 
 ---
 
@@ -534,7 +786,9 @@ Surface interaction jika product contact table/skin/surface lain.
 **S6 — Dialogue (NON-AUTHORITATIVE):**
 VO atau on-screen text based pada submode_formula + product hook/USP/CTA.
 Apply pronoun rules berdasarkan silo.
+**WAJIB: Jalankan DIALOG PRE-BUDGET sebelum tulis satu patah pun.**
 WPS compliance — declare WPS per segment selepas writing.
+WPS ceiling bergantung bahasa: BM=2.5 | EN=3.0 | ID=2.6 | ZH=2.6 | HI/BN=2.4 | AR=2.2
 **ZERO visual nouns — self-audit sebelum finalize.**
 
 **S7 — Audio Tone:**
@@ -550,110 +804,18 @@ Declare: "VISUAL END STATE: [character position] | [product position] | [lightin
 Declare: "LAST SPOKEN WORDS: [exact last phrase from S6]"
 Declare: "NEXT BLOCK OPENS FROM: [brief description]" jika bukan final block.
 
-**S9 — Overlay:**
-SETIAP on-screen text element dengan COORD mapping.
-Format: [TEXT] | [COORD: X:%, Y:%] | [STYLE] | [Z_ZONE: TIKTOK_SHOP_SAFE]
-Hook: WORD_BY_WORD_HIGHLIGHT | Body: STATIC_LOWER_THIRDS | CTA: PULSING_SCALE_ANIMATION
-Semua coordinates: X:4–96%, Y:0–80%
+**S9 — No Overlay Declaration:**
+**SECTION 9 ADALAH DEACTIVATED. TIADA TEXT OVERLAY DIJANA.**
+Text overlay dikendalikan oleh user secara manual dalam CapCut (post-production).
+Output wajib untuk Section 9:
+  "NO_OVERLAY — Text overlay handled manually in post-production (CapCut).
+   Video engine renders clean footage only. No burned-in text."
+JANGAN jana sebarang text, coordinates, atau styling dalam Section 9.
+JANGAN ada COORD mapping, Z_ZONE, atau typography instructions.
 
 ---
 
 ## TOKEN SUPPRESSION
 
 **JANGAN output tokens ini dalam final prose:**
-CLASS_A/B/C/D/E/GENERIC | CAM_xxx | CTX_xxx | SHOT_xxx | SAVAGE_xxx |
-PREDATOR_CORE | AUTHENTIC_WHISPER | PHYSICS_LOCK_MANDATORY |
-KINEMATIC_DISENTANGLEMENT | PRECISION_PINCH | UGC_IPHONE_RAW | CINEMATIC_PRO
-
-**JANGAN output character names:**
-NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | CHEF_DANIAL
-
----
-
-## OUTPUT CONTRACT
-
-```
-ENGINE: [engine_id] | DURATION: [Xs] | SUBMODE: [formula] |
-PLATFORM: [target] | CAMERA STYLE: [prose description]
-[BLOCK [N] OF [TOTAL] — omit line jika single-block]
-[CONTINUES FROM BLOCK N-1 — omit line jika Block 1 atau single-block]
-
----
-SECTION 1: Biometric Anchor DNA
-[content]
-
----
-SECTION 2: Lighting & Scene Physics
-[content]
-
----
-SECTION 3: Camera & Framing
-[content]
-
----
-SECTION 4: Visual Action
-[content]
-
----
-SECTION 5: Product Physics
-[content]
-
----
-SECTION 6: Dialogue
-[content]
-WPS AUDIT: Hook [x.x] | Body [x.x] | CTA [x.x]
-
----
-SECTION 7: Audio Tone
-[content]
-
----
-SECTION 8: Temporal Logic
-I=[x]s | scenes=[x] | target=[x]w | max=[x]w | kill=[x]w
-[content]
-
----
-SECTION 9: Overlay
-[TEXT] | [COORD: X:%, Y:%] | [STYLE] | [Z_ZONE: TIKTOK_SHOP_SAFE]
-```
-
----
-
-## FAIL-CLOSED RULES
-
-### HARD BLOCK — ABORT (mandatory user input tiada)
-- ABORT jika engine + duration pairing invalid (sistem tak boleh teka intent user)
-- ABORT jika GROK dipilih dengan submode NANO BANANA
-- ABORT jika GOOGLE_FLOW Frames/Ingredients/Image dipilih tanpa uploaded reference image
-- ABORT jika GOOGLE_FLOW F2V dipilih tanpa KEDUA-DUA start frame dan end frame
-- ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
-- ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
-- JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
-- JANGAN hasilkan image prompts (kecuali sebagai bahagian GOOGLE_FLOW block)
-- JANGAN hasilkan product records
-
-### AUTO-HEAL — Fix dan teruskan (jangan ABORT)
-- Section 6 ada visual noun → remove noun, rephrase dialogue, log, teruskan
-- Section 9 ada overlay tanpa COORD → infer dari safe zone centre, declare, log, teruskan
-- Section 9 COORD di luar safe zone → recalculate ke nearest valid coord, log, teruskan
-- WPS exceed 2.0 (bukan kill-switch) → trim dialogue, recalculate, log, teruskan
-- WPS exceed 3.0 (kill-switch) → rebuild Section 6 ikut target WPS, log, teruskan
-- Section count ≠ 9 (bukan GOOGLE_FLOW) → rebuild missing/remove extra, log, teruskan
-- Forbidden token dalam prose → replace dengan descriptor, log, teruskan
-- Character name dalam prose → replace dengan biometric DNA, log, teruskan
-- image_guidance_scale di luar 0.75–0.85 (GOOGLE_FLOW) → adjust ke 0.80, log, teruskan
-- MAK_TOK + SAVAGE_HPAS conflict → swap formula ke HSO atau PAS, log, teruskan
-- STEALTH/DIRECT mix dalam satu script → enforce dominant silo, rephrase, log, teruskan
-
-### Multi-Block Auto-Heal (v11.2 — aktif apabila multi_block_mode = YES)
-- Block 2+ S1 biometric drift → re-anchor ke Block 1 S1 biometrics verbatim, log, teruskan
-- Block 2+ S2 introduce scene element baru → remove element, revert, log, teruskan
-- Block 2+ S6 ada re-introduction phrase → remove phrase, sambung dari carry-over, log, teruskan
-- Block 2+ S6 tidak menyambung dari carry-over → prepend carry-over anchor, log, teruskan
-- S8 tiada "BLOCK [N] OF [TOTAL]" declaration → inject declaration, log, teruskan
-- S8 tiada "VISUAL END STATE:" (bukan final block) → extract dan declare dari S4, log, teruskan
-- S8 tiada "LAST SPOKEN WORDS:" (bukan final block) → extract last line dari S6, log, teruskan
-- Block 2+ generate tanpa visual_start_state → extract dari Block N-1 S8, inject, log, teruskan
-- Block 2+ generate tanpa dialogue_carry_over → extract dari Block N-1 S8, inject, log, teruskan
-- GROK blocks mixed duration → recalculate block math (I value) per block berasingan, log, teruskan
-- JANGAN restart story dalam Block 2+ — mesti sambung — auto-heal: remove restart, sambung semula
+CLASS_A/B/C/D/E/GENERIC | CA

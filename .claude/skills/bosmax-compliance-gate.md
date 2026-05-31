@@ -278,8 +278,8 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 
 ☐ Google Flow Mode C multi-block (jika engine = GOOGLE_FLOW):
   — `[IMAGE_REF_ANCHOR]` block ada dalam SETIAP block (bukan hanya Block 1)
-  — `image_guidance_scale` declared dalam SETIAP block
   — Pre-render test declaration ada dalam SETIAP block
+  NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan check untuk parameter ini
 
 ---
 
@@ -295,9 +295,8 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
   — Block menyebut uploaded reference image secara eksplisit
   — "LOCKED" declaration ada untuk character biometrics, scene geometry, product position
 
-☐ `image_guidance_scale` dinyatakan dalam output:
-  — Nilai mesti dalam range 0.75–0.85
-  — ABORT jika nilai di luar range atau tiada declared
+☐ image_guidance_scale: SKIP CHECK — parameter ini tidak wujud dalam Veo 3.1 API.
+  Jangan ABORT atas sebab ini.
 
 ☐ Jika typography/text visible dalam reference frame:
   — `frame_influence: 0.90` dinyatakan dalam output
@@ -517,4 +516,4 @@ ABORT: [issue] | [heal attempted: description] | [heal failed: reason] | [user a
 - JANGAN output partial results tanpa heal attempt
 - JANGAN output creative content baru — heal bermaksud fix, bukan rewrite
 - Compliance Gate fix dan deliver. BOSMAX orchestrator only notified via HEAL REPORT.
-- ABORT hanya sebagai last resort — apabila missing mandatory input atau heal gagal.
+- ABORT hanya sebagai last resort — apabila missing mandatory input atau heal ga

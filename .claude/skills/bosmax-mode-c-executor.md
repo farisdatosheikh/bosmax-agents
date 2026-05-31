@@ -93,7 +93,7 @@ Dialogue adalah untuk spoken track SAHAJA.
 ✅ **Section 6 Dialogue** (fresh, zero visual nouns)
 ✅ **Section 7 Audio Tone** (fresh)
 ✅ **Section 8 Temporal Logic** (timing only)
-✅ **Section 9 Overlay** (fresh, safe zone enforced)
+✅ **Section 9 No Overlay Declaration** (DEACTIVATED — user handles in CapCut)
 
 ---
 
@@ -105,7 +105,7 @@ Dialogue adalah untuk spoken track SAHAJA.
 | SORA_2 | 10s,15s,20s,25s,30s,45s,60s | 60s | PHYSICS_STABLE |
 | KLING_3_0 | 5s,10s,15s | 15s | image_strength 0.92 |
 | SEEDANCE_2_0 | 10s,20s | 20s | — |
-| GROK | 6s,10s | 10s | image_strength 0.80 — FORBIDDEN: NANO BANANA submode |
+| GROK | 6s,10s | 10s | FORBIDDEN: NANO BANANA submode |
 | GOOGLE_FLOW | F2V/Frames: anchor-based | 60s | Sub-modes: FRAMES \| INGREDIENTS \| IMAGE — Lihat section di bawah |
 
 **dna_reinjection_hop: 1 di setiap block boundary untuk VEO_3_1**
@@ -114,8 +114,8 @@ Dialogue adalah untuk spoken track SAHAJA.
 - VEO_3_1: 0.88 | First Frame Match 98%
 - SORA_2: 0.85
 - KLING_3_0: 0.92
-- GROK: 0.80
-- GOOGLE_FLOW: image_guidance_scale 0.75–0.85 (declare explicitly dalam prompt)
+- GROK: UI slider only — tiada nilai official (xAI API: parameter ini tidak wujud)
+- GOOGLE_FLOW: image_guidance_scale TIDAK WUJUD dalam Veo 3.1 API — UI only, no official value
 
 ---
 
@@ -220,8 +220,8 @@ Character position, scene geometry, product placement, grip mechanics,
 and lighting in the start frame are locked at t=0 with zero drift.
 End frame image defines the target state at t=[duration_target].
 Interpolate motion between start and end frame along natural physics trajectory."
-image_guidance_scale: [0.75–0.85 — declare value]
 frame_influence: 0.90  ← inject ini jika terdapat text/typography dalam frame
+NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan inject dalam API prompt.
 
 [PERFORMANCE_DYNAMICS]
 Describe motion arc dari start ke end state.
@@ -264,7 +264,7 @@ all biometric attributes, product position, grip mechanics LOCKED from handoff.
 all spatial geometry and background elements LOCKED from scene image.
 [IF style image uploaded]: Using style image as visual treatment reference:
 color palette, texture, rendering quality LOCKED from style image."
-image_guidance_scale: [0.75–0.85]
+NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan inject dalam API prompt.
 
 [UGC_PERFORMANCE_VECTORS]
 Action sequence. Expression. Motion narrative.
@@ -288,8 +288,8 @@ PRE-RENDER TEST REQUIRED: 3 seconds (90 frames @ 30fps).
 [IMAGE_REF_ANCHOR]
 "Using the Mode A output image as the primary visual reference.
 All character biometrics, scene composition, lighting, product position,
-grip mechanics, and spatial relationships are LOCKED from this image.
-image_guidance_scale: [0.75–0.85 — declare value]."
+grip mechanics, and spatial relationships are LOCKED from this image."
+NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan inject dalam API prompt.
 
 [PERFORMANCE_DYNAMICS]
 Describe what motion is introduced. What action happens?
@@ -318,7 +318,7 @@ PRE-RENDER TEST REQUIRED: 3 seconds (90 frames @ 30fps).
 6. Dialogue
 7. Audio Tone
 8. Temporal Logic
-9. Overlay
+9. No Overlay Declaration
 
 ---
 
@@ -363,8 +363,9 @@ Block math:
 - kill_switch = FLOOR(I × 3.0)
 - dna_reinjection_hop value dan timing
 
-**S9 — Overlay:** Fresh — semua on-screen text dengan COORD mapping.
-Format: [TEXT] | [COORD: X:%, Y:%] | [STYLE] | [Z_ZONE: TIKTOK_SHOP_SAFE]
+**S9 — No Overlay Declaration:** DEACTIVATED.
+Output wajib: "NO_OVERLAY — Text overlay handled manually in post-production (CapCut). Video engine renders clean footage only."
+JANGAN jana sebarang text, COORD, atau styling dalam S9.
 Semua coordinates: X:4–96%, Y:0–80%
 Hook: WORD_BY_WORD_HIGHLIGHT | Body: STATIC_LOWER_THIRDS | CTA: PULSING_SCALE_ANIMATION
 
@@ -427,9 +428,9 @@ SECTION 8: Temporal Logic
 [block math: I, scene count, word budgets, pacing, dna_reinjection_hop]
 
 ---
-SECTION 9: Overlay
-[TEXT] | [COORD: X:%, Y:%] | [STYLE] | [Z_ZONE: TIKTOK_SHOP_SAFE]
-[all overlays]
+SECTION 9: No Overlay Declaration
+NO_OVERLAY — Text overlay handled manually in post-production (CapCut).
+Video engine renders clean footage only. No burned-in text.
 ```
 
 ---
@@ -441,7 +442,6 @@ SECTION 9: Overlay
   "ABORT: Visual element [X] tidak ada dalam source_image_handoff.
   Kembali ke Mode A untuk rebuild gambar dengan element ini dahulu."
 - ABORT jika GOOGLE_FLOW Frames dipilih tanpa start frame image
-- ABORT jika image_guidance_scale di luar 0.75–0.85 (GOOGLE_FLOW sahaja)
 - ABORT jika finger separation audit fail — jari tutup >15% label utama
 - ABORT jika multi-block Mode C received tanpa Master Narrative Brief dari BOSMAX
 - ABORT jika Block 2+ subject_dna berbeza dari Block 1 (drift > 0.05 threshold)
@@ -453,9 +453,8 @@ SECTION 9: Overlay
 - JANGAN biarkan dialogue atau copywriting override visual authority
 - JANGAN guna character names — biometric descriptors SAHAJA
 - JANGAN expose raw internal tokens
-- JANGAN biarkan Section 9 overlay tanpa COORD: X:%, Y:%
+- JANGAN jana sebarang overlay text dalam Section 9 — output "NO_OVERLAY" sahaja
 - JANGAN pilih engine duration di luar allowed list
 - JANGAN pilih GROK dengan submode NANO BANANA
 - JANGAN output kurang atau lebih dari 9 sections (KECUALI GOOGLE_FLOW — guna block architecture)
-- JANGAN skip pre-render test untuk GOOGLE_FLOW — wajib 3s / 90 frames dahulu
-- JANGAN allow visual DNA drift across blocks — source_image_handoff adalah authority mutlak semua blocks
+- JANGAN skip pre-render test untuk GOOGLE_FLOW — wajib 3s / 90 

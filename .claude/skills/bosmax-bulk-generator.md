@@ -191,7 +191,7 @@ dna_reinjection_hop: 1 di setiap block boundary.
 ### GOOGLE_FLOW FRAMES/INGREDIENTS/IMAGE (bulk — reference image sets)
 - WAJIB: `source_image_handoff` ada (minimum subject_dna, context_environment, lighting_camera).
 - `[IMAGE_REF_ANCHOR]` block MESTI ada sebagai block pertama setiap set.
-- `image_guidance_scale: [0.75–0.85]` MESTI declared dalam setiap set.
+- NOTE: image_guidance_scale tidak wujud dalam Veo 3.1 API — jangan inject dalam output.
 - `frame_influence: 0.90` jika typography/text visible dalam reference frame.
 - Pre-render test: "3 seconds (90 frames @ 30fps)" MESTI dalam setiap set output.
 - **Variation strategy:** Rotate performance action dan camera motion SAHAJA.
@@ -207,7 +207,7 @@ dna_reinjection_hop: 1 di setiap block boundary.
 
 [IMAGE_REF_ANCHOR]  ← (jika bukan T2V)
 "[visual lock statement]"
-image_guidance_scale: [0.75–0.85]
+NOTE: Jangan include image_guidance_scale — parameter tidak wujud dalam Veo 3.1 API.
 
 [PERFORMANCE_DYNAMICS / UGC_PERFORMANCE_VECTORS]
 [action sequence, motion narrative, expression]
@@ -534,7 +534,6 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 - S9 coordinate out of safe zone → recalculate ke nearest valid coord, log, teruskan
 - biometric drift > 0.05 → re-anchor kepada Set 1 biometrics, log, teruskan
 - GOOGLE_FLOW set tiada [IMAGE_REF_ANCHOR] (bukan T2V) → inject block, log, teruskan
-- GOOGLE_FLOW set tiada image_guidance_scale → inject default 0.80, log, teruskan
 - GOOGLE_FLOW set tiada pre-render test → inject declaration, log, teruskan
 - Section count ≠ 9 → rebuild missing section atau remove extra, log, teruskan
 - Section 6 ada visual noun → remove visual noun, rephrase, log, teruskan
@@ -545,3 +544,4 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 
 **Selepas semua sets selesai: emit HEAL REPORT (jika ada isu yang di-heal).**
 **Format: lihat AUTO-HEAL REGISTRY dalam bosmax-compliance-gate.md.**
+               

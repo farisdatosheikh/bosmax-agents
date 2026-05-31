@@ -351,7 +351,6 @@ Usage in prompt:
 **⚠️ AMARAN TEKNIKAL — NANO BANANA:**
 - Sensitive kepada trailing whitespaces → Fetch Deadlock
 - Bersihkan semua whitespace sebelum paste ke konsol
-- image_guidance_scale WAJIB: 0.75–0.85 (JANGAN biarkan default 0.50)
 
 ---
 
@@ -381,12 +380,12 @@ Update `avatars/[AVATAR_ID].yaml` → `wardrobe_catalogue[].mannequin_image_ref`
 
 | No | Audit Point | Standard | Failsafe |
 |----|-------------|---------|---------|
-| 1 | image_guidance_scale | 0.75–0.85 | Laraskan manual, jangan auto/0.50 |
-| 2 | Spatial Math present | '2mm air gap' + '1:4 ratio' dalam prompt | Inject semula [SPATIAL_MATH] block |
-| 3 | Trailing whitespace | Tiada whitespace di hujung baris | Text stripper sebelum paste |
-| 4 | Edge boundary | Kulit tangan vs produk — sharp | Inject 'rigid-body physics constraint' |
-| 5 | Typography | Label teks tidak swimming/morph | Switch ke F2V atau naikkan frame_influence ke 0.90 |
-| 6 | scale_anchor_descriptor | Loaded dari products/*.yaml | ABORT jika null + TikTok platform |
+| 1 | Spatial Math present | '2mm air gap' + '1:4 ratio' dalam prompt | Inject semula [SPATIAL_MATH] block |
+| 2 | Trailing whitespace | Tiada whitespace di hujung baris | Text stripper sebelum paste |
+| 3 | Edge boundary | Kulit tangan vs produk — sharp | Inject 'rigid-body physics constraint' |
+| 4 | Typography | Label teks tidak swimming/morph | Switch ke F2V atau naikkan frame_influence ke 0.90 |
+| 5 | scale_anchor_descriptor | Loaded dari products/*.yaml | ABORT jika null + TikTok platform |
+NOTE: image_guidance_scale (dulunya row 1) — parameter ini tidak wujud dalam Veo 3.1 API. Dibuang dari checklist.
 
 ---
 
@@ -539,3 +538,4 @@ Selepas emit output:
 - JANGAN hasilkan video scripts
 - ABORT jika subject_dna null atau incomplete
 - ABORT jika platform_target tidak declared
+                                   

@@ -347,7 +347,9 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ║ ENGINE ID        ║ MAX/BLOCK║ ALLOWED DURATIONS            ║ NOTES                        ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ VEO_3_1_LITE     ║ 8s       ║ 8s SAHAJA per block          ║ MULTI-BLOCK jika target > 8s ║
-║                  ║          ║ (16s = 2 blocks, 24s = 3)    ║ Standard 9-section per block ║
+║                  ║          ║ (16s = 2 blocks, 24s = 3)    ║ API=durationSeconds:8 tapi   ║
+║                  ║          ║                              ║ render actual=7s. Dialog     ║
+║                  ║          ║                              ║ budget: guna 7s bukan 8s.    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ VEO_3_1          ║ 56s      ║ 8,16,24,32,40,48,56s         ║ Standard 9-section script    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
@@ -367,8 +369,8 @@ sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ GOOGLE_FLOW      ║ 60s      ║ T2V/IMAGE: up to 60s         ║ BUKAN 9-section — block arch ║
 ║                  ║          ║ FRAMES/INGREDIENTS: anchor   ║ Pre-render test: 3s/90 frames║
-║                  ║          ║ based                        ║ image_guidance_scale: 0.75-  ║
-║                  ║          ║                              ║ 0.85 WAJIB declared          ║
+║                  ║          ║ based                        ║ image_guidance_scale TIDAK   ║
+║                  ║          ║                              ║ WUJUD dalam API — UI only    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ NANO_BANANA_PRO  ║ IMAGE    ║ N/A (image only)             ║ Route ke bosmax-scene-engine ║
 ║ IMAGEN_3         ║ IMAGE    ║ N/A (image only)             ║ Route ke bosmax-scene-engine ║
@@ -530,7 +532,4 @@ A→A (same product rebuild):
 User upload ref image/video → analyst deconstruct → same product data → rebuild dengan original copy
 
 A→B (concept transfer ke produk lain):
-User upload ref (A) → analyst deconstruct → user identify Product B → 3 compatibility checks → generate new Content DNA → rebuild dengan B's identity + original copy
-```
-PRE-FLIGHT adalah tanggungjawab BOSMAX orchestrator (fail ini).
-PRE-FLIGHT MESTI selesai sebelum mana-mana skill diappoint.
+User upload ref (A) → analyst deconstruct → user identify Product B → 3 compatibility ch
