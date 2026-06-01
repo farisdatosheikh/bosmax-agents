@@ -29,7 +29,7 @@ product_status: "Available"
 tagline: "Sejak 1958, Khasiat Turun Temurun."
 heritage_year: 1958
 product_type: "Roll-on essential oil blend — traditional Malay herbal remedy"
-packaging_type: "30ML compact square glass bottle, roll-on applicator hidden under a plain smooth black cap — NOT deodorant-sized, NOT perfume-bottle-sized"
+packaging_type: "30ML compact square clear glass bottle, roll-on applicator hidden under a plain smooth black cap — EXACTLY compact mini perfume-bottle size, NOT deodorant-sized"
 packaging_color: "Clear glass body showing translucent emerald herbal green oil inside, plain smooth black cap on top"
 
 # ─────────────────────────────────────────────
@@ -70,7 +70,7 @@ variants:
     # SCALE ANCHOR — CORRECT VERSION
     # Roller ball is HIDDEN. Cap is on. Do NOT describe exposed roller ball.
     # ─────────────────────────────────────────────
-    scale_anchor_descriptor: "EXACTLY small 30ML glass roll-on size, compact square glass fits in shirt pocket, NOT deodorant-sized, NOT perfume-bottle-sized"
+    scale_anchor_descriptor: "EXACTLY compact mini perfume-bottle size, square clear glass bottle, fits naturally in one hand, NOT deodorant-sized"
 
     # ─────────────────────────────────────────────
     # LABEL DNA — AUTHORITY FOR ALL IMAGE GENERATION
@@ -107,7 +107,7 @@ variants:
         - "logo distortion or label morphing"
 
     prompt_keywords:
-      - "30ml clear square glass roll-on bottle"
+      - "30ml clear square glass bottle, compact mini perfume-bottle size"
       - "plain smooth black cap on top — cap is CLOSED, roller ball hidden underneath"
       - "translucent emerald herbal green oil visible through clear glass body"
       - "dark forest green label with cream center panel and gold border"
@@ -115,7 +115,7 @@ variants:
       - "bird perched on leafy branch on label — NOT flying"
       - "Sejak 1958 Khasiat Turun Temurun printed on label"
       - "traditional Malay herbal oil packaging"
-      - "compact palm-size bottle — NOT tall, NOT perfume-sized"
+      - "compact mini perfume-bottle scale — NOT deodorant-sized"
 
     # ─────────────────────────────────────────────
     # IMAGE PROMPT LOCKS — FOR AI IMAGE GENERATION
@@ -145,12 +145,12 @@ variants:
 
       spatial_math_and_proportions: >
         [SPATIAL_MATH_AND_PROPORTIONS]
-        Maintain real compact 30ML roll-on scale. Bottle must remain short,
-        compact, palm-size, not tall, not elongated, not perfume-sized. Keep
-        the exact product-to-cap proportion from the reference image. Preserve
-        rigid glass geometry with no stretching. Keep the cap plain and smooth,
-        and keep the oil as a deeper translucent emerald herbal green distinct
-        from the sticker green.
+        Maintain the latest approved bottle scale exactly: compact mini
+        perfume-bottle size, square clear glass body, natural one-hand read,
+        not deodorant-sized. Keep the exact product-to-cap proportion from the
+        reference image. Preserve rigid glass geometry with no stretching.
+        Keep the cap plain and smooth, and keep the oil as a deeper translucent
+        emerald herbal green distinct from the sticker green.
 
       output_specification: >
         [OUTPUT_SPECIFICATION]
@@ -160,8 +160,8 @@ variants:
 
       negative_lock: >
         [NEGATIVE_LOCK]
-        No tall bottle, no perfume bottle, no spray nozzle, no ribbed cap, no
-        grooved cap, no striped cap, no amber oil, no yellow-green oil, no
+        No deodorant-sized bottle, no spray nozzle, no ribbed cap, no grooved
+        cap, no striped cap, no amber oil, no yellow-green oil, no
         pale olive oil, no sepia label, no medallion bird, no ESTD 2023, no
         BIRD BRAND, no HERBAL OIL, no 30ML added text, no logo distortion, no
         label morphing, no flying bird, no soaring bird.

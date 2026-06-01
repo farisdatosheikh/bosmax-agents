@@ -502,6 +502,7 @@ Skill files berikut MESTI ada dalam `.claude/skills/` folder:
 9. `bosmax-product-intelligence.md` ← (v11.2 Fix G — Product Librarian)
 10. `bosmax-image-analyst.md`       ← (v11.3 — Route D Image Reverse Engineering)
 11. `bosmax-video-analyst.md`       ← (v11.3 — Route D Video Reverse Engineering)
+12. `bosmax-commercial-poster-director.md` ← (v1.0 — Universal commercial poster prompt elevation)
 
 Memory file: `BOSMAX-LOG.md` dalam `.claude/` folder root.
 

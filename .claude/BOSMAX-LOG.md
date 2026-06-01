@@ -478,10 +478,33 @@ Authority semasa untuk generation image/video kini digantikan dengan bottle stat
 |-------|------------------|
 | Cap | Plain smooth black cap — TERTUTUP, no ribbing, no grooves, roller ball hidden |
 | Oil color | Translucent emerald herbal green — distinct from darker sticker green |
+| Scale read | Compact mini perfume-bottle size — natural one-hand read, NOT deodorant-sized |
 | Label | Dark forest green outer panel + cream center + gold border |
 | Bird | Perched on leafy branch — NOT flying |
 
 **Files patched:**
 - `products/CAP_BURUNG_MINYAK.yaml` — packaging descriptor, prompt keywords, image prompt locks, negative locks
+
+*BOSMAX v11.3 | Log updated: 2026-06-01*
+
+---
+
+### Session 012 — 2026-06-01
+**Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX ecosystem kini ada skill universal untuk elevate brief lemah menjadi poster prompt bertaraf senior commercial designer + copywriter.
+
+**What was added:**
+- Installed repo skill: `bosmax-commercial-poster-director.md`
+- Portable export file: `BOSMAX_UNIVERSAL_COMMERCIAL_DESIGN_SKILL.md`
+
+**Purpose:**
+- User boleh tulis prompt malas, ringkas, atau tak berstruktur
+- Skill akan normalize platform, selling angle, visual hierarchy, product truth, and negative locks
+- Output akhir mesti terasa seperti kerja senior designer dan product copywriter, bukan generic prompt writer
+
+**Coverage:**
+- Universal across products, categories, and platforms
+- Sesuai untuk Codex, Claude, Manus, Gemini, dan mana-mana AI yang menerima fail instruction
 
 *BOSMAX v11.3 | Log updated: 2026-06-01*
