@@ -9,7 +9,10 @@ schema_version: "1.0"
 # IDENTIFIERS
 # ─────────────────────────────────────────────
 product_id: "CAP_BURUNG_MINYAK"
-product_name: "Minyak Cap Burung"
+product_name: "Minyak Warisan Cap Burung"
+product_aliases:
+  - "Minyak Cap Burung"
+  - "Minyak Warisan Cap Burung"
 brand: "Cap Burung"
 shop_name: ""                    # TBD — update when TikTok Shop registered
 tiktok_product_id: ""            # TBD
@@ -26,7 +29,7 @@ product_status: "Available"
 # ─────────────────────────────────────────────
 # PRODUCT PROFILE
 # ─────────────────────────────────────────────
-tagline: "Sejak 1958, Khasiat Turun Temurun."
+tagline: "Petua Turun Temurun."
 heritage_year: 1958
 product_type: "Traditional Malay herbal liniment / minyak angin in WG40 glass bottle"
 packaging_type: "WG40 30ML oblong clear flint glass bottle with red ribbed screw cap and internal stopper — EXACTLY classic 30ml minyak angin bottle size, compact travel-friendly, easy to label"
@@ -83,9 +86,9 @@ variants:
       label_base_color: "Dark forest green outer panel with cream/ivory center panel"
       border: "Gold decorative border separating green outer from cream center panel"
       layout: "Vertically structured — cream center panel carries main branding"
-      brand_name_text: "MINYAK CAP BURUNG — bold serif, centered on cream panel"
+      brand_name_text: "MINYAK WARISAN CAP BURUNG — bold serif, centered on cream panel"
       bird_illustration: "Bird PERCHED on leafy branch — sitting pose, NOT flying, NOT soaring, NOT in flight"
-      tagline_text: "Sejak 1958, Khasiat Turun Temurun. — printed on label"
+      tagline_text: "Sejak 1958, Petua Turun Temurun. — printed on label"
       overall_palette: "Dark green, cream/ivory, gold — NOT sepia, NOT brown kraft, NOT apothecary amber"
       label_style: "Heritage Malay traditional — clean structured label, NOT vintage apothecary"
 
@@ -114,9 +117,9 @@ variants:
       - "red ribbed screw cap on top — cap is CLOSED, stopper hidden underneath"
       - "translucent emerald herbal green oil visible through clear glass body"
       - "dark forest green label with cream center panel and gold border"
-      - "MINYAK CAP BURUNG printed on label"
+      - "MINYAK WARISAN CAP BURUNG printed on label"
       - "bird perched on leafy branch on label — NOT flying"
-      - "Sejak 1958 Khasiat Turun Temurun printed on label"
+      - "Sejak 1958 Petua Turun Temurun printed on label"
       - "traditional Malay herbal oil packaging"
       - "classic 30ml minyak angin bottle scale — 9.4cm tall, compact travel-friendly"
 
@@ -129,9 +132,9 @@ variants:
       reference_image_lock: >
         [REFERENCE_IMAGE_LOCK]
         Use the uploaded product image as the absolute source of truth.
-        Preserve the original Minyak Cap Burung WG40 bottle, red ribbed cap,
-        oil color, sticker, logo, bird illustration, label text, glass shape,
-        and real product proportions exactly as shown.
+        Preserve the original Minyak Warisan Cap Burung WG40 bottle, red
+        ribbed cap, oil color, sticker, logo, bird illustration, label text,
+        glass shape, and real product proportions exactly as shown.
 
       local_edit_delta: >
         [LOCAL_EDIT_DELTA]
@@ -142,9 +145,9 @@ variants:
       typography_and_branding_lock: >
         [TYPOGRAPHY_AND_BRANDING_LOCK]
         Keep the sticker crisp and unchanged: dark green label, cream center
-        panel, gold border, "MINYAK CAP BURUNG", perched bird on leafy branch,
-        and "Sejak 1958, Khasiat Turun Temurun." No new text, no rewritten
-        logo, no flying bird, no cap color change.
+        panel, gold border, "MINYAK WARISAN CAP BURUNG", perched bird on leafy
+        branch, and "Sejak 1958, Petua Turun Temurun." No new text, no
+        rewritten logo, no flying bird, no cap color change.
 
       spatial_math_and_proportions: >
         [SPATIAL_MATH_AND_PROPORTIONS]
@@ -264,7 +267,7 @@ copywriting_angles:
     usp_1: "Aroma herba semulajadi — terus activate deria bau, hantar signal rileks ke otak"
     usp_2: "Tak perlu diffuser, tak perlu masa — sapu, hidu, rasa bezanya dalam 10 saat"
     usp_3: "Bukan ubat, bukan supplement — rawatan aroma semulajadi yang diakui 60 tahun"
-    body: "Hari-hari stress takkan habis. Tapi dengan Minyak Cap Burung, setidaknya otak boleh bernafas kejap. Roll kat belakang telinga, bawah hidung, dada. Hidu dalam-dalam. Biar aroma herba buat kerjanya."
+    body: "Hari-hari stress takkan habis. Tapi dengan Minyak Warisan Cap Burung, setidaknya otak boleh bernafas kejap. Roll kat belakang telinga, bawah hidung, dada. Hidu dalam-dalam. Biar aroma herba buat kerjanya."
     cta: "Scroll bawah, tekan Add to Cart. Bau dulu, putuskan kemudian."
 
   # ── SET 02 — RESDUNG & HIDUNG TERSUMBAT ───────────────────
@@ -276,7 +279,7 @@ copywriting_angles:
     usp_1: "Minyak kayu putih dan herba panas buka saluran hidung dari luar — tanpa telan ubat"
     usp_2: "Roll kat batang hidung, cuping hidung, dan dahi — kerja dalam minit"
     usp_3: "Boleh guna berulang kali sepanjang hari — tiada dos, tiada kesan mengantuk"
-    body: "Resdung buat hidup susah — tidur tak lena, kerja tak fokus, nafas pun penat. Minyak Cap Burung bukan penawar kekal, tapi ia bagi relief yang betul-betul kau perlukan masa serangan datang."
+    body: "Resdung buat hidup susah — tidur tak lena, kerja tak fokus, nafas pun penat. Minyak Warisan Cap Burung bukan penawar kekal, tapi ia bagi relief yang betul-betul kau perlukan masa serangan datang."
     cta: "Letak dalam poket sekarang. Bila resdung datang, kau dah ready."
 
   # ── SET 03 — BATUK, SELESEMA & SESAK DADA ─────────────────
@@ -288,7 +291,7 @@ copywriting_angles:
     usp_1: "Sapu dada dan belakang — haba minyak tembus masuk, longgarkan kahak, buka nafas"
     usp_2: "Selamat untuk kanak-kanak — tiada bahan kimia keras, formula tradisional sejak 1958"
     usp_3: "Guna malam sebelum tidur — bagi anak tidur lena tanpa batuk-batuk"
-    body: "Bila anak batuk malam-malam, kita pun tak boleh tidur. Sebelum terus lari ke farmasi, cuba Minyak Cap Burung. Sapu dada, leher, dan belakang anak. Biar haba semulajadi buat kerjanya malam tu."
+    body: "Bila anak batuk malam-malam, kita pun tak boleh tidur. Sebelum terus lari ke farmasi, cuba Minyak Warisan Cap Burung. Sapu dada, leher, dan belakang anak. Biar haba semulajadi buat kerjanya malam tu."
     cta: "Simpan satu kat bilik anak. Tahu-tahu je nanti kau perlukan."
 
   # ── SET 04 — GATAL & GIGITAN SERANGGA ─────────────────────
@@ -300,7 +303,7 @@ copywriting_angles:
     usp_1: "Anti-gatal instant — cooling sensation terus padamkan rasa gatal dalam 30 saat"
     usp_2: "Aroma herba halau nyamuk — guna sebelum keluar, bukan selepas dah kena"
     usp_3: "Selamat untuk kulit sensitif — tiada steroid, tiada antihistamin, semulajadi"
-    body: "Malaysia ni memang negara nyamuk. Tapi tak semua orang nak sapu bahan kimia setiap hari. Minyak Cap Burung — aroma semulajadi yang nyamuk tak suka, kulit kau pun selamat."
+    body: "Malaysia ni memang negara nyamuk. Tapi tak semua orang nak sapu bahan kimia setiap hari. Minyak Warisan Cap Burung — aroma semulajadi yang nyamuk tak suka, kulit kau pun selamat."
     cta: "Masuk dalam beg sekolah anak. Outdoor trip pun jangan lupa."
 
   # ── SET 05 — LUKA KECIL & BENGKAK ─────────────────────────
@@ -312,7 +315,7 @@ copywriting_angles:
     usp_1: "Haba minyak pecahkan tumpukan darah di bawah kulit — bengkak surut lebih laju"
     usp_2: "Antiseptik semulajadi — bersihkan sekitar luka kecil, kurangkan risiko jangkitan"
     usp_3: "Roll-on applicator — sentuh terus tanpa kotor tangan, hygienic untuk luka"
-    body: "Bengkak dan lebam kecil memang biasa dalam kehidupan aktif. Tapi duduk tunggu surut sendiri buang masa. Roll Minyak Cap Burung, urut perlahan-lahan, biar herba masuk kerja."
+    body: "Bengkak dan lebam kecil memang biasa dalam kehidupan aktif. Tapi duduk tunggu surut sendiri buang masa. Roll Minyak Warisan Cap Burung, urut perlahan-lahan, biar herba masuk kerja."
     cta: "Letak kat first aid kit kau sekarang. Murah tapi kerja."
 
   # ── SET 06 — SAKIT GIGI & BENGKAK GUSI ────────────────────
@@ -324,7 +327,7 @@ copywriting_angles:
     usp_1: "Eugenol semulajadi dalam minyak herba — numbing agent tradisional untuk gusi dan gigi"
     usp_2: "Roll tepi pipi luar dan urut perlahan — rasa sejuk masuk, sakit kurang dalam minit"
     usp_3: "Bukan penawar kekal — tapi cukup untuk tahan malam tu dan pergi klinik esok pagi"
-    body: "Sakit gigi memang boleh buat orang gila. Tengah malam lagi teruk. Minyak Cap Burung bukan ganti pergigian — tapi ia bagi kau relief masa paling desperate tu. Nenek dah guna cara ni lama."
+    body: "Sakit gigi memang boleh buat orang gila. Tengah malam lagi teruk. Minyak Warisan Cap Burung bukan ganti pergigian — tapi ia bagi kau relief masa paling desperate tu. Nenek dah guna cara ni lama."
     cta: "Simpan satu dalam laci ubat. Malam tak ada warning."
 
   # ── SET 07 — BAYI KEMBUNG PERUT ───────────────────────────
@@ -336,7 +339,7 @@ copywriting_angles:
     usp_1: "Urut perlahan-lahan perut bayi dengan minyak — tekanan + haba longgarkan gas dalam usus"
     usp_2: "Formula tradisional — digunakan oleh generasi ibu Melayu selama 60+ tahun untuk bayi"
     usp_3: "Roll-on mudah — takde risiko terlampau banyak, aplikasi tepat dan terkawal"
-    body: "Bayi kembung adalah perkara biasa, tapi dengar dia nangis sakit memang buat hati ibu luluh. Minyak Cap Burung — sapukan kat perut bayi, urut ikut arah jam, tengok dia bertenang semula."
+    body: "Bayi kembung adalah perkara biasa, tapi dengar dia nangis sakit memang buat hati ibu luluh. Minyak Warisan Cap Burung — sapukan kat perut bayi, urut ikut arah jam, tengok dia bertenang semula."
     cta: "Letakkan dalam beg hospital sekarang. Guna dari hari pertama balik rumah."
 
   # ── SET 08 — URUTAN BADAN & SARAF ─────────────────────────
@@ -348,7 +351,7 @@ copywriting_angles:
     usp_1: "Minyak meresap ke dalam lapisan otot — beri haba deep-relief untuk saraf yang tegang"
     usp_2: "Sesuai untuk urutan harian — bahu, leher, pinggang, lutut, tapak kaki"
     usp_3: "Lebih berkesan dengan urutan tekanan sederhana — aktifkan peredaran darah, kurangkan kekakuan"
-    body: "Orang tua kita guna minyak urut tradisional sebab ia memang berkesan. Minyak Cap Burung bukan ubat farmasi — tapi panas semulajadinya masuk dalam otot, bagi badan rasa hidup balik selepas hari yang penat."
+    body: "Orang tua kita guna minyak urut tradisional sebab ia memang berkesan. Minyak Warisan Cap Burung bukan ubat farmasi — tapi panas semulajadinya masuk dalam otot, bagi badan rasa hidup balik selepas hari yang penat."
     cta: "Satu botol untuk seluruh keluarga. Roll, urut, tidur lena."
 
   # ── SET 09 — SAKIT KEPALA & MIGRAIN ───────────────────────
@@ -360,7 +363,7 @@ copywriting_angles:
     usp_1: "Roll kat pelipis kiri kanan + dahi — menthol dan herba sejukkan tekanan dalam kepala"
     usp_2: "Kerja dalam 2-3 minit — lebih laju dari tunggu panadol dissolve dalam perut"
     usp_3: "Boleh guna atas meja kerja — tak perlu air, tak perlu henti aktiviti"
-    body: "Migrain datang tanpa warning. Dan masa dia datang, semua orang sekeliling pun rasa terkesan. Minyak Cap Burung — bukan ubat keras, tapi sapu kat tempat yang betul, ia bagi relief yang cukup untuk kau teruskan hari tu."
+    body: "Migrain datang tanpa warning. Dan masa dia datang, semua orang sekeliling pun rasa terkesan. Minyak Warisan Cap Burung — bukan ubat keras, tapi sapu kat tempat yang betul, ia bagi relief yang cukup untuk kau teruskan hari tu."
     cta: "Masuk dalam drawer meja kerja sekarang. Sakit kepala tak tunggu masa sesuai."
 
   # ── SET 10 — KEMBUNG PERUT & SENGGUGUT ────────────────────
@@ -372,7 +375,7 @@ copywriting_angles:
     usp_1: "Roll dan urut perut bawah — haba minyak relakskan otot uterus yang berkontraksi"
     usp_2: "Bantu kempeskan angin dalam perut — kembung berkurang, badan rasa lebih ringan"
     usp_3: "Guna sebelum cramp teruk — preventive massage lebih efektif dari tunggu sakit dulu"
-    body: "Setiap bulan mesti datang. Setiap bulan mesti sakit. Tapi tak semua orang nak telan painkiller setiap kali. Minyak Cap Burung — cara nenek-nenek kita handle senggugut. Urut, haba, bernafas."
+    body: "Setiap bulan mesti datang. Setiap bulan mesti sakit. Tapi tak semua orang nak telan painkiller setiap kali. Minyak Warisan Cap Burung — cara nenek-nenek kita handle senggugut. Urut, haba, bernafas."
     cta: "Simpan dalam almari ubat bilik. Bulan depan kau dah ready."
 
   # ── SET 11 — MUAL & MUNTAH ─────────────────────────────────
@@ -384,7 +387,7 @@ copywriting_angles:
     usp_1: "Hidu aroma herba kuat — override signal mual dari otak, distract sistem saraf dari rasa nak muntah"
     usp_2: "Roll kat pergelangan tangan (titik P6) — teknik akupresur + aroma therapy gabungan"
     usp_3: "Selamat untuk ibu mengandung — tiada bahan larangan, guna dengan bimbingan doktor"
-    body: "Mabuk kenderaan buatkan perjalanan jadi azab. Morning sickness buat ibu mengandung terseksa setiap pagi. Minyak Cap Burung — aroma herba pekat yang boleh bantu tenangkan sistem saraf dan kurangkan signal mual."
+    body: "Mabuk kenderaan buatkan perjalanan jadi azab. Morning sickness buat ibu mengandung terseksa setiap pagi. Minyak Warisan Cap Burung — aroma herba pekat yang boleh bantu tenangkan sistem saraf dan kurangkan signal mual."
     cta: "Simpan dalam beg tangan. Jangan tunggu dah nak muntah baru cari."
 
   # ── SET 12 — KENCING MALAM ─────────────────────────────────
@@ -408,7 +411,7 @@ copywriting_angles:
     usp_1: "Melegakan sakit otot dan sendi yang terbeban semasa mengandung — selamat untuk trimester 3"
     usp_2: "Selepas bersalin — urutan dengan minyak Cap Burung bantu keluarkan angin, relakskan otot yang tertekan masa bersalin"
     usp_3: "Boleh digunakan oleh bidan dan orang tua semasa urutan tradisional — formula dipercayai"
-    body: "Bersalin adalah pengalaman yang paling mencabar badan wanita. Sebelum masuk, badan dah penat mengandung. Selepas keluar, badan perlu recover. Minyak Cap Burung adalah teman setia proses ni — pegang satu dalam bag hospital."
+    body: "Bersalin adalah pengalaman yang paling mencabar badan wanita. Sebelum masuk, badan dah penat mengandung. Selepas keluar, badan perlu recover. Minyak Warisan Cap Burung adalah teman setia proses ni — pegang satu dalam bag hospital."
     cta: "Masuk dalam hospital bag kau. Guna dari hari pertama."
 
   # ── SET 14 — PARAM & BENGKUNG ──────────────────────────────
@@ -420,7 +423,7 @@ copywriting_angles:
     usp_1: "Membantu mengecutkan rahim — haba minyak tembus bantu proses involution uterus semulajadi"
     usp_2: "Wajib guna sebelum bengkung — minyak jadikan kulit lebih reseptif, bengkung lebih berkesan"
     usp_3: "Digunakan dalam rawatan param tradisional Melayu — formula yang bidan kenal dan amalkan"
-    body: "Pantang 44 hari adalah pelaburan untuk kesihatan jangka panjang ibu. Dan param adalah bahagian yang paling penting. Minyak Cap Burung — lumur seluruh perut, pinggang dan punggung sebelum bengkung. Biar haba herba buat kerjanya dulu."
+    body: "Pantang 44 hari adalah pelaburan untuk kesihatan jangka panjang ibu. Dan param adalah bahagian yang paling penting. Minyak Warisan Cap Burung — lumur seluruh perut, pinggang dan punggung sebelum bengkung. Biar haba herba buat kerjanya dulu."
     cta: "Order sebelum due date. Wajib dalam kit pantang kau."
 
   # ── SET 15 — TRAVEL ESSENTIAL ──────────────────────────────
@@ -432,7 +435,7 @@ copywriting_angles:
     usp_1: "Saiz travel-friendly — 30ML, muat dalam poket seluar, beg tangan, pouch haji"
     usp_2: "Cover semua emergency asas: sakit kepala, mabuk, kembung, gigitan, luka kecil"
     usp_3: "Tiada had liquid untuk penerbangan domestik — bawak naik kapal terbang tanpa masalah"
-    body: "Bila travel, kita tak boleh bawa semua ubat. Tapi satu Minyak Cap Burung boleh cover banyak situasi. Mabuk dalam bas? Roll. Kepala pening sebab cuaca? Roll. Gigit nyamuk kat hotel? Roll."
+    body: "Bila travel, kita tak boleh bawa semua ubat. Tapi satu Minyak Warisan Cap Burung boleh cover banyak situasi. Mabuk dalam bas? Roll. Kepala pening sebab cuaca? Roll. Gigit nyamuk kat hotel? Roll."
     cta: "Satu untuk rumah, satu untuk beg travel. Jangan keluar rumah tanpa."
 
   # ── SET 16 — WARISAN KELUARGA / HERITAGE ──────────────────
@@ -444,7 +447,7 @@ copywriting_angles:
     usp_1: "Sejak 1958 — bukan trend baru, bukan viral seminggu. 60+ tahun ia berkesan untuk keluarga Melayu"
     usp_2: "Formula turun-temurun — bukan diubah ikut trend, tapi dikekalkan sebab ia memang kerja"
     usp_3: "Kepercayaan yang tak boleh dibeli dengan iklan — ia dibina satu generasi ke satu generasi"
-    body: "Ada benda yang tak perlu kita proof dengan kajian saintifik sebab ia dah proven oleh masa. Minyak Cap Burung adalah antara warisan rumah tangga Melayu yang survive 3 generasi. Bukan kerana pemasaran. Kerana ia berkesan."
+    body: "Ada benda yang tak perlu kita proof dengan kajian saintifik sebab ia dah proven oleh masa. Minyak Warisan Cap Burung adalah antara warisan rumah tangga Melayu yang survive 3 generasi. Bukan kerana pemasaran. Kerana ia berkesan."
     cta: "Beli untuk kau. Beli untuk mak. Teruskan tradisi keluarga."
 
   # ── SET 17 — SATU BOTOL BANYAK KEGUNAAN ───────────────────
@@ -456,7 +459,7 @@ copywriting_angles:
     usp_1: "14 kegunaan dalam satu botol 30ML — jimat ruang, jimat duit, jimat masa"
     usp_2: "Ganti 5-6 jenis ubat luar yang selalu habis — satu restock, semua covered"
     usp_3: "Harga unit rendah berbanding nilai yang diberi — ROI tertinggi dalam first aid kit kau"
-    body: "Kotak ubat rumah yang lengkap tak semestinya penuh dengan kotak-kotak besar. Kadang-kadang satu botol kecil yang betul cover lebih banyak situasi dari 10 produk berbeza. Minyak Cap Burung adalah botol kecil itu."
+    body: "Kotak ubat rumah yang lengkap tak semestinya penuh dengan kotak-kotak besar. Kadang-kadang satu botol kecil yang betul cover lebih banyak situasi dari 10 produk berbeza. Minyak Warisan Cap Burung adalah botol kecil itu."
     cta: "Kira balik berapa kau belanja ubat-ubatan sebulan. Lepas tu tengok harga ni."
 
   # ── SET 18 — IBU BERSALIN / POSTNATAL RECOVERY ────────────
@@ -465,10 +468,10 @@ copywriting_angles:
     benefit_ref: "B13+B14"
     target_segment: "Ibu baru bersalin 0-3 bulan, komuniti ibu online"
     hook: "Selepas bersalin, badan macam dah perang. Ini cara mak-mak zaman dulu recover tanpa 10 jenis supplement."
-    usp_1: "3 in 1 untuk postnatal: urutan badan + param perut + bengkung — semua guna Minyak Cap Burung"
+    usp_1: "3 in 1 untuk postnatal: urutan badan + param perut + bengkung — semua guna Minyak Warisan Cap Burung"
     usp_2: "Selamat untuk ibu menyusu — formula herba semulajadi tanpa bahan sintetik berbahaya"
     usp_3: "Jimat kos pantang — satu botol cover urutan harian selama tempoh pantang penuh"
-    body: "Pantang bukan saja tentang rehat. Ia tentang recovery aktif — urut, param, bengkung setiap hari. Minyak Cap Burung adalah asas untuk semua tu. Ibu-ibu yang pantang dengan betul cakap beza dia memang ketara."
+    body: "Pantang bukan saja tentang rehat. Ia tentang recovery aktif — urut, param, bengkung setiap hari. Minyak Warisan Cap Burung adalah asas untuk semua tu. Ibu-ibu yang pantang dengan betul cakap beza dia memang ketara."
     cta: "Masuk dalam wishlist pantang kau sekarang. Share dengan mak dan ibu mertua."
 
   # ── SET 19 — KANAK-KANAK & BABY CARE ─────────────────────
@@ -480,7 +483,7 @@ copywriting_angles:
     usp_1: "Formula tradisional yang generasi demi generasi guna untuk kanak-kanak — rekod keselamatan 60+ tahun"
     usp_2: "Cover kegunaan biasa untuk kanak-kanak: selesema, kembung, gatal gigitan, lelah"
     usp_3: "Orang tua dan mak mertua confirm faham — tak payah argue pasal produk apa nak guna"
-    body: "Ibu bapa muda sekarang pun ada dilema — produk moden atau cara tradisional? Minyak Cap Burung dah prove dirinya. Kalau ibu bapa kita besarkan kita dengan ini, dan kita sehat, ada sesuatu yang memang works."
+    body: "Ibu bapa muda sekarang pun ada dilema — produk moden atau cara tradisional? Minyak Warisan Cap Burung dah prove dirinya. Kalau ibu bapa kita besarkan kita dengan ini, dan kita sehat, ada sesuatu yang memang works."
     cta: "Tanya mak kau dulu. Lepas tu order satu untuk rumah kau sendiri."
 
   # ── SET 20 — WANITA AKTIF / BUSY MOM ─────────────────────
@@ -492,7 +495,7 @@ copywriting_angles:
     usp_1: "Cover 5 masalah biasa wanita aktif: stres, sakit kepala, senggugut, kembung, badan lenguh"
     usp_2: "Guna dalam masa 30 saat — tak perlu henti kerja, tak perlu minum ubat, terus sambung"
     usp_3: "Muat dalam handbag — sentiasa ada bila diperlukan, tak perlu storage besar"
-    body: "Wanita Malaysia memang kuat. Tapi kuat pun ada hadnya. Bila badan bagi signal — kepala pening, perut kembung, bahu keras — jangan ignore. Roll Minyak Cap Burung, ambil nafas dalam, teruskan. Kau boleh."
+    body: "Wanita Malaysia memang kuat. Tapi kuat pun ada hadnya. Bila badan bagi signal — kepala pening, perut kembung, bahu keras — jangan ignore. Roll Minyak Warisan Cap Burung, ambil nafas dalam, teruskan. Kau boleh."
     cta: "Satu untuk dalam handbag. Satu untuk laci meja kerja. Jangan kehabisan."
 
 # ─────────────────────────────────────────────

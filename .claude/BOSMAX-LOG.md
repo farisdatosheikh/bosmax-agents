@@ -547,6 +547,24 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 015 — 2026-06-02
+**Status:** CAP BURUNG NAMING AUTHORITY PATCH
+**Active Mode:** null
+**Milestone:** Nama produk dan tagline label untuk CAP BURUNG diselaraskan kepada truth terkini tanpa mengubah product_id atau WG40 packaging authority.
+
+**Authority decision:**
+- `product_name` rasmi kini: `Minyak Warisan Cap Burung`
+- alias lookup lama `Minyak Cap Burung` dikekalkan untuk backward compatibility
+- `tagline` rasmi kini: `Petua Turun Temurun.`
+- exact printed label lock kini: `Sejak 1958, Petua Turun Temurun.`
+
+**Files patched:**
+- `products/CAP_BURUNG_MINYAK.yaml` — name authority, alias map, tagline, label text locks, prompt keywords, copywriting body mentions
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
