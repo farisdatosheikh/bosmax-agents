@@ -489,6 +489,37 @@ Authority semasa untuk generation image/video kini digantikan dengan bottle stat
 
 ---
 
+### Session 013 — 2026-06-01
+**Status:** CAP BURUNG — WG40 BOTTLE GEOMETRY AUTHORITY RESET
+**Active Mode:** null
+**Milestone:** Product truth diselaraskan semula kepada botol sebenar WG40 30ml clear glass bottle dengan red cap dan stopper.
+
+**Authority source:**
+- Product description supplied by operator for real packaging geometry
+- Bottle type: WG40 30ml Glass Bottle Clear with Red Cap & Stopper
+- Technical dimensions: 9.4cm full height, 6cm height to neck, 3.7cm length, 2.1cm width, 18mm cap
+
+**Supersession note:**
+Session 011 memegang truth peralihan yang masih salah pada closure logic dan bottle silhouette.
+Authority semasa untuk generation poster, avatar+product, dan video kini digantikan dengan state berikut:
+
+| Field | Authority semasa |
+|-------|------------------|
+| Bottle geometry | WG40 30ml oblong / rectangular clear flint glass bottle |
+| Cap | Red ribbed screw cap |
+| Closure logic | Internal stopper / plug hidden under cap — NOT roller ball, NOT roll-on |
+| Scale read | EXACTLY classic 30ml minyak angin bottle size — 9.4cm tall, fits naturally in one hand or small bag |
+| Label | Dark forest green outer panel + cream center + gold border |
+| Bird | Perched on leafy branch — NOT flying |
+| Oil color | Translucent emerald herbal green |
+
+**Files patched:**
+- `products/CAP_BURUNG_MINYAK.yaml` — product_type, packaging descriptor, application method, variant identity, scale anchor, prompt keywords, image prompt locks, negative locks, summary copy
+
+*BOSMAX v11.3 | Log updated: 2026-06-01*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

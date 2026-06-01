@@ -28,21 +28,21 @@ product_status: "Available"
 # ─────────────────────────────────────────────
 tagline: "Sejak 1958, Khasiat Turun Temurun."
 heritage_year: 1958
-product_type: "Roll-on essential oil blend — traditional Malay herbal remedy"
-packaging_type: "30ML compact square clear glass bottle, roll-on applicator hidden under a plain smooth black cap — EXACTLY compact mini perfume-bottle size, NOT deodorant-sized"
-packaging_color: "Clear glass body showing translucent emerald herbal green oil inside, plain smooth black cap on top"
+product_type: "Traditional Malay herbal liniment / minyak angin in WG40 glass bottle"
+packaging_type: "WG40 30ML oblong clear flint glass bottle with red ribbed screw cap and internal stopper — EXACTLY classic 30ml minyak angin bottle size, compact travel-friendly, easy to label"
+packaging_color: "High-clarity clear flint glass body showing translucent emerald herbal green oil inside, red ribbed cap on top"
 
 # ─────────────────────────────────────────────
 # PACKAGING NOTE — CRITICAL FOR AI IMAGE GENERATION
 # ─────────────────────────────────────────────
-# The roller ball is HIDDEN under the plain smooth black cap when the product is capped.
-# In ALL product images, the bottle appears with the PLAIN SMOOTH BLACK CAP CLOSED.
-# DO NOT show exposed silver roller ball in product shots — cap is always on.
+# WG40 bottle uses a RED RIBBED SCREW CAP with internal stopper / PE plug.
+# In ALL product images, the bottle appears with the RED RIBBED CAP CLOSED.
+# DO NOT show roller ball, pump, dropper, or spray nozzle — this is a stopper bottle.
 # ─────────────────────────────────────────────
 
 scent_profile: "Herbal-eucalyptus-menthol warm aromatic blend"
 texture: "Lightweight oil, non-greasy, fast-absorb"
-application_method: "Roll-on direct application to skin"
+application_method: "Open cap and apply a few drops to the target area, then sapu / urut pada kulit"
 halal_status: "Halal-compatible (no alcohol, no animal-derived ingredients)"
 heritage_note: >
   Produk warisan keluarga sejak 1958. Diwarisi turun-temurun sebagai
@@ -62,15 +62,15 @@ estimated_launch_date: ""
 # VARIANTS
 # ─────────────────────────────────────────────
 variants:
-  - variant_id: "30ML_ROLLON"
-    variant_name: "30ml Square Glass Roll-On"
+  - variant_id: "30ML_WG40_BOTTLE"
+    variant_name: "30ml WG40 Glass Bottle"
     price_rm: null
 
     # ─────────────────────────────────────────────
     # SCALE ANCHOR — CORRECT VERSION
-    # Roller ball is HIDDEN. Cap is on. Do NOT describe exposed roller ball.
+    # WG40 bottle uses red ribbed cap + hidden stopper. Do NOT describe roller ball.
     # ─────────────────────────────────────────────
-    scale_anchor_descriptor: "EXACTLY compact mini perfume-bottle size, square clear glass bottle, fits naturally in one hand, NOT deodorant-sized"
+    scale_anchor_descriptor: "EXACTLY classic 30ml minyak angin bottle size, WG40 oblong clear glass bottle, 9.4cm tall and fits naturally in one hand or small bag"
 
     # ─────────────────────────────────────────────
     # LABEL DNA — AUTHORITY FOR ALL IMAGE GENERATION
@@ -100,22 +100,25 @@ variants:
         - "HERBAL OIL text"
         - "30ML text on label"
         - "amber apothecary bottle"
-        - "ribbed cap"
-        - "grooved cap"
-        - "striped cap"
+        - "black cap"
+        - "plain smooth black cap"
+        - "roller ball"
+        - "roll-on applicator"
         - "spray nozzle"
+        - "dropper cap"
+        - "pump top"
         - "logo distortion or label morphing"
 
     prompt_keywords:
-      - "30ml clear square glass bottle, compact mini perfume-bottle size"
-      - "plain smooth black cap on top — cap is CLOSED, roller ball hidden underneath"
+      - "WG40 30ml oblong clear flint glass bottle"
+      - "red ribbed screw cap on top — cap is CLOSED, stopper hidden underneath"
       - "translucent emerald herbal green oil visible through clear glass body"
       - "dark forest green label with cream center panel and gold border"
       - "MINYAK CAP BURUNG printed on label"
       - "bird perched on leafy branch on label — NOT flying"
       - "Sejak 1958 Khasiat Turun Temurun printed on label"
       - "traditional Malay herbal oil packaging"
-      - "compact mini perfume-bottle scale — NOT deodorant-sized"
+      - "classic 30ml minyak angin bottle scale — 9.4cm tall, compact travel-friendly"
 
     # ─────────────────────────────────────────────
     # IMAGE PROMPT LOCKS — FOR AI IMAGE GENERATION
@@ -126,31 +129,32 @@ variants:
       reference_image_lock: >
         [REFERENCE_IMAGE_LOCK]
         Use the uploaded product image as the absolute source of truth.
-        Preserve the original Minyak Cap Burung bottle, smooth black cap, oil
-        color, sticker, logo, bird illustration, label text, glass shape, and
-        real product proportions exactly as shown.
+        Preserve the original Minyak Cap Burung WG40 bottle, red ribbed cap,
+        oil color, sticker, logo, bird illustration, label text, glass shape,
+        and real product proportions exactly as shown.
 
       local_edit_delta: >
         [LOCAL_EDIT_DELTA]
         Change only the background, lighting, surface, and camera styling.
-        Do not redesign the product. Do not change the cap texture or the oil
-        color.
+        Do not redesign the product. Do not change the WG40 oblong glass
+        geometry, red cap texture, stopper logic, or the oil color.
 
       typography_and_branding_lock: >
         [TYPOGRAPHY_AND_BRANDING_LOCK]
         Keep the sticker crisp and unchanged: dark green label, cream center
         panel, gold border, "MINYAK CAP BURUNG", perched bird on leafy branch,
         and "Sejak 1958, Khasiat Turun Temurun." No new text, no rewritten
-        logo, no flying bird.
+        logo, no flying bird, no cap color change.
 
       spatial_math_and_proportions: >
         [SPATIAL_MATH_AND_PROPORTIONS]
-        Maintain the latest approved bottle scale exactly: compact mini
-        perfume-bottle size, square clear glass body, natural one-hand read,
-        not deodorant-sized. Keep the exact product-to-cap proportion from the
-        reference image. Preserve rigid glass geometry with no stretching.
-        Keep the cap plain and smooth, and keep the oil as a deeper translucent
-        emerald herbal green distinct from the sticker green.
+        Maintain the latest approved WG40 bottle scale exactly: 30ml oblong
+        clear glass bottle, 9.4cm full height, 6cm body-to-neck height, 3.7cm
+        length, and 2.1cm width. Keep the exact bottle-to-cap proportion from
+        the reference image. Preserve rigid WG40 glass geometry with no
+        stretching. Keep the cap red and ribbed, keep the stopper hidden, and
+        keep the oil as a deeper translucent emerald herbal green distinct from
+        the sticker green.
 
       output_specification: >
         [OUTPUT_SPECIFICATION]
@@ -160,11 +164,13 @@ variants:
 
       negative_lock: >
         [NEGATIVE_LOCK]
-        No deodorant-sized bottle, no spray nozzle, no ribbed cap, no grooved
-        cap, no striped cap, no amber oil, no yellow-green oil, no
-        pale olive oil, no sepia label, no medallion bird, no ESTD 2023, no
-        BIRD BRAND, no HERBAL OIL, no 30ML added text, no logo distortion, no
-        label morphing, no flying bird, no soaring bird.
+        No square bottle, no black cap, no plain smooth cap, no roller ball,
+        no roll-on applicator, no spray nozzle, no dropper cap, no pump top,
+        no oversized perfume bottle, no short squat bottle, no amber oil, no
+        yellow-green oil, no pale olive oil, no sepia label, no medallion
+        bird, no ESTD 2023, no BIRD BRAND, no HERBAL OIL, no 30ML added text,
+        no logo distortion, no label morphing, no flying bird, no soaring
+        bird.
 
 # ─────────────────────────────────────────────
 # MANFAAT / BENEFITS MASTER LIST
@@ -254,9 +260,9 @@ copywriting_angles:
     angle_name: "Stres & Aroma Terapi"
     benefit_ref: "B01"
     target_segment: "Pekerja, ibu rumah tangga, semua dewasa"
-    hook: "Dah lama tak rasa tenang? Satu roll je, kepala terus sejuk."
+    hook: "Dah lama tak rasa tenang? Satu sapu je, kepala terus sejuk."
     usp_1: "Aroma herba semulajadi — terus activate deria bau, hantar signal rileks ke otak"
-    usp_2: "Tak perlu diffuser, tak perlu masa — roll, hidu, rasa bezanya dalam 10 saat"
+    usp_2: "Tak perlu diffuser, tak perlu masa — sapu, hidu, rasa bezanya dalam 10 saat"
     usp_3: "Bukan ubat, bukan supplement — rawatan aroma semulajadi yang diakui 60 tahun"
     body: "Hari-hari stress takkan habis. Tapi dengan Minyak Cap Burung, setidaknya otak boleh bernafas kejap. Roll kat belakang telinga, bawah hidung, dada. Hidu dalam-dalam. Biar aroma herba buat kerjanya."
     cta: "Scroll bawah, tekan Add to Cart. Bau dulu, putuskan kemudian."
@@ -338,7 +344,7 @@ copywriting_angles:
     angle_name: "Urutan Badan & Saraf"
     benefit_ref: "B08"
     target_segment: "Pekerja fizikal, warga emas, atlet, orang leher/bahu sakit"
-    hook: "Leher keras macam papan selepas kerja. 5 minit sebelum tidur, roll dan urut. Esok pagi rasa beza."
+    hook: "Leher keras macam papan selepas kerja. 5 minit sebelum tidur, sapu dan urut. Esok pagi rasa beza."
     usp_1: "Minyak meresap ke dalam lapisan otot — beri haba deep-relief untuk saraf yang tegang"
     usp_2: "Sesuai untuk urutan harian — bahu, leher, pinggang, lutut, tapak kaki"
     usp_3: "Lebih berkesan dengan urutan tekanan sederhana — aktifkan peredaran darah, kurangkan kekakuan"
@@ -354,7 +360,7 @@ copywriting_angles:
     usp_1: "Roll kat pelipis kiri kanan + dahi — menthol dan herba sejukkan tekanan dalam kepala"
     usp_2: "Kerja dalam 2-3 minit — lebih laju dari tunggu panadol dissolve dalam perut"
     usp_3: "Boleh guna atas meja kerja — tak perlu air, tak perlu henti aktiviti"
-    body: "Migrain datang tanpa warning. Dan masa dia datang, semua orang sekeliling pun rasa terkesan. Minyak Cap Burung — bukan ubat keras, tapi roll kat tempat yang betul, ia bagi relief yang cukup untuk kau teruskan hari tu."
+    body: "Migrain datang tanpa warning. Dan masa dia datang, semua orang sekeliling pun rasa terkesan. Minyak Cap Burung — bukan ubat keras, tapi sapu kat tempat yang betul, ia bagi relief yang cukup untuk kau teruskan hari tu."
     cta: "Masuk dalam drawer meja kerja sekarang. Sakit kepala tak tunggu masa sesuai."
 
   # ── SET 10 — KEMBUNG PERUT & SENGGUGUT ────────────────────
@@ -537,7 +543,7 @@ registered_by: "farisdatosheikh@gmail.com"
 registered_date: "2026-05-29"
 last_updated: "2026-06-01"
 notes: |
-  Produk tradisional Melayu sejak 1958. 30ML square glass roll-on.
+  Produk tradisional Melayu sejak 1958. 30ML WG40 oblong clear glass bottle with red cap and stopper.
   14 manfaat rasmi dari label produk.
   20 copywriting angles disusun oleh BOSMAX (A01-A20).
   Angles A15-A20 adalah creative expansion dari benefit asas.
