@@ -35,9 +35,15 @@ Kumpul semua ini sebelum mulakan. JANGAN proceed dengan mana-mana field null.
 product_name          → nama produk + key benefit
 product_category      → kategori TikTok Shop MY
 selling_price         → nilai RM
+dialogue_authority_mode → PRODUCT_COPYWRITING | SCRIPT_REGISTRY
 hook                  → primary hook line
 usp_1 / usp_2 / usp_3 → key product benefits
 cta                   → call to action text
+
+--- OPTIONAL SENSITIVE PRODUCT FIELDS (resolved upstream by bosmax-product-intelligence) ---
+dialogue_payload_resolved → hook | problem | agitate | solution | cta
+dialogue_resolved_from    → e.g. SCRIPT_REGISTRY_UNIFIED + SCRIPT_VARIANT_LIBRARY
+silo_id                   → e.g. male_health_stealth_01 | female_health_stealth_01
 
 avatar_id             → NORA | SARA | JULIA | BELLA | SOFIA_FIT | MAK_TOK |
                         RIZAL | AZMAN | HAJI_MAN | CHEF_DANIAL
@@ -784,6 +790,10 @@ Surface interaction jika product contact table/skin/surface lain.
 
 **S6 — Dialogue (NON-AUTHORITATIVE):**
 VO atau on-screen text based pada submode_formula + product hook/USP/CTA.
+Jika `dialogue_authority_mode = SCRIPT_REGISTRY`, dialogue MESTI derive dari
+`dialogue_payload_resolved` yang telah di-resolve upstream. JANGAN freewrite
+semula outside payload authority. Flat `hook/usp/cta` hanya dianggap sebagai
+compatibility shim untuk budgeting dan downstream contracts.
 Apply pronoun rules berdasarkan silo.
 **WAJIB: Jalankan DIALOG PRE-BUDGET sebelum tulis satu patah pun.**
 WPS compliance — declare WPS per segment selepas writing.
@@ -886,6 +896,7 @@ Video engine renders clean footage only. No burned-in text.
 - ABORT jika GOOGLE_FLOW F2V dipilih tanpa KEDUA-DUA start frame dan end frame
 - ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
 - ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
+- ABORT jika `dialogue_authority_mode = SCRIPT_REGISTRY` tetapi `dialogue_payload_resolved` null / incomplete
 - JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
 - JANGAN hasilkan image prompts (kecuali sebagai bahagian GOOGLE_FLOW block)
 - JANGAN hasilkan product records
@@ -902,6 +913,8 @@ Video engine renders clean footage only. No burned-in text.
 - Character name dalam prose → replace dengan biometric DNA, log, teruskan
 - MAK_TOK + SAVAGE_HPAS conflict → swap formula ke HSO atau PAS, log, teruskan
 - STEALTH/DIRECT mix dalam satu script → enforce dominant silo, rephrase, log, teruskan
+- Jika `dialogue_authority_mode = SCRIPT_REGISTRY` dan flat hook/usp/cta kosong tetapi payload resolved wujud
+  → flatten semula: hook ← payload.hook | usp_1 ← payload.solution | cta ← payload.cta, log, teruskan
 
 ### Multi-Block Auto-Heal (v11.2 — aktif apabila multi_block_mode = YES)
 - Block 2+ S1 biometric drift → re-anchor ke Block 1 S1 biometrics verbatim, log, teruskan

@@ -520,6 +520,33 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 014 — 2026-06-01
+**Status:** SENSITIVE DIALOGUE AUTHORITY WIRING — BOSMAX SERUM / BOSMAX HERBS
+**Active Mode:** null
+**Milestone:** Produk sensitif kelakian kini diarahkan untuk resolve dialogue authority dari script registry, bukan dari ad-hoc copywriting biasa.
+
+**Authority decision:**
+- `products/BOSMAX_SERUM.yaml` kekal sebagai truth produk fizikal, scale anchor, variant, compliance, dan alias lookup
+- `SCRIPT_REGISTRY_UNIFIED.md` jadi dialogue assembly law
+- `SCRIPT_VARIANT_LIBRARY.md` jadi dialogue payload bank
+- `bosmax-product-intelligence` menjadi resolver / flattener upstream
+- `bosmax-script-generator` kekal consumer downstream
+
+**Why this matters:**
+- Produk biasa tidak perlu diubah route
+- Produk sensitif seperti kelakian / kewanitaan tidak lagi patut freewrite dialogue liar
+- Copywriting dialogue kini boleh ikut stealth metaphor bank secara deterministic
+
+**Files patched:**
+- `products/_SCHEMA.yaml` — optional `dialogue_authority` schema + alias field
+- `products/BOSMAX_SERUM.yaml` — alias map + sensitive dialogue authority binding
+- `.claude/skills/bosmax-product-intelligence.md` — registry override resolution + compatibility flattening contract
+- `.claude/skills/bosmax-script-generator.md` — sensitive dialogue intake + fail-closed rule
+
+*BOSMAX v11.3 | Log updated: 2026-06-01*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

@@ -13,6 +13,7 @@ schema_version: "1.0"
 product_id: ""            # Internal BOSMAX ID. Format: BRAND_PRODUCTCODE (e.g. BOSMAX_SERUM)
 product_name: ""          # Full commercial name as listed on TikTok Shop
 brand: ""                 # Brand name
+product_aliases: []       # Optional lookup aliases / alternate commercial names
 shop_name: ""             # TikTok Shop store name
 tiktok_product_id: ""     # TikTok Shop product ID (from URL)
 fastmoss_product_name: "" # Exact name in Fastmoss for cross-reference lookup
@@ -45,6 +46,19 @@ variants:
 
     # Additional variant-specific prompt keywords
     prompt_keywords: []   # List of keywords for this variant
+
+# DIALOGUE AUTHORITY — OPTIONAL OVERRIDE FOR SENSITIVE PRODUCTS
+# Default products can stay on PRODUCT_COPYWRITING.
+# Sensitive lanes (e.g. male/female health stealth) can bind to script registry authority.
+dialogue_authority:
+  mode: "PRODUCT_COPYWRITING"   # PRODUCT_COPYWRITING | SCRIPT_REGISTRY
+  registry_file: ""             # e.g. SCRIPT_REGISTRY_UNIFIED.md
+  variant_file: ""              # e.g. SCRIPT_VARIANT_LIBRARY.md
+  silo_id: ""                   # e.g. male_health_stealth_01
+  variant_family: ""            # e.g. EGO_01
+  resolve_to_copywriting: true  # Flatten registry payload back to hook/usp/cta for downstream compatibility
+  fallback_mode: "PRODUCT_COPYWRITING"  # PRODUCT_COPYWRITING | NONE
+  notes: ""                     # Human note for future maintainers
 
 # COPYWRITING ANGLES (from Fastmoss Copywriting_Product_Map or manual)
 copywriting:

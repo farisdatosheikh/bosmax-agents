@@ -26,7 +26,7 @@ semua product knowledge sebelum mana-mana skill generate content.
 ```
 TIER 1 — BOSMAX PRODUCT REGISTRY (products/ folder)
   → Cari dalam products/*.yaml
-  → Match: product_id, product_name, variant_id
+  → Match: product_id, product_name, product_aliases, variant_id
   → Return: full product_record termasuk scale_anchor_descriptor
 
 TIER 2 — FASTMOSS XLSX DATA (local files dalam project folder)
@@ -64,10 +64,11 @@ platform:           dari PRE-FLIGHT (TikTok / Shopee / etc.)
 # Pseudo-code untuk BOSMAX orchestrator
 # Read all .yaml files in products/ (except _SCHEMA.yaml)
 # Normalize product_name_raw → match against:
-#   product_name, product_id, variant_id, fastmoss_product_name
+#   product_name, product_aliases, product_id, variant_id, fastmoss_product_name
 
 # Match conditions (case-insensitive):
 # - Exact match: product_id atau product_name
+# - Alias match: mana-mana string dalam product_aliases
 # - Fuzzy match: brand name + partial product name
 # - Variant match: "5ML" → variant_id "5ML" dalam matched product
 
@@ -76,9 +77,13 @@ platform:           dari PRE-FLIGHT (TikTok / Shopee / etc.)
 
 **Jika TIER 1 match:**
 - Extract fields: product_id, product_name, variant info
+- Extract fields: product_aliases (jika ada)
 - Extract: `scale_anchor_descriptor` untuk variant yang diminta
 - Extract: `subject_dna` dan `last_source_image_handoff` (jika ada)
 - Extract: `copywriting` block (jika populated)
+- Extract: `dialogue_authority` block (jika populated)
+- Jika `dialogue_authority.mode = SCRIPT_REGISTRY` → resolve dialogue payload dahulu
+  sebelum return `product_record`
 - Return `product_record` → SKIP TIER 2 dan TIER 3
 
 ### LANGKAH 3 — TIER 2: FASTMOSS LOOKUP
@@ -155,6 +160,7 @@ product_record:
   product_id: "BOSMAX_SERUM"
   product_name: "BOSMAX Serum"
   brand: "BOSMAX"
+  product_aliases: ["BOSMAX Herbs", "BOSMAX Serum"]
   shop_name: ""
   tiktok_product_id: ""
 
@@ -184,6 +190,16 @@ product_record:
     total_units_sold: null
     total_revenue_rm: null
 
+  # DIALOGUE AUTHORITY
+  dialogue_authority:
+    mode: "PRODUCT_COPYWRITING"  # PRODUCT_COPYWRITING | SCRIPT_REGISTRY
+    registry_file: ""
+    variant_file: ""
+    silo_id: ""
+    variant_family: ""
+    resolve_to_copywriting: true
+    fallback_mode: "PRODUCT_COPYWRITING"
+
   # COPYWRITING
   copywriting:
     angle: ""
@@ -194,6 +210,16 @@ product_record:
     body: ""
     cta: ""
 
+  # RESOLVED DIALOGUE PAYLOAD (optional, sensitive lanes only)
+  dialogue_payload_resolved:
+    hook: ""
+    problem: ""
+    agitate: ""
+    solution: ""
+    cta: ""
+    source_registry: ""
+    source_variant_family: ""
+
   # VISUAL IDENTITY (for Mode C continuity)
   subject_dna: null
   last_source_image_handoff: null
@@ -202,9 +228,65 @@ product_record:
   flags:
     scale_anchor_missing: false
     copywriting_missing: false
+    dialogue_authority_override_active: false
+    dialogue_resolution_missing: false
     market_data_missing: false
     registration_recommended: false
 ```
+
+---
+
+## SENSITIVE PRODUCT DIALOGUE AUTHORITY OVERRIDE
+
+**Trigger:** `dialogue_authority.mode = SCRIPT_REGISTRY`
+
+Produk sensitif seperti `male_health_stealth_01` dan `female_health_stealth_01`
+TIDAK patut rely pada copywriting flat biasa sebagai authority utama. Untuk lane
+ini, products YAML hanya simpan:
+- truth produk fizikal
+- variant / scale anchor
+- compliance class
+- registry binding metadata
+
+Dialogue authority pula datang dari:
+- `SCRIPT_REGISTRY_UNIFIED.md` → assembly law, pronoun enforcement, stealth/direct tone law
+- `SCRIPT_VARIANT_LIBRARY.md` → actual dialogue payload bank
+
+### RESOLUTION SEQUENCE
+
+```
+IF dialogue_authority.mode == SCRIPT_REGISTRY:
+  1. Read dialogue_authority.registry_file
+  2. Read dialogue_authority.variant_file
+  3. Locate silo_id (e.g. male_health_stealth_01)
+  4. Locate variant_family (e.g. EGO_01)
+  5. Resolve dialogue payload:
+       hook      ← dialogue_payload.hooks[0].text
+       problem   ← dialogue_payload.problems[0].text
+       agitate   ← jika ada dalam selected family / registry formula
+       solution  ← best matching solution beat / script law guidance
+       cta       ← variant CTA jika available; otherwise derive per registry law
+  6. Flatten to downstream compatibility block:
+       copywriting.hook  ← resolved hook
+       copywriting.usp_1 ← resolved solution
+       copywriting.usp_2 ← manual product USP jika owner isi
+       copywriting.usp_3 ← manual product USP jika owner isi
+       copywriting.cta   ← resolved CTA
+  7. Set flags.dialogue_authority_override_active = true
+```
+
+### FAIL-CLOSED FOR SENSITIVE PRODUCTS
+
+```
+IF dialogue_authority.mode == SCRIPT_REGISTRY AND payload not resolved:
+  → DO NOT fall back to ad-hoc AI copywriting
+  → DO NOT freewrite male/female sensitive dialogue
+  → Return flags.dialogue_resolution_missing = true
+  → BOSMAX must stop and repair the binding first
+```
+
+Ini menjaga produk biasa kekal pada route lama, tetapi produk sensitif dapat
+authority dialogue yang lebih ketat.
 
 ---
 
@@ -354,9 +436,12 @@ PRE-FLIGHT STEP 0 (NEW):
   → Extract: scale_anchor_descriptor → inject ke S1 dan S3 dalam bosmax-script-generator
   → Extract: recommended_avatars → run AVATAR LOOKUP PROTOCOL
   → Extract: avatar_record.prompt_fragment → inject ke [SUBJECT_INITIALIZATION] atau S1
-  → Extract: copywriting.hook → suggest sebagai S6 opening
-  → Extract: copywriting.usp_1/2/3 → suggest sebagai S5 benefit points
-  → Extract: copywriting.cta → suggest sebagai S9 overlay text
+  → Jika dialogue_authority.mode = SCRIPT_REGISTRY:
+      resolve dialogue_payload_resolved dahulu
+      flatten ke copywriting compatibility block
+      inject resolved hook / solution / CTA ke script work order
+  → Jika tidak:
+      extract copywriting.hook / usp_1/2/3 / cta seperti biasa
 ```
 
 ### Route C (Video from Image) — PRE-FLIGHT lookup:

@@ -9,6 +9,12 @@ schema_version: "1.0"
 product_id: "BOSMAX_SERUM"
 product_name: "BOSMAX Serum"
 brand: "BOSMAX"
+product_aliases:
+  - "BOSMAX Herbs"
+  - "Bosmax Herbs"
+  - "BOSMAX HERBS"
+  - "Bosmax Serum"
+  - "BOSMAX Herbal Oil Roll On"
 shop_name: ""             # TODO: fill in TikTok Shop store name
 tiktok_product_id: ""     # TODO: fill in after listing
 fastmoss_product_name: "" # TODO: fill in exact Fastmoss product name when listed
@@ -62,9 +68,26 @@ variants:
       - "finger-length product"
       - "lightweight handheld size"
 
+# DIALOGUE AUTHORITY — SENSITIVE PRODUCT OVERRIDE
+# For this product, dialogue authority comes from SCRIPT_REGISTRY_UNIFIED + SCRIPT_VARIANT_LIBRARY.
+# products/*.yaml remain the source of truth for scale, packaging, compliance class, and variant identity.
+dialogue_authority:
+  mode: "SCRIPT_REGISTRY"
+  registry_file: "SCRIPT_REGISTRY_UNIFIED.md"
+  variant_file: "SCRIPT_VARIANT_LIBRARY.md"
+  silo_id: "male_health_stealth_01"
+  variant_family: "EGO_01"
+  resolve_to_copywriting: true
+  fallback_mode: "NONE"
+  notes: >
+    BOSMAX Herbs dan BOSMAX Serum adalah produk yang sama. Untuk produk
+    kelakian sensitif ini, dialogue hook/tone/CTA mesti di-resolve dari script
+    registry terlebih dahulu sebelum di-flatten semula ke contract copywriting
+    biasa untuk downstream compatibility.
+
 # COPYWRITING ANGLES — to be populated from Fastmoss or manual entry
 copywriting:
-  angle: ""               # TODO: fill in after Fastmoss lookup or manual
+  angle: "AUTO_RESOLVE_FROM_SCRIPT_REGISTRY"
   hook: ""
   usp_1: ""
   usp_2: ""
@@ -79,9 +102,12 @@ last_source_image_handoff: null
 # METADATA
 registered_by: "pldsb.faris@gmail.com"
 registered_date: "2026-05-29"
-last_updated: "2026-05-29"
+last_updated: "2026-06-01"
 notes: |
+  BOSMAX Herbs / BOSMAX Serum are treated as the same product identity.
   Scale anchor descriptors defined by owner to prevent AI video engine scale drift.
   Google Flow and GROK require physical reference keywords to maintain consistent
   product scale even when reference images are provided.
   TikTok penalises misleading product size in commercial content.
+  Sensitive male-health dialogue must resolve from SCRIPT_REGISTRY_UNIFIED.md
+  and SCRIPT_VARIANT_LIBRARY.md, not from ad-hoc AI copywriting.
