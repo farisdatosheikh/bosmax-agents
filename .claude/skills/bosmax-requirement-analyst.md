@@ -12,7 +12,7 @@ description: >
 
 # BOSMAX REQUIREMENT ANALYST — SKILL
 ## Role: Pre-Dispatch Intelligence | Requirement Extraction & Conflict Resolution
-## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 

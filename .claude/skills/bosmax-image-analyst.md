@@ -1,4 +1,5 @@
 ---
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 name: bosmax-image-analyst
 description: >
   BOSMAX Image Analyst — Route D specialist for image reverse engineering.

@@ -13,7 +13,7 @@ description: >
 
 # BOSMAX MODE-C INHERITANCE EXECUTOR — SKILL
 ## Role: Mode C Specialist — Image DNA Lock + Motion Translation
-## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 

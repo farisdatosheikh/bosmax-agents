@@ -1,4 +1,5 @@
 ---
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 name: bosmax-video-analyst
 description: >
   BOSMAX Video Analyst — Route D specialist for video reverse engineering.

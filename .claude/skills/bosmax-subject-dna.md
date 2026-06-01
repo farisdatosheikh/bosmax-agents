@@ -10,7 +10,7 @@ description: >
 
 # BOSMAX SUBJECT-DNA ARCHITECT — SKILL
 ## Role: Mode A Specialist — Character Visual Identity Authority
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 

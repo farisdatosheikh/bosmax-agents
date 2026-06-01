@@ -1,6 +1,6 @@
 # bosmax-product-intelligence.md
 # Role: BOSMAX Product Librarian
-# Version: v1.0 | Schema: GRAND_MASTER_SKELETON v11.2
+# Version: v1.0 | Schema: GRAND_MASTER_SKELETON v11.3
 # Triggered by: BOSMAX orchestrator PRE-FLIGHT (STEP 0 — before all routes)
 # Purpose: Auto-resolve product knowledge so user never re-explains own products
 

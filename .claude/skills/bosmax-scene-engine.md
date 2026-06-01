@@ -11,7 +11,7 @@ description: >
 
 # BOSMAX SCENE-COMPOSITION ENGINE — SKILL
 ## Role: Mode A Specialist — Environment, Lighting, Camera & Final Assembly
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 

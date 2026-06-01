@@ -13,7 +13,7 @@ description: >
 
 # BOSMAX COMPLIANCE GATE — SKILL
 ## Role: Fail-Closed Quality Auditor | Final Gate Before User Output
-## Schema: v11.2 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 

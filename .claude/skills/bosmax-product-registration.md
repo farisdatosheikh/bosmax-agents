@@ -11,7 +11,7 @@ description: >
 
 # BOSMAX PRODUCT REGISTRATION — SKILL
 ## Role: TikTok Shop MY — Single Product Listing Intelligence & Data Capture
-## Schema: v11.1 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
