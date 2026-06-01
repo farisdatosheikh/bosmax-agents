@@ -400,8 +400,6 @@ tiktok_trendy, shopee_lazada_clean
 
 *BOSMAX v11.3 | Log updated: 2026-05-31*
 
----
-
 ### Session 009 — 2026-05-31
 **Status:** WPS GOVERNANCE OVERHAUL — LANGUAGE-SPECIFIC TABLES
 **Active Mode:** null
@@ -459,3 +457,31 @@ Produk sebenar (rujuk TikTok photo): sepia/kraft vintage label, burung terbang, 
 - Notion: CAP BURUNG MINYAK Plug & Play Templates — all Poster A1-A5 updated + all scale anchor references
 
 *BOSMAX v11.3 | Log updated: 2026-05-31*
+
+---
+
+### Session 011 — 2026-06-01
+**Status:** CAP BURUNG — LATEST BOTTLE TRUTH SYNC
+**Active Mode:** null
+**Milestone:** Product registry diselaraskan dengan latest approved Minyak Cap Burung bottle render.
+
+**Authority source:**
+- Latest approved product image: smooth plain black cap, closed bottle
+- Oil color: translucent emerald herbal green
+- Label/sticker: current dark green + cream + gold layout remains locked
+
+**Supersession note:**
+Session 010 mencerminkan truth lama yang digunakan semasa pembaikan sebelumnya.
+Authority semasa untuk generation image/video kini digantikan dengan bottle state berikut:
+
+| Field | Authority semasa |
+|-------|------------------|
+| Cap | Plain smooth black cap — TERTUTUP, no ribbing, no grooves, roller ball hidden |
+| Oil color | Translucent emerald herbal green — distinct from darker sticker green |
+| Label | Dark forest green outer panel + cream center + gold border |
+| Bird | Perched on leafy branch — NOT flying |
+
+**Files patched:**
+- `products/CAP_BURUNG_MINYAK.yaml` — packaging descriptor, prompt keywords, image prompt locks, negative locks
+
+*BOSMAX v11.3 | Log updated: 2026-06-01*
