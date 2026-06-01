@@ -1,3 +1,14 @@
+---
+name: bosmax-universal-commercial-design-skill
+description: >
+  Universal commercial poster prompt elevation skill. Use when the user wants
+  a poster, hero shot, listing image, thumbnail, commercial visual, or product
+  ad but gives a weak, short, messy, or under-structured brief. Converts that
+  input into a strong, structured prompt that thinks like a senior commercial
+  designer, conversion art director, and product copywriter across products,
+  categories, and platforms.
+---
+
 # BOSMAX UNIVERSAL COMMERCIAL DESIGN SKILL
 ## Portable Skill File | Upload to Codex, Claude, Manus, Gemini, or any AI that accepts instruction files
 
