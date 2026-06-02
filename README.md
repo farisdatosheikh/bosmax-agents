@@ -192,6 +192,13 @@ Fail ini menunjukkan satu contoh image benchmark sensitif sebenar untuk:
 - `10` outputs
 - reference-bound product truth from actual FastMoss product images
 
+**BOSMAX Serum visual hardening:** `products/BOSMAX_SERUM.yaml` kini bukan lagi sekadar dialogue-strong registry entry.
+Ia kini memegang:
+- variant-specific `reference_assets`
+- variant-specific `visual_truth`
+- variant-specific `image_prompt_locks`
+- stronger packaging and negative-lock authority untuk `5ML` dan `10ML`
+
 **Front-door lock-down sequence:**
 1. gunakan `BOSMAX_INPUT_HELPER_v1.md` untuk isi field dengan betul
 2. gunakan `BOSMAX_IGNITION_WORKFLOW_v1.md` untuk first prompt

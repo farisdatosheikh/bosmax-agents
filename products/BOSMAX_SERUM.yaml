@@ -29,6 +29,8 @@ silo: "STEALTH"
 recommended_formula: "SAVAGE_HPAS | PAS | HSO"
 recommended_avatars: ["RIZAL", "AZMAN"]
 product_status: "Available"
+packaging_type: "Slim cylindrical black-on-black portable oil bottle system with glossy black cap, matte black label body, and discreet masculine presentation"
+packaging_color: "Black monochrome packaging with white BOSMAX branding, minimal herbal icon mark, and premium discreet men's-health styling"
 
 # MARKET DATA — to be auto-populated by bosmax-product-intelligence on Fastmoss lookup
 avg_price_rm: null
@@ -53,6 +55,68 @@ variants:
       - "fits between two fingers"
       - "compact travel size"
       - "small enough to rest on a fingertip"
+      - "tiny black cylindrical bottle"
+      - "glossy black cap over matte black body"
+      - "white BOSMAX HERBS branding"
+      - "closed roll-on bottle with hidden applicator"
+
+    reference_assets:
+      primary_reference_url: ""
+      secondary_reference_url: ""
+      local_primary_reference: "reference_images/bosmax/bosmax_serum_5ml_primary.jpg"
+      local_secondary_reference: ""
+
+    visual_truth:
+      set_structure: "Single micro-bottle presentation for the 5ml travel-size variant"
+      bottle_shape: "Tiny slim cylindrical bottle, lip-balm-sized, short body with straight vertical silhouette"
+      cap_style: "Tall smooth glossy black cap, clean rounded top, fully closed"
+      body_finish: "Matte to satin black bottle body with white BOSMAX HERBS typography"
+      label_layout: "Minimal front label with leaf icon on top, BOSMAX HERBS wordmark in center, smaller Herbal Oil Roll On text below"
+      visible_palette: "Black bottle and cap, white label text, very low-noise premium palette"
+      branding_cue: "Leaf icon + BOSMAX HERBS wordmark, masculine minimal branding"
+      applicator_logic: "Closed bottle only in hero/product prompts; roll-on applicator remains hidden under cap"
+      presentation_mood: "Discreet, masculine, pocket-carry, stealth personal-care positioning"
+
+    image_prompt_locks:
+      reference_image_lock: >
+        [REFERENCE_IMAGE_LOCK]
+        Use the uploaded BOSMAX 5ml reference image as the absolute source of
+        truth for the exact lip-balm-sized bottle geometry, glossy black cap,
+        matte black body, white BOSMAX HERBS branding, and real handheld
+        proportions.
+
+      local_edit_delta: >
+        [LOCAL_EDIT_DELTA]
+        Change only the background, lighting, surface, hand pose, wardrobe
+        context, and camera styling. Do not redesign the bottle, do not change
+        its cylindrical silhouette, and do not alter the cap-to-body ratio.
+
+      typography_and_branding_lock: >
+        [TYPOGRAPHY_AND_BRANDING_LOCK]
+        Keep the BOSMAX HERBS wordmark, leaf icon, minimal front-label layout,
+        and compact masculine branding crisp and unchanged. No logo
+        distortion, no label morphing, and no replacement with cosmetic or
+        feminine typography systems.
+
+      spatial_math_and_proportions: >
+        [SPATIAL_MATH_AND_PROPORTIONS]
+        Maintain the latest approved BOSMAX 5ml scale exactly: lip balm size,
+        fits naturally between two fingers, compact enough to rest on a
+        fingertip, and never enlarged into a deodorant, perfume, or full-size
+        skincare bottle.
+
+      output_specification: >
+        [OUTPUT_SPECIFICATION]
+        Photorealistic TikTok Shop MY commercial product image, 9:16,
+        1080x1920px, masculine premium lighting, clean branding readability,
+        realistic reflections, and discreet upscale personal-care tone.
+
+      negative_lock: >
+        [NEGATIVE_LOCK]
+        No white bottle, no transparent glass perfume bottle, no square
+        bottle, no oversized cap, no pastel styling, no pump top, no dropper,
+        no spray nozzle, no exposed anatomy props, no feminized cosmetic
+        packaging, and no label drift away from BOSMAX HERBS identity.
 
   - variant_id: "10ML"
     variant_name: "10ml Standard Size"
@@ -67,6 +131,67 @@ variants:
       - "slim tube fits in one hand"
       - "finger-length product"
       - "lightweight handheld size"
+      - "taller black cylindrical bottle"
+      - "glossy black cap with matte black body"
+      - "white BOSMAX HERBS branding"
+      - "clean wellness hero bottle"
+      - "closed roll-on bottle with hidden applicator"
+
+    reference_assets:
+      primary_reference_url: ""
+      secondary_reference_url: ""
+      local_primary_reference: "reference_images/bosmax/bosmax_serum_10ml_primary.png"
+      local_secondary_reference: ""
+
+    visual_truth:
+      set_structure: "Single taller bottle presentation for the 10ml standard-size variant"
+      bottle_shape: "Chapstick-sized slim cylindrical bottle with taller vertical read than the 5ml version"
+      cap_style: "Smooth glossy black cap with rounded top, fully closed"
+      body_finish: "Matte to satin black label body with sharper hero-product presentation"
+      label_layout: "Leaf icon on top, BOSMAX HERBS wordmark centered, larger stacked Natural Herball Wellness Oil text below"
+      visible_palette: "Black bottle and cap, white typography, warm neutral lifestyle backdrop compatible"
+      branding_cue: "Leaf icon + BOSMAX HERBS wordmark + natural wellness wording"
+      applicator_logic: "Closed bottle only in hero/product prompts; roll-on applicator remains hidden under cap"
+      presentation_mood: "Premium, discreet, wellness-oriented, masculine but clean lifestyle presentation"
+
+    image_prompt_locks:
+      reference_image_lock: >
+        [REFERENCE_IMAGE_LOCK]
+        Use the uploaded BOSMAX 10ml reference image as the absolute source of
+        truth for the exact chapstick-sized bottle geometry, glossy black cap,
+        matte black body, white BOSMAX HERBS branding, and real upright
+        proportions.
+
+      local_edit_delta: >
+        [LOCAL_EDIT_DELTA]
+        Change only the background, lighting, surface styling, and scene
+        context. Do not redesign the bottle, do not shorten or widen the
+        silhouette, and do not change the cap-to-body proportion.
+
+      typography_and_branding_lock: >
+        [TYPOGRAPHY_AND_BRANDING_LOCK]
+        Keep the BOSMAX HERBS wordmark, leaf icon, front-label hierarchy, and
+        natural wellness wording crisp and unchanged. No logo distortion, no
+        label morphing, and no unrelated beauty-brand styling.
+
+      spatial_math_and_proportions: >
+        [SPATIAL_MATH_AND_PROPORTIONS]
+        Maintain the latest approved BOSMAX 10ml scale exactly: chapstick
+        size, finger-length product, slim tube fits naturally in one hand, and
+        never enlarged into a deodorant, serum pump, or perfume bottle.
+
+      output_specification: >
+        [OUTPUT_SPECIFICATION]
+        Photorealistic TikTok Shop MY commercial product image, 9:16,
+        1080x1920px, masculine clean wellness lighting, sharp branding
+        readability, realistic reflections, and premium stealth-product tone.
+
+      negative_lock: >
+        [NEGATIVE_LOCK]
+        No transparent glass bottle, no white or pastel packaging, no square
+        bottle, no pump top, no dropper, no spray nozzle, no oversized cap, no
+        anatomy props, no feminized cosmetic styling, and no label drift away
+        from BOSMAX HERBS identity.
 
 # DIALOGUE AUTHORITY — SENSITIVE PRODUCT OVERRIDE
 # For this product, dialogue authority comes from SCRIPT_REGISTRY_UNIFIED + SCRIPT_VARIANT_LIBRARY.
@@ -102,7 +227,7 @@ last_source_image_handoff: null
 # METADATA
 registered_by: "pldsb.faris@gmail.com"
 registered_date: "2026-05-29"
-last_updated: "2026-06-01"
+last_updated: "2026-06-02"
 notes: |
   BOSMAX Herbs / BOSMAX Serum are treated as the same product identity.
   Scale anchor descriptors defined by owner to prevent AI video engine scale drift.
@@ -111,3 +236,10 @@ notes: |
   TikTok penalises misleading product size in commercial content.
   Sensitive male-health dialogue must resolve from SCRIPT_REGISTRY_UNIFIED.md
   and SCRIPT_VARIANT_LIBRARY.md, not from ad-hoc AI copywriting.
+  Visual packaging truth has now been hardened with owner-supplied reference
+  images for both variants:
+  - reference_images/bosmax/bosmax_serum_5ml_primary.jpg
+  - reference_images/bosmax/bosmax_serum_10ml_primary.png
+  BOSMAX Serum should now be treated as a reference-bound sensitive flagship
+  product for image and video lanes, not merely a dialogue-strong registry
+  entry.

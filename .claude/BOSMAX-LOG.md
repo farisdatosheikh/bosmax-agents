@@ -767,6 +767,28 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 030 — 2026-06-02
+**Status:** BOSMAX SERUM VISUAL HARDENING INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX Serum tidak lagi sekadar menang pada dialogue authority; ia kini dinaikkan kepada reference-bound sensitive flagship dengan variant-specific visual locks.
+
+**Authority decision:**
+- `BOSMAX_SERUM.yaml` kini memegang packaging truth pada product level
+- variant `5ML` dan `10ML` kini masing-masing ada:
+  - `reference_assets`
+  - `visual_truth`
+  - `image_prompt_locks`
+  - stronger `negative_lock`
+- objective lane ini ialah mengangkat BOSMAX Serum supaya lebih complete dan lebih solid daripada Maverix, bermula dari foundation registry
+
+**Files patched:**
+- `products/BOSMAX_SERUM.yaml` — packaging authority, visual truth, reference assets, and image locks for both variants
+- `README.md` — BOSMAX Serum visual hardening surfaced in repo authority structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 025 — 2026-06-02
 **Status:** SENSITIVE MAVERIX LANE INSTALLED
 **Active Mode:** null
