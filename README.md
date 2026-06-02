@@ -24,6 +24,7 @@ BOSMAX/
 │       └── bosmax-requirement-analyst.md ← Pre-dispatch intelligence layer (v11.2)
 ├── BOSMAX_DETERMINISTIC_FLOW_v1.md  ← Phase-1 newbie-facing single-output authority
 ├── BOSMAX_BATCH_LANE_v1.md          ← Phase-2 deterministic batch authority
+├── BOSMAX_BATCH_TEMPLATE_SET_v1.md  ← Production-ready batch intake templates
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -76,6 +77,14 @@ Fail ini mendefinisikan batch sebagai planner/dispatcher di atas single-output f
 - `BATCH_IMAGE_SELLING`
 - `BATCH_VIDEO_FRESH`
 - `BATCH_MIXED_DETERMINISTIC`
+
+**Production-ready batch templates:** rujuk `BOSMAX_BATCH_TEMPLATE_SET_v1.md`.
+Fail ini mengandungi ready-copy intake blocks untuk:
+- `BATCH_IMAGE_SUPPORT`
+- `BATCH_IMAGE_SELLING`
+- `BATCH_VIDEO_FRESH`
+- `BATCH_MIXED_DETERMINISTIC`
+- `BATCH_MULTI_PRODUCT_CONTROLLED`
 
 ---
 

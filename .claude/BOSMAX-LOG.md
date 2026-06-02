@@ -662,6 +662,33 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 020 — 2026-06-02
+**Status:** FIRST PRODUCTION-READY BATCH TEMPLATE SET INSTALLED
+**Active Mode:** null
+**Milestone:** Operator kini ada fail template set yang boleh terus dicopy ke BOSMAX untuk batch intake tanpa perlu reka struktur sendiri setiap kali.
+
+**Authority decision:**
+- template set ini adalah `operator surface`, bukan authority logic baru
+- batch templates mesti tetap patuh kepada:
+  - `BOSMAX_DETERMINISTIC_FLOW_v1.md`
+  - `BOSMAX_BATCH_LANE_v1.md`
+  - product registry truth
+- official ready-copy templates yang dibuka:
+  - `BATCH_IMAGE_SUPPORT`
+  - `BATCH_IMAGE_SELLING`
+  - `BATCH_VIDEO_FRESH`
+  - `BATCH_MIXED_DETERMINISTIC`
+  - `BATCH_MULTI_PRODUCT_CONTROLLED`
+
+**Files patched:**
+- `BOSMAX_BATCH_TEMPLATE_SET_v1.md` — production-ready copy blocks for batch intake
+- `BOSMAX_BATCH_LANE_v1.md` — template set added to expected authority surfaces
+- `README.md` — template set exposed in repo structure and operator entrypoint
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

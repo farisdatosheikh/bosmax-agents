@@ -301,6 +301,7 @@ This makes diagnosis, reruns, and compliance auditing easier.
 ## Repository Surfaces Expected To Reflect This Spec
 
 - `BOSMAX_DETERMINISTIC_FLOW_v1.md`
+- `BOSMAX_BATCH_TEMPLATE_SET_v1.md`
 - `.claude/CLAUDE.md`
 - `.claude/skills/bosmax-bulk-generator.md`
 - `README.md`
