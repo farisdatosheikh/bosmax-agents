@@ -33,6 +33,7 @@ BOSMAX/
 ├── BOSMAX_REPAIR_LANE_DECISION_TREE_v1.md ← Fast operator decision tree for choosing the correct repair lane
 ├── BOSMAX_HARD_ENGINE_CONTRACTS_v1.md ← Hard anti-stupidity contracts for Grok, Gemini, Claude sandbox, and pre-output kill-switch
 ├── BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md ← Canonical clean operator-facing video prompt shape and Grok seam continuity law
+├── BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md ← Copy-paste Block 2 opener templates to reduce Grok extension lag and lipsync seam mismatch
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
@@ -146,6 +147,12 @@ Fail ini menjadikan output prompt video gaya ChatGPT sebagai bentuk canonical:
 - clean operator-facing structure
 - minimum metadata leakage
 - tighter Grok Block 2 seam continuity
+
+**Grok extension seam templates:** rujuk `BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md`.
+Fail ini memberi 3 Block 2 opener templates yang terus boleh dipakai:
+- `soft household UGC`
+- `direct recommendation UGC`
+- `savage sell-through UGC`
 
 **First real front-door dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
 Fail ini menunjukkan satu walkthrough operator sebenar untuk:

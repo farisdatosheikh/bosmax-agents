@@ -1234,6 +1234,31 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 043 — 2026-06-03
+**Status:** GROK EXTENSION SEAM TEMPLATES INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada lane siap-guna khusus untuk opener `Block 2` dalam GROK multi-block video. Tujuannya ialah kurangkan `dead air`, rasa `lag`, dan lipsync mismatch pada seam dengan memaksa dialog sambung lebih awal dan hanya membenarkan micro-continuation action.
+
+**Authority decisions:**
+- `GROK EXTENSION SEAM TEMPLATE` kini wujud sebagai operator-ready patch surface, bukan sekadar rule abstrak
+- tiga tone tersedia:
+  - `soft household UGC`
+  - `direct recommendation UGC`
+  - `savage sell-through UGC`
+- semua varian mengunci:
+  - dialog resume dalam `0.5s–1.0s`
+  - tiada silent setup panjang
+  - tiada reset pose
+  - action awal hanya micro-continuation
+
+**Files patched:**
+- `BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md` — new authority file untuk Block 2 seam opener templates
+- `README.md` — register seam templates dalam operator surface
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
