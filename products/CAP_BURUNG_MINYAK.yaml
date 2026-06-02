@@ -32,7 +32,7 @@ product_status: "Available"
 tagline: "Petua Turun Temurun."
 heritage_year: 1958
 product_type: "Traditional Malay herbal liniment / minyak angin in WG40 glass bottle"
-packaging_type: "WG40 30ML oblong clear flint glass bottle with red ribbed screw cap and internal stopper — EXACTLY classic 30ml minyak angin bottle size, compact travel-friendly, easy to label"
+packaging_type: "WG40 30ML oblong clear flint glass bottle with red ribbed screw cap and internal stopper — compact 30ml oblong clear glass medicated oil bottle with a red ribbed cap, compact travel-friendly, easy to label"
 packaging_color: "High-clarity clear flint glass body showing translucent emerald herbal green oil inside, red ribbed cap on top"
 
 # ─────────────────────────────────────────────
@@ -73,7 +73,7 @@ variants:
     # SCALE ANCHOR — CORRECT VERSION
     # WG40 bottle uses red ribbed cap + hidden stopper. Do NOT describe roller ball.
     # ─────────────────────────────────────────────
-    scale_anchor_descriptor: "EXACTLY classic 30ml minyak angin bottle size, WG40 oblong clear glass bottle, 9.4cm tall and fits naturally in one hand or small bag"
+    scale_anchor_descriptor: "EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized"
 
     # ─────────────────────────────────────────────
     # LABEL DNA — AUTHORITY FOR ALL IMAGE GENERATION
@@ -121,7 +121,7 @@ variants:
       - "bird perched on leafy branch on label — NOT flying"
       - "Sejak 1958 Petua Turun Temurun printed on label"
       - "traditional Malay herbal oil packaging"
-      - "classic 30ml minyak angin bottle scale — 9.4cm tall, compact travel-friendly"
+      - "compact 30ml oblong clear glass medicated oil bottle with a red ribbed cap"
 
     # ─────────────────────────────────────────────
     # IMAGE PROMPT LOCKS — FOR AI IMAGE GENERATION
@@ -151,13 +151,13 @@ variants:
 
       spatial_math_and_proportions: >
         [SPATIAL_MATH_AND_PROPORTIONS]
-        Maintain the latest approved WG40 bottle scale exactly: 30ml oblong
-        clear glass bottle, 9.4cm full height, 6cm body-to-neck height, 3.7cm
-        length, and 2.1cm width. Keep the exact bottle-to-cap proportion from
-        the reference image. Preserve rigid WG40 glass geometry with no
-        stretching. Keep the cap red and ribbed, keep the stopper hidden, and
-        keep the oil as a deeper translucent emerald herbal green distinct from
-        the sticker green.
+        Maintain the latest approved WG40 bottle scale exactly: a compact 30ml
+        oblong clear glass medicated oil bottle with a red cap, naturally
+        hand-sized. Keep the exact bottle-to-cap proportion from the reference
+        image. Preserve rigid WG40 glass geometry with no stretching. Keep the
+        cap red and ribbed, keep the stopper hidden, and keep the oil as a
+        deeper translucent emerald herbal green distinct from the sticker
+        green.
 
       output_specification: >
         [OUTPUT_SPECIFICATION]

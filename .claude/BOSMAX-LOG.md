@@ -565,6 +565,24 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 016 — 2026-06-02
+**Status:** CAP BURUNG SCALE KEYWORD NORMALIZATION
+**Active Mode:** null
+**Milestone:** Engine-facing scale keyword untuk video dan merge prompts dinormalize ke English-only semantic wording supaya lebih stabil merentas video engines.
+
+**Authority decision:**
+- spec WG40 penuh kekal untuk product truth dan QA dalaman
+- `scale_anchor_descriptor` engine-facing kini: `EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized`
+- poster/image keyword kini: `compact 30ml oblong clear glass medicated oil bottle with a red ribbed cap`
+- ukuran `cm/mm` tidak lagi dibawa dalam engine-facing scale keyword
+
+**Files patched:**
+- `products/CAP_BURUNG_MINYAK.yaml` — packaging descriptor, scale anchor descriptor, prompt keywords, spatial math wording
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
