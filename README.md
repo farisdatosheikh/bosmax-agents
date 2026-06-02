@@ -27,6 +27,7 @@ BOSMAX/
 ├── BOSMAX_BATCH_TEMPLATE_SET_v1.md  ← Production-ready batch intake templates
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real video batch benchmark
+├── BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real mixed batch benchmark
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -99,6 +100,17 @@ Fail ini menunjukkan satu contoh batch sebenar untuk:
 Fail ini menunjukkan satu contoh batch sebenar untuk:
 - `Minyak Warisan Cap Burung`
 - `BATCH_VIDEO_FRESH`
+- `KLING_3_0`
+- `10s`
+- `10` outputs
+- complete intake block + approved Variant Plan example
+
+**Companion mixed benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
+Fail ini menunjukkan satu contoh batch sebenar untuk:
+- `Minyak Warisan Cap Burung`
+- `BATCH_MIXED_DETERMINISTIC`
+- `5 × IMAGE + VIDEO_SUPPORT`
+- `5 × VIDEO + NONE`
 - `KLING_3_0`
 - `10s`
 - `10` outputs

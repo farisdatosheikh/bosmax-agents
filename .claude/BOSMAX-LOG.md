@@ -689,6 +689,28 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 023 — 2026-06-02
+**Status:** THIRD REAL BATCH RUN EXAMPLE INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada benchmark mixed batch pertama untuk produk live supaya operator boleh uji dispatcher lintas-lane dalam satu run terkawal.
+
+**Authority decision:**
+- produk benchmark ketiga dikekalkan: `Minyak Warisan Cap Burung`
+- batch type benchmark ketiga: `BATCH_MIXED_DETERMINISTIC`
+- split benchmark ketiga: `5 × IMAGE + VIDEO_SUPPORT` + `5 × VIDEO + NONE`
+- engine benchmark ketiga untuk video rows: `KLING_3_0`
+- duration benchmark ketiga untuk video rows: `10s`
+- contoh ini berfungsi sebagai operator example, bukan authority logic baru
+
+**Files patched:**
+- `BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md` — complete intake block + approved mixed Variant Plan example
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md` — operator notes updated to point to companion mixed benchmark
+- `README.md` — companion mixed benchmark exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 022 — 2026-06-02
 **Status:** SECOND REAL BATCH RUN EXAMPLE INSTALLED
 **Active Mode:** null

@@ -208,11 +208,13 @@ Why this is the second benchmark:
 - no multi-block ambiguity
 - no reference-media ambiguity
 
-If this batch behaves well, the next recommended benchmark is:
-- `BATCH_MIXED_DETERMINISTIC`
+Companion mixed benchmark now available:
+- `BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md`
 - same product
+- `BATCH_MIXED_DETERMINISTIC`
 - `10` outputs
-- controlled split between `IMAGE + VIDEO_SUPPORT` and `VIDEO + NONE`
+- `5 × IMAGE + VIDEO_SUPPORT`
+- `5 × VIDEO + NONE`
 
 ---
 
