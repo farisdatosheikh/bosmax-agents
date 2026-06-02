@@ -1,6 +1,6 @@
-# BOSMAX v11.3 — CLAUDE.md
+# BOSMAX v11.5 — CLAUDE.md
 # Sistem: BOSMAX Command Centre
-# Versi: v11.3 | Schema: GRAND_MASTER_SKELETON
+# Versi: v11.5 | Schema: GRAND_MASTER_SKELETON
 # Authority: SUPREME_SYSTEMS_ARCHITECT
 # Format: Claude Cowork Skill Orchestrator
 # Changelog v11.2: Added PRE-FLIGHT PROTOCOL, ENGINE CONSTRAINT TABLE (full),
@@ -11,6 +11,9 @@
 # Changelog v11.4: Added VISUAL INTAKE GATE (mandatory image/video scan before
 #                  PRE-FLIGHT). Gambar = sumber kebenaran utama. Tambah STORYBOARD
 #                  STEP sebelum emit prompts. Tambah VIDEO ENGINE SELECTION step.
+# Changelog v11.5: Enforcement hardening for VISUAL-FIRST sandbox, GROK
+#                  multi-block contract, WPS budgeting, pacing governance, and
+#                  pre-output checklist enforcement.
 
 ---
 
@@ -261,6 +264,25 @@ Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
   sebagai input untuk lookup, bukan text yang user tulis
 ```
 
+**SCAN_05B — VISUAL-FIRST SANDBOX PREBUILD:**
+```
+→ Jika product_registry_status = NOT_FOUND TETAPI label/packaging dalam gambar jelas:
+   · build visual_product_stub SEBELUM STEP 0:
+     - product_name_visual
+     - brand_visual
+     - packaging_visual_summary
+     - scale_estimate_visual
+     - visual_evidence_status = STRONG
+   · STEP 0 kemudian treat produk ini sebagai VISUAL-FIRST SANDBOX candidate
+   · bila user pilih PROCEED SEKARANG, MINI-INTAKE WIZARD MESTI skip
+     product identity / packaging yang sudah proven oleh visual
+   · soalan tinggal hanya:
+     - kategori / jenis
+     - scale anchor confirm
+     - platform + bahasa
+→ Tujuan: jangan tanya semula benda yang sudah jelas dalam gambar.
+```
+
 ### VISUAL INTAKE GATE — FAIL-CLOSED RULES
 
 ```
@@ -269,6 +291,11 @@ HARD BLOCK (wajib STOP):
 - JANGAN assume produk dari session memory bila ada gambar
 - JANGAN load registry persona bila ada gambar avatar
 - JIKA produk dalam gambar tidak jelas: TANYA dahulu
+- JANGAN cakap "tak boleh tengok gambar" jika upload memang wujud dalam request
+- JANGAN fallback ke BOSMAX Serum / RIZAL / mana-mana registry default
+  apabila visual evidence menunjukkan produk/avatar lain
+- JANGAN skip visual-first sandbox prebuild apabila label produk jelas tetapi
+  registry miss
 
 AUTO-PROCEED (boleh proceed tanpa tunggu):
 - Produk ada nama jelas visible dalam gambar → scan, declare, proceed
@@ -323,6 +350,22 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 → Announce block distribution sebelum proceed ke storyboard
 ```
 
+**SB_02B — DIALOG BUDGET + PACE CHECK:**
+```
+→ Lookup WPS table mengikut target_language
+→ Kira total_dialog_budget dan budget per block
+→ Declare pace_class sebelum storyboard:
+   · BRISK_UGC           → pace laju, minimum dead air, 1 action beat setiap 2–3 saat
+   · NATURAL_COMMERCIAL  → pace normal iklan
+   · CALM_EXPLAINER      → pace perlahan hanya jika user minta
+→ Default rules:
+   · TikTok household / UGC / recommendation → BRISK_UGC
+   · JANGAN guna CALM_EXPLAINER untuk GROK UGC tanpa explicit request user
+→ Present kepada user:
+   "Dialog budget Block 1 = [x] words | Block 2 = [y] words | pace = [class]"
+→ JANGAN proceed ke storyboard jika word budget per block belum dikira
+```
+
 **SB_03 — MASTER STORYBOARD:**
 ```
 → WAJIB bina storyboard sebelum generate prompts
@@ -335,10 +378,14 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
   │   Middle:  [apa berlaku tengah]        │
   │   Product moment: [bila produk focus]  │
   │   Dialogue: "[dialog penuh]"           │
+  │   Words max: [budget block]            │
+  │   Pace: [BRISK_UGC / NATURAL / CALM]   │
   │   End state: [visual akhir block]      │
   ├────────────────────────────────────────┤
   │ Block 2 ([duration]s): [jika ada]      │
   │   Continues from: [end state B1]       │
+  │   Words max: [budget block]            │
+  │   Pace: [class]                        │
   │   ...                                  │
   └────────────────────────────────────────┘
 
@@ -361,9 +408,50 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 ```
 - JANGAN emit prompt terus tanpa storyboard
 - JANGAN skip engine selection jika belum declared
+- JANGAN skip dialog budget / WPS declaration per block
 - JANGAN generate Block 2 tanpa Block 1 end-state dalam storyboard
 - JIKA user reject storyboard: revise, present semula, tunggu approval
 - JIKA single block: storyboard ringkas masih wajib (SB_03 format)
+- JANGAN guna pace perlahan untuk GROK UGC recommendation jika user tidak minta
+```
+
+---
+
+## PRE-OUTPUT ENFORCEMENT CHECKLIST — WAJIB SEBELUM USER OUTPUT
+
+**Ini adalah internal checklist mutlak sebelum sebarang poster/image prompt atau
+video prompt dilepaskan kepada user.**
+
+```
+VISUAL ENFORCEMENT
+☐ Visual scan complete
+☐ Avatar source locked to USER_UPLOAD jika gambar manusia ada
+☐ Product source derived from uploaded image jika label/packaging jelas
+☐ Tiada registry fallback override terhadap visual evidence
+
+SANDBOX ENFORCEMENT
+☐ Jika registry miss + visual evidence jelas → visual-first sandbox active
+☐ MINI-INTAKE hanya tanya field yang belum proven oleh visual
+☐ sandbox_product_record atau product_record non-null sebelum route
+
+VIDEO ENFORCEMENT
+☐ Engine confirmed
+☐ Block math confirmed
+☐ Storyboard presented
+☐ Storyboard approved
+☐ WPS budget declared per block
+☐ pace_class declared
+☐ GROK image-to-video persistence locks declared jika ada reference image
+
+OUTPUT ENFORCEMENT
+☐ Prompt ikut gambar yang diupload
+☐ Prompt ikut scale/packaging/product type sebenar
+☐ Dialogue fit durasi block
+☐ Tiada dead-air pacing yang bercanggah dengan content type
+
+Jika SATU checkbox gagal:
+→ JANGAN emit prompt kepada user
+→ ABORT / revise / tanya soalan yang tepat
 ```
 
 ---
@@ -400,6 +488,11 @@ ON LOOKUP FAIL (TIER 1 + TIER 2 kedua-dua miss):
      B) REGISTER DULU — simpan dalam registry untuk guna balik lepas ni"
   → TUNGGU jawapan
   → Pilihan A → SANDBOX MODE → bosmax-requirement-analyst MINI-INTAKE WIZARD
+    → jika visual_product_stub already exists:
+        · skip identity/packaging yang sudah proven oleh visual
+        · build sandbox_product_record dari visual-first intake
+      jika visual_product_stub tiada:
+        · run full MINI-INTAKE WIZARD
     → sandbox_product_record built → inject ke session → proceed ke route
   → Pilihan B → REGISTER MODE → appoint bosmax-product-registration
     → selepas register: load product_record → proceed ke route
@@ -727,6 +820,9 @@ batch_prompt_pack:        null  → row-expanded deterministic outputs
 batch_summary:            null  → totals, failures, blocked rows
 bulk_content_output:      null  → after bosmax-bulk-generator completes
 sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[reason]"
+visual_scan_status:       null  → "PENDING" | "COMPLETE" | "UNCLEAR"
+storyboard_status:        null  → "NOT_REQUIRED" | "PENDING_APPROVAL" | "APPROVED"
+pre_output_checklist_status: null → "PENDING" | "PASSED" | "FAILED"
   sandbox_product_record:   null  → populated bila TIER 3 SANDBOX MODE active (session-only)
   sandbox_mode_active:      false → true bila produk dari sandbox (bukan registry)
   new_avatar_upload:        null  → populated bila user upload gambar avatar baru

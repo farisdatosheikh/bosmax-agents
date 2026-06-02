@@ -5,17 +5,18 @@ description: >
   TikTok commercial video script built from zero — from product brief,
   product image, or raw product specs. No prior image inheritance required.
   Builds scene, character, and all 9 sections from scratch using BOSMAX
-  v11.3 logic, physics DNA, and approved script formulas. Supports single-block
+  v11.5 logic, physics DNA, approved script formulas, visual-first enforcement,
+  and WPS/pacing governance. Supports single-block
   and MULTI-BLOCK work orders. In multi-block mode, ingests Master Narrative
   Brief and generates each block with strict dialogue continuity and visual
-  state handoff between blocks. v11.3: S9 overlay deactivated (user handles
+  state handoff between blocks. v11.5: S9 overlay deactivated (user handles
   in CapCut), dialog pre-budget enforcement, GROK scale authority override.
 ---
 
 # BOSMAX SCRIPT GENERATOR — SKILL
-## Role: Mode B Specialist — Deterministic BOSMAX v11.3 Video Script Engine
-## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
-## Changelog v11.3: S9 Overlay DEACTIVATED | Dialog Pre-Budget Enforcement | GROK Scale Authority Override
+## Role: Mode B Specialist — Deterministic BOSMAX v11.5 Video Script Engine
+## Schema: v11.5 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Changelog v11.5: Visual-first sandbox intake compliance | GROK persistence + pacing enforcement | pre-output checklist hardening
 
 ---
 
@@ -57,6 +58,11 @@ submode_formula       → PAS | HSO | AIDA | FAB | SAVAGE_HPAS
 camera_style          → UGC_IPHONE_RAW | CINEMATIC_PRO
 scene_context         → pilih dari scene registry
 target_language       → Malay | English
+visual_authority_source → USER_UPLOAD | REGISTRY | SANDBOX_VISUAL | ANALYST_REFERENCE
+visual_product_summary → exact label / packaging / scale summary dari visual scan
+storyboard_approved   → YES | NO
+pace_class            → BRISK_UGC | NATURAL_COMMERCIAL | CALM_EXPLAINER
+dialog_budget_words   → total words ceiling dari upstream storyboard/work order
 
 --- MULTI-BLOCK FIELDS (diisi oleh BOSMAX — null untuk single-block) ---
 multi_block_mode      → YES | NO
@@ -153,6 +159,19 @@ continuity_lock
 
 Skill ini tidak patut emit loosely structured alternatives.
 Satu work order masuk = satu deterministic output pack keluar.
+
+---
+
+## VISUAL-FIRST RULES — USER UPLOAD MENANG
+
+- Jika `visual_authority_source = USER_UPLOAD` atau `SANDBOX_VISUAL`, JANGAN substitute
+  avatar registry atau product registry lain yang tidak sepadan dengan visual.
+- `visual_product_summary` adalah authority tertinggi untuk:
+  - product label
+  - packaging type
+  - product scale
+  - hand grip / crop class jika reference image diberikan
+- Jika work order bercanggah dengan visual authority, ABORT dan return conflict.
 
 ---
 
@@ -425,6 +444,22 @@ Negative scale prompts: no oversized product | no enlarged bottle | no scale dri
 from reference image | no product bigger than shown in uploaded image |
 maintain exact reference image scale throughout all frames."
 
+[PERSISTENCE_AND_CROP_LOCK — WAJIB UNTUK GROK]
+"Preserve the same identity render, same face geometry, same hijab drape,
+same hand placement class, and same product-to-body ratio as the uploaded reference.
+Do NOT beautify the face into a different person.
+Do NOT tighten the crop into a hero close-up unless the storyboard explicitly requests it.
+Do NOT change the framing class from the uploaded image without storyboard justification.
+If the product is a large household pack in the reference image, keep it as a large
+household pack — do NOT reinterpret it as a bottle, pouch, wipes pack, or cosmetic item."
+
+[PACE_AND_ACTION_DENSITY_LOCK — WAJIB UNTUK GROK UGC]
+"Pacing must match brisk real-user recommendation tempo.
+Minimum one meaningful action or emphasis beat every 2–3 seconds.
+Minimal dead air. Minimal dreamy pause.
+Dialogue delivery must feel conversational and efficient, not theatrical,
+not sleepy, not luxury slow-motion unless explicitly requested by the user."
+
 [then proceed dengan standard 9-section prose untuk GROK]
 ```
 
@@ -620,7 +655,7 @@ no full hand grip
 
 ---
 
-## WPS GOVERNANCE — WAJIB (v11.3 — LANGUAGE-SPECIFIC)
+## WPS GOVERNANCE — WAJIB (v11.5 — LANGUAGE-SPECIFIC)
 
 WPS limits adalah **language-specific**. MESTI rujuk bahasa dialog sebelum set word budget.
 Nilai lama (1.6/2.0/3.0) adalah DEPRECATED — JANGAN guna lagi.
@@ -738,6 +773,12 @@ total_dialog_budget = FLOOR(duration_target × wps_safe_max)
 
 Declare I, scene_count, language, wps values, dan word budgets dalam Section 8.
 
+**Mandatory pacing declaration:**
+```
+pace_class = [BRISK_UGC | NATURAL_COMMERCIAL | CALM_EXPLAINER]
+action_density = [one beat every 2–3s | standard | sparse]
+```
+
 ---
 
 ## DIALOG PRE-BUDGET — WAJIB KIRA SEBELUM TULIS SECTION 6
@@ -776,6 +817,14 @@ STEP E — DECLARE SEBELUM TULIS:
    Duration: [X]s | Budget: [N] words
    Hook: [N]w | CTA: [N]w | USP budget: [N]w remaining
    Selected: Hook + [USP_1/tiada] + CTA"
+
+STEP F — VALIDATE PER BLOCK:
+  Untuk multi-block:
+  - kira budget bagi SETIAP block ikut block_duration sebenar
+  - GROK 16s mixed example:
+    Block 1 = 10s → BM safe max = 25 words
+    Block 2 = 6s  → BM safe max = 15 words
+  - JANGAN guna budget total 16s sebagai satu blok tunggal
 
 CONTOH (8s video, Bahasa Melayu):
   target_language = BM | wps_safe_max = 2.5
@@ -875,6 +924,7 @@ Music energy class (low/mid/high), BPM range, SFX triggers, silence gap, tail si
 Declare: duration_target, engine_id, I value, scene_count, target words, max words, kill-switch.
 Declare: dna_reinjection_hop (1 untuk VEO_3_1 di setiap block boundary).
 Declare: pacing class (fast/medium/slow).
+Declare: pace_class + action_density.
 **MULTI-BLOCK MANDATORY (jika multi_block_mode = YES):**
 Declare: "BLOCK [X] OF [N]" | block_start_time–block_end_time
 Declare: "VISUAL END STATE: [character position] | [product position] | [lighting]"
@@ -909,6 +959,8 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 ```
 ENGINE: [engine_id] | DURATION: [Xs] | SUBMODE: [formula] |
 PLATFORM: [target] | CAMERA STYLE: [prose description]
+VISUAL AUTHORITY: [USER_UPLOAD / REGISTRY / SANDBOX_VISUAL / ANALYST_REFERENCE]
+STORYBOARD APPROVED: [YES]
 [BLOCK [N] OF [TOTAL] — omit line jika single-block]
 [CONTINUES FROM BLOCK N-1 — omit line jika Block 1 atau single-block]
 
@@ -945,6 +997,7 @@ SECTION 7: Audio Tone
 SECTION 8: Temporal Logic
 I=[x]s | scenes=[x] | lang=[BM/EN/ID/ZH/HI/BN/AR] | wps_optimum=[x] | wps_safe_max=[x] | wps_ceiling=[x]
 dialog_budget=[x]w (Safe Max) | target=[x]w/scene | max=[x]w/scene | kill=[x]w/scene
+pace_class=[x] | action_density=[x]
 [content]
 
 ---
@@ -965,6 +1018,10 @@ Video engine renders clean footage only. No burned-in text.
 - ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
 - ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
 - ABORT jika `dialogue_authority_mode = SCRIPT_REGISTRY` tetapi `dialogue_payload_resolved` null / incomplete
+- ABORT jika `storyboard_approved != YES`
+- ABORT jika `dialog_budget_words` null atau pace_class null
+- ABORT jika `visual_authority_source = USER_UPLOAD | SANDBOX_VISUAL` tetapi output cuba
+  menggunakan persona/product lain dari visual scan
 - JANGAN generate Block N tanpa Master Narrative Brief sebagai authority
 - JANGAN hasilkan image prompts (kecuali sebagai bahagian GOOGLE_FLOW block)
 - JANGAN hasilkan product records

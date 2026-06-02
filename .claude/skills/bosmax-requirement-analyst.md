@@ -12,7 +12,7 @@ description: >
 
 # BOSMAX REQUIREMENT ANALYST — SKILL
 ## Role: Pre-Dispatch Intelligence | Requirement Extraction & Conflict Resolution
-## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.5 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -75,6 +75,20 @@ VS_03 — PRODUCT READ:
     brand, packaging color/shape, scale estimate
   CROSS-CHECK: products/*.yaml
   RESULT: FOUND / NOT_FOUND / PARTIAL / UNCLEAR
+
+VS_03B — VISUAL-FIRST SANDBOX PREBUILD:
+  Jika RESULT = NOT_FOUND TETAPI visual kuat:
+    - label jelas ATAU logo jelas
+    - packaging shape/color jelas
+    - scale boleh di-estimate dari tangan / badan / objek sekitar
+  → bina visual_product_stub:
+      product_name_visual
+      brand_visual
+      packaging_visual_summary
+      scale_estimate_visual
+      visual_evidence_status = STRONG
+  → wizard nanti skip soalan yang sudah dijawab oleh visual
+  → objective: jangan interview semula benda yang sudah terbukti dalam gambar
 
 VS_04 — RESOLVE AMBIGUITY:
   Jika produk TIDAK JELAS (tiada nama visible): TANYA user
@@ -220,6 +234,22 @@ IMPLICIT_12 — Avatar Image Upload (Quick-Read Trigger):
   → Inject sebagai [REFERENCE_IMAGE_LOCK] dalam prompt
   → JANGAN tanya soalan avatar kalau gambar sudah upload
   → JANGAN assume nama persona — guna visual descriptor sahaja
+
+IMPLICIT_13 — WPS + PACE GOVERNANCE:
+  Jika request = video:
+  → Lookup target_language
+  → Lookup WPS safe max mengikut bahasa
+  → Kira word budget total dan per block
+  → Assign pace_class:
+      BRISK_UGC          = raw recommendation / household / TikTok spoken ad
+      NATURAL_COMMERCIAL = standard commercial
+      CALM_EXPLAINER     = only if user explicitly asks slow / soft / cinematic
+  → GROK household / recommendation content default = BRISK_UGC
+  → Storyboard MESTI carry:
+      · word budget per block
+      · pace_class
+      · action density expectation
+  → JANGAN dispatch tanpa values ini
 ```
 
 ---
@@ -331,12 +361,16 @@ STORYBOARD OUTLINE — format dalam WORK ORDER:
     Opening:        [visual + action awal]
     Product moment: [bila dan macam mana produk muncul]
     Dialogue:       "[dialog penuh — dalam bahasa yang diminta]"
+    Words max:      [budget block]
+    Pace:           [BRISK_UGC / NATURAL_COMMERCIAL / CALM_EXPLAINER]
     End state:      [visual position akhir block]
 
   Block 2 ([duration]s): [jika ada]
     Start state:    [= end state Block 1]
     Continuation:   [visual + action]
     Dialogue:       "[sambungan dialog — no restart]"
+    Words max:      [budget block]
+    Pace:           [pace class]
     End state:      [visual akhir]
 
   STORYBOARD STATUS: PENDING USER APPROVAL
@@ -422,6 +456,7 @@ on-the-fly tanpa user perlu register produk dulu.
 
 ### WIZARD EXECUTION RULES
 - Tanya SATU soalan pada satu masa — tunggu jawapan sebelum soal seterusnya
+- Jika `visual_product_stub` already exists → skip Q1 dan Q3
 - Jika user upload gambar produk → skip Q3 (extract visual terus)
 - Jika user upload gambar avatar → skip avatar questions (Q6-Q7)
 - Jika mana-mana soalan dijawab dengan "tak sure" → BOSMAX bantu estimate
@@ -431,7 +466,7 @@ on-the-fly tanpa user perlu register produk dulu.
 ### WIZARD QUESTIONS (PRODUK BARU)
 
 ```
-Q1 — PRODUK IDENTITY:
+Q1 — PRODUK IDENTITY [SKIP jika label/brand sudah clear dari visual]:
   "Nama produk dan brand?"
   Extract: product_name, brand
 
@@ -439,7 +474,7 @@ Q2 — KATEGORI:
   "Jenis produk? (krim / sabun / tisu / minyak / makanan / dll)"
   Extract: product_type, category
 
-Q3 — PACKAGING [SKIP jika gambar produk diupload]:
+Q3 — PACKAGING [SKIP jika gambar produk diupload atau visual_product_stub already exists]:
   "Packaging: bentuk, warna utama, saiz?"
   Extract: shape, color_primary, size_estimate
   Guide: "Contoh: 'kotak kuning, lebih kurang 20cm tinggi'"
@@ -450,7 +485,7 @@ Q4 — SCALE ANCHOR (WAJIB):
    air mineral kecil / tebal dua jari"
   Extract: scale_anchor_descriptor
   Jika user jawab "tak sure":
-  → BOSMAX estimate dari Q3: "Okay, dari description tadi saya estimate
+  → BOSMAX estimate dari Q3 atau visual_product_stub: "Okay, dari visual/description tadi saya estimate
     'EXACTLY [estimate]. Betul ke?"
   → Tunggu confirmation sebelum lock
 
@@ -486,6 +521,7 @@ Q7 — WARDROBE CONTEXT [hanya jika tiada gambar avatar]:
 ║ Platform:   [dari Q5]                               ║
 ║ Bahasa:     [dari Q5]                               ║
 ║ Avatar:     [persona_id atau USER_UPLOAD]           ║
+║ Source:     [SANDBOX_VISUAL | SANDBOX_TEXT]         ║
 ╠══════════════════════════════════════════════════════╣
 ║ STATUS: SANDBOX — session sahaja, tidak disimpan    ║
 ║ Taip "register [nama]" untuk simpan secara kekal.   ║
@@ -519,3 +555,5 @@ Selepas emit → proceed terus ke route yang diminta tanpa soalan tambahan.
 - JANGAN dispatch ke script-generator tanpa storyboard diluluskan user
 - JANGAN cadang engine tanpa explain kenapa — user perlu faham pilihan
 - JIKA visual scan reveal produk berbeza dari teks: flag conflict, tanya user
+- JANGAN dispatch video tanpa word budget per block + pace_class
+- JANGAN tanya semula identity/packaging yang sudah proven oleh visual_product_stub

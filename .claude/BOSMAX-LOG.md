@@ -1035,6 +1035,31 @@ AI session sebelum ini menerima gambar Air Cushion (植护) tapi terus default k
 
 ---
 
+### Session 036 — 2026-06-03
+**Status:** v11.5 ENFORCEMENT PATCH — VISUAL-FIRST SANDBOX + GROK PERSISTENCE + WPS CHECKLIST
+**Active Mode:** null
+**Milestone:** BOSMAX kini fail-closed pada lane Grok-critical dan on-the-fly sandbox. Upload visual tidak lagi boleh diabaikan, registry fallback tidak lagi boleh override gambar user, dan video output tidak boleh keluar tanpa storyboard, WPS budget, pace class, dan pre-output checklist.
+
+**Root cause yang dipatch:**
+Terdapat empat failure kritikal pada session Grok: (1) assistant claim "tak boleh tengok gambar" walaupun upload wujud, (2) fallback ke BOSMAX Serum + RIZAL walaupun visual authority datang dari gambar user, (3) 16s video emitted sebagai prompt tunggal tanpa block math 10s + 6s, (4) dialogue pacing terlalu longgar kerana tiada WPS / action-density enforcement sebelum output.
+
+**New hard laws:**
+- `VISUAL-FIRST SANDBOX PREBUILD` — jika produk tiada dalam registry tetapi label/packaging jelas dalam gambar, bina `visual_product_stub` dahulu
+- `DIALOG BUDGET + PACE CHECK` — semua storyboard video kini wajib declare budget perkataan per block + `pace_class`
+- `GROK PERSISTENCE_AND_CROP_LOCK` — muka, crop, hand placement, dan product-to-body ratio mesti ikut reference image
+- `PRE-OUTPUT ENFORCEMENT CHECKLIST` — visual, sandbox, storyboard, WPS, pace, dan persistence wajib lulus sebelum apa-apa prompt dilepas
+
+**Files patched:**
+- `.claude/CLAUDE.md` — version v11.5, visual-first sandbox law, storyboard dialog budget, pre-output checklist
+- `.claude/skills/bosmax-requirement-analyst.md` — visual-first sandbox prebuild, pace governance, wizard skip rules
+- `.claude/skills/bosmax-script-generator.md` — GROK persistence/crop lock, pace/action-density lock, per-block WPS contract
+- `.claude/skills/bosmax-compliance-gate.md` — unified WPS authority, Grok lock audit, pre-output enforcement checklist
+- `BOSMAX_SANDBOX_ON_THE_FLY_TEMPLATES_v1.md` — operator-ready templates untuk sandbox dan on-the-fly image/video sessions
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

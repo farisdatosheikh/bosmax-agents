@@ -13,7 +13,7 @@ description: >
 
 # BOSMAX COMPLIANCE GATE — SKILL
 ## Role: Fail-Closed Quality Auditor | Final Gate Before User Output
-## Schema: v11.3 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.5 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -72,8 +72,48 @@ Safe zone: top 270px, bottom 380px clear | Text overlay max 20%
 > **IMAGE ENGINES (bukan video — exempt dari video audit):**
 > NANO_BANANA_PRO, IMAGEN_3 → audit under MODE A checklist SAHAJA.
 
-**WPS Limits:** Target 1.6 | Hard max 2.0 | Kill-switch 3.0
-Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
+**WPS Governance:** Legacy `1.6 / 2.0 / 3.0` values are deprecated.
+Use language-specific WPS from script-generator authority:
+- BM: safe 2.5 | ceiling 2.8
+- EN: safe 3.0 | ceiling 3.3
+- ID: safe 2.6 | ceiling 2.9
+- ZH: safe 2.6 | ceiling 2.9
+- HI/BN: safe 2.4 | ceiling 2.7
+- AR: safe 2.2 | ceiling 2.5
+
+---
+
+## PRE-OUTPUT ENFORCEMENT CHECKLIST
+
+*Ini audit meta sebelum output dibenarkan sampai kepada user.*
+*Semua mesti PASS. Satu FAIL = ABORT.*
+
+☐ Jika request asal ada gambar / video upload:
+  — visual scan declaration wujud upstream
+  — tiada claim palsu "tak boleh tengok gambar"
+
+☐ Jika avatar datang dari gambar:
+  — output tidak fallback ke persona registry lain
+  — output descriptors align dengan USER_UPLOAD identity
+
+☐ Jika produk datang dari gambar:
+  — output product identity align dengan label/packaging dari gambar
+  — tiada fallback ke product dari session memory / registry yang bercanggah
+
+☐ Jika registry miss tetapi visual jelas:
+  — sandbox visual path digunakan
+  — tiada redundant questioning untuk identity/packaging yang sudah proven
+
+☐ Semua video outputs:
+  — storyboard approved dahulu
+  — block math valid
+  — WPS budget declared
+  — pace_class declared
+
+☐ GROK image-to-video outputs:
+  — persistence lock ada
+  — crop/framing lock ada
+  — pace/action-density lock ada
 
 ---
 
@@ -146,7 +186,24 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 ☐ MULTI-BLOCK DETECTION: Jika output mengandungi lebih dari satu 9-section script:
   → WAJIB run MULTI-BLOCK CONTINUITY AUDIT CHECKLIST di bawah sebagai tambahan
 
-☐ WPS dalam limits — tiada scene melebihi 2.0 WPS
+☐ WPS dalam limits mengikut language-specific table
+  — BM ≤ 2.5 safe / 2.8 ceiling
+  — EN ≤ 3.0 safe / 3.3 ceiling
+  — ID/ZH ≤ 2.6 safe / 2.9 ceiling
+  — HI/BN ≤ 2.4 safe / 2.7 ceiling
+  — AR ≤ 2.2 safe / 2.5 ceiling
+
+☐ Storyboard approval evidence exists upstream untuk semua video outputs
+
+☐ Jika output declare `VISUAL AUTHORITY: USER_UPLOAD` atau `SANDBOX_VISUAL`:
+  — Tiada registry persona drift
+  — Tiada product identity drift
+
+☐ GROK image-reference outputs ada:
+  — `[VISUAL_LOCK_FROM_REFERENCE_IMAGE]`
+  — `[SCALE_AUTHORITY_OVERRIDE]`
+  — `[PERSISTENCE_AND_CROP_LOCK]`
+  — `[PACE_AND_ACTION_DENSITY_LOCK]`
 
 ☐ Section 9 (Overlay) ada COORD: X:%, Y:% untuk setiap text overlay
   Semua coordinates dalam X:4–96%, Y:0–80%
@@ -425,13 +482,15 @@ Hook ≤2.0 | Body/Problem ≤1.6 | CTA ≤2.0
 ║ Element count < Set 1        │ Expand set ikut SET ELEMENT MANIFEST ║
 ║ Dialog drift (Cond 1/2)      │ Replace S6 dengan Set 1 S6 verbatim  ║
 ║ Avatar drift (Cond 2)        │ Replace S1 dengan Set 1 S1 verbatim  ║
-║ WPS over limit (≤2.0 rule)   │ Trim dialogue, recalculate WPS       ║
+║ WPS over safe max            │ Trim dialogue, recalculate WPS       ║
 ║ Raw internal token leaked    │ Replace dengan biometric descriptor  ║
 ║ Character name in output     │ Replace dengan biometric DNA prose   ║
 ║ S9 coordinate out of zone    │ Recalculate ke nearest valid coord   ║
 ║ biometric drift > threshold  │ Re-anchor biometrics kepada Set 1    ║
 ║ Greeting/restart in Block 2+ │ Remove greeting, sambung dari anchor ║
 ║ Section count wrong (Mode B) │ Rebuild missing/extra section        ║
+║ Missing pace_class           │ Inject dari work order / rebuild S8  ║
+║ Missing GROK persistence lock│ Inject lock block, re-audit          ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 
