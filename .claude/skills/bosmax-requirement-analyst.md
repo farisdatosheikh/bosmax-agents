@@ -153,6 +153,28 @@ IMPLICIT_10 — Medical Claim Risk:
   Jika product category = Health & Wellness atau Traditional Remedies:
   → Flag risk: medical claims forbidden
   → Inject reminder ke dalam work order
+
+IMPLICIT_11 — New Product Detected (Sandbox Trigger):
+  Jika product_record.source_tier = SANDBOX atau product_record = null:
+  → Produk tidak dalam registry
+  → Trigger MINI-INTAKE WIZARD (lihat bahagian bawah)
+  → Selepas wizard selesai: proceed dengan sandbox_product_record
+  → JANGAN block route kerana produk tidak dalam registry
+  → JANGAN tanya semua soalan sekaligus — satu-satu sahaja
+
+IMPLICIT_12 — Avatar Image Upload (Quick-Read Trigger):
+  Jika user upload gambar manusia + tiada persona_id declared:
+  → Avatar baru — bukan dari registry
+  → Extract visual DNA terus dari gambar:
+      · ethnicity + gender (visual read)
+      · approximate age range
+      · wardrobe (warna, jenis pakaian)
+      · hijab: yes/no
+      · skin tone descriptor
+  → Set avatar_record.source = "USER_UPLOAD"
+  → Inject sebagai [REFERENCE_IMAGE_LOCK] dalam prompt
+  → JANGAN tanya soalan avatar kalau gambar sudah upload
+  → JANGAN assume nama persona — guna visual descriptor sahaja
 ```
 
 ---
@@ -311,6 +333,91 @@ Selepas WORK ORDER issued:
 
 BOSMAX orchestrator terima work order dan proceed ke routing.
 **JANGAN hantar terus ke specialist skill — mesti melalui BOSMAX.**
+
+---
+
+---
+
+## MINI-INTAKE WIZARD — NEW PRODUCT + NEW AVATAR
+
+**Trigger:** `IMPLICIT_11` (product_record null atau SANDBOX) +/- `IMPLICIT_12` (avatar upload).
+
+**Tujuan:** Collect minimum viable data dalam <5 soalan supaya route dapat proceed
+on-the-fly tanpa user perlu register produk dulu.
+
+### WIZARD EXECUTION RULES
+- Tanya SATU soalan pada satu masa — tunggu jawapan sebelum soal seterusnya
+- Jika user upload gambar produk → skip Q3 (extract visual terus)
+- Jika user upload gambar avatar → skip avatar questions (Q6-Q7)
+- Jika mana-mana soalan dijawab dengan "tak sure" → BOSMAX bantu estimate
+- Selepas semua soalan selesai → emit `sandbox_product_record` ke session
+- Emit nota sandbox di hujung wizard
+
+### WIZARD QUESTIONS (PRODUK BARU)
+
+```
+Q1 — PRODUK IDENTITY:
+  "Nama produk dan brand?"
+  Extract: product_name, brand
+
+Q2 — KATEGORI:
+  "Jenis produk? (krim / sabun / tisu / minyak / makanan / dll)"
+  Extract: product_type, category
+
+Q3 — PACKAGING [SKIP jika gambar produk diupload]:
+  "Packaging: bentuk, warna utama, saiz?"
+  Extract: shape, color_primary, size_estimate
+  Guide: "Contoh: 'kotak kuning, lebih kurang 20cm tinggi'"
+
+Q4 — SCALE ANCHOR (WAJIB):
+  "Produk ni sebesar apa berbanding benda harian?
+   Contoh: sebesar kotak tisu kecil / segenggam tangan / sebesar botol 
+   air mineral kecil / tebal dua jari"
+  Extract: scale_anchor_descriptor
+  Jika user jawab "tak sure":
+  → BOSMAX estimate dari Q3: "Okay, dari description tadi saya estimate
+    'EXACTLY [estimate]. Betul ke?"
+  → Tunggu confirmation sebelum lock
+
+Q5 — PLATFORM + BAHASA:
+  "Untuk platform mana dan bahasa output?"
+  Extract: platform, language
+```
+
+### WIZARD QUESTIONS (AVATAR BARU) [SKIP jika gambar avatar diupload]
+
+```
+Q6 — AVATAR IDENTITY [hanya jika tiada gambar avatar]:
+  "Avatar yang nak guna: lelaki atau perempuan?
+   Etnik apa? (Melayu / Cina / India / Indonesia / dll)"
+  Extract: gender, ethnicity
+
+Q7 — WARDROBE CONTEXT [hanya jika tiada gambar avatar]:
+  "Pakaian macam mana yang sesuai? (casual / office / traditional / sporty)"
+  Extract: wardrobe_occasion
+```
+
+### SANDBOX RECORD EMIT FORMAT
+
+```
+╔══════════════════════════════════════════════════════╗
+║ BOSMAX SANDBOX RECORD — SESSION ONLY                 ║
+╠══════════════════════════════════════════════════════╣
+║ Produk:     [nama dari Q1]                          ║
+║ Brand:      [brand dari Q1]                         ║
+║ Jenis:      [dari Q2]                               ║
+║ Packaging:  [dari Q3 atau extracted dari gambar]    ║
+║ Scale:      [scale_anchor_descriptor dari Q4]       ║
+║ Platform:   [dari Q5]                               ║
+║ Bahasa:     [dari Q5]                               ║
+║ Avatar:     [persona_id atau USER_UPLOAD]           ║
+╠══════════════════════════════════════════════════════╣
+║ STATUS: SANDBOX — session sahaja, tidak disimpan    ║
+║ Taip "register [nama]" untuk simpan secara kekal.   ║
+╚══════════════════════════════════════════════════════╝
+```
+
+Selepas emit → proceed terus ke route yang diminta tanpa soalan tambahan.
 
 ---
 

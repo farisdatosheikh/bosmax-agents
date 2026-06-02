@@ -125,24 +125,123 @@ Sheet: Product Search Data
 - Return apa yang ada, flag missing fields
 - Suggest: "Nak saya simpan data ni dalam BOSMAX registry?"
 
-### LANGKAH 4 — TIER 3: ASK USER
+### LANGKAH 4 — TIER 3: NEW PRODUCT DETECTED — SANDBOX OR REGISTER
 
 **Trigger jika TIER 1 dan TIER 2 gagal sepenuhnya.**
 
-Tanya fields ini secara sequential (jangan tanya semua sekaligus):
+**LANGKAH 4A — TANYA SATU SOALAN DAHULU (jangan terus interview):**
 
 ```
-SOALAN 1: "Nama produk penuh dan nama kedai/brand?"
-SOALAN 2: "Category (Beauty / Food / Fashion / etc.) dan harga?"
-SOALAN 3: "Ada variant? (saiz, warna, etc.) — kalau ada, list semua."
-SOALAN 4: "Untuk scale video AI: produk ni kira-kira sebesar apa? 
-           (contoh: 'sebesar lip balm', 'segenggam tangan', 'sebesar botol mineral kecil')"
-SOALAN 5: "Ada hook atau angle jualan yang biasa guna?"
+"Produk '[nama]' belum ada dalam BOSMAX registry.
+
+Boss nak:
+  A) PROCEED SEKARANG — saya tanya 5 soalan ringkas, terus generate
+     (session sahaja — data tak disimpan)
+  B) REGISTER DULU — saya simpan produk dalam registry supaya boleh
+     pakai balik lepas ni tanpa explain semula"
 ```
 
-Selepas semua fields collected:
-- Offer: "Nak saya daftarkan produk **[nama]** dalam BOSMAX registry supaya tak perlu explain lagi next time?"
-- Jika ya → buat entry baru dalam `products/[BRAND_PRODUCTCODE].yaml`
+TUNGGU jawapan user. JANGAN proceed ke mini-intake tanpa jawapan.
+
+---
+
+**LANGKAH 4B — PILIHAN A: SANDBOX MODE**
+
+Jalankan MINI-INTAKE WIZARD (5 soalan, tanya satu-satu):
+
+```
+Q1: "Nama produk dan brand?"
+    → Extract: product_name, brand
+
+Q2: "Jenis produk dan kategori?"
+    → Extract: product_type, category
+    → Contoh: "krim muka", "sabun mandi", "tisu cotton pad", "minyak urutan"
+
+Q3: "Packaging: bentuk, warna utama, saiz?"
+    → Extract: packaging_shape, packaging_color, size_descriptor
+    → Contoh: "kotak kuning, 19cm × 13cm × 8cm"
+    → Jika user upload gambar produk → skip Q3, extract visual terus dari gambar
+
+Q4: "Saiz berbanding benda harian — sebesar apa?"
+    → Extract: scale_anchor_descriptor (CRITICAL)
+    → Guide jika perlu: "contoh: 'sebesar kotak tisu kecil', 'sebagaimana
+       tebal dua jari', 'segenggam tangan lelaki'"
+
+Q5: "Platform dan bahasa output?"
+    → Extract: platform (TikTok/Shopee/Lazada/Meta), language (BM/EN/ID)
+```
+
+Selepas Q5 selesai → build `sandbox_product_record` (format di bawah) → inject ke session → proceed ke route yang diminta.
+
+Pada hujung output, BOSMAX emit nota kecil:
+```
+📌 Produk '[nama]' disimpan dalam session ini sahaja.
+   Taip "register [nama]" bila-bila masa untuk simpan secara kekal.
+```
+
+---
+
+**LANGKAH 4C — PILIHAN B: REGISTER MODE**
+
+```
+→ Appoint bosmax-product-registration
+→ Jalankan full registration flow
+→ Simpan products/[BRAND_CODE].yaml
+→ Selepas selesai: load product_record dari YAML yang baru
+→ Proceed ke route yang diminta dengan registered product_record
+```
+
+---
+
+## SANDBOX_PRODUCT_RECORD — FORMAT (session-only)
+
+```yaml
+sandbox_product_record:
+  # SOURCE
+  source_tier: "SANDBOX"          # SANDBOX = session-only, not persisted
+  lookup_confidence: "USER_INPUT"
+  session_only: true              # WARN: akan hilang bila session tamat
+
+  # IDENTITY
+  product_id: null                # null untuk sandbox
+  product_name: "[dari Q1]"
+  brand: "[dari Q1]"
+  product_aliases: []
+
+  # CLASSIFICATION
+  category: "[dari Q2]"
+  product_type: "[dari Q2]"
+
+  # PACKAGING VISUAL (dari Q3 atau dari gambar upload)
+  packaging:
+    shape: "[dari Q3]"            # rectangular / cylindrical / pouch / box / etc.
+    color_primary: "[dari Q3]"
+    source: "USER_DESCRIBED"      # USER_DESCRIBED | IMAGE_EXTRACTED
+
+  # ACTIVE VARIANT (simplified — sandbox)
+  active_variant:
+    variant_id: "DEFAULT"
+    scale_anchor_descriptor: "[dari Q4]"   # WAJIB — cannot be null
+    prompt_keywords: []           # akan di-generate oleh scene-engine
+
+  # PLATFORM
+  platform: "[dari Q5]"
+  language: "[dari Q5]"
+
+  # FLAGS
+  flags:
+    scale_anchor_missing: false
+    registration_recommended: true   # selalu true untuk sandbox
+    sandbox_expiry: "session_end"
+```
+
+**SANDBOX RULES:**
+- Sandbox record TIDAK disimpan ke disk
+- Sandbox record inject ke `active_session_memory` sahaja
+- Bila session tamat, sandbox record hilang
+- User boleh convert ke registered product bila-bila masa dengan "register [nama]"
+- scale_anchor_descriptor dalam sandbox WAJIB ada — kalau Q4 dijawab "tak sure",
+  BOSMAX bantu estimate berdasarkan packaging description dari Q3
 
 ---
 

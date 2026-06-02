@@ -173,16 +173,36 @@ LOOKUP HIERARCHY (strict order):
   TIER 2: FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx (Copywriting_Product_Map, Product Search Data)
   TIER 3: Tanya user (last resort sahaja)
 
-ON LOOKUP SUCCESS:
+ON LOOKUP SUCCESS (TIER 1 atau TIER 2):
   → product_record populated
   → scale_anchor_descriptor extracted per variant (INJECT ke semua content generation skills)
   → subject_dna loaded (jika exist — untuk Route C continuity)
   → copywriting data available (hook, USP 1-3, body, CTA)
 
+ON LOOKUP FAIL (TIER 1 + TIER 2 kedua-dua miss):
+  → Produk baru didetect
+  → TANYA USER SATU SOALAN (jangan terus interview):
+    "Produk '[nama]' belum ada dalam BOSMAX registry.
+     Boss nak:
+     A) PROCEED SEKARANG — saya tanya 5 soalan ringkas, terus generate
+        (session sahaja — data tak disimpan)
+     B) REGISTER DULU — simpan dalam registry untuk guna balik lepas ni"
+  → TUNGGU jawapan
+  → Pilihan A → SANDBOX MODE → bosmax-requirement-analyst MINI-INTAKE WIZARD
+    → sandbox_product_record built → inject ke session → proceed ke route
+  → Pilihan B → REGISTER MODE → appoint bosmax-product-registration
+    → selepas register: load product_record → proceed ke route
+
+ON AVATAR IMAGE UPLOAD (gambar manusia diupload tanpa persona_id):
+  → Extract visual DNA terus dari gambar (IMPLICIT_12)
+  → Set avatar_record.source = "USER_UPLOAD"
+  → JANGAN tanya soalan avatar — extract visual terus
+
 SCALE ANCHOR — HARD BLOCK jika missing + TikTok platform:
   "⚠️ Tiada scale anchor descriptor untuk [product] [variant].
    TikTok penalises scale misrepresentation. Sila tambah sebelum generate."
   → Tunggu user input sebelum proceed.
+  → Untuk sandbox: bantu estimate dari packaging description jika user tidak pasti.
 
 FORMAT scale_anchor_descriptor: "EXACTLY [everyday object] size, [how it fits in hand]"
   Contoh BOSMAX 5ML:  "EXACTLY lip balm size, fit into fingers naturally"
@@ -496,6 +516,9 @@ batch_prompt_pack:        null  → row-expanded deterministic outputs
 batch_summary:            null  → totals, failures, blocked rows
 bulk_content_output:      null  → after bosmax-bulk-generator completes
 sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[reason]"
+  sandbox_product_record:   null  → populated bila TIER 3 SANDBOX MODE active (session-only)
+  sandbox_mode_active:      false → true bila produk dari sandbox (bukan registry)
+  new_avatar_upload:        null  → populated bila user upload gambar avatar baru
 ```
 
 ### ENGINE CONSTRAINT TABLE (updated v11.2 — AUTHORITY FOR PRE-FLIGHT STEP 2)
