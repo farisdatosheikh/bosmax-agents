@@ -27,6 +27,7 @@ BOSMAX/
 ├── BOSMAX_BATCH_TEMPLATE_SET_v1.md  ← Production-ready batch intake templates
 ├── BOSMAX_INPUT_HELPER_v1.md        ← Front-door field helper for operators
 ├── BOSMAX_IGNITION_WORKFLOW_v1.md   ← Front-door ignition / repair / variation templates
+├── BOSMAX_PROMPT_SELF_HEALING_CHECKLISTS_v1.md ← Copy-paste self-healing reminder checklists for bad image/video prompts
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
@@ -103,6 +104,13 @@ Fail ini menyediakan operator-ready flow untuk:
 - `IGNITION`
 - `REPAIR`
 - `VARIATION`
+
+**Self-healing reminder checklists:** rujuk `BOSMAX_PROMPT_SELF_HEALING_CHECKLISTS_v1.md`.
+Fail ini menyediakan dua copy-paste reminder prompts supaya AI troubleshoot
+sendiri apabila prompt image atau video sebelumnya salah, lemah, drifted, atau
+non-compliant:
+- `IMAGE reminder checklist`
+- `VIDEO reminder checklist`
 
 **First real front-door dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
 Fail ini menunjukkan satu walkthrough operator sebenar untuk:

@@ -1060,6 +1060,39 @@ Terdapat empat failure kritikal pada session Grok: (1) assistant claim "tak bole
 
 ---
 
+### Session 037 — 2026-06-03
+**Status:** SELF-HEALING PROMPT REMINDER CHECKLISTS INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada operator-side repair accelerator untuk prompt image dan video yang salah. User tidak perlu lagi menulis complaint panjang atau explain error satu per satu untuk mistakes yang AI patut diagnose sendiri.
+
+**Problem addressed:**
+AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalahan basic:
+- ignore uploaded image
+- drift ke avatar atau produk lain
+- salah packaging / scale
+- skip storyboard
+- salah block math
+- WPS terlalu longgar
+- pacing video jadi lambat dan kosong
+
+**New operator authority:**
+- `BOSMAX_PROMPT_SELF_HEALING_CHECKLISTS_v1.md`
+
+**What it adds:**
+- `IMAGE Reminder Checklist Prompt`
+- `VIDEO Reminder Checklist Prompt`
+- fast failure classes untuk self-diagnosis
+- hard law bahawa AI mesti audit dan refine semula prompt terdahulu sendiri sebelum minta user explain lebih detail
+
+**Ecosystem effect:**
+- repo kini ada dedicated self-healing authority file
+- Notion kini akan ada subpage khas untuk copy-paste reminder prompts
+- lane ini melengkapkan `Input Helper → Ignition → Repair → Variation` dengan satu fallback operator weapon untuk bad outputs
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
