@@ -728,6 +728,25 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 028 — 2026-06-02
+**Status:** FIRST FRONT-DOOR OPERATOR DRY RUN INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada satu walkthrough operator sebenar untuk membuktikan flow `Input Helper → Ignition → Repair → Variation` pada satu produk known direct lane.
+
+**Authority decision:**
+- produk dry run pertama dipilih: `Minyak Warisan Cap Burung`
+- branch dry run pertama dipilih: `IMAGE + SELLING_POSTER`
+- tujuan dry run ini ialah menguji front-door friction sebelum operator pergi ke batch lane
+- video, sensitive stealth, dan reference routes akan diuji melalui dry run berasingan
+
+**Files patched:**
+- `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md` — first real operator walkthrough
+- `README.md` — dry-run entrypoint exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 025 — 2026-06-02
 **Status:** SENSITIVE MAVERIX LANE INSTALLED
 **Active Mode:** null
