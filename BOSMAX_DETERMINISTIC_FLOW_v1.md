@@ -4,8 +4,9 @@
 
 ## Objective
 
-This spec defines the BOSMAX phase-1 deterministic flow for **one output at a time**
-before any batch-generation lane is opened.
+This spec defines the BOSMAX phase-1 deterministic flow for **one output at a time**.
+
+It is the foundation that every later batch lane must reuse.
 
 The target is not "maximum flexibility."
 The target is:
@@ -18,13 +19,13 @@ The target is:
 
 ## Phase-1 Principle
 
-Batch generation is forbidden until single-output flow is stable.
+Single-output stability comes first.
 
 Order of operations:
 1. lock one deterministic image output
 2. lock one deterministic video output
 3. normalize authority surfaces
-4. only then open batch prompt generation
+4. only then open batch prompt generation under `BOSMAX_BATCH_LANE_v1.md`
 
 ---
 
@@ -241,11 +242,15 @@ Batch generation may only open after all of the following are stable:
 
 Until then, batch mode is architecture-prohibited.
 
+Once all gates pass:
+- batch planning authority moves to `BOSMAX_BATCH_LANE_v1.md`
+- batch rows must expand back into the deterministic single-output contracts above
+
 ---
 
 ## Out of Scope for Phase 1
 
-- full batch prompt generation
+- uncontrolled batch prompt generation before plan approval
 - new engine registry files
 - broad orchestrator rewrites
 - Notion sync before repo behavior is locked
@@ -254,7 +259,9 @@ Until then, batch mode is architecture-prohibited.
 
 ## Repository Surfaces Expected To Reflect This Spec
 
+- `BOSMAX_BATCH_LANE_v1.md`
 - `.claude/CLAUDE.md`
+- `.claude/skills/bosmax-bulk-generator.md`
 - `.claude/skills/bosmax-scene-engine.md`
 - `.claude/skills/bosmax-script-generator.md`
 - `.claude/skills/bosmax-image-analyst.md`

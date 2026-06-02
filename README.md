@@ -23,6 +23,7 @@ BOSMAX/
 │       ├── bosmax-bulk-generator.md      ← Bulk prompt factory (T2V/FRAMES/INGREDIENTS/IMAGE)
 │       └── bosmax-requirement-analyst.md ← Pre-dispatch intelligence layer (v11.2)
 ├── BOSMAX_DETERMINISTIC_FLOW_v1.md  ← Phase-1 newbie-facing single-output authority
+├── BOSMAX_BATCH_LANE_v1.md          ← Phase-2 deterministic batch authority
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -44,7 +45,7 @@ BOSMAX/
 | **B** | Video dari zero | [PRE-FLIGHT] → Requirement Analyst → Script Generator → Compliance Gate |
 | **C** | Video dari gambar sedia ada | [PRE-FLIGHT] → Requirement Analyst → Mode-C Executor → Compliance Gate |
 | **REG** | Daftar produk TikTok Shop | Product Registration |
-| **BULK** | 10–50 prompt sets | Product Registration → Bulk Generator → Compliance Gate |
+| **BULK** | 10–50 prompt sets | Product Registration → Bulk Generator → Variant Plan → Deterministic Expansion → Compliance Gate |
 
 **Multi-block support:** VEO_3_1_LITE, KLING_3_0, SEEDANCE_2_0, GROK — auto-triggered apabila duration_target > engine max/block.
 
@@ -68,6 +69,13 @@ Semua output melalui bosmax-compliance-gate sebelum sampai kepada pengguna.
 Fail ini mendefinisikan front-door newbie flow untuk:
 - `IMAGE → VIDEO_SUPPORT | SELLING_POSTER`
 - `VIDEO → NONE | IMAGE_REFERENCE | VIDEO_REFERENCE | BOSMAX_IMAGE_HANDOFF`
+
+**Phase-2 deterministic batch lane:** rujuk `BOSMAX_BATCH_LANE_v1.md`.
+Fail ini mendefinisikan batch sebagai planner/dispatcher di atas single-output flow:
+- `BATCH_IMAGE_SUPPORT`
+- `BATCH_IMAGE_SELLING`
+- `BATCH_VIDEO_FRESH`
+- `BATCH_MIXED_DETERMINISTIC`
 
 ---
 

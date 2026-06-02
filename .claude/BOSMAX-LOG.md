@@ -630,6 +630,38 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 019 — 2026-06-02
+**Status:** DETERMINISTIC BATCH LANE OPENED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada batch lane yang fail-closed dan deterministic di atas single-output flow, tanpa membenarkan batch invent prompt grammar baru.
+
+**Authority decision:**
+- batch ialah `planner + dispatcher + packager`, bukan creative mode baru
+- official batch types kini:
+  - `BATCH_IMAGE_SUPPORT`
+  - `BATCH_IMAGE_SELLING`
+  - `BATCH_VIDEO_FRESH`
+  - `BATCH_MIXED_DETERMINISTIC`
+- setiap row dalam Variant Plan mesti resolve semula kepada satu valid deterministic path:
+  - `IMAGE + VIDEO_SUPPORT`
+  - `IMAGE + SELLING_POSTER`
+  - `VIDEO + NONE`
+  - `VIDEO + IMAGE_REFERENCE`
+  - `VIDEO + VIDEO_REFERENCE`
+  - `VIDEO + BOSMAX_IMAGE_HANDOFF`
+- batch 200/day tidak patut dijalankan sebagai satu raw run; chunking yang disyorkan ialah `4×50` atau `5×40`
+
+**Files patched:**
+- `BOSMAX_BATCH_LANE_v1.md` — phase-2 deterministic batch authority spec
+- `BOSMAX_DETERMINISTIC_FLOW_v1.md` — batch gate kini delegated ke batch lane authority
+- `.claude/CLAUDE.md` — deterministic batch layer, intake contract, and BULK route guardrails
+- `.claude/skills/bosmax-bulk-generator.md` — planner/dispatcher contract + row expansion rules
+- `README.md` — batch lane entrypoint reference
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

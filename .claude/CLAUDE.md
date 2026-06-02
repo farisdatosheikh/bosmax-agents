@@ -100,6 +100,63 @@ IF task_mode = VIDEO AND reference_mode = BOSMAX_IMAGE_HANDOFF:
 
 ---
 
+## DETERMINISTIC BATCH LAYER — PHASE 2 AUTHORITY
+
+Batch lane kini dibuka, tetapi hanya sebagai **planner + dispatcher** di atas
+single-output deterministic flow.
+
+### OFFICIAL BATCH TYPES
+
+```
+BATCH_IMAGE_SUPPORT
+  → every row resolves to IMAGE + VIDEO_SUPPORT
+
+BATCH_IMAGE_SELLING
+  → every row resolves to IMAGE + SELLING_POSTER
+
+BATCH_VIDEO_FRESH
+  → every row resolves to VIDEO + NONE
+
+BATCH_MIXED_DETERMINISTIC
+  → controlled mix of deterministic rows
+  → each row still resolves to ONE valid deterministic job
+```
+
+### BATCH INTAKE CONTRACT
+
+```
+Universal:
+  batch_goal
+  total_output_count
+  product_scope
+  platform
+  language
+
+IMAGE batches:
+  image_mix
+
+VIDEO batches:
+  video_mix
+  video_engine
+  duration_target
+
+MIXED batches:
+  image_count
+  video_count
+  image_mix
+  video_mix
+```
+
+### BATCH HARD RULES
+
+- Batch is not a new creative mode.
+- Batch MESTI bina Variant Plan dahulu.
+- Setiap row dalam Variant Plan MESTI resolve kepada deterministic single-output route.
+- JANGAN emit prompts batch sebelum Variant Plan approved.
+- `VIDEO + BOSMAX_IMAGE_HANDOFF` dalam batch hanya valid jika handoff pool benar-benar wujud.
+
+---
+
 ## PRE-FLIGHT PROTOCOL — WAJIB LAKSANA SEBELUM SEBARANG ROUTE DISPATCH
 
 **Ini adalah lapisan pertama BOSMAX. Setiap request MESTI melalui semua checks ini
@@ -146,6 +203,9 @@ req_engine:         null  → engine yang user declare atau imply
 req_duration:       null  → duration yang user declare
 req_mode:           null  → A | B | C | REG | BULK
 req_content_mode:   null  → T2V | FRAMES | INGREDIENTS | IMAGE (untuk video/bulk)
+req_batch_goal:     null  → IMAGE_ONLY | VIDEO_ONLY | MIXED
+req_output_count:   null  → integer
+req_product_scope:  null  → SINGLE_PRODUCT | MULTI_PRODUCT
 req_source_image:   null  → present | absent (untuk Mode C)
 req_block_count:    null  → dikira dalam STEP 3
 ```
@@ -174,7 +234,13 @@ CHECK 4 — Mode C Prerequisites:
 
 CHECK 5 — BULK Prerequisites:
   Jika req_mode = BULK dan product_record = null → Route REG dulu.
-  Jika req_content_mode = null untuk BULK → STOP. Tanya mode.
+  Jika req_batch_goal = null → STOP. Tanya batch goal.
+  Jika req_output_count = null → STOP. Tanya bilangan output.
+  Jika req_product_scope = null → resolve SINGLE_PRODUCT vs MULTI_PRODUCT.
+  Jika req_batch_goal = IMAGE_ONLY dan image_mix null → STOP. Tanya mix.
+  Jika req_batch_goal = VIDEO_ONLY dan (video_mix atau req_engine atau req_duration) null → STOP. Lengkapkan video batch fields.
+  Jika req_batch_goal = MIXED dan (image_count atau video_count atau image_mix atau video_mix) null → STOP. Lengkapkan mixed batch fields.
+  Jika req_output_count > 50 → split kepada beberapa runs, jangan exceed 50 dalam satu pass.
 
 CHECK 6 — Google Flow Image References:
   Jika req_engine = GOOGLE_FLOW dan req_content_mode = FRAMES → confirm dua gambar ada.
@@ -267,6 +333,7 @@ Sebelum route, BOSMAX MESTI detect hidden requirements ini:
 | "Google Flow FRAMES" | Dua gambar required | Confirm upload |
 | "Google Flow INGREDIENTS" | Tiga gambar required | Confirm upload |
 | "10 set / bulk prompts" | BULK route → product_record required | Check registry |
+| "100 / 200 output sehari" | BULK route → build Variant Plan + chunking | 4×50 atau 5×40 |
 | duration dalam detik (e.g. "saat") | Tukar kepada engine block math | Validate |
 | upload gambar + "analisa/tiru/reverse" | Route D → bosmax-image-analyst | 3-phase A→B |
 | upload video/frames + "analisa/tiru/reverse" | Route D → bosmax-video-analyst | 3-phase A→B |
@@ -358,12 +425,14 @@ subject_dna, context_environment, lighting_camera.
 **Prerequisite Check:**
 - Ada product_record dalam session? → Appoint `bosmax-bulk-generator` terus
 - Tiada product_record? → Appoint `bosmax-product-registration` dulu, kemudian `bosmax-bulk-generator`
-- content_mode belum declared? → TANYA user dulu. JANGAN teka.
+- batch_goal / count / mix belum declared? → TANYA user dulu. JANGAN teka.
 **Action:**
 1. Appoint `bosmax-bulk-generator`
-2. Tunggu Variant Plan diluluskan user SEBELUM generate
-3. Pass output ke `bosmax-compliance-gate`
-4. Output kepada user HANYA selepas VERIFICATION PASSED
+2. Bulk generator bina `Variant Plan` berasaskan deterministic batch type
+3. Tunggu Variant Plan diluluskan user SEBELUM expand mana-mana row
+4. Setiap row MESTI resolve balik kepada single-output deterministic path
+5. Pass output ke `bosmax-compliance-gate`
+6. Output kepada user HANYA selepas VERIFICATION PASSED
 
 ### ROUTE D — Analysis Intelligence (v11.3)
 **Trigger:** User upload gambar ATAU video + keyword analisis:
@@ -422,6 +491,9 @@ source_image_handoff:     null  → populated after Mode A, LOCKED untuk Mode C
 active_script:            null  → populated by Mode B or C skills
 bulk_variant_plan:        null  → populated by bosmax-bulk-generator Step 3
 bulk_variant_plan_status: null  → "PENDING_APPROVAL" | "APPROVED" | "EDITED"
+batch_goal:               null  → "IMAGE_ONLY" | "VIDEO_ONLY" | "MIXED"
+batch_prompt_pack:        null  → row-expanded deterministic outputs
+batch_summary:            null  → totals, failures, blocked rows
 bulk_content_output:      null  → after bosmax-bulk-generator completes
 sentinel_status:          null  → "PENDING" | "VERIFICATION PASSED" | "ABORT:[reason]"
 ```
@@ -532,7 +604,8 @@ User → BOSMAX [PRE-FLIGHT: MULTI-BLOCK TRIGGERED]
 
 Full Product + Bulk Pipeline:
 User → BOSMAX [PRE-FLIGHT] → bosmax-product-registration → [product_record saved]
-     → BOSMAX [PRE-FLIGHT] → bosmax-bulk-generator → [variant plan → approval] → N sets
+     → BOSMAX [PRE-FLIGHT] → bosmax-bulk-generator
+     → [variant plan → approval → deterministic row expansion → prompt pack]
      → bosmax-compliance-gate → User
 
 Image + Video Pipeline (A→C):
@@ -551,7 +624,8 @@ User → BOSMAX [PRE-FLIGHT] → [Mode A pipeline] → [source_image_handoff sav
 - JANGAN output kepada user tanpa bosmax-compliance-gate VERIFICATION PASSED
 - JANGAN mix Mode A dan Mode B variables dalam workspace yang sama
 - JANGAN bagi bosmax-bulk-generator generate sebelum bulk_variant_plan APPROVED
-- JANGAN assume content_mode — bosmax-bulk-generator akan tanya user
+- JANGAN assume batch_goal / mix / count — bosmax-bulk-generator akan tanya user
+- JANGAN bagi batch lane invent prompt grammar baru; row MESTI resolve ke deterministic single-output path
 - JANGAN retry failed task tanpa explicit instruction dari user
 - JIKA mana-mana skill return ABORT: propagate ABORT kepada user dengan exact reason
 - JIKA route ambiguous: tanya SATU soalan, stop, jangan teka
