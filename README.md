@@ -29,10 +29,13 @@ BOSMAX/
 ├── BOSMAX_IGNITION_WORKFLOW_v1.md   ← Front-door ignition / repair / variation templates
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
+├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real video batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real mixed batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md ← First real multi-product batch benchmark
+├── BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_v1.md ← First sensitive image benchmark for BOSMAX Serum
+├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_v1.md ← First flagship sensitive video benchmark for BOSMAX Serum
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MAVERIX_MAXOIL_v1.md ← First sensitive Maverix video benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_SENSITIVE_BOSMAX_SERUM_MAVERIX_MAXOIL_v1.md ← First sensitive multi-product benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_MAVERIX_MAXOIL_v1.md ← First sensitive image benchmark
@@ -192,12 +195,37 @@ Fail ini menunjukkan satu contoh image benchmark sensitif sebenar untuk:
 - `10` outputs
 - reference-bound product truth from actual FastMoss product images
 
+**Sensitive BOSMAX Serum image benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_v1.md`.
+Fail ini menunjukkan satu contoh image benchmark sensitif flagship untuk:
+- `BOSMAX Serum`
+- `BATCH_IMAGE_SELLING`
+- `10` outputs
+- owner-supplied `5ML` reference-bound product truth
+
+**Sensitive BOSMAX Serum video benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_v1.md`.
+Fail ini menunjukkan satu contoh video benchmark sensitif flagship untuk:
+- `BOSMAX Serum`
+- `BATCH_VIDEO_FRESH`
+- `KLING_3_0`
+- `10s`
+- `10` outputs
+- dialogue authority: `male_health_stealth_01 / EGO_01`
+
 **BOSMAX Serum visual hardening:** `products/BOSMAX_SERUM.yaml` kini bukan lagi sekadar dialogue-strong registry entry.
 Ia kini memegang:
 - variant-specific `reference_assets`
 - variant-specific `visual_truth`
 - variant-specific `image_prompt_locks`
 - stronger packaging and negative-lock authority untuk `5ML` dan `10ML`
+
+**Flagship sensitive operator dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md`.
+Fail ini menunjukkan walkthrough operator sebenar untuk:
+- `BOSMAX Serum`
+- `VIDEO + NONE`
+- `5ML`
+- `KLING_3_0`
+- `10s`
+- `Input Helper → Ignition → Repair → Variation`
 
 **Front-door lock-down sequence:**
 1. gunakan `BOSMAX_INPUT_HELPER_v1.md` untuk isi field dengan betul

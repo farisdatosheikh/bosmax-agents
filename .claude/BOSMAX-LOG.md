@@ -767,6 +767,30 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 031 — 2026-06-02
+**Status:** BOSMAX SERUM FLAGSHIP BENCHMARK STACK INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX Serum kini bukan sekadar registry yang telah hardened; ia kini mempunyai benchmark image sensitif, benchmark video sensitif, dan operator dry run khas sebagai flagship lane.
+
+**Authority decision:**
+- produk flagship dikekalkan: `BOSMAX Serum`
+- variant benchmark pertama dikekalkan: `5ML`
+- image benchmark pertama dipilih: `BATCH_IMAGE_SELLING`
+- video benchmark pertama dipilih: `BATCH_VIDEO_FRESH`
+- engine flagship video benchmark: `KLING_3_0`
+- duration flagship video benchmark: `10s`
+- operator dry run pertama dipilih pada `VIDEO + NONE` kerana ini laluan paling bersih untuk membuktikan kekuatan script-registry lane
+
+**Files patched:**
+- `BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_v1.md` — first reference-bound sensitive image benchmark for BOSMAX Serum
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_v1.md` — first flagship sensitive fresh-video benchmark for BOSMAX Serum
+- `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md` — first flagship sensitive operator walkthrough
+- `README.md` — BOSMAX Serum benchmark stack exposed in repo authority structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 030 — 2026-06-02
 **Status:** BOSMAX SERUM VISUAL HARDENING INSTALLED
 **Active Mode:** null
