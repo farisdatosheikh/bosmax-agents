@@ -25,6 +25,7 @@ BOSMAX/
 ├── BOSMAX_DETERMINISTIC_FLOW_v1.md  ← Phase-1 newbie-facing single-output authority
 ├── BOSMAX_BATCH_LANE_v1.md          ← Phase-2 deterministic batch authority
 ├── BOSMAX_BATCH_TEMPLATE_SET_v1.md  ← Production-ready batch intake templates
+├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -85,6 +86,13 @@ Fail ini mengandungi ready-copy intake blocks untuk:
 - `BATCH_VIDEO_FRESH`
 - `BATCH_MIXED_DETERMINISTIC`
 - `BATCH_MULTI_PRODUCT_CONTROLLED`
+
+**First real batch benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
+Fail ini menunjukkan satu contoh batch sebenar untuk:
+- `Minyak Warisan Cap Burung`
+- `BATCH_IMAGE_SELLING`
+- `10` outputs
+- complete intake block + approved Variant Plan example
 
 ---
 

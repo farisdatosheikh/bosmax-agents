@@ -689,6 +689,25 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 021 — 2026-06-02
+**Status:** FIRST REAL BATCH RUN EXAMPLE INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada satu contoh batch sebenar untuk produk live supaya operator boleh guna sebagai benchmark production, bukan hanya template kosong.
+
+**Authority decision:**
+- produk benchmark pertama dipilih: `Minyak Warisan Cap Burung`
+- batch type benchmark pertama: `BATCH_IMAGE_SELLING`
+- saiz benchmark pertama: `10 outputs`
+- contoh ini berfungsi sebagai operator example, bukan authority logic baru
+
+**Files patched:**
+- `BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — complete intake block + approved Variant Plan example
+- `README.md` — benchmark example exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
