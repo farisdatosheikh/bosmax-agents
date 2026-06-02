@@ -32,6 +32,7 @@ BOSMAX/
 ├── BOSMAX_PRODUCT_SPECIFIC_SELF_HEALING_VARIANTS_v1.md ← Product-tuned repair reminders for MWCB, BOSMAX Serum, and Maverix
 ├── BOSMAX_REPAIR_LANE_DECISION_TREE_v1.md ← Fast operator decision tree for choosing the correct repair lane
 ├── BOSMAX_HARD_ENGINE_CONTRACTS_v1.md ← Hard anti-stupidity contracts for Grok, Gemini, Claude sandbox, and pre-output kill-switch
+├── BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md ← Canonical clean operator-facing video prompt shape and Grok seam continuity law
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
@@ -139,6 +140,12 @@ Fail ini memberitahu operator bila patut guna:
 Fail ini mengunci lane kritikal supaya AI tidak lagi bebas mengeluarkan prompt
 video BM commercial UGC tanpa dialog, invent GROK block math palsu, atau
 melambatkan sandbox visual dengan soalan redundant.
+
+**ChatGPT clean video role model:** rujuk `BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md`.
+Fail ini menjadikan output prompt video gaya ChatGPT sebagai bentuk canonical:
+- clean operator-facing structure
+- minimum metadata leakage
+- tighter Grok Block 2 seam continuity
 
 **First real front-door dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
 Fail ini menunjukkan satu walkthrough operator sebenar untuk:

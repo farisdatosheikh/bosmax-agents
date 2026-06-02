@@ -1206,6 +1206,34 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 042 — 2026-06-03
+**Status:** CHATGPT CLEAN VIDEO ROLE MODEL INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini mengangkat bentuk output prompt video gaya ChatGPT sebagai canonical operator-facing role model. Fokus utama ialah output lebih bersih, metadata dalaman tidak bocor, dan seam Block 2 untuk GROK lebih cepat menyambung dialog supaya lipsync mismatch di awal extension dapat dikurangkan.
+
+**Authority decisions:**
+- `CHATGPT CLEAN OUTPUT SHAPE` kini canonical untuk operator-facing final video prompt:
+  - `VISUAL SCAN COMPLETE`
+  - `[ENGINE] ENGINE CONTRACT`
+  - `COPY-PASTE PROMPT`
+  - `STORYBOARD`
+  - `BLOCK PROMPTS`
+- `CLAUDE-STYLE metadata/debug scaffolding leakage` kini dianggap compliance failure pada output operator-facing
+- `GROK SEAM CONTINUITY LAW` kini lock:
+  - Block 1 perlu tamat hampir final frame sambil bercakap
+  - Block 2 perlu resume dialog dalam `0.5s–1.0s` awal block
+  - tiada silent setup panjang sebelum dialog sambung untuk BM commercial UGC
+
+**Files patched:**
+- `.claude/skills/bosmax-script-generator.md` — clean-output role model law, GROK seam continuity law, output contract cleanup, abort rules
+- `.claude/skills/bosmax-compliance-gate.md` — metadata leakage audit, early Block 2 speech resume audit, auto-heal mapping
+- `BOSMAX_HARD_ENGINE_CONTRACTS_v1.md` — seam continuity law + metadata leak reminder
+- `BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md` — new authority file untuk canonical prompt shape
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

@@ -790,6 +790,29 @@ dan target_language = Malay:
 → pengecualian hanya jika user explicit minta montage sunyi / music-only / text-only
 ```
 
+**GROK extension continuity law:**
+```
+Jika engine = GROK dan multi_block_mode = YES:
+→ Block 1 dialogue idealnya berterusan sehingga hampir final frame
+→ Block 2 dialogue MESTI start awal (target: dalam 0.5s–1.0s pertama)
+→ JANGAN bazir 2–3 saat awal Block 2 untuk action sunyi sebelum dialog sambung
+→ Action pembuka Block 2 hanya micro-action continuity, bukan setup baru
+→ First spoken clause Block 2 MESTI sambung semantic thread dari Block 1
+→ Tujuan: kurangkan rasa lag, dead air, dan lipsync mismatch di seam extension
+```
+
+**ChatGPT clean-output role model law:**
+```
+Untuk operator-facing final output, guna bentuk yang bersih dan copy-paste ready:
+1. VISUAL SCAN COMPLETE
+2. [ENGINE] ENGINE CONTRACT
+3. COPY-PASTE PROMPT / STORYBOARD
+4. BLOCK PROMPTS
+
+JANGAN bocor metadata dalaman, audit scaffolding, atau labels yang user tak perlu.
+Output mesti rasa clean seperti role-model ChatGPT prompt, bukan debug dump.
+```
+
 **GROK hard contract examples:**
 ```
 12s total  → 6s + 6s
@@ -954,6 +977,9 @@ Declare: "BLOCK [X] OF [N]" | block_start_time–block_end_time
 Declare: "VISUAL END STATE: [character position] | [product position] | [lighting]"
 Declare: "LAST SPOKEN WORDS: [exact last phrase from S6]"
 Declare: "NEXT BLOCK OPENS FROM: [brief description]" jika bukan final block.
+Jika engine = GROK dan target_language = Malay dan content_type = commercial / UGC:
+  Declare: "DIALOGUE RESUMES BY: [0.5s–1.0s from block start]"
+  Declare: "OPENING ACTION CLASS: micro-continuation only"
 
 **S9 — No Overlay Declaration:**
 **SECTION 9 ADALAH DEACTIVATED. TIADA TEXT OVERLAY DIJANA.**
@@ -981,12 +1007,22 @@ NORA | RIZAL | JULIA | AZMAN | SARA | HAJI_MAN | BELLA | SOFIA_FIT | MAK_TOK | C
 ## OUTPUT CONTRACT
 
 ```
-ENGINE: [engine_id] | DURATION: [Xs] | SUBMODE: [formula] |
-PLATFORM: [target] | CAMERA STYLE: [prose description]
-VISUAL AUTHORITY: [USER_UPLOAD / REGISTRY / SANDBOX_VISUAL / ANALYST_REFERENCE]
-STORYBOARD APPROVED: [YES]
-[BLOCK [N] OF [TOTAL] — omit line jika single-block]
-[CONTINUES FROM BLOCK N-1 — omit line jika Block 1 atau single-block]
+VISUAL SCAN COMPLETE
+[short neutral scan summary]
+
+[ENGINE_ID] ENGINE CONTRACT
+Engine: [engine_id]
+Duration: [Xs]
+Block math: [summary]
+Language: [target_language]
+WPS budget: [summary]
+Dialogue budget: [summary]
+pace_class: [pace_class]
+Output rule: clean copy-paste ready | no metadata leakage
+
+[COPY-PASTE PROMPT / BLOCK PROMPT TITLE]
+[BLOCK [N] OF [TOTAL] — omit jika single-block]
+[CONTINUES FROM BLOCK N-1 — omit jika Block 1 atau single-block]
 
 ---
 SECTION 1: Biometric Anchor DNA
@@ -1047,6 +1083,9 @@ Video engine renders clean footage only. No burned-in text.
 - ABORT jika `dialog_budget_words` null atau pace_class null
 - ABORT jika `dialogue_required = YES` tetapi output cuba jadi `pure visual`, `no dialog`,
   atau WPS effectively 0
+- ABORT jika engine = GROK + multi_block + Block 2 dialogue start lambat tanpa sebab
+  (dead air / silent action setup > 1s untuk BM commercial UGC)
+- ABORT jika final operator-facing output bocor internal metadata/debug scaffolding
 - ABORT jika `visual_authority_source = USER_UPLOAD | SANDBOX_VISUAL` tetapi output cuba
   menggunakan persona/product lain dari visual scan
 - JANGAN generate Block N tanpa Master Narrative Brief sebagai authority

@@ -76,6 +76,14 @@ Required output order:
 
 Never emit one giant Grok prompt if the duration requires multiple blocks.
 
+### Seam continuity law
+
+For BM commercial UGC extension:
+- Block 1 should end speaking close to the final frame
+- Block 2 should resume speech within the first `0.5s–1.0s`
+- do not waste the seam on long silent action before dialogue continues
+- use only micro-continuation action at the opening of Block 2
+
 ---
 
 ## 3. Claude Low-Friction Sandbox Contract
@@ -157,5 +165,6 @@ Use this file when:
 - Gemini drifts product scale or avatar
 - Claude wastes time with redundant sandbox questions
 - any AI emits BM commercial UGC video without dialogue
+- any AI leaks metadata/debug scaffolding in the final operator-facing prompt
 
 This file is a hard correction layer, not a brainstorming layer.

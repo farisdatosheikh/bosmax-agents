@@ -110,6 +110,7 @@ Use language-specific WPS from script-generator authority:
   — WPS budget declared
   — pace_class declared
   — jika BM commercial / UGC / TikTok video: dialog hadir dan bukan `WPS: 0`
+  — operator-facing final output clean dan tidak bocor metadata/debug scaffolding
 
 ☐ GROK image-to-video outputs:
   — persistence lock ada
@@ -117,6 +118,7 @@ Use language-specific WPS from script-generator authority:
   — pace/action-density lock ada
   — semua block durations sah: 6s atau 10s sahaja
   — tiada fake extension math seperti `12s + 8s`
+  — untuk BM commercial UGC multi-block: Block 2 speech resume awal, tiada dead-air seam
 
 ---
 
@@ -302,6 +304,8 @@ Use language-specific WPS from script-generator authority:
 ☐ Block 2+ Section 6: dialogue MENYAMBUNG dari "LAST SPOKEN WORDS" Block N-1
   — Semak: last words Block N-1 S8 → first words Block 2+ S6 → natural continuation
 ☐ TIADA gap atau non-sequitur antara last words Block N-1 dan first words Block 2+
+☐ Untuk GROK BM commercial UGC: Block 2+ TIDAK buka dengan silent action setup panjang
+  sebelum dialog; speech resume target dalam 0.5s–1.0s awal block
 ☐ Full dialogue arc dari Block 1 ke Block N membentuk SATU cerita kohesif
 
 ### MASTER NARRATIVE BRIEF COMPLIANCE
@@ -495,6 +499,8 @@ Use language-specific WPS from script-generator authority:
 ║ Missing pace_class           │ Inject dari work order / rebuild S8  ║
 ║ Missing GROK persistence lock│ Inject lock block, re-audit          ║
 ║ Missing BM UGC dialogue      │ Rebuild Section 6 + recalc WPS       ║
+║ Metadata leakage in output   │ Reformat to clean operator shape      ║
+║ Grok seam dialogue starts late│ Pull speech earlier, reduce dead air ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 
