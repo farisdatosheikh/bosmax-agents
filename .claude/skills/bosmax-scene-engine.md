@@ -31,6 +31,54 @@ Semua fields mesti non-null. ABORT jika ada yang null.
 
 ---
 
+## DETERMINISTIC IMAGE GOAL LAYER — PHASE 1
+
+Skill ini adalah canonical prompt assembler untuk `task_mode = IMAGE`.
+BOSMAX front-door akan resolve dua user-facing goals sahaja:
+
+```
+image_goal:
+  VIDEO_SUPPORT
+  SELLING_POSTER
+```
+
+### REQUIRED UPSTREAM FIELDS
+
+```
+image_goal         → VIDEO_SUPPORT | SELLING_POSTER
+reference_mode     → NONE | IMAGE_REFERENCE
+product_record     → resolved by bosmax-product-intelligence
+subject_dna        → resolved by bosmax-subject-dna
+```
+
+### GOAL INTERPRETATION
+
+**VIDEO_SUPPORT**
+- Prioriti = avatar continuity + product truth + clean composition
+- Minimum selling text bias
+- Product mesti mudah dibaca dan stabil untuk dijadikan `source_image_handoff`
+- Hasil ini adalah visual passport untuk Route C atau future video generation
+
+**SELLING_POSTER**
+- Prioriti = avatar + product + commercial hierarchy
+- Selling composition dibenarkan, tetapi product truth dan scale truth tetap sovereign
+- Caption hierarchy dan hook pattern dimasukkan dalam Block 1 prompt prose
+- Jangan emit block tambahan di luar standard Mode A contract
+
+### OUTPUT CONTRACT — TIDAK BERUBAH
+
+Mode ini mesti kekal deterministic dan compatibility-safe:
+
+```
+Block 1 → English Master Image Prompt
+Block 2 → source_image_handoff JSON
+```
+
+**FORBIDDEN:** Block 3, detached copy sheet, atau metadata artifact tambahan.
+Jika `image_goal = SELLING_POSTER`, poster hierarchy mesti di-embed dalam Block 1 prompt sahaja.
+
+---
+
 ## SCENE REGISTRY — PILIH DARI SINI SAHAJA
 
 ### Interior Scenes

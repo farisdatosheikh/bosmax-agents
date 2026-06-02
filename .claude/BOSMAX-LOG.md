@@ -601,6 +601,35 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 018 — 2026-06-02
+**Status:** DETERMINISTIC FLOW PHASE-1 INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada front-door deterministic flow untuk newbie users tanpa memaksa mereka faham Route A/B/C/D secara terus.
+
+**Authority decision:**
+- Phase-1 focus = `single output deterministic` dahulu, batch kemudian
+- user-facing modes kini dinormalkan kepada:
+  - `IMAGE → VIDEO_SUPPORT | SELLING_POSTER`
+  - `VIDEO → NONE | IMAGE_REFERENCE | VIDEO_REFERENCE | BOSMAX_IMAGE_HANDOFF`
+- generic uploaded image reference **bukan** Mode C
+- Mode C reserved only untuk BOSMAX `source_image_handoff`
+- `bosmax-scene-engine` kekal canonical image prompt assembler
+- `bosmax-script-generator` kekal canonical video prompt assembler
+- `bosmax-image-analyst` dan `bosmax-video-analyst` bertindak sebagai concept-deconstruction upstream layers
+
+**Files patched:**
+- `BOSMAX_DETERMINISTIC_FLOW_v1.md` — phase-1 deterministic flow authority spec
+- `.claude/CLAUDE.md` — front-door deterministic intake layer + route resolution matrix
+- `.claude/skills/bosmax-scene-engine.md` — image_goal layer + compatibility-safe Mode A output contract
+- `.claude/skills/bosmax-script-generator.md` — deterministic video front-door role + output contract
+- `.claude/skills/bosmax-image-analyst.md` — clarified role in IMAGE/VIDEO reference flow
+- `.claude/skills/bosmax-video-analyst.md` — clarified role in VIDEO_REFERENCE flow
+- `README.md` — deterministic flow entrypoint reference
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

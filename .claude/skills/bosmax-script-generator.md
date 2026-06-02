@@ -36,6 +36,8 @@ product_name          → nama produk + key benefit
 product_category      → kategori TikTok Shop MY
 selling_price         → nilai RM
 dialogue_authority_mode → PRODUCT_COPYWRITING | SCRIPT_REGISTRY
+reference_mode        → NONE | IMAGE_REFERENCE | VIDEO_REFERENCE | BOSMAX_IMAGE_HANDOFF
+product_info_simple   → simple product notes from user (fallback only)
 hook                  → primary hook line
 usp_1 / usp_2 / usp_3 → key product benefits
 cta                   → call to action text
@@ -85,6 +87,72 @@ dialogue_carry_over   → last spoken words dari Block N-1 (null untuk Block 1)
 > Mereka TIDAK melalui script generator. Route ke bosmax-scene-engine untuk image generation.
 
 **ABORT jika engine + duration pairing tidak valid.**
+
+---
+
+## DETERMINISTIC VIDEO FRONT-DOOR ROLE — PHASE 1
+
+Skill ini adalah canonical final prompt assembler untuk `task_mode = VIDEO`
+apabila user **belum** berada dalam BOSMAX Mode C handoff lane.
+
+### SUPPORTED FRONT-DOOR CASES
+
+```
+reference_mode = NONE
+  → fresh video prompt dari avatar + product + authority data
+
+reference_mode = IMAGE_REFERENCE
+  → concept DNA datang dari bosmax-image-analyst
+  → product/dialogue authority datang dari bosmax-product-intelligence
+  → script-generator bina final output
+
+reference_mode = VIDEO_REFERENCE
+  → concept DNA dan dialog skeleton datang dari bosmax-video-analyst
+  → product/dialogue authority datang dari bosmax-product-intelligence
+  → script-generator bina final output
+```
+
+### EXCLUDED CASE
+
+```
+reference_mode = BOSMAX_IMAGE_HANDOFF
+```
+
+Itu BUKAN kerja script-generator sebagai front-door lane.
+Case ini wajib route ke `bosmax-mode-c-executor`.
+
+### KNOWN VS UNKNOWN PRODUCT RULE
+
+- Known product → use registry / FastMoss / dialogue authority as upstream truth
+- Unknown product → accept fallback `product_info_simple`, but BOSMAX mesti masih
+  attempt temporary category + compliance + copywriting resolution sebelum scripting
+
+### DETERMINISTIC VIDEO OUTPUT CONTRACT
+
+Single block:
+```
+prompt_final
+engine_id
+duration_target
+reference_mode
+dialogue_authority_resolved
+product_truth_lock
+```
+
+Multi-block:
+```
+block_prompts[]
+engine_id
+duration_target
+reference_mode
+block_plan
+dialogue_authority_resolved
+product_truth_lock
+continuity_lock
+```
+
+Skill ini tidak patut emit loosely structured alternatives.
+Satu work order masuk = satu deterministic output pack keluar.
 
 ---
 

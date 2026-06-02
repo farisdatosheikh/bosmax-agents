@@ -71,6 +71,34 @@ CONCEPT DNA (BORROW dari A)          CONTENT DNA (REPLACE dengan B)
 
 ---
 
+## DETERMINISTIC FRONT-DOOR ROLE — PHASE 1
+
+Skill ini bukan final script emitter.
+Dalam deterministic flow phase-1, role saya ialah:
+- deconstruct video reference
+- extract dialog skeleton, production DNA, pacing, and concept structure
+- hand off structured concept authority kepada BOSMAX untuk Product B rebuild
+
+### WHEN THIS SKILL IS CALLED
+
+```
+task_mode = VIDEO
+reference_mode = VIDEO_REFERENCE
+```
+
+### WHAT HAPPENS NEXT
+
+Selepas saya selesai:
+- BOSMAX resolve product truth + dialogue authority
+- BOSMAX dispatch ke `bosmax-script-generator`
+
+### IMPORTANT LIMIT
+
+Saya tidak menggantikan Route C.
+Jika user sudah ada BOSMAX `source_image_handoff`, itu route ke `bosmax-mode-c-executor`, bukan ke video analyst.
+
+---
+
 ## 3-PHASE PROCESSING PROTOCOL
 
 ---

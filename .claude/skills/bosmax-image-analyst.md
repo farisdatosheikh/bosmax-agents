@@ -53,6 +53,34 @@ CONCEPT DNA (BORROW dari A)     CONTENT DNA (REPLACE dengan B)
 
 ---
 
+## DETERMINISTIC FRONT-DOOR ROLE — PHASE 1
+
+Skill ini bukan prompt generator akhir.
+Dalam deterministic flow phase-1, role saya ialah:
+- deconstruct image reference
+- separate Concept DNA vs Content DNA
+- hand off structured concept authority kepada BOSMAX
+
+### WHEN THIS SKILL IS CALLED
+
+```
+task_mode = IMAGE  AND image_goal = SELLING_POSTER AND reference image supplied
+task_mode = VIDEO  AND reference_mode = IMAGE_REFERENCE
+```
+
+### WHAT HAPPENS NEXT
+
+Selepas saya selesai:
+- IMAGE lane → BOSMAX dispatch ke `bosmax-scene-engine`
+- VIDEO lane → BOSMAX dispatch ke `bosmax-script-generator`
+
+### IMPORTANT LIMIT
+
+Generic uploaded image references **BUKAN** Mode C.
+Mode C reserved only for BOSMAX `source_image_handoff`.
+
+---
+
 ## 3-PHASE PROCESSING PROTOCOL
 
 ---

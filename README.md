@@ -22,6 +22,7 @@ BOSMAX/
 │       ├── bosmax-product-registration.md ← TikTok Shop MY product intake
 │       ├── bosmax-bulk-generator.md      ← Bulk prompt factory (T2V/FRAMES/INGREDIENTS/IMAGE)
 │       └── bosmax-requirement-analyst.md ← Pre-dispatch intelligence layer (v11.2)
+├── BOSMAX_DETERMINISTIC_FLOW_v1.md  ← Phase-1 newbie-facing single-output authority
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -62,6 +63,11 @@ BOSMAX/
 Sistem ini direka untuk dijalankan melalui **Claude Cowork** dengan .claude/CLAUDE.md sebagai orchestrator.
 
 Semua output melalui bosmax-compliance-gate sebelum sampai kepada pengguna.
+
+**Phase-1 deterministic flow:** rujuk `BOSMAX_DETERMINISTIC_FLOW_v1.md`.
+Fail ini mendefinisikan front-door newbie flow untuk:
+- `IMAGE → VIDEO_SUPPORT | SELLING_POSTER`
+- `VIDEO → NONE | IMAGE_REFERENCE | VIDEO_REFERENCE | BOSMAX_IMAGE_HANDOFF`
 
 ---
 

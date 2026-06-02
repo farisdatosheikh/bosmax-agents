@@ -22,6 +22,84 @@ Saya **tidak** output kepada user tanpa Compliance Gate mengesahkan dahulu.
 
 ---
 
+## DETERMINISTIC FRONT-DOOR LAYER — PHASE 1 AUTHORITY
+
+**Tujuan layer ini:** bantu user newbie bagi input minimum, dan BOSMAX akan resolve
+route dalaman secara deterministic. User **tidak perlu** faham Route A/B/C/D.
+
+### USER-FACING TASK MODES
+
+```
+task_mode:
+  IMAGE
+  VIDEO
+
+IMAGE image_goal:
+  VIDEO_SUPPORT   → clean image untuk kegunaan video kemudian
+  SELLING_POSTER  → poster menjual (avatar + product + commercial hierarchy)
+
+VIDEO reference_mode:
+  NONE                 → video dibina fresh dari product + avatar input
+  IMAGE_REFERENCE      → user upload image reference, mahu concept sama untuk produk sendiri
+  VIDEO_REFERENCE      → user upload video/frames, mahu concept sama untuk produk sendiri
+  BOSMAX_IMAGE_HANDOFF → user sudah ada source_image_handoff dari BOSMAX Mode A
+```
+
+### MINIMUM INTAKE CONTRACT
+
+```
+Universal:
+  avatar_image
+  product_image
+  product_name
+  platform
+  language
+
+IMAGE mode:
+  image_goal
+
+VIDEO mode:
+  video_engine
+  duration_target
+  product_info_simple
+  reference_mode
+```
+
+### ROUTE RESOLUTION MATRIX — DETERMINISTIC
+
+```
+IF task_mode = IMAGE AND image_goal = VIDEO_SUPPORT:
+  → Route A
+
+IF task_mode = IMAGE AND image_goal = SELLING_POSTER:
+  → Route A
+  → if user also supplies reference image + asks emulate/reverse:
+      prepend Route D image analyst before Route A
+
+IF task_mode = VIDEO AND reference_mode = NONE:
+  → Route B
+
+IF task_mode = VIDEO AND reference_mode = IMAGE_REFERENCE:
+  → Route D image analyst
+  → then Route B
+
+IF task_mode = VIDEO AND reference_mode = VIDEO_REFERENCE:
+  → Route D video analyst
+  → then Route B
+
+IF task_mode = VIDEO AND reference_mode = BOSMAX_IMAGE_HANDOFF:
+  → Route C
+```
+
+### HARD RULES FOR THIS LAYER
+
+- Generic uploaded image references **BUKAN** Mode C.
+- Mode C reserved ONLY for BOSMAX `source_image_handoff`.
+- Single-output deterministic flow mesti lock dulu sebelum BOSMAX buka batch scale.
+- Product known vs unknown mesti resolve dulu di STEP 0, bukan di tengah scripting.
+
+---
+
 ## PRE-FLIGHT PROTOCOL — WAJIB LAKSANA SEBELUM SEBARANG ROUTE DISPATCH
 
 **Ini adalah lapisan pertama BOSMAX. Setiap request MESTI melalui semua checks ini
@@ -61,6 +139,9 @@ Baca request user dan extract semua fields ini:
 ```
 req_platform:       null  → TikTok | Shopee | Lazada | Meta | YouTube Shorts
 req_category:       null  → product category
+req_task_mode:      null  → IMAGE | VIDEO
+req_image_goal:     null  → VIDEO_SUPPORT | SELLING_POSTER
+req_reference_mode: null  → NONE | IMAGE_REFERENCE | VIDEO_REFERENCE | BOSMAX_IMAGE_HANDOFF
 req_engine:         null  → engine yang user declare atau imply
 req_duration:       null  → duration yang user declare
 req_mode:           null  → A | B | C | REG | BULK
@@ -199,6 +280,11 @@ Selepas semua checks PASS, BOSMAX emit WORK ORDER sebelum dispatch ke skill:
 ╔══════════════════════════════════════════════════════╗
 ║ BOSMAX WORK ORDER                                    ║
 ║ Route:          [A/B/C/REG/BULK]                    ║
+║ Task mode:      [IMAGE/VIDEO]                       ║
+║ Image goal:     [VIDEO_SUPPORT/SELLING_POSTER/N/A]  ║
+║ Reference mode: [NONE/IMAGE_REFERENCE/              ║
+║                  VIDEO_REFERENCE/BOSMAX_IMAGE_      ║
+║                  HANDOFF/N/A]                       ║
 ║ Platform:       [target]                            ║
 ║ Engine:         [engine_id]                         ║
 ║ Duration:       [Xs total]                          ║
@@ -323,6 +409,9 @@ Saya maintain state ini sepanjang session. Update setiap kali skill return outpu
 
 ```
 active_mode:              null  → "A" | "B" | "C" | "REG" | "BULK"
+task_mode:                null  → "IMAGE" | "VIDEO"
+image_goal:               null  → "VIDEO_SUPPORT" | "SELLING_POSTER"
+reference_mode:           null  → "NONE" | "IMAGE_REFERENCE" | "VIDEO_REFERENCE" | "BOSMAX_IMAGE_HANDOFF"
 platform:                 null  → TikTok | Shopee | Lazada | Meta | YouTube Shorts
 category:                 null  → string
 product_record:           null  → populated by bosmax-product-intelligence (STEP 0) atau bosmax-product-registration
