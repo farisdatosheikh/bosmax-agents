@@ -583,6 +583,24 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 017 — 2026-06-02
+**Status:** AGENTS BRIDGE AUTHORITY STABILIZATION
+**Active Mode:** null
+**Milestone:** Root `AGENTS.md` yang stale dan corrupted telah dineutralize menjadi Codex bridge file supaya future agents tidak lagi baca duplicate orchestrator truth yang bercanggah.
+
+**Authority decision:**
+- canonical BOSMAX orchestrator authority kekal di `.claude/CLAUDE.md`
+- `AGENTS.md` kini bukan salinan orchestrator penuh, tetapi authority pointer yang fail-closed
+- `Prompt_Framework_v1_STRICT.yaml` dikekalkan sebagai live consumed framework, bukan orphan
+- audit artifacts tidak lagi patut dibaca sebagai live truth tanpa repo patch eksplisit
+
+**Files patched:**
+- `AGENTS.md` — corrupted duplicate orchestrator removed, replaced with clean Codex bridge authority map
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
