@@ -1093,6 +1093,34 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 038 — 2026-06-03
+**Status:** ENGINE-SPECIFIC SELF-HEALING VARIANTS INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX self-healing lane kini dipecah kepada varian khusus engine supaya operator boleh terus target failure pattern `ChatGPT`, `Gemini`, atau `Grok` tanpa guna repair prompt generik sahaja.
+
+**Why this was needed:**
+- `ChatGPT` kadang-kadang masih terlalu generic / terlalu selamat walaupun prompt technically betul
+- `Gemini` cenderung inflate scale, redesign packaging, atau over-hero-kan product
+- `Grok` cenderung gagal pada visual persistence, storyboard, block math, dan pace density
+
+**New authority:**
+- `BOSMAX_ENGINE_SPECIFIC_SELF_HEALING_VARIANTS_v1.md`
+
+**What it adds:**
+- `CHATGPT SELF-HEAL MODE`
+- `GEMINI SELF-HEAL MODE`
+- `GROK SELF-HEAL MODE`
+- operator rule untuk beza bila guna universal checklist vs engine-specific checklist
+
+**Ecosystem effect:**
+- repo kini ada self-healing universal layer + engine-specific layer
+- Notion akan expose page khusus untuk engine-specific repair reminders
+- operator kini ada repair ladder yang lebih cepat untuk loop pembetulan prompt
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
