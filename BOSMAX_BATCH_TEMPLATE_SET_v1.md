@@ -361,6 +361,14 @@ Variation condition: 3
 Build Variant Plan first. Every row must resolve to VIDEO + NONE.
 ```
 
+### Sensitive note for fresh-video batches
+
+If product is sensitive:
+- set `Dialogue authority: SCRIPT_REGISTRY`
+- keep one silo per batch
+- keep one variant family per first benchmark
+- do not freestyle direct sexual-health wording
+
 ### Fast block — 50 clean support images
 
 ```text

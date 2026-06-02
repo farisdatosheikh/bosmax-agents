@@ -1,0 +1,98 @@
+# BOSMAX PRODUCT REGISTRY — MAVERIX_MAXOIL
+# Version: v1.0 | Registered: 2026-06-02
+# Authority: GRAND_MASTER_SKELETON v11.3
+# Source: FASTMOSS tier-2 promotion to registry (sensitive male stealth lane)
+
+schema_version: "1.0"
+
+product_id: "MAVERIX_MAXOIL"
+product_name: "Maverix Maxoil"
+brand: "Maverix"
+product_aliases:
+  - "Maverix Maxoil"
+  - "MAVERIX MAXOIL"
+  - "MAVERIX FOR SKIN"
+  - "Maverix For Skin"
+  - "Set Premium Terhad MAVERIX MAXOIL (5 Botol)"
+  - "Maverix For Skin Limited Premium Set (5 Bottles)"
+shop_name: "MAVERIX STORE"
+tiktok_product_id: "1731055701425358442"
+fastmoss_product_name: "MAVERIX FOR SKIN | LIMITED PREMIUM Set (5 Bottles) Body Care"
+
+category: "Health & Wellness"
+sub_category: "Men's Health / Vitaliti Lelaki"
+raw_category: "Beauty & Personal Care-Men's Care-Bath & Body Care"
+product_type: "Sensitive male-care oil set marketed through stealth dialogue and confidence-performance positioning"
+compliance_class: "STEALTH_METAPHOR_REQUIRED"
+silo: "STEALTH"
+recommended_formula: "SAVAGE_HPAS | PAS | HSO"
+recommended_avatars: ["RIZAL", "AZMAN"]
+product_status: "Available"
+
+avg_price_rm: 77.5
+commission_rate: 0.27
+total_orders: 960
+total_units_sold: 78230
+total_revenue_rm: 6667305
+estimated_launch_date: "2025-04-06"
+
+variants:
+  - variant_id: "SET_5_BOTTLES"
+    variant_name: "Limited Premium Set (5 Bottles)"
+    price_rm: 77.5
+    scale_anchor_descriptor: "EXACTLY lip balm size per bottle, fit into fingers naturally, sold as a 5-bottle set"
+    prompt_keywords:
+      - "lip balm sized oil bottle"
+      - "each bottle fits between two fingers"
+      - "compact 5 bottle set"
+      - "pocket-sized intimate care oil set"
+
+dialogue_authority:
+  mode: "SCRIPT_REGISTRY"
+  registry_file: "SCRIPT_REGISTRY_UNIFIED.md"
+  variant_file: "SCRIPT_VARIANT_LIBRARY.md"
+  silo_id: "male_health_stealth_01"
+  variant_family: "EGO_01"
+  resolve_to_copywriting: true
+  fallback_mode: "NONE"
+  notes: >
+    Maverix Maxoil is treated as a sensitive male-health stealth product.
+    Dialogue authority must be resolved from script registry + variant library
+    before flattening into downstream copy blocks. Do not freestyle direct
+    anatomy claims or explicit sexual-performance language.
+
+copywriting:
+  angle: "AUTO_RESOLVE_FROM_SCRIPT_REGISTRY"
+  hook: ""
+  usp_1: ""
+  usp_2: ""
+  usp_3: ""
+  body: ""
+  cta: ""
+
+subject_dna: null
+last_source_image_handoff: null
+
+registered_by: "farisdatosheikh@gmail.com"
+registered_date: "2026-06-02"
+last_updated: "2026-06-02"
+notes: |
+  This product was promoted from FASTMOSS tier-2 into BOSMAX tier-1 registry
+  because the user explicitly wants BOSMAX to dominate the sensitive-product
+  lane where ordinary systems fail.
+
+  FASTMOSS evidence used:
+  - Product Search Data: MAVERIX FOR SKIN | LIMITED PREMIUM Set (5 Bottles) Body Care
+  - Most Promoted Products: MAVERIX STORE, category path aligned with men's care
+  - New Products Ranking also shows Set Premium Terhad MAVERIX MAXOIL (5 Botol)
+
+  Current authority is dialogue-first and market-derived:
+  - product is treated as a stealth male-health product
+  - route through SCRIPT_REGISTRY_UNIFIED.md + SCRIPT_VARIANT_LIBRARY.md
+  - variant_family is bound to EGO_01 as the safest first controlled benchmark
+
+  Important limitation:
+  visual packaging truth has not yet been hardened with direct uploaded product
+  images inside BOSMAX. Use this product first for sensitive video benchmarks
+  and same-silo controlled batches. Harden image truth later before opening
+  larger poster/image production lanes.

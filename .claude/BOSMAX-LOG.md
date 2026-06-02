@@ -689,6 +689,35 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 025 — 2026-06-02
+**Status:** SENSITIVE MAVERIX LANE INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada lane sensitif khas untuk Maverix dan benchmark silang-produk sensitif pertama yang benar-benar memanfaatkan script registry + script variant library.
+
+**Authority decision:**
+- `Maverix Maxoil` dinaikkan ke tier-1 registry sebagai sensitive male stealth product
+- dialogue authority Maverix di-bind ke:
+  - `SCRIPT_REGISTRY_UNIFIED.md`
+  - `SCRIPT_VARIANT_LIBRARY.md`
+  - `male_health_stealth_01`
+  - `EGO_01`
+- benchmark sensitif pertama untuk Maverix dibuka sebagai `BATCH_VIDEO_FRESH`
+- benchmark silang-produk sensitif pertama dibuka sebagai `BATCH_MULTI_PRODUCT_CONTROLLED` dengan:
+  - `BOSMAX Serum`
+  - `Maverix Maxoil`
+  - `VIDEO_ONLY`
+
+**Files patched:**
+- `products/MAVERIX_MAXOIL.yaml` — tier-1 sensitive-product authority for Maverix
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MAVERIX_MAXOIL_v1.md` — first sensitive Maverix benchmark
+- `BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_SENSITIVE_BOSMAX_SERUM_MAVERIX_MAXOIL_v1.md` — first sensitive multi-product benchmark
+- `BOSMAX_BATCH_TEMPLATE_SET_v1.md` — sensitive note for fresh-video batches
+- `README.md` — Maverix registry + benchmark stack exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 024 — 2026-06-02
 **Status:** FIRST MULTI-PRODUCT CONTROLLED BENCHMARK INSTALLED
 **Active Mode:** null
