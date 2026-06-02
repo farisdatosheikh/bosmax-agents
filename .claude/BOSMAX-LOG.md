@@ -689,6 +689,25 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 026 — 2026-06-02
+**Status:** MAVERIX VISUAL TRUTH HARDENED
+**Active Mode:** null
+**Milestone:** BOSMAX kini bukan sekadar ada dialogue authority untuk Maverix, tetapi sudah ada reference-bound image authority dan benchmark image sensitif pertama.
+
+**Authority decision:**
+- actual FastMoss Maverix product references downloaded locally
+- `products/MAVERIX_MAXOIL.yaml` upgraded from dialogue-first only to reference-bound visual authority
+- first sensitive image benchmark opened as `BATCH_IMAGE_SELLING`
+
+**Files patched:**
+- `products/MAVERIX_MAXOIL.yaml` — visual truth, reference assets, prompt locks, and image negatives added
+- `BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_MAVERIX_MAXOIL_v1.md` — first sensitive image benchmark
+- `README.md` — Maverix image benchmark exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 025 — 2026-06-02
 **Status:** SENSITIVE MAVERIX LANE INSTALLED
 **Active Mode:** null

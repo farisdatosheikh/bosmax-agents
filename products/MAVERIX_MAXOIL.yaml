@@ -28,6 +28,8 @@ silo: "STEALTH"
 recommended_formula: "SAVAGE_HPAS | PAS | HSO"
 recommended_avatars: ["RIZAL", "AZMAN"]
 product_status: "Available"
+packaging_type: "5-bottle premium set with slim cylindrical bottles, black caps, and black masculine carton packaging"
+packaging_color: "Black carton presentation with gold/silver accents, horse logo, and mixed visible oil tones inside slim bottles"
 
 avg_price_rm: 77.5
 commission_rate: 0.27
@@ -46,6 +48,67 @@ variants:
       - "each bottle fits between two fingers"
       - "compact 5 bottle set"
       - "pocket-sized intimate care oil set"
+      - "black premium carton with horse logo"
+      - "slim cylindrical black-capped bottles"
+      - "masculine black and gold packaging"
+
+    reference_assets:
+      primary_reference_url: "https://s.500fd.com/tt_product/007cb654f1e449c087b32f58a67b3931~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg"
+      secondary_reference_url: "https://s.500fd.com/tt_product/1139ba069e8f4f599421ca84bedba047~tplv-aphluv4xwc-crop-webp:600:800.webp"
+      local_primary_reference: "reference_images/maverix/maverix_fastmoss_primary.jpg"
+      local_secondary_reference: "reference_images/maverix/maverix_fastmoss_secondary.webp"
+
+    visual_truth:
+      set_structure: "Premium 5-bottle set presented in black masculine carton / sleeve packaging"
+      bottle_shape: "Slim cylindrical micro-bottles, each roughly lip balm sized"
+      cap_style: "Plain smooth black caps on every bottle"
+      body_finish: "Mixed bottle bodies including dark labels and some transparent windows showing oil"
+      visible_palette: "Black, charcoal, silver, gold accents, with clear/amber/yellow oil tones"
+      logo_cue: "Horse / stallion silhouette branding on carton and bottle labels"
+      presentation_mood: "Masculine, discreet, premium, private-use positioning"
+
+    image_prompt_locks:
+      reference_image_lock: >
+        [REFERENCE_IMAGE_LOCK]
+        Use the uploaded Maverix reference image as the absolute source of
+        truth for the exact 5-bottle set structure, black masculine carton,
+        slim cylindrical bottle geometry, black caps, label layout, horse
+        silhouette branding, and real set proportions.
+
+      local_edit_delta: >
+        [LOCAL_EDIT_DELTA]
+        Change only the background, lighting, surface, hand pose, and camera
+        styling. Do not redesign the product set. Do not change bottle count,
+        cap color, carton geometry, or the overall masculine black/gold/silver
+        packaging language.
+
+      typography_and_branding_lock: >
+        [TYPOGRAPHY_AND_BRANDING_LOCK]
+        Keep the Maverix branding, horse silhouette marks, dark masculine
+        packaging, and set architecture crisp and unchanged. No logo
+        distortion, no label morphing, no random new taglines, and no
+        feminized styling drift.
+
+      spatial_math_and_proportions: >
+        [SPATIAL_MATH_AND_PROPORTIONS]
+        Maintain the latest approved Maverix set scale exactly: each bottle is
+        lip balm sized and fits naturally between fingers, while the full set
+        reads as a compact 5-bottle premium kit. Keep the bottles slim and
+        cylindrical. Keep the carton proportion compact and hand-carriable.
+
+      output_specification: >
+        [OUTPUT_SPECIFICATION]
+        Photorealistic TikTok Shop MY commercial product image, 9:16,
+        1080x1920px, masculine premium lighting, sharp branding, realistic
+        reflections, and discreet upscale visual tone.
+
+      negative_lock: >
+        [NEGATIVE_LOCK]
+        No cap color change, no white or pastel packaging, no soft feminine
+        styling, no bottle count drift, no oversized bottles, no spray nozzle,
+        no dropper cap, no pump top, no anatomy visuals, no explicit body-part
+        props, no logo distortion, and no replacement of the horse silhouette
+        branding.
 
 dialogue_authority:
   mode: "SCRIPT_REGISTRY"
@@ -91,8 +154,11 @@ notes: |
   - route through SCRIPT_REGISTRY_UNIFIED.md + SCRIPT_VARIANT_LIBRARY.md
   - variant_family is bound to EGO_01 as the safest first controlled benchmark
 
-  Important limitation:
-  visual packaging truth has not yet been hardened with direct uploaded product
-  images inside BOSMAX. Use this product first for sensitive video benchmarks
-  and same-silo controlled batches. Harden image truth later before opening
-  larger poster/image production lanes.
+  Visual packaging truth has now been hardened to REFERENCE-BOUND status using
+  actual FASTMOSS product image assets downloaded into:
+  - reference_images/maverix/maverix_fastmoss_primary.jpg
+  - reference_images/maverix/maverix_fastmoss_secondary.webp
+
+  Current image authority is still reference-bound rather than fully abstracted:
+  BOSMAX should preserve the exact set structure from uploaded reference images
+  for image/poster work until richer direct product imaging is available.

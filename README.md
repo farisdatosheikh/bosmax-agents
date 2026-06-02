@@ -31,6 +31,7 @@ BOSMAX/
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md ← First real multi-product batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MAVERIX_MAXOIL_v1.md ← First sensitive Maverix video benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_SENSITIVE_BOSMAX_SERUM_MAVERIX_MAXOIL_v1.md ← First sensitive multi-product benchmark
+├── BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_MAVERIX_MAXOIL_v1.md ← First sensitive image benchmark
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -149,6 +150,13 @@ Fail ini menunjukkan satu contoh batch sensitif dua produk untuk:
 - shared stealth dialogue authority
 
 **Sensitive product registry addition:** `products/MAVERIX_MAXOIL.yaml` kini wujud sebagai authority sensitive-product tier-1 yang di-bind terus kepada `SCRIPT_REGISTRY_UNIFIED.md` dan `SCRIPT_VARIANT_LIBRARY.md`.
+
+**Sensitive Maverix image benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_MAVERIX_MAXOIL_v1.md`.
+Fail ini menunjukkan satu contoh image benchmark sensitif sebenar untuk:
+- `Maverix Maxoil`
+- `BATCH_IMAGE_SELLING`
+- `10` outputs
+- reference-bound product truth from actual FastMoss product images
 
 ---
 
