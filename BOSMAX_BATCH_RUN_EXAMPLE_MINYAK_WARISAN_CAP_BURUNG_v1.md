@@ -31,7 +31,7 @@ This example uses:
 - `EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide`
 
 ### Packaging truth
-- WG40 30ml oblong clear flint glass bottle
+- WG40 30ml rectangular clear flint glass bottle
 - red ribbed screw cap
 - hidden stopper / PE plug
 - translucent emerald herbal green oil

@@ -767,6 +767,32 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 034 — 2026-06-02
+**Status:** MWCB IMAGE + VIDEO PROMPT AUTHORITY SYNCED ACROSS REPO + NOTION
+**Active Mode:** null
+**Milestone:** Minyak Warisan Cap Burung kini menggunakan satu scale anchor cross-engine yang lebih keras untuk image dan video lanes, selepas visual QA menunjukkan ChatGPT lebih tepat manakala Gemini dan Grok drift ke hero-bottle scale.
+
+**Authority decision:**
+- prompt lama berasaskan `oblong` diturunkan dari active authority
+- prompt baru yang diterima operator dikekalkan sebagai current live wording:
+  - `EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide`
+- image merge prompt dan video lock prompt mesti guna anchor yang sama
+- Notion pages berkaitan mesti treat wording baru ini sebagai override yang menang atas blok prompt lama
+
+**Files patched:**
+- `products/CAP_BURUNG_MINYAK.yaml` — scale anchor and image-lock wording tightened
+- `BOSMAX_INPUT_HELPER_v1.md` — helper anchor updated
+- `BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — image benchmark anchor updated
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md` — video benchmark anchor updated
+- `BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md` — mixed benchmark anchor updated
+- `BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md` — multi-product benchmark anchor updated
+- `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md` — dry-run anchor updated
+- `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — video dry-run anchor updated
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 033 — 2026-06-02
 **Status:** MWCB SCALE ANCHOR UPDATED FOR CROSS-ENGINE STABILITY
 **Active Mode:** null

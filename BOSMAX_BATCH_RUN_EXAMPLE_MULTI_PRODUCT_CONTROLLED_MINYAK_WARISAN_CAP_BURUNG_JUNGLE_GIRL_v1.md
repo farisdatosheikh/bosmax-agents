@@ -33,7 +33,7 @@ This example uses:
 ### Product A
 - `Minyak Warisan Cap Burung`
 - variant: `30ML WG40 Bottle`
-- scale anchor: `EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized`
+- scale anchor: `EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide`
 
 ### Product B
 - `Minyak Jungle Girl`
@@ -69,7 +69,7 @@ Product list:
 - Product: Minyak Warisan Cap Burung
   Variant: 30ML WG40 Bottle
   Target count: 5
-  Scale anchor: EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized
+  Scale anchor: EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide
 - Product: Minyak Jungle Girl
   Variant: 30ML JG01
   Target count: 5

@@ -184,7 +184,7 @@ Base task mode: IMAGE
 Base branch: IMAGE + SELLING_POSTER
 Product name: Minyak Warisan Cap Burung
 Variant: 30ml WG40 Glass Bottle
-Scale anchor: EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized
+Scale anchor: EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide
 
 Keep fixed:
 - avatar identity
