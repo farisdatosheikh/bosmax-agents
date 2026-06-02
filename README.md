@@ -154,6 +154,13 @@ Fail ini memberi 3 Block 2 opener templates yang terus boleh dipakai:
 - `direct recommendation UGC`
 - `savage sell-through UGC`
 
+**Grok capability wording rule:** BOSMAX kini membezakan tiga layer truth dengan jelas:
+- `public xAI docs truth`
+- `observed SuperGrok app/UI truth`
+- `BOSMAX operating contract`
+Jangan present `6s/10s` sebagai hard official xAI limitation; ia adalah BOSMAX
+block contract untuk workflow deterministik.
+
 **First real front-door dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
 Fail ini menunjukkan satu walkthrough operator sebenar untuk:
 - `Minyak Warisan Cap Burung`

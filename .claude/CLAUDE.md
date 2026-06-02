@@ -336,6 +336,8 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
    · Clean commercial → VEO_3_1_LITE atau SEEDANCE_2_0
    · Image-to-video → GOOGLE_FLOW atau KLING_3_0
    · Long form (>15s) → VEO_3_1
+   · GROK 16s–30s → explain bahawa ini berjalan sebagai BOSMAX chained-extension workflow,
+     bukan kerana BOSMAX claim public API single-block limit telah berubah
 
 → PRESENT pilihan kepada user:
    "Untuk [platform] [duration]s, saya cadangkan:
@@ -864,11 +866,13 @@ pre_output_checklist_status: null → "PENDING" | "PASSED" | "FAILED"
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ SEEDANCE_2_0     ║ 15s      ║ 5,10,15s                     ║ Standard 9-section script    ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
-║ GROK             ║ 10s      ║ 6s atau 10s per block        ║ FORBIDDEN: NANO BANANA       ║
+║ GROK             ║ 10s      ║ 6s atau 10s per BOSMAX block ║ FORBIDDEN: NANO BANANA       ║
 ║                  ║          ║ (user pilih base unit)       ║ MULTI-BLOCK jika target > 10s║
 ║                  ║          ║                              ║ DUAL-DURATION: setiap block  ║
 ║                  ║          ║                              ║ boleh 6s atau 10s — user     ║
 ║                  ║          ║                              ║ MESTI confirm sebelum brief  ║
+║                  ║          ║                              ║ OBSERVED SuperGrok app lane: ║
+║                  ║          ║                              ║ chain total boleh sampai 30s ║
 ╠══════════════════╬══════════╬══════════════════════════════╬══════════════════════════════╣
 ║ GOOGLE_FLOW      ║ 60s      ║ T2V/IMAGE: up to 60s         ║ BUKAN 9-section — block arch ║
 ║                  ║          ║ FRAMES/INGREDIENTS: anchor   ║ Pre-render test: 3s/90 frames║
@@ -886,9 +890,17 @@ MULTI-BLOCK TRIGGER MATRIX:
   SEEDANCE_2_0 + 30s → 2 blocks × 15s         ← CONFIRMED TRIGGER (fixed 15s)
 
   GROK MULTI-BLOCK — DUAL-DURATION SPECIAL CASE:
-  GROK mempunyai DUA pilihan base unit: 6s atau 10s.
+  BOSMAX operating contract untuk GROK ialah DUA base unit: 6s atau 10s.
   User MESTI pilih distribution sebelum BOSMAX boleh build Master Narrative Brief.
   BOSMAX MESTI tanya user — JANGAN assume.
+
+  SOURCE SPLIT (jangan campur):
+  - Public xAI docs truth: generation biasa banyak contoh/limit sekitar 15s,
+    extension adds 2–10s pada input 2–15s
+  - Observed SuperGrok app truth: UI/package + empirical usage menunjukkan
+    HD 720p dan chain total boleh sampai 30s
+  - BOSMAX truth: walaupun app lane observed sampai 30s, setiap BOSMAX block
+    untuk GROK kekal dikunci kepada 6s atau 10s sahaja demi continuity control
 
   GROK + 12s → 2×6s (satu-satunya kombinasi valid — masih confirm dengan user)
   GROK + 16s → 10s+6s (satu-satunya kombinasi valid — masih confirm dengan user)

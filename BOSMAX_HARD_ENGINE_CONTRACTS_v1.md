@@ -28,6 +28,24 @@ Forbidden defaults:
 
 ## 2. GROK Hard Contract
 
+### Source split
+
+Do not mix these three layers:
+
+1. Public xAI docs truth
+   - general generation examples/limits commonly show `up to 15s`
+   - extension adds `2–10s`
+
+2. Observed SuperGrok app truth
+   - app/UI entitlement shows `HD 720p, 30-second video`
+   - current empirical BOSMAX usage also supports chain total up to `30s`
+
+3. BOSMAX operating contract
+   - regardless of app/UI total chain allowance, BOSMAX keeps each GROK block at
+     `6s` or `10s` only for deterministic continuity
+
+When explaining GROK capability, always say which layer you mean.
+
 ### Valid duration law
 
 `GROK` only accepts these block durations:

@@ -1259,6 +1259,32 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 044 — 2026-06-03
+**Status:** GROK CAPABILITY WORDING NORMALIZED
+**Active Mode:** null
+**Milestone:** BOSMAX kini membezakan dengan tegas antara `public xAI docs truth`, `observed SuperGrok app/UI truth`, dan `BOSMAX operating contract` untuk Grok video duration. Ini menutup kekeliruan lama yang menjadikan `6s/10s` seolah-olah hard official xAI limit.
+
+**Authority decisions:**
+- `Public xAI docs truth`:
+  - generation biasa banyak dirujuk sekitar `up to 15s`
+  - extension adds `2–10s`
+- `Observed SuperGrok app/UI truth`:
+  - package/UI menunjukkan `HD 720p, 30-second video`
+  - empirical BOSMAX usage juga menyokong chain total sehingga `30s`
+- `BOSMAX operating contract`:
+  - walaupun total chain observed boleh sampai `30s`, setiap BOSMAX block untuk GROK
+    kekal dikunci kepada `6s` atau `10s` demi continuity, pacing, dan seam control
+
+**Files patched:**
+- `.claude/CLAUDE.md` — source split explanation + GROK 30s wording cleanup
+- `.claude/skills/bosmax-script-generator.md` — engine registry note + planning split clarification
+- `BOSMAX_HARD_ENGINE_CONTRACTS_v1.md` — explicit source split section
+- `README.md` — wording rule for Grok capability explanation
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

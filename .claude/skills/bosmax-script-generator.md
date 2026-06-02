@@ -87,11 +87,19 @@ dialogue_carry_over   → last spoken words dari Block N-1 (null untuk Block 1)
 | VEO_3_1 | 56s | 4,6,8,16,24,32,40,48,56s | Standard 9-section script |
 | KLING_3_0 | 15s | 3,5,10,15s | MULTI-BLOCK jika target > 15s |
 | SEEDANCE_2_0 | 15s | 5,10,15s | MULTI-BLOCK jika target > 15s |
-| GROK | 10s | 6,10s | MULTI-BLOCK jika target > 10s — **FORBIDDEN: NANO BANANA** |
+| GROK | 10s | 6,10s per BOSMAX block | MULTI-BLOCK jika target > 10s — **FORBIDDEN: NANO BANANA** |
 | GOOGLE_FLOW | 60s | T2V: up to 60s; FRAMES/INGREDIENTS: anchor-based | Google Flow block architecture — BUKAN 9-section |
 
 > **NOTA:** NANO_BANANA_PRO dan IMAGEN_3 adalah IMAGE ENGINES sahaja.
 > Mereka TIDAK melalui script generator. Route ke bosmax-scene-engine untuk image generation.
+>
+> **IMPORTANT SOURCE SPLIT FOR GROK:**
+> - Public xAI docs currently describe general generation around `up to 15s`
+>   and extension adds `2–10s`
+> - SuperGrok app/UI and current empirical BOSMAX usage indicate chained total
+>   can reach `30s`
+> - BOSMAX operating contract still locks each GROK block to `6s` or `10s`
+>   for deterministic continuity
 
 **ABORT jika engine + duration pairing tidak valid.**
 
@@ -756,6 +764,11 @@ seks, zakar, vagina, pancut, kongkek, blowjob, ubat tahan lama
 ```
 I = duration_target / scene_count
 scene_count: 4 untuk 5–30s | 8 untuk 31–60s
+
+GROK CHAIN NOTE:
+- `duration_target` for BOSMAX planning may go up to `30s` in observed SuperGrok app workflow
+- but every GROK block still uses only `6s` or `10s`
+- total duration != per-block capability
 
 --- LOOKUP WPS DARI TABLE (guna target_language) ---
 wps_optimum  = [dari WPS table — e.g. BM=2.2, EN=3.0, AR=2.2]
