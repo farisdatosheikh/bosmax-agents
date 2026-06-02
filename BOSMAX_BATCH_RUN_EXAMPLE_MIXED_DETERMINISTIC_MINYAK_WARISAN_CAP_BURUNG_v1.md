@@ -32,7 +32,7 @@ This example uses:
 - variant: `30ML WG40 Bottle`
 
 ### Exact scale anchor
-- `EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized`
+- `EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide`
 
 ### Packaging truth
 - WG40 30ml oblong clear flint glass bottle
@@ -79,7 +79,7 @@ Language: Malay
 
 Produk: Minyak Warisan Cap Burung
 Variant: 30ML WG40 Bottle
-Scale anchor: EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized
+Scale anchor: EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide
 
 Image count: 5
 Video count: 5

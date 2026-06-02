@@ -32,7 +32,7 @@ product_status: "Available"
 tagline: "Petua Turun Temurun."
 heritage_year: 1958
 product_type: "Traditional Malay herbal liniment / minyak angin in WG40 glass bottle"
-packaging_type: "WG40 30ML oblong clear flint glass bottle with red ribbed screw cap and internal stopper — compact 30ml oblong clear glass medicated oil bottle with a red ribbed cap, compact travel-friendly, easy to label"
+packaging_type: "WG40 30ML rectangular clear flint glass bottle with red ribbed screw cap and internal stopper — small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, compact travel-friendly, easy to label"
 packaging_color: "High-clarity clear flint glass body showing translucent emerald herbal green oil inside, red ribbed cap on top"
 
 # ─────────────────────────────────────────────
@@ -73,7 +73,7 @@ variants:
     # SCALE ANCHOR — CORRECT VERSION
     # WG40 bottle uses red ribbed cap + hidden stopper. Do NOT describe roller ball.
     # ─────────────────────────────────────────────
-    scale_anchor_descriptor: "EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized"
+    scale_anchor_descriptor: "EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide"
 
     # ─────────────────────────────────────────────
     # LABEL DNA — AUTHORITY FOR ALL IMAGE GENERATION
@@ -113,7 +113,7 @@ variants:
         - "logo distortion or label morphing"
 
     prompt_keywords:
-      - "WG40 30ml oblong clear flint glass bottle"
+      - "WG40 30ml rectangular clear flint glass bottle"
       - "red ribbed screw cap on top — cap is CLOSED, stopper hidden underneath"
       - "translucent emerald herbal green oil visible through clear glass body"
       - "dark forest green label with cream center panel and gold border"
@@ -121,7 +121,7 @@ variants:
       - "bird perched on leafy branch on label — NOT flying"
       - "Sejak 1958 Petua Turun Temurun printed on label"
       - "traditional Malay herbal oil packaging"
-      - "compact 30ml oblong clear glass medicated oil bottle with a red ribbed cap"
+      - "small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap"
 
     # ─────────────────────────────────────────────
     # IMAGE PROMPT LOCKS — FOR AI IMAGE GENERATION
@@ -139,7 +139,7 @@ variants:
       local_edit_delta: >
         [LOCAL_EDIT_DELTA]
         Change only the background, lighting, surface, and camera styling.
-        Do not redesign the product. Do not change the WG40 oblong glass
+        Do not redesign the product. Do not change the WG40 rectangular glass
         geometry, red cap texture, stopper logic, or the oil color.
 
       typography_and_branding_lock: >
@@ -151,13 +151,13 @@ variants:
 
       spatial_math_and_proportions: >
         [SPATIAL_MATH_AND_PROPORTIONS]
-        Maintain the latest approved WG40 bottle scale exactly: a compact 30ml
-        oblong clear glass medicated oil bottle with a red cap, naturally
-        hand-sized. Keep the exact bottle-to-cap proportion from the reference
-        image. Preserve rigid WG40 glass geometry with no stretching. Keep the
-        cap red and ribbed, keep the stopper hidden, and keep the oil as a
-        deeper translucent emerald herbal green distinct from the sticker
-        green.
+        Maintain the latest approved WG40 bottle scale exactly: a small
+        pocket-size 30ml rectangular clear glass medicated oil bottle with a
+        red ribbed cap, shorter than the palm and only two fingers wide. Keep
+        the exact bottle-to-cap proportion from the reference image. Preserve
+        rigid WG40 glass geometry with no stretching. Keep the cap red and
+        ribbed, keep the stopper hidden, and keep the oil as a deeper
+        translucent emerald herbal green distinct from the sticker green.
 
       output_specification: >
         [OUTPUT_SPECIFICATION]
@@ -546,7 +546,7 @@ registered_by: "farisdatosheikh@gmail.com"
 registered_date: "2026-05-29"
 last_updated: "2026-06-01"
 notes: |
-  Produk tradisional Melayu sejak 1958. 30ML WG40 oblong clear glass bottle with red cap and stopper.
+  Produk tradisional Melayu sejak 1958. 30ML WG40 rectangular clear glass bottle with red cap and stopper.
   14 manfaat rasmi dari label produk.
   20 copywriting angles disusun oleh BOSMAX (A01-A20).
   Angles A15-A20 adalah creative expansion dari benefit asas.

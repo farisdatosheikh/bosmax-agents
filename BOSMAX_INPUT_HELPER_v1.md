@@ -119,7 +119,7 @@ If unsure, choose the broadest honest category first.
 
 | Product | Variant | Scale anchor |
 |---|---|---|
-| `Minyak Warisan Cap Burung` | `30ml WG40 Glass Bottle` | `EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized` |
+| `Minyak Warisan Cap Burung` | `30ml WG40 Glass Bottle` | `EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide` |
 | `Minyak Jungle Girl` | `30ml Massage Oil JG01` | `EXACTLY a compact 30ml massage oil bottle size, naturally hand-sized` |
 
 ### Sensitive products

@@ -55,7 +55,7 @@ The operator should fill the fields by reading `BOSMAX_INPUT_HELPER_v1.md`.
 | `platform` | `TikTok` |
 | `language` | `Malay` |
 | `category` | `Health & Wellness / Traditional Remedy` |
-| `scale_anchor` | `EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized` |
+| `scale_anchor` | `EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide` |
 | `avatar_image` | uploaded female lifestyle avatar |
 | `product_image` | uploaded product packshot |
 | `scene_preference` | warm premium Malay household shelf mood |
@@ -92,7 +92,7 @@ Language: Malay
 Product name: Minyak Warisan Cap Burung
 Variant: 30ml WG40 Glass Bottle
 Category: Health & Wellness / Traditional Remedy
-Scale anchor: EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized
+Scale anchor: EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide
 
 Avatar input:
 - uploaded female lifestyle avatar
@@ -139,7 +139,7 @@ Current task mode: IMAGE
 Current branch: IMAGE + SELLING_POSTER
 Product name: Minyak Warisan Cap Burung
 Variant: 30ml WG40 Glass Bottle
-Scale anchor: EXACTLY a compact 30ml oblong clear glass medicated oil bottle with a red cap, naturally hand-sized
+Scale anchor: EXACTLY a small pocket-size 30ml rectangular clear glass medicated oil bottle with a red ribbed cap, shorter than the palm and only two fingers wide
 
 Preserve these locks:
 - avatar identity

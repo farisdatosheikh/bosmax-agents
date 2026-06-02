@@ -767,6 +767,34 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 033 — 2026-06-02
+**Status:** MWCB SCALE ANCHOR UPDATED FOR CROSS-ENGINE STABILITY
+**Active Mode:** null
+**Milestone:** Minyak Warisan Cap Burung kini tidak lagi bergantung pada keyword `oblong`, yang terlalu longgar untuk Grok dan Gemini. Scale anchor diubah kepada bentuk yang lebih universal dan lebih ketat terhadap saiz tangan.
+
+**Authority decision:**
+- keyword `oblong` dikeluarkan dari engine-facing scale anchor aktif
+- keyword baru mengutamakan:
+  - `small pocket-size`
+  - `rectangular clear glass`
+  - `red ribbed cap`
+  - `shorter than the palm`
+  - `only two fingers wide`
+- objective lane ini ialah mengurangkan drift hero-bottle / oversized-bottle pada Gemini dan Grok sambil kekalkan ChatGPT compatibility
+
+**Files patched:**
+- `products/CAP_BURUNG_MINYAK.yaml` — packaging wording, scale anchor, prompt keywords, and spatial-math block updated
+- `BOSMAX_INPUT_HELPER_v1.md` — MWCB scale anchor normalized to new cross-engine wording
+- `BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — benchmark anchor updated
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md` — benchmark anchor updated
+- `BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md` — benchmark anchor updated
+- `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md` — operator anchor updated
+- `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — operator anchor updated
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 032 — 2026-06-02
 **Status:** BOSMAX SERUM 10ML COMPANION STACK + MARKET TRUTH AUDIT INSTALLED
 **Active Mode:** null
