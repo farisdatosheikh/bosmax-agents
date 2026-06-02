@@ -296,11 +296,15 @@ HARD BLOCK (wajib STOP):
   apabila visual evidence menunjukkan produk/avatar lain
 - JANGAN skip visual-first sandbox prebuild apabila label produk jelas tetapi
   registry miss
+- JANGAN tanya ukuran cm atau kategori generik jika gambar sudah cukup jelas
+  untuk establish scale class + product class bagi prompt generation
 
 AUTO-PROCEED (boleh proceed tanpa tunggu):
 - Produk ada nama jelas visible dalam gambar → scan, declare, proceed
 - Avatar jelas visible → extract DNA, set USER_UPLOAD, proceed
 - Setting jelas → describe, proceed
+- Produk household/commercial jelas dari label + visual usage context → bina
+  visual-first sandbox stub, proceed dengan baki minimum sahaja
 
 ABSOLUTE PRIORITY ORDER (tidak boleh di-override):
   1. Visual evidence dalam gambar (TERTINGGI)
@@ -360,6 +364,9 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
    · CALM_EXPLAINER      → pace perlahan hanya jika user minta
 → Default rules:
    · TikTok household / UGC / recommendation → BRISK_UGC
+   · BM commercial / recommendation / household UGC → dialogue wajib
+   · "pure visual / no dialog / WPS: 0" FORBIDDEN kecuali user explicit minta
+     montage sunyi / music-only / text-only
    · JANGAN guna CALM_EXPLAINER untuk GROK UGC tanpa explicit request user
 → Present kepada user:
    "Dialog budget Block 1 = [x] words | Block 2 = [y] words | pace = [class]"
@@ -413,6 +420,11 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 - JIKA user reject storyboard: revise, present semula, tunggu approval
 - JIKA single block: storyboard ringkas masih wajib (SB_03 format)
 - JANGAN guna pace perlahan untuk GROK UGC recommendation jika user tidak minta
+- JANGAN emit video commercial BM tanpa dialog kecuali user explicit minta no-dialog
+- JANGAN guna `pure visual`, `WPS: 0`, atau `silent lifestyle` sebagai default
+  untuk TikTok UGC/commercial video
+- JANGAN invent GROK distribution seperti `12s + 8s`, `8s + 8s`, atau extension math
+  liar; GROK hanya sah pada block 6s atau 10s
 ```
 
 ---
@@ -432,6 +444,7 @@ VISUAL ENFORCEMENT
 SANDBOX ENFORCEMENT
 ☐ Jika registry miss + visual evidence jelas → visual-first sandbox active
 ☐ MINI-INTAKE hanya tanya field yang belum proven oleh visual
+☐ Tiada soalan redundant tentang kategori/packaging/ukuran cm jika visual sudah cukup
 ☐ sandbox_product_record atau product_record non-null sebelum route
 
 VIDEO ENFORCEMENT
@@ -441,6 +454,8 @@ VIDEO ENFORCEMENT
 ☐ Storyboard approved
 ☐ WPS budget declared per block
 ☐ pace_class declared
+☐ Jika BM commercial / UGC / TikTok video → dialog wajib hadir
+☐ Jika engine = GROK → semua block durations hanya 6s atau 10s
 ☐ GROK image-to-video persistence locks declared jika ada reference image
 
 OUTPUT ENFORCEMENT

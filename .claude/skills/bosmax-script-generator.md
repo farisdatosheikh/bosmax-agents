@@ -63,6 +63,7 @@ visual_product_summary → exact label / packaging / scale summary dari visual s
 storyboard_approved   → YES | NO
 pace_class            → BRISK_UGC | NATURAL_COMMERCIAL | CALM_EXPLAINER
 dialog_budget_words   → total words ceiling dari upstream storyboard/work order
+dialogue_required     → YES | NO
 
 --- MULTI-BLOCK FIELDS (diisi oleh BOSMAX — null untuk single-block) ---
 multi_block_mode      → YES | NO
@@ -779,6 +780,29 @@ pace_class = [BRISK_UGC | NATURAL_COMMERCIAL | CALM_EXPLAINER]
 action_density = [one beat every 2–3s | standard | sparse]
 ```
 
+**UGC dialogue mandate:**
+```
+Jika content_type = commercial / recommendation / household UGC
+dan target_language = Malay:
+→ dialogue_required MESTI = YES
+→ Section 6 TIDAK BOLEH kosong
+→ `pure visual`, `no dialog`, `WPS: 0`, atau silent-lifestyle default = FORBIDDEN
+→ pengecualian hanya jika user explicit minta montage sunyi / music-only / text-only
+```
+
+**GROK hard contract examples:**
+```
+12s total  → 6s + 6s
+16s total  → 10s + 6s
+20s total  → 10s + 10s
+
+FORBIDDEN:
+- 12s base + 8s extension
+- 8s + 8s untuk GROK
+- single monolithic 20s block
+- calm premium silence sebagai default TikTok UGC pace
+```
+
 ---
 
 ## DIALOG PRE-BUDGET — WAJIB KIRA SEBELUM TULIS SECTION 6
@@ -1017,9 +1041,12 @@ Video engine renders clean footage only. No burned-in text.
 - ABORT jika GOOGLE_FLOW F2V dipilih tanpa KEDUA-DUA start frame dan end frame
 - ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
 - ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
+- ABORT jika engine = GROK dan mana-mana block duration bukan 6s atau 10s
 - ABORT jika `dialogue_authority_mode = SCRIPT_REGISTRY` tetapi `dialogue_payload_resolved` null / incomplete
 - ABORT jika `storyboard_approved != YES`
 - ABORT jika `dialog_budget_words` null atau pace_class null
+- ABORT jika `dialogue_required = YES` tetapi output cuba jadi `pure visual`, `no dialog`,
+  atau WPS effectively 0
 - ABORT jika `visual_authority_source = USER_UPLOAD | SANDBOX_VISUAL` tetapi output cuba
   menggunakan persona/product lain dari visual scan
 - JANGAN generate Block N tanpa Master Narrative Brief sebagai authority

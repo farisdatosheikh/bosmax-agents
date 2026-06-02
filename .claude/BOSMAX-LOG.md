@@ -1181,6 +1181,31 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 041 — 2026-06-03
+**Status:** HARD ANTI-STUPIDITY CONTRACTS INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini fail-closed terhadap tiga stupidity classes paling mahal: `GROK fake block math`, `BM commercial UGC tanpa dialog`, dan `sandbox friction loop` yang bertanya benda sudah jelas dalam gambar.
+
+**New hard laws:**
+- `BM COMMERCIAL UGC DIALOGUE MANDATE` — video BM commercial / recommendation / household UGC kini wajib ada dialog; `pure visual`, `no dialog`, dan `WPS: 0` kini invalid kecuali user explicit minta montage sunyi / music-only / text-only
+- `GROK HARD CONTRACT` — GROK hanya sah pada block `6s` atau `10s`; `16s = 10+6`, `20s = 10+10`; `12+8`, `8+8`, dan fake extension math kini banned
+- `CLAUDE LOW-FRICTION SANDBOX` — jika gambar sudah prove product class, packaging, avatar, dan scale class, sistem tidak lagi boleh tanya ukuran `cm`, packaging yang sudah nampak, atau kategori generik yang tidak menambah nilai kepada prompt generation
+- `GEMINI ANTI-DRIFT CONTRACT` — preserve avatar, packaging, framing class, dan product-to-body ratio; hero-object inflation dan reinterpretation drift kini diisytihar fail
+- `FINAL PRE-OUTPUT KILL-SWITCH` — output tidak boleh lepas jika visual scan, block math, storyboard, WPS, pace class, atau dialog mandate gagal
+
+**Files patched:**
+- `.claude/CLAUDE.md` — dialogue mandate, GROK ban list, sandbox low-friction rule, enforcement checklist upgrade
+- `.claude/skills/bosmax-requirement-analyst.md` — dialogue_required default, no-cm sandbox rule, no pure-visual BM commercial UGC rule
+- `.claude/skills/bosmax-script-generator.md` — dialogue_required field, UGC dialogue mandate, GROK 12/16/20 contract examples, abort rules
+- `.claude/skills/bosmax-compliance-gate.md` — BM commercial dialogue audit, GROK duration audit, fake-extension audit
+- `BOSMAX_SANDBOX_ON_THE_FLY_TEMPLATES_v1.md` — low-friction sandbox mini-intake, GROK 20s contract, checklist hardening
+- `BOSMAX_ENGINE_SPECIFIC_SELF_HEALING_VARIANTS_v1.md` — GROK repair reminder kini include dialogue mandate + 20s = 10+10
+- `BOSMAX_HARD_ENGINE_CONTRACTS_v1.md` — operator-facing authority file untuk anti-stupidity lane
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

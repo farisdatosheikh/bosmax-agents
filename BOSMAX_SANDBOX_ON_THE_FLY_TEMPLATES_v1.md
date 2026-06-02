@@ -42,10 +42,11 @@ Saya sudah detect dari gambar:
 - Brand/logo: [brand/logo]
 - Packaging: [shape + colour + approximate scale]
 
-Saya perlukan 3 benda sahaja untuk proceed:
-1. Jenis / kategori produk?
-2. Scale anchor confirm: sebesar apa berbanding benda harian?
-3. Platform + bahasa output?
+Saya akan proceed dengan visual-first sandbox.
+Saya cuma tanya baki minimum yang masih belum jelas:
+1. Platform?
+2. Bahasa output?
+3. [optional] Satu field sahaja yang benar-benar belum cukup, jika ada
 ```
 
 ---
@@ -115,13 +116,35 @@ Mandatory:
 - preserve same framing class unless storyboard says otherwise
 - preserve same product size relative to body/hands
 - brisk UGC pacing
+- if BM commercial / recommendation / TikTok UGC: dialogue is mandatory
 - no slow premium pauses
 - no single 16s monolithic block
 ```
 
 ---
 
-## 7. Internal Pre-Output Checklist
+## 7. GROK 20s Contract Template
+
+```text
+Engine: GROK
+Duration: 20s
+Block distribution: Block 1 = 10s, Block 2 = 10s
+
+Mandatory:
+- use uploaded image as absolute visual authority
+- storyboard first, prompt second
+- preserve same avatar, product, label, framing class, and scale class
+- brisk UGC pacing
+- if BM commercial / recommendation / TikTok UGC: dialogue is mandatory
+- declare WPS budget per block
+- no `12s base + 8s extension`
+- no fake extension math
+- no single 20s monolithic block
+```
+
+---
+
+## 8. Internal Pre-Output Checklist
 
 Do not release the prompt unless all pass.
 
@@ -136,5 +159,7 @@ Do not release the prompt unless all pass.
 ☐ block math valid
 ☐ WPS budget valid
 ☐ pace_class declared
+☐ if BM commercial UGC video: dialogue present
+☐ if engine = GROK: only 6s or 10s blocks used
 ☐ Grok persistence lock present if reference image used
 ```

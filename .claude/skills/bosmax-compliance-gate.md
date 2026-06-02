@@ -109,11 +109,14 @@ Use language-specific WPS from script-generator authority:
   — block math valid
   — WPS budget declared
   — pace_class declared
+  — jika BM commercial / UGC / TikTok video: dialog hadir dan bukan `WPS: 0`
 
 ☐ GROK image-to-video outputs:
   — persistence lock ada
   — crop/framing lock ada
   — pace/action-density lock ada
+  — semua block durations sah: 6s atau 10s sahaja
+  — tiada fake extension math seperti `12s + 8s`
 
 ---
 
@@ -491,6 +494,7 @@ Use language-specific WPS from script-generator authority:
 ║ Section count wrong (Mode B) │ Rebuild missing/extra section        ║
 ║ Missing pace_class           │ Inject dari work order / rebuild S8  ║
 ║ Missing GROK persistence lock│ Inject lock block, re-audit          ║
+║ Missing BM UGC dialogue      │ Rebuild Section 6 + recalc WPS       ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 

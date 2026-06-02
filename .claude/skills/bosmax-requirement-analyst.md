@@ -245,6 +245,9 @@ IMPLICIT_13 — WPS + PACE GOVERNANCE:
       NATURAL_COMMERCIAL = standard commercial
       CALM_EXPLAINER     = only if user explicitly asks slow / soft / cinematic
   → GROK household / recommendation content default = BRISK_UGC
+  → BM commercial / recommendation / TikTok household UGC default = dialogue_required = YES
+  → `pure visual`, `no dialog`, `WPS: 0` hanya valid jika user explicit minta
+    montage sunyi / music-only / text-only
   → Storyboard MESTI carry:
       · word budget per block
       · pace_class
@@ -375,6 +378,7 @@ STORYBOARD OUTLINE — format dalam WORK ORDER:
 
   STORYBOARD STATUS: PENDING USER APPROVAL
   → JANGAN dispatch ke bosmax-script-generator tanpa storyboard approved
+  → Jika BM commercial / TikTok UGC: Dialogue field TIDAK BOLEH kosong
 ```
 
 ---
@@ -557,3 +561,7 @@ Selepas emit → proceed terus ke route yang diminta tanpa soalan tambahan.
 - JIKA visual scan reveal produk berbeza dari teks: flag conflict, tanya user
 - JANGAN dispatch video tanpa word budget per block + pace_class
 - JANGAN tanya semula identity/packaging yang sudah proven oleh visual_product_stub
+- JANGAN tanya ukuran cm jika visual sudah cukup establish scale class untuk video/image prompt
+- JANGAN cadang `pure visual / no dialog` untuk BM commercial UGC video kecuali
+  user explicit minta montage senyap / music-only
+- JANGAN propose GROK block math selain block 6s atau 10s

@@ -129,7 +129,10 @@ Mandatory repair rules:
 - brisk UGC pace by default unless explicitly requested otherwise
 - no dead air
 - no premium-slow cinematic drag unless explicitly requested
+- if BM commercial / recommendation / TikTok UGC: dialogue is mandatory
+- `pure visual`, `no dialog`, `WPS: 0` = invalid unless explicitly requested
 - for GROK 16s, use 10s + 6s unless another valid split is explicitly confirmed
+- for GROK 20s, use 10s + 10s
 - return storyboard summary + block distribution + corrected block prompts
 ```
 
