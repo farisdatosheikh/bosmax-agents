@@ -180,12 +180,13 @@ Why this is the first benchmark:
 - strong retail use case
 - easy to visually audit
 
-If this batch behaves well, the next recommended benchmark is:
-- `BATCH_VIDEO_FRESH`
+Companion benchmark now available:
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md`
 - same product
+- `BATCH_VIDEO_FRESH`
 - `10` outputs
-- single engine
-- fixed duration
+- `KLING_3_0`
+- `10s`
 
 ---
 

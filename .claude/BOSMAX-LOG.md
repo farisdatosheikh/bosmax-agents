@@ -689,6 +689,27 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 022 — 2026-06-02
+**Status:** SECOND REAL BATCH RUN EXAMPLE INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada benchmark batch video fresh kedua untuk produk live supaya operator boleh bandingkan lane image dan lane video dengan produk authority yang sama.
+
+**Authority decision:**
+- produk benchmark kedua dikekalkan: `Minyak Warisan Cap Burung`
+- batch type benchmark kedua: `BATCH_VIDEO_FRESH`
+- engine benchmark kedua: `KLING_3_0`
+- duration benchmark kedua: `10s`
+- contoh ini berfungsi sebagai operator example, bukan authority logic baru
+
+**Files patched:**
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md` — complete intake block + approved Variant Plan example
+- `BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — operator notes updated to point to companion video benchmark
+- `README.md` — companion video benchmark exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 021 — 2026-06-02
 **Status:** FIRST REAL BATCH RUN EXAMPLE INSTALLED
 **Active Mode:** null
