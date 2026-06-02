@@ -243,3 +243,9 @@ notes: |
   BOSMAX Serum should now be treated as a reference-bound sensitive flagship
   product for image and video lanes, not merely a dialogue-strong registry
   entry.
+  Market-truth audit status on 2026-06-02:
+  - local FASTMOSS workbook sweep found no confirmed direct listing for
+    BOSMAX Serum / BOSMAX Herbs / BOSMAX Herbal Oil Roll On
+  - therefore shop_name, tiktok_product_id, fastmoss_product_name, and
+    numeric market metrics remain intentionally unverified
+  - see BOSMAX_SERUM_MARKET_TRUTH_AUDIT_v1.md before backfilling any market data

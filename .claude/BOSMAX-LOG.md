@@ -767,6 +767,31 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 032 — 2026-06-02
+**Status:** BOSMAX SERUM 10ML COMPANION STACK + MARKET TRUTH AUDIT INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX Serum kini mempunyai companion stack penuh untuk `10ML` dan layer market truth tidak lagi kosong tanpa penjelasan; ia kini diaudit secara fail-closed.
+
+**Authority decision:**
+- companion stack dibuka untuk `BOSMAX Serum` variant `10ML`
+- image companion benchmark: `BATCH_IMAGE_SELLING`
+- video companion benchmark: `BATCH_VIDEO_FRESH`
+- operator dry run companion dipilih pada `VIDEO + NONE`
+- market truth BOSMAX Serum tidak dipaksa dengan angka rekaan
+- local FASTMOSS workbook sweep disahkan tiada direct listing BOSMAX Serum/BOSMAX Herbs dalam data tempatan semasa
+
+**Files patched:**
+- `BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_10ML_v1.md` — 10ML companion sensitive image benchmark
+- `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_10ML_v1.md` — 10ML companion sensitive video benchmark
+- `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_10ML_v1.md` — 10ML companion sensitive operator walkthrough
+- `BOSMAX_SERUM_MARKET_TRUTH_AUDIT_v1.md` — fail-closed product-intelligence audit for missing direct listing
+- `products/BOSMAX_SERUM.yaml` — market-truth audit status documented in registry notes
+- `README.md` — 10ML companion stack and market audit exposed in repo authority structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 031 — 2026-06-02
 **Status:** BOSMAX SERUM FLAGSHIP BENCHMARK STACK INSTALLED
 **Active Mode:** null

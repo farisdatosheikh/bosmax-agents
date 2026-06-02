@@ -30,12 +30,15 @@ BOSMAX/
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
+├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_10ML_v1.md ← 10ML companion sensitive operator walkthrough
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real video batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real mixed batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md ← First real multi-product batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_v1.md ← First sensitive image benchmark for BOSMAX Serum
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_v1.md ← First flagship sensitive video benchmark for BOSMAX Serum
+├── BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_10ML_v1.md ← 10ML companion sensitive image benchmark
+├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_10ML_v1.md ← 10ML companion sensitive video benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MAVERIX_MAXOIL_v1.md ← First sensitive Maverix video benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_SENSITIVE_BOSMAX_SERUM_MAVERIX_MAXOIL_v1.md ← First sensitive multi-product benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_MAVERIX_MAXOIL_v1.md ← First sensitive image benchmark
@@ -48,6 +51,7 @@ BOSMAX/
 ├── Model_Behaviour_v1_STRICT.yaml   ← Model behaviour rules
 ├── Platform_Specs_v1_STRICT.yaml    ← Platform spec reference
 └── SCRIPT_REGISTRY_UNIFIED.md       ← Unified script registry
+├── BOSMAX_SERUM_MARKET_TRUTH_AUDIT_v1.md ← Fail-closed market truth audit for BOSMAX Serum
 `
 
 ---
@@ -211,6 +215,24 @@ Fail ini menunjukkan satu contoh video benchmark sensitif flagship untuk:
 - `10` outputs
 - dialogue authority: `male_health_stealth_01 / EGO_01`
 
+**Sensitive BOSMAX Serum 10ML companion image benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_IMAGE_SENSITIVE_BOSMAX_SERUM_10ML_v1.md`.
+Fail ini menunjukkan companion benchmark untuk:
+- `BOSMAX Serum`
+- `10ML`
+- `BATCH_IMAGE_SELLING`
+- `10` outputs
+- owner-supplied `10ML` reference-bound product truth
+
+**Sensitive BOSMAX Serum 10ML companion video benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_BOSMAX_SERUM_10ML_v1.md`.
+Fail ini menunjukkan companion benchmark untuk:
+- `BOSMAX Serum`
+- `10ML`
+- `BATCH_VIDEO_FRESH`
+- `KLING_3_0`
+- `10s`
+- `10` outputs
+- dialogue authority: `male_health_stealth_01 / EGO_01`
+
 **BOSMAX Serum visual hardening:** `products/BOSMAX_SERUM.yaml` kini bukan lagi sekadar dialogue-strong registry entry.
 Ia kini memegang:
 - variant-specific `reference_assets`
@@ -226,6 +248,21 @@ Fail ini menunjukkan walkthrough operator sebenar untuk:
 - `KLING_3_0`
 - `10s`
 - `Input Helper → Ignition → Repair → Variation`
+
+**10ML companion operator dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_10ML_v1.md`.
+Fail ini menunjukkan walkthrough operator sebenar untuk:
+- `BOSMAX Serum`
+- `10ML`
+- `VIDEO + NONE`
+- `KLING_3_0`
+- `10s`
+- `Input Helper → Ignition → Repair → Variation`
+
+**BOSMAX Serum market truth audit:** rujuk `BOSMAX_SERUM_MARKET_TRUTH_AUDIT_v1.md`.
+Fail ini menerangkan status product-intelligence layer semasa:
+- local FastMoss workbook sweep telah dibuat
+- tiada direct listing BOSMAX Serum yang disahkan dalam data tempatan
+- market fields kekal fail-closed sehingga listing sebenar ditemui
 
 **Front-door lock-down sequence:**
 1. gunakan `BOSMAX_INPUT_HELPER_v1.md` untuk isi field dengan betul
