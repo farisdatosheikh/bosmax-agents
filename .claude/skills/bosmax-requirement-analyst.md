@@ -49,6 +49,51 @@ Dengan Story Editor: Brief mentah → dianalisa → semua implikasi resolved
 
 ## REQUIREMENT EXTRACTION FRAMEWORK
 
+### LAYER 0 — VISUAL SCAN (WAJIB PERTAMA SEKALI bila gambar/video ada)
+
+**Ini adalah step pertama dalam requirement extraction. Sebelum baca teks, scan visual.**
+
+```
+TRIGGER: Ada gambar, video, atau frames dalam request.
+
+VISUAL SCAN STEPS:
+
+VS_01 — DESCRIBE FIRST:
+  Huraikan semua yang nampak secara neutral sebelum buat assumption apa-apa.
+  Ini memaksa AI "melihat" bukan "mengingat".
+
+VS_02 — AVATAR READ:
+  Detect manusia → extract:
+    gender, ethnicity, age range, wardrobe, hijab(yes/no+warna),
+    accessories, skin tone, expression, posture
+  SET: avatar_record.source = USER_UPLOAD
+  LOCK: Jangan override dengan registry persona dari teks atau memory
+
+VS_03 — PRODUCT READ:
+  Detect produk → baca LABEL dalam gambar:
+    nama produk (dari gambar — bukan dari teks user)
+    brand, packaging color/shape, scale estimate
+  CROSS-CHECK: products/*.yaml
+  RESULT: FOUND / NOT_FOUND / PARTIAL / UNCLEAR
+
+VS_04 — RESOLVE AMBIGUITY:
+  Jika produk TIDAK JELAS (tiada nama visible): TANYA user
+  Jika produk JELAS (ada nama): proceed dengan declaration
+  JANGAN assume produk dari session memory
+
+VS_05 — INJECT VISUAL DATA:
+  Masukkan semua visual data ke extraction state sebelum proceed ke LAYER 1
+  Visual data ini adalah PRIMARY — ia override teks jika conflicting
+
+ABSOLUTE PRIORITY ORDER dalam extraction:
+  1. Visual evidence (TERTINGGI)
+  2. Teks user dalam request (KEDUA)
+  3. Session memory / context (KETIGA)
+  4. Registry defaults (PALING RENDAH)
+```
+
+---
+
 ### LAYER 1 — EXPLICIT REQUIREMENTS
 Benda yang user nyatakan secara terus.
 
@@ -270,6 +315,36 @@ CONFLICT TYPE 5 — Ambiguous Request:
 
 ---
 
+## STORYBOARD REQUIREMENT (VIDEO REQUESTS)
+
+**Requirement Analyst MESTI include storyboard outline dalam WORK ORDER untuk
+semua video requests. Ini wajib sebelum bosmax-script-generator boleh proceed.**
+
+```
+STORYBOARD OUTLINE — format dalam WORK ORDER:
+
+  ENGINE SELECTED: [engine_id] (declared oleh user / cadangan analyst)
+  BLOCK MATH: [total]s / [N] blocks × [Ys each] / GROK: [B1=Xs, B2=Ys]
+
+  STORY BEATS:
+  Block 1 ([duration]s):
+    Opening:        [visual + action awal]
+    Product moment: [bila dan macam mana produk muncul]
+    Dialogue:       "[dialog penuh — dalam bahasa yang diminta]"
+    End state:      [visual position akhir block]
+
+  Block 2 ([duration]s): [jika ada]
+    Start state:    [= end state Block 1]
+    Continuation:   [visual + action]
+    Dialogue:       "[sambungan dialog — no restart]"
+    End state:      [visual akhir]
+
+  STORYBOARD STATUS: PENDING USER APPROVAL
+  → JANGAN dispatch ke bosmax-script-generator tanpa storyboard approved
+```
+
+---
+
 ## OUTPUT CONTRACT
 
 Requirement Analyst emit SATU daripada dua outputs:
@@ -435,3 +510,12 @@ Selepas emit → proceed terus ke route yang diminta tanpa soalan tambahan.
 - ABORT jika Mode C dipanggil tanpa source_image_handoff
 - ABORT jika Google Flow FRAMES dipanggil tanpa dua gambar
 - ABORT jika Google Flow INGREDIENTS dipanggil tanpa tiga gambar
+
+### VISUAL-SPECIFIC FAIL-CLOSED RULES (v11.4)
+- JANGAN skip LAYER 0 bila ada gambar/video — ini HARD BLOCK
+- JANGAN assume produk dari session memory bila gambar ada produk lain
+- JANGAN load registry persona bila gambar ada avatar (USER_UPLOAD lock)
+- JANGAN emit WORK ORDER untuk video tanpa STORYBOARD OUTLINE included
+- JANGAN dispatch ke script-generator tanpa storyboard diluluskan user
+- JANGAN cadang engine tanpa explain kenapa — user perlu faham pilihan
+- JIKA visual scan reveal produk berbeza dari teks: flag conflict, tanya user

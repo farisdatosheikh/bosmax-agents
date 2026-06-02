@@ -1006,6 +1006,35 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 035 — 2026-06-03
+**Status:** v11.4 PATCH — VISUAL INTAKE GATE + STORYBOARD GATE
+**Active Mode:** null
+**Milestone:** Mandatory visual scan protocol installed. AI kini wajib analyze gambar sebelum PRE-FLIGHT. Gambar adalah sumber kebenaran utama — override session memory dan teks.
+
+**Root cause yang dipatch:**
+AI session sebelum ini menerima gambar Air Cushion (植护) tapi terus default kepada BOSMAX Serum + RIZAL dari session memory. Tiga failures: (1) image tidak dianalisa, (2) product dan avatar dari memory bukan visual, (3) GROK multi-block tidak triggered, (4) tiada storyboard sebelum emit prompt.
+
+**Architecture added:**
+
+| Gate | Trigger | Function |
+|------|---------|----------|
+| VISUAL INTAKE GATE | Ada gambar/video diupload | Paksa scan: describe → avatar DNA → product ID → declare |
+| STORYBOARD GATE | Semua video requests | Engine selection → block math → storyboard outline → user approval → dispatch |
+
+**ABSOLUTE PRIORITY ORDER (baru):**
+1. Visual evidence dalam gambar (TERTINGGI)
+2. Teks yang user tulis (KEDUA)
+3. Session memory / context (KETIGA)
+4. Registry defaults (PALING RENDAH)
+
+**Files patched:**
+- `.claude/CLAUDE.md` — VISUAL INTAKE GATE section (SCAN_01–SCAN_05) + STORYBOARD GATE (SB_01–SB_04), version header v11.4
+- `.claude/skills/bosmax-requirement-analyst.md` — LAYER 0 visual scan, STORYBOARD REQUIREMENT dalam output contract, visual-specific fail-closed rules
+
+*BOSMAX v11.4 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null

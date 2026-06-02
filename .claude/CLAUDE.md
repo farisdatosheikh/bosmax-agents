@@ -8,6 +8,9 @@
 # Changelog v11.3: Added ROUTE D (Analysis Intelligence) — bosmax-image-analyst +
 #                  bosmax-video-analyst. A→B Concept Inheritance with 3-phase
 #                  processing, silo/compliance/scene compatibility checks.
+# Changelog v11.4: Added VISUAL INTAKE GATE (mandatory image/video scan before
+#                  PRE-FLIGHT). Gambar = sumber kebenaran utama. Tambah STORYBOARD
+#                  STEP sebelum emit prompts. Tambah VIDEO ENGINE SELECTION step.
 
 ---
 
@@ -154,6 +157,214 @@ MIXED batches:
 - Setiap row dalam Variant Plan MESTI resolve kepada deterministic single-output route.
 - JANGAN emit prompts batch sebelum Variant Plan approved.
 - `VIDEO + BOSMAX_IMAGE_HANDOFF` dalam batch hanya valid jika handoff pool benar-benar wujud.
+
+---
+
+## VISUAL INTAKE GATE — WAJIB BILA ADA GAMBAR ATAU VIDEO DIUPLOAD
+
+**Ini adalah lapisan PERTAMA SEKALI — berlaku SEBELUM PRE-FLIGHT apabila user
+upload sebarang gambar, video, atau frames.**
+
+**PRINSIP MUTLAK: Gambar yang diupload = SUMBER KEBENARAN UTAMA.**
+**Teks yang user tulis = SECONDARY. Session memory = PALING RENDAH.**
+**JANGAN override visual evidence dengan assumption dari teks atau registry.**
+
+### TRIGGER
+Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
+
+### SCAN SEQUENCE — WAJIB IKUT SUSUNAN. JANGAN SKIP.
+
+**SCAN_01 — DESCRIBE VISUAL (paksa diri huraikan dulu):**
+```
+→ Huraikan semua yang nampak dalam gambar secara neutral:
+   · Persekitaran/setting (indoor/outdoor, lighting, background)
+   · Semua objek visible
+   · Semua manusia visible
+   · Sebarang teks atau label visible dalam gambar
+→ WAJIB laksana ini walaupun gambar nampak "familiar"
+→ JANGAN skip ke assumption
+```
+
+**SCAN_02 — AVATAR DETECTION:**
+```
+→ Ada manusia dalam gambar?
+→ Jika YA → extract visual DNA terus:
+   · gender (baca visual)
+   · ethnicity (baca visual — jangan assume)
+   · age range (estimate dari visual)
+   · wardrobe: warna, jenis pakaian, material estimate
+   · accessories: barang kemas, cermin mata, dll
+   · hijab: yes/no, warna
+   · skin tone descriptor
+   · expression, posture, body language
+   · kedudukan dalam frame
+
+→ SET: avatar_record.source = "USER_UPLOAD"
+→ LOCK: Jangan ganti dengan registry persona (NORA/RIZAL/SARA/dll)
+         walaupun user sebut nama persona dalam teks
+→ Avatar dari gambar > persona dari teks. SELALU.
+```
+
+**SCAN_03 — PRODUCT DETECTION:**
+```
+→ Ada produk dalam gambar?
+→ Jika YA → identify semua visible details:
+   · nama produk TEPAT dari label/packaging dalam gambar
+     (baca apa yang TERTULIS — jangan reka)
+   · brand / logo visible
+   · packaging: warna, bentuk, material
+   · saiz/scale — berapa besar berbanding tangan atau objek lain
+   · sebarang teks lain visible pada produk
+
+→ Cross-reference dengan products/*.yaml:
+   · Jika exact match → load product_record
+   · Jika partial match → flag untuk confirmation
+   · Jika tiada match → set: product_registry_status = "NOT_FOUND"
+     → akan trigger TIER 3 dalam STEP 0
+
+→ HARD RULE — VISUAL WINS OVER TEXT:
+   Jika nama produk dalam GAMBAR berbeza dari apa yang user tulis
+   dalam teks atau dari apa yang ada dalam session memory:
+   → GAMBAR MENANG. SELALU.
+   → JANGAN load produk lain berdasarkan teks sahaja
+   → TANYA user jika genuinely unclear
+```
+
+**SCAN_04 — DECLARE DETECTION:**
+```
+→ Declare kepada user apa yang didetect sebelum proceed:
+
+  FORMAT DECLARATION:
+  "📷 Visual scan complete:
+   Avatar: [gender + ethnicity + wardrobe summary] — USER_UPLOAD locked
+   Produk: [nama dari gambar] — [registry status]
+   Setting: [brief scene description]"
+
+→ Jika produk JELAS (ada nama visible dalam gambar):
+   → Proceed dengan declaration, tak perlu tunggu confirmation
+→ Jika produk TIDAK JELAS (tiada nama, logo tidak clear):
+   → TANYA: "Saya nampak [packaging desc]. Ini produk apa, boss?"
+   → TUNGGU jawapan sebelum proceed ke PRE-FLIGHT
+→ Jika avatar TIDAK JELAS (backview, blurry, tiada manusia):
+   → Set: avatar_source = "VISUAL_UNCLEAR"
+   → Tanya atau proceed dengan scene-only description
+```
+
+**SCAN_05 — PROCEED KE PRE-FLIGHT DENGAN VISUAL DATA:**
+```
+→ Inject visual data ke PRE-FLIGHT sebagai primary input:
+   · avatar_record (dari gambar, bukan registry)
+   · product_name_visual (dari label dalam gambar)
+   · product_registry_status (FOUND / NOT_FOUND / PARTIAL)
+   · scene_context (dari gambar background)
+→ PRE-FLIGHT STEP 0 kemudian gunakan product_name_visual
+  sebagai input untuk lookup, bukan text yang user tulis
+```
+
+### VISUAL INTAKE GATE — FAIL-CLOSED RULES
+
+```
+HARD BLOCK (wajib STOP):
+- JANGAN proceed ke PRE-FLIGHT tanpa SCAN_01–SCAN_04 selesai
+- JANGAN assume produk dari session memory bila ada gambar
+- JANGAN load registry persona bila ada gambar avatar
+- JIKA produk dalam gambar tidak jelas: TANYA dahulu
+
+AUTO-PROCEED (boleh proceed tanpa tunggu):
+- Produk ada nama jelas visible dalam gambar → scan, declare, proceed
+- Avatar jelas visible → extract DNA, set USER_UPLOAD, proceed
+- Setting jelas → describe, proceed
+
+ABSOLUTE PRIORITY ORDER (tidak boleh di-override):
+  1. Visual evidence dalam gambar (TERTINGGI)
+  2. Teks yang user tulis dalam request (KEDUA)
+  3. Session memory / previous context (KETIGA)
+  4. Registry defaults (PALING RENDAH)
+```
+
+---
+
+## STORYBOARD GATE — WAJIB SEBELUM EMIT PROMPTS (VIDEO REQUESTS)
+
+**Berlaku selepas PRE-FLIGHT dan sebelum dispatch ke bosmax-script-generator
+atau bosmax-mode-c-executor untuk sebarang video request.**
+
+**Tujuan: Pastikan cerita video difikirkan sebagai SATU UNIT terlebih dahulu
+sebelum dipecahkan kepada blocks. Tiada prompt boleh keluar tanpa storyboard.**
+
+### TRIGGER
+Aktif untuk semua video requests (Route B, Route C, Route D → video).
+
+### STORYBOARD SEQUENCE
+
+**SB_01 — ENGINE SELECTION (jika belum declared):**
+```
+→ Jika user belum specify engine:
+   CADANGKAN berdasarkan platform + duration + content type:
+   · TikTok UGC raw feel → GROK atau KLING_3_0
+   · Clean commercial → VEO_3_1_LITE atau SEEDANCE_2_0
+   · Image-to-video → GOOGLE_FLOW atau KLING_3_0
+   · Long form (>15s) → VEO_3_1
+
+→ PRESENT pilihan kepada user:
+   "Untuk [platform] [duration]s, saya cadangkan:
+    A) [Engine A] — [sebab]
+    B) [Engine B] — [sebab]
+    Atau boss nak specify sendiri?"
+
+→ Tunggu jawapan SEBELUM proceed ke block math
+```
+
+**SB_02 — BLOCK MATH (selepas engine confirmed):**
+```
+→ Refer ENGINE CONSTRAINT TABLE
+→ Kira: block_count = CEIL(duration / max_per_block)
+→ GROK: present pilihan distribution jika ada lebih dari satu option
+→ Announce block distribution sebelum proceed ke storyboard
+```
+
+**SB_03 — MASTER STORYBOARD:**
+```
+→ WAJIB bina storyboard sebelum generate prompts
+→ Format ringkas (bukan Master Narrative Brief penuh — itu untuk multi-block sahaja):
+
+  STORYBOARD [duration]s / [N] block(s):
+  ┌────────────────────────────────────────┐
+  │ Block 1 ([duration]s):                 │
+  │   Opening: [apa berlaku awal]          │
+  │   Middle:  [apa berlaku tengah]        │
+  │   Product moment: [bila produk focus]  │
+  │   Dialogue: "[dialog penuh]"           │
+  │   End state: [visual akhir block]      │
+  ├────────────────────────────────────────┤
+  │ Block 2 ([duration]s): [jika ada]      │
+  │   Continues from: [end state B1]       │
+  │   ...                                  │
+  └────────────────────────────────────────┘
+
+→ Present storyboard kepada user
+→ Tunggu: OK / edit request
+→ JANGAN generate prompts sebelum storyboard diluluskan
+```
+
+**SB_04 — DISPATCH KE SKILL:**
+```
+→ Selepas storyboard approved → dispatch ke bosmax-script-generator
+  dengan storyboard sebagai authority
+→ Skill generate [N] block prompts berasingan
+→ Setiap block = full structured prompt (9-section atau Google Flow format)
+→ Compliance Gate kemudian audit semua blocks
+```
+
+### STORYBOARD GATE — FAIL-CLOSED RULES
+
+```
+- JANGAN emit prompt terus tanpa storyboard
+- JANGAN skip engine selection jika belum declared
+- JANGAN generate Block 2 tanpa Block 1 end-state dalam storyboard
+- JIKA user reject storyboard: revise, present semula, tunggu approval
+- JIKA single block: storyboard ringkas masih wajib (SB_03 format)
+```
 
 ---
 
