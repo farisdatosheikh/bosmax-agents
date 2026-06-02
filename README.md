@@ -29,6 +29,7 @@ BOSMAX/
 ├── BOSMAX_IGNITION_WORKFLOW_v1.md   ← Front-door ignition / repair / variation templates
 ├── BOSMAX_PROMPT_SELF_HEALING_CHECKLISTS_v1.md ← Copy-paste self-healing reminder checklists for bad image/video prompts
 ├── BOSMAX_ENGINE_SPECIFIC_SELF_HEALING_VARIANTS_v1.md ← Engine-tuned repair reminders for ChatGPT, Gemini, and Grok
+├── BOSMAX_PRODUCT_SPECIFIC_SELF_HEALING_VARIANTS_v1.md ← Product-tuned repair reminders for MWCB, BOSMAX Serum, and Maverix
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
@@ -118,6 +119,12 @@ Fail ini mengetatkan lane repair mengikut kelemahan tipikal setiap engine:
 - `ChatGPT repair reminder`
 - `Gemini repair reminder`
 - `Grok repair reminder`
+
+**Product-specific self-healing variants:** rujuk `BOSMAX_PRODUCT_SPECIFIC_SELF_HEALING_VARIANTS_v1.md`.
+Fail ini mengetatkan lane repair mengikut failure pattern tipikal setiap produk:
+- `MWCB image/video repair variants`
+- `BOSMAX Serum image/video repair variants`
+- `Maverix image/video repair variants`
 
 **First real front-door dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
 Fail ini menunjukkan satu walkthrough operator sebenar untuk:

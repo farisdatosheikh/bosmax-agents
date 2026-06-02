@@ -1121,6 +1121,42 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 039 — 2026-06-03
+**Status:** PRODUCT-SPECIFIC SELF-HEALING VARIANTS INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX self-healing lane kini lengkap dengan layer ketiga: repair prompts yang disesuaikan khas untuk failure pattern produk tertentu, bukan sekadar generic atau engine-level sahaja.
+
+**Products covered:**
+- `Minyak Warisan Cap Burung`
+- `BOSMAX Serum`
+- `Maverix Maxoil`
+
+**Why this was needed:**
+- MWCB selalu rosak pada bottle truth, red cap, label, perched bird, dan scale
+- BOSMAX Serum selalu rosak pada 5ML/10ML scale, black stealth packaging, dan sensitive dialogue positioning
+- Maverix selalu rosak pada 5-bottle set structure, horse-logo packaging cues, dan masculine stealth tone
+
+**New authority:**
+- `BOSMAX_PRODUCT_SPECIFIC_SELF_HEALING_VARIANTS_v1.md`
+
+**What it adds:**
+- 6 repair variants:
+  - MWCB image
+  - MWCB video
+  - BOSMAX Serum image
+  - BOSMAX Serum video
+  - Maverix image
+  - Maverix video
+
+**Repair ladder now live:**
+1. universal self-healing
+2. engine-specific self-healing
+3. product-specific self-healing
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
