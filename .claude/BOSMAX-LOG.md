@@ -489,6 +489,26 @@ Authority semasa untuk generation image/video kini digantikan dengan bottle stat
 
 ---
 
+### Session 026 — 2026-06-02
+**Status:** FRONT-DOOR HELPER + IGNITION LAYERS INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada dua lapisan operator-facing baharu untuk kurangkan kekeliruan newbie sebelum masuk deterministic flow atau batch lane.
+
+**Authority decision:**
+- `BOSMAX_INPUT_HELPER_v1.md` dipasang sebagai field-helper authority
+- `BOSMAX_IGNITION_WORKFLOW_v1.md` dipasang sebagai ignition/repair/variation authority
+- `How To Use` dan `Template Library` patut menunjuk ke dua layer ini, bukan bergantung pada placeholder mentah sahaja
+- helper layer kekal berasingan daripada product registry dan batch benchmark shelves
+
+**Files patched:**
+- `BOSMAX_INPUT_HELPER_v1.md` — front-door operator field helper
+- `BOSMAX_IGNITION_WORKFLOW_v1.md` — ignition, repair, and variation workflow templates
+- `README.md` — front-door lock-down sequence exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 013 — 2026-06-01
 **Status:** CAP BURUNG — WG40 BOTTLE GEOMETRY AUTHORITY RESET
 **Active Mode:** null
@@ -689,7 +709,7 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
-### Session 026 — 2026-06-02
+### Session 027 — 2026-06-02
 **Status:** MAVERIX VISUAL TRUTH HARDENED
 **Active Mode:** null
 **Milestone:** BOSMAX kini bukan sekadar ada dialogue authority untuk Maverix, tetapi sudah ada reference-bound image authority dan benchmark image sensitif pertama.

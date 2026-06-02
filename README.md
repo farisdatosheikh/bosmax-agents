@@ -25,6 +25,8 @@ BOSMAX/
 ├── BOSMAX_DETERMINISTIC_FLOW_v1.md  ← Phase-1 newbie-facing single-output authority
 ├── BOSMAX_BATCH_LANE_v1.md          ← Phase-2 deterministic batch authority
 ├── BOSMAX_BATCH_TEMPLATE_SET_v1.md  ← Production-ready batch intake templates
+├── BOSMAX_INPUT_HELPER_v1.md        ← Front-door field helper for operators
+├── BOSMAX_IGNITION_WORKFLOW_v1.md   ← Front-door ignition / repair / variation templates
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real video batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real mixed batch benchmark
@@ -77,6 +79,21 @@ Semua output melalui bosmax-compliance-gate sebelum sampai kepada pengguna.
 Fail ini mendefinisikan front-door newbie flow untuk:
 - `IMAGE → VIDEO_SUPPORT | SELLING_POSTER`
 - `VIDEO → NONE | IMAGE_REFERENCE | VIDEO_REFERENCE | BOSMAX_IMAGE_HANDOFF`
+
+**Front-door field helper:** rujuk `BOSMAX_INPUT_HELPER_v1.md`.
+Fail ini menormalkan field intake supaya operator tidak perlu teka:
+- platform
+- category wording
+- variant
+- exact scale anchor
+- engine normalization
+- Google Flow / GROK mode hints
+
+**Front-door ignition workflow:** rujuk `BOSMAX_IGNITION_WORKFLOW_v1.md`.
+Fail ini menyediakan operator-ready flow untuk:
+- `IGNITION`
+- `REPAIR`
+- `VARIATION`
 
 **Phase-2 deterministic batch lane:** rujuk `BOSMAX_BATCH_LANE_v1.md`.
 Fail ini mendefinisikan batch sebagai planner/dispatcher di atas single-output flow:
@@ -157,6 +174,13 @@ Fail ini menunjukkan satu contoh image benchmark sensitif sebenar untuk:
 - `BATCH_IMAGE_SELLING`
 - `10` outputs
 - reference-bound product truth from actual FastMoss product images
+
+**Front-door lock-down sequence:**
+1. gunakan `BOSMAX_INPUT_HELPER_v1.md` untuk isi field dengan betul
+2. gunakan `BOSMAX_IGNITION_WORKFLOW_v1.md` untuk first prompt
+3. jika output hampir betul, guna repair template
+4. jika output sudah betul, guna variation template
+5. jika perlu banyak outputs, naik ke batch lane
 
 ---
 
