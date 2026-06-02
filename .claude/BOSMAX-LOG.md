@@ -1157,6 +1157,30 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 040 — 2026-06-03
+**Status:** REPAIR LANE DECISION TREE INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada panduan ringkas untuk operator pilih lane pembetulan prompt yang betul tanpa fikir lama atau cuba semua template secara rawak.
+
+**New authority:**
+- `BOSMAX_REPAIR_LANE_DECISION_TREE_v1.md`
+
+**What it resolves:**
+- bila guna universal self-healing
+- bila escalate ke engine-specific self-healing
+- bila escalate ke product-specific self-healing
+- bila terus guna sandbox / on-the-fly
+
+**Operator effect:**
+- less hesitation
+- less wrong-template usage
+- faster repair routing
+- cleaner escalation path
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
