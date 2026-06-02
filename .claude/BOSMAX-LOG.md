@@ -689,6 +689,29 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 024 — 2026-06-02
+**Status:** FIRST MULTI-PRODUCT CONTROLLED BENCHMARK INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada benchmark multi-product pertama yang kekal dalam dua direct-product lanes dan mengelak sensitive-product mixing.
+
+**Authority decision:**
+- product A: `Minyak Warisan Cap Burung`
+- product B: `Minyak Jungle Girl`
+- batch type benchmark keempat: `BATCH_MULTI_PRODUCT_CONTROLLED`
+- benchmark goal: `IMAGE_ONLY`
+- output split: `10 × IMAGE + SELLING_POSTER`
+- product B didaftarkan sebagai direct-product provisional authority dari FASTMOSS tier-2
+
+**Files patched:**
+- `products/JUNGLE_GIRL_MINYAK.yaml` — provisional direct-product authority for Jungle Girl
+- `BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md` — complete intake block + approved multi-product Variant Plan example
+- `BOSMAX_BATCH_TEMPLATE_SET_v1.md` — template 5 clarified for safest first multi-product benchmark
+- `README.md` — multi-product benchmark and Jungle Girl registry addition exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 023 — 2026-06-02
 **Status:** THIRD REAL BATCH RUN EXAMPLE INSTALLED
 **Active Mode:** null

@@ -261,11 +261,12 @@ Output required:
 ## Template 5 — `BATCH_MULTI_PRODUCT_CONTROLLED`
 
 Use only when you already have multiple products with clear truth and scale anchors.
+The safest first multi-product benchmark is usually `IMAGE_ONLY`.
 
 ```text
 Mode: BULK
-Batch type: BATCH_MIXED_DETERMINISTIC
-Batch goal: MIXED
+Batch type: BATCH_MULTI_PRODUCT_CONTROLLED
+Batch goal: [IMAGE_ONLY / VIDEO_ONLY / MIXED]
 Product scope: MULTI_PRODUCT
 Total output count: [10 / 25 / 50]
 Platform: [TikTok / Shopee / Lazada / Meta]
@@ -302,6 +303,10 @@ Batch requirement:
 Build Variant Plan first.
 Separate rows cleanly by product truth, scale anchor, and compliance class.
 Do not mix sensitive-product dialogue rules with direct-product dialogue rules in the same row logic.
+For the first low-risk benchmark, prefer:
+- `Batch goal: IMAGE_ONLY`
+- `Image count = total output count`
+- `Video count = 0`
 Output required:
 - batch_plan
 - batch_prompt_pack

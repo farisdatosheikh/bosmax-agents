@@ -28,6 +28,7 @@ BOSMAX/
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real video batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real mixed batch benchmark
+├── BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md ← First real multi-product batch benchmark
 ├── SOVEREIGN_01_MASTER_SCHEMA.md    ← Master system schema
 ├── SOVEREIGN_02_PHYSICS_DNA.md      ← Physics DNA authority
 ├── SOVEREIGN_03_CORE_LOGIC.md       ← Core logic rules
@@ -115,6 +116,17 @@ Fail ini menunjukkan satu contoh batch sebenar untuk:
 - `10s`
 - `10` outputs
 - complete intake block + approved Variant Plan example
+
+**Companion multi-product benchmark:** rujuk `BOSMAX_BATCH_RUN_EXAMPLE_MULTI_PRODUCT_CONTROLLED_MINYAK_WARISAN_CAP_BURUNG_JUNGLE_GIRL_v1.md`.
+Fail ini menunjukkan satu contoh batch sebenar untuk:
+- `Minyak Warisan Cap Burung`
+- `Minyak Jungle Girl`
+- `BATCH_MULTI_PRODUCT_CONTROLLED`
+- `IMAGE_ONLY`
+- `10` outputs
+- complete intake block + approved Variant Plan example
+
+**Direct product registry addition:** `products/JUNGLE_GIRL_MINYAK.yaml` kini wujud sebagai authority provisional yang dipromote dari FASTMOSS tier-2 untuk benchmark multi-product rendah risiko.
 
 ---
 

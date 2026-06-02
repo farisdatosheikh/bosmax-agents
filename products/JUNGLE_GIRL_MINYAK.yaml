@@ -1,0 +1,82 @@
+# BOSMAX PRODUCT REGISTRY — JUNGLE_GIRL_MINYAK
+# Version: v1.0 | Registered: 2026-06-02
+# Authority: GRAND_MASTER_SKELETON v11.3
+# Source: FASTMOSS tier-2 promotion to registry (provisional direct-product authority)
+
+schema_version: "1.0"
+
+product_id: "JUNGLE_GIRL_MINYAK"
+product_name: "Minyak Jungle Girl"
+product_aliases:
+  - "Minyak Jungle Girl"
+  - "Jungle Girl Massage Oil"
+  - "JUNGLE GIRL Massage Oil 30ml"
+brand: "Jungle Girl"
+shop_name: "Jungle Girl Beauty Official"
+tiktok_product_id: "1729668812214666299"
+fastmoss_product_name: "[2 Botol] Minyak 1001 Khasiat JUNGLE GIRL Massage Oil 30ml Kemuning Hitam JG01"
+
+category: "Beauty & Personal Care"
+sub_category: "Body & Massage Oil"
+raw_category: "Beauty & Personal Care-Bath & Body Care-Body & Massage Oil"
+product_status: "Available"
+
+avg_price_rm: 31.5
+commission_rate: 0.4127
+total_orders: 336
+total_units_sold: 10584
+total_revenue_rm: 28956
+estimated_launch_date: "2024-06-19"
+
+variants:
+  - variant_id: "30ML_JG01"
+    variant_name: "30ml Massage Oil JG01"
+    price_rm: 31.5
+    scale_anchor_descriptor: "EXACTLY a compact 30ml massage oil bottle size, naturally hand-sized"
+    prompt_keywords:
+      - "30ml massage oil bottle"
+      - "compact traditional massage oil bottle"
+      - "naturally hand-sized body oil bottle"
+      - "direct-product Malay traditional oil lane"
+
+dialogue_authority:
+  mode: "PRODUCT_COPYWRITING"
+  registry_file: ""
+  variant_file: ""
+  silo_id: ""
+  variant_family: ""
+  resolve_to_copywriting: true
+  fallback_mode: "PRODUCT_COPYWRITING"
+  notes: "Direct product lane only. No script-registry override active."
+
+copywriting:
+  angle: "Traditional massage oil / household relief"
+  hook: ""
+  usp_1: ""
+  usp_2: ""
+  usp_3: ""
+  body: ""
+  cta: ""
+
+subject_dna: null
+last_source_image_handoff: null
+
+registered_by: "farisdatosheikh@gmail.com"
+registered_date: "2026-06-02"
+last_updated: "2026-06-02"
+notes: |
+  This product was promoted from FASTMOSS tier-2 into BOSMAX tier-1 registry
+  to enable a low-risk non-sensitive multi-product benchmark with Minyak
+  Warisan Cap Burung.
+
+  Current authority is PROVISIONAL and market-derived:
+  - exact product listing source: Most Promoted Products sheet
+  - shop: Jungle Girl Beauty Official
+  - variant chosen: 30ml massage oil lane
+
+  Important limitation:
+  direct image packaging truth has not yet been uploaded into BOSMAX. Use this
+  product for controlled batch benchmarking and high-level direct-product
+  routing first. Harden the registry later with actual product images, exact
+  bottle geometry, label DNA, and stronger prompt locks before scaling into
+  heavier image/video production.
