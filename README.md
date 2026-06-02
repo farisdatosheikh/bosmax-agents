@@ -28,6 +28,7 @@ BOSMAX/
 ├── BOSMAX_INPUT_HELPER_v1.md        ← Front-door field helper for operators
 ├── BOSMAX_IGNITION_WORKFLOW_v1.md   ← Front-door ignition / repair / variation templates
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
+├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_VIDEO_FRESH_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real video batch benchmark
 ├── BOSMAX_BATCH_RUN_EXAMPLE_MIXED_DETERMINISTIC_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real mixed batch benchmark
@@ -102,6 +103,14 @@ Fail ini menunjukkan satu walkthrough operator sebenar untuk:
 - `IMAGE + SELLING_POSTER`
 - `Input Helper → Ignition → Repair → Variation`
 - sebelum naik ke batch lane
+
+**Companion direct-product video dry run:** rujuk `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md`.
+Fail ini menunjukkan satu walkthrough operator sebenar untuk:
+- `Minyak Warisan Cap Burung`
+- `VIDEO + NONE`
+- `KLING_3_0`
+- `10s`
+- `Input Helper → Ignition → Repair → Variation`
 
 **Phase-2 deterministic batch lane:** rujuk `BOSMAX_BATCH_LANE_v1.md`.
 Fail ini mendefinisikan batch sebagai planner/dispatcher di atas single-output flow:

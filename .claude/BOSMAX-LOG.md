@@ -747,6 +747,26 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 029 — 2026-06-02
+**Status:** SECOND FRONT-DOOR OPERATOR DRY RUN INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada walkthrough operator kedua untuk direct-product video lane supaya onboarding tidak berhenti pada image poster sahaja.
+
+**Authority decision:**
+- produk dry run kedua dikekalkan: `Minyak Warisan Cap Burung`
+- branch dry run kedua dipilih: `VIDEO + NONE`
+- engine dry run kedua dipilih: `KLING_3_0`
+- duration dry run kedua dipilih: `10s`
+- tujuan dry run ini ialah membuktikan fresh-video lane paling rendah risiko sebelum berpindah ke sensitive-product video lane
+
+**Files patched:**
+- `BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md` — first direct-product video operator walkthrough
+- `README.md` — companion direct-product video dry-run entrypoint exposed in repo structure
+
+*BOSMAX v11.3 | Log updated: 2026-06-02*
+
+---
+
 ### Session 025 — 2026-06-02
 **Status:** SENSITIVE MAVERIX LANE INSTALLED
 **Active Mode:** null
