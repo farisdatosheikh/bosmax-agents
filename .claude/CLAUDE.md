@@ -116,55 +116,8 @@ IF task_mode = VIDEO AND reference_mode = BOSMAX_IMAGE_HANDOFF:
 Batch lane kini dibuka, tetapi hanya sebagai **planner + dispatcher** di atas
 single-output deterministic flow.
 
-### OFFICIAL BATCH TYPES
-
-```
-BATCH_IMAGE_SUPPORT
-  → every row resolves to IMAGE + VIDEO_SUPPORT
-
-BATCH_IMAGE_SELLING
-  → every row resolves to IMAGE + SELLING_POSTER
-
-BATCH_VIDEO_FRESH
-  → every row resolves to VIDEO + NONE
-
-BATCH_MIXED_DETERMINISTIC
-  → controlled mix of deterministic rows
-  → each row still resolves to ONE valid deterministic job
-```
-
-### BATCH INTAKE CONTRACT
-
-```
-Universal:
-  batch_goal
-  total_output_count
-  product_scope
-  platform
-  language
-
-IMAGE batches:
-  image_mix
-
-VIDEO batches:
-  video_mix
-  video_engine
-  duration_target
-
-MIXED batches:
-  image_count
-  video_count
-  image_mix
-  video_mix
-```
-
-### BATCH HARD RULES
-
-- Batch is not a new creative mode.
-- Batch MESTI bina Variant Plan dahulu.
-- Setiap row dalam Variant Plan MESTI resolve kepada deterministic single-output route.
-- JANGAN emit prompts batch sebelum Variant Plan approved.
-- `VIDEO + BOSMAX_IMAGE_HANDOFF` dalam batch hanya valid jika handoff pool benar-benar wujud.
+Detailed batch types, intake contract, dan hard rules telah dipindah ke:
+- `.claude/rules/batch-lane.md`
 
 ---
 
@@ -462,43 +415,14 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 
 ## PRE-OUTPUT ENFORCEMENT CHECKLIST — WAJIB SEBELUM USER OUTPUT
 
-**Ini adalah internal checklist mutlak sebelum sebarang poster/image prompt atau
-video prompt dilepaskan kepada user.**
+Checklist penuh telah dipindah ke:
+- `.claude/rules/video-output-enforcement.md`
 
-```
-VISUAL ENFORCEMENT
-☐ Visual scan complete
-☐ Avatar source locked to USER_UPLOAD jika gambar manusia ada
-☐ Product source derived from uploaded image jika label/packaging jelas
-☐ Tiada registry fallback override terhadap visual evidence
-
-SANDBOX ENFORCEMENT
-☐ Jika registry miss + visual evidence jelas → visual-first sandbox active
-☐ MINI-INTAKE hanya tanya field yang belum proven oleh visual
-☐ Tiada soalan redundant tentang kategori/packaging/ukuran cm jika visual sudah cukup
-☐ sandbox_product_record atau product_record non-null sebelum route
-
-VIDEO ENFORCEMENT
-☐ Engine confirmed
-☐ Block math confirmed
-☐ Storyboard presented
-☐ Storyboard approved
-☐ WPS budget declared per block
-☐ pace_class declared
-☐ Jika BM commercial / UGC / TikTok video → dialog wajib hadir
-☐ Jika engine = GROK → semua block durations hanya 6s atau 10s
-☐ GROK image-to-video persistence locks declared jika ada reference image
-
-OUTPUT ENFORCEMENT
-☐ Prompt ikut gambar yang diupload
-☐ Prompt ikut scale/packaging/product type sebenar
-☐ Dialogue fit durasi block
-☐ Tiada dead-air pacing yang bercanggah dengan content type
-
-Jika SATU checkbox gagal:
-→ JANGAN emit prompt kepada user
-→ ABORT / revise / tanya soalan yang tepat
-```
+Ringkasan fail-closed:
+- visual scan mesti lengkap
+- sandbox / registry truth mesti resolved sebelum route
+- storyboard + block math + WPS + pace_class mesti lengkap untuk video
+- jika satu enforcement item gagal: jangan emit output
 
 ---
 
@@ -785,7 +709,7 @@ subject_dna, context_environment, lighting_camera.
 **Trigger:** User minta daftar produk, isi maklumat produk TikTok, atau setup listing.
 **Action:**
 1. Appoint `bosmax-product-registration`
-2. Simpan product_record dalam session memory (BOSMAX-LOG.md)
+2. Simpan product_record dalam `BOSMAX_CURRENT_STATE.md` dan append history ke `BOSMAX-LOG.md`
 3. Tawar kepada user: proceed ke content generation?
 
 ### ROUTE BULK — Bulk Content Generation
@@ -947,56 +871,18 @@ MULTI-BLOCK TRIGGER MATRIX:
 
 ## MEMORY MANAGEMENT
 
-- Baca `BOSMAX-LOG.md` pada awal setiap session untuk context semasa
-- Update `BOSMAX-LOG.md` selepas setiap product_record baru disimpan
-- Update `BOSMAX-LOG.md` selepas setiap source_image_handoff baru disimpan
+- Baca `BOSMAX_CURRENT_STATE.md` pada awal setiap session untuk context semasa
+- Update `BOSMAX_CURRENT_STATE.md` selepas setiap product_record baru disimpan
+- Update `BOSMAX_CURRENT_STATE.md` selepas setiap source_image_handoff baru disimpan
+- `BOSMAX-LOG.md` kekal sebagai historical append-only audit trail
 - Jangan carry forward data lama ke session baru tanpa verify
 
 ---
 
 ## PIPELINE SEQUENCES (v11.2 — PRE-FLIGHT MANDATORY)
 
-**PRE-FLIGHT PROTOCOL kini wajib ada dalam SEMUA pipeline.**
-
-```
-Full Image Pipeline:
-User → BOSMAX [PRE-FLIGHT] → bosmax-subject-dna → bosmax-scene-engine
-     → bosmax-compliance-gate → User
-
-Full Video Pipeline (Mode B — single block):
-User → BOSMAX [PRE-FLIGHT] → bosmax-script-generator
-     → bosmax-compliance-gate → User
-
-Full Video Pipeline (Mode B — multi-block):
-User → BOSMAX [PRE-FLIGHT: MULTI-BLOCK TRIGGERED]
-     → BOSMAX [MASTER NARRATIVE BRIEF → user approval]
-     → bosmax-script-generator [Block 1]
-     → bosmax-script-generator [Block 2 ... Block N]
-     → bosmax-compliance-gate [audit semua blocks]
-     → User
-
-Full Video Pipeline (Mode C — single block):
-User → BOSMAX [PRE-FLIGHT] → bosmax-mode-c-executor
-     → bosmax-compliance-gate → User
-
-Full Video Pipeline (Mode C — multi-block):
-User → BOSMAX [PRE-FLIGHT: MULTI-BLOCK TRIGGERED]
-     → BOSMAX [MASTER NARRATIVE BRIEF → user approval]
-     → bosmax-mode-c-executor [Block 1]
-     → bosmax-mode-c-executor [Block 2 ... Block N]
-     → bosmax-compliance-gate [audit semua blocks]
-     → User
-
-Full Product + Bulk Pipeline:
-User → BOSMAX [PRE-FLIGHT] → bosmax-product-registration → [product_record saved]
-     → BOSMAX [PRE-FLIGHT] → bosmax-bulk-generator
-     → [variant plan → approval → deterministic row expansion → prompt pack]
-     → bosmax-compliance-gate → User
-
-Image + Video Pipeline (A→C):
-User → BOSMAX [PRE-FLIGHT] → [Mode A pipeline] → [source_image_handoff saved]
-     → BOSMAX [PRE-FLIGHT] → bosmax-mode-c-executor → bosmax-compliance-gate → User
-```
+Detailed pipeline maps telah dipindah ke:
+- `.claude/rules/cowork-operating-map.md`
 
 ---
 
@@ -1038,47 +924,10 @@ User → BOSMAX [PRE-FLIGHT] → [Mode A pipeline] → [source_image_handoff sav
 
 ## NOTA PENTING UNTUK COWORK
 
-Skill files berikut MESTI ada dalam `.claude/skills/` folder:
-1. `bosmax-compliance-gate.md`
-2. `bosmax-subject-dna.md`
-3. `bosmax-scene-engine.md`
-4. `bosmax-mode-c-executor.md`
-5. `bosmax-script-generator.md`
-6. `bosmax-product-registration.md`
-7. `bosmax-bulk-generator.md`
-8. `bosmax-requirement-analyst.md`
-9. `bosmax-product-intelligence.md` ← (v11.2 Fix G — Product Librarian)
-10. `bosmax-image-analyst.md`       ← (v11.3 — Route D Image Reverse Engineering)
-11. `bosmax-video-analyst.md`       ← (v11.3 — Route D Video Reverse Engineering)
-12. `bosmax-commercial-poster-director.md` ← (v1.0 — Universal commercial poster prompt elevation)
+Current state file: `BOSMAX_CURRENT_STATE.md` dalam `.claude/` folder root.
+Historical log: `BOSMAX-LOG.md` dalam `.claude/` folder root.
+Detailed skill inventory, registry map, execution orders, dan pipeline sequences telah dipindah ke:
+- `.claude/rules/cowork-operating-map.md`
 
-Memory file: `BOSMAX-LOG.md` dalam `.claude/` folder root.
-
-Product Registry: `products/` folder dalam project root.
-- `products/_SCHEMA.yaml` — template dan schema reference
-- `products/[BRAND_CODE].yaml` — satu file per produk
-- Field wajib per variant: `scale_anchor_descriptor`
-- Fastmoss data di-cache dalam products YAML selepas first lookup
-
-### EXECUTION ORDER v11.2 (dengan Product Intelligence)
-```
-Request masuk → [STEP 0: bosmax-product-intelligence] → PRE-FLIGHT PROTOCOL → WORK ORDER issued → Route ke skill → Compliance Gate → User
-```
-
-### EXECUTION ORDER v11.3 (Route D — Analysis Intelligence)
-```
-Image upload + trigger → [STEP 0: detect product mention jika ada] → Route D → bosmax-image-analyst [3-phase] → bosmax-scene-engine → Compliance Gate → User
-
-Video upload + trigger → [STEP 0: detect product mention jika ada] → Route D → bosmax-video-analyst [3-phase] → [optional: bosmax-image-analyst] → bosmax-script-generator → Compliance Gate → User
-```
-
-### A→B PIPELINE (v11.3 — Concept Inheritance)
-```
-A→A (same product rebuild):
-User upload ref image/video → analyst deconstruct → same product data → rebuild dengan original copy
-
-A→B (concept transfer ke produk lain):
-User upload ref (A) → analyst deconstruct → user identify Product B → 3 compatibility checks → generate new Content DNA → rebuild dengan B's identity + original copy
-```
 PRE-FLIGHT adalah tanggungjawab BOSMAX orchestrator (fail ini).
 PRE-FLIGHT MESTI selesai sebelum mana-mana skill diappoint.
