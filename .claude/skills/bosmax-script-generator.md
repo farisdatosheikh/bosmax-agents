@@ -9,15 +9,16 @@ description: >
   and WPS/pacing governance. Supports single-block
   and MULTI-BLOCK work orders. In multi-block mode, ingests Master Narrative
   Brief and generates each block with strict dialogue continuity and visual
-  state handoff between blocks. v11.5: S9 overlay deactivated (user handles
-  in CapCut), dialog pre-budget enforcement, GROK scale authority override.
+  state handoff between blocks. v11.6: S9 no-overlay absolute, dialog
+  pre-budget enforcement, GROK scale authority override, and hard-default
+  multi-block restore.
 ---
 
 # BOSMAX SCRIPT GENERATOR — SKILL
 ## Role: Mode B Specialist — Deterministic BOSMAX v11.6 Video Script Engine
 ## Schema: v11.6 | Authority: SUPREME_SYSTEMS_ARCHITECT
 ## Changelog v11.5: Visual-first sandbox intake compliance | GROK persistence + pacing enforcement | pre-output checklist hardening
-## Changelog v11.6: Added presentation-route enforcement, shot-ladder requirement, and multi-image/B-roll authority handling
+## Changelog v11.6: Added presentation-route enforcement, shot-ladder requirement, multi-image/B-roll authority handling, hard-default GROK block math, and absolute no-overlay video law
 
 ---
 
@@ -865,11 +866,13 @@ Output mesti rasa clean seperti role-model ChatGPT prompt, bukan debug dump.
 12s total  → 6s + 6s
 16s total  → 10s + 6s
 20s total  → 10s + 10s
+30s total  → 10s + 10s + 10s (default)
 
 FORBIDDEN:
 - 12s base + 8s extension
 - 8s + 8s untuk GROK
 - single monolithic 20s block
+- single monolithic 30s block
 - calm premium silence sebagai default TikTok UGC pace
 ```
 
@@ -1053,13 +1056,14 @@ Jika engine = GROK dan target_language = Malay dan content_type = commercial / U
   Declare: "OPENING ACTION CLASS: micro-continuation only"
 
 **S9 — No Overlay Declaration:**
-**SECTION 9 ADALAH DEACTIVATED. TIADA TEXT OVERLAY DIJANA.**
-Text overlay dikendalikan oleh user secara manual dalam CapCut (post-production).
+**SECTION 9 ADALAH LOCK ABSOLUTE. TIADA TEXT OVERLAY DIJANA UNTUK VIDEO.**
+Text overlay adalah forbidden by default untuk semua video outputs.
 Output wajib untuk Section 9:
-  "NO_OVERLAY — Text overlay handled manually in post-production (CapCut).
-   Video engine renders clean footage only. No burned-in text."
-JANGAN jana sebarang text, coordinates, atau styling dalam Section 9.
-JANGAN ada COORD mapping, Z_ZONE, atau typography instructions.
+  "NO_OVERLAY — Clean video only. No burned-in text, captions, CTA labels,
+   badges, or typography instructions. Any overlay planning is post-production only
+   and only if explicitly requested by the user as a separate task."
+JANGAN jana sebarang text, coordinates, safe-zone, atau styling dalam Section 9.
+JANGAN ada COORD mapping, Z_ZONE, typography instructions, subtitle styling, atau CTA badges.
 
 ---
 
@@ -1089,10 +1093,13 @@ Language: [target_language]
 WPS budget: [summary]
 Dialogue budget: [summary]
 pace_class: [pace_class]
-Output rule: clean copy-paste ready | no metadata leakage
+Output rule: clean copy-paste ready | no metadata leakage | storyboard before prompts | separate block prompts only
+
+STORYBOARD
+[full approved storyboard first]
 
 [COPY-PASTE PROMPT / BLOCK PROMPT TITLE]
-[BLOCK [N] OF [TOTAL] — omit jika single-block]
+[BLOCK [N] OF [TOTAL] — omit jika single-block, but multi-block is mandatory when engine contract requires it]
 [CONTINUES FROM BLOCK N-1 — omit jika Block 1 atau single-block]
 
 ---
@@ -1133,8 +1140,7 @@ pace_class=[x] | action_density=[x]
 
 ---
 SECTION 9: No Overlay Declaration
-NO_OVERLAY — Text overlay handled manually in post-production (CapCut).
-Video engine renders clean footage only. No burned-in text.
+NO_OVERLAY — Clean video only. No burned-in text, captions, CTA labels, badges, or typography instructions.
 ```
 
 ---
@@ -1149,6 +1155,9 @@ Video engine renders clean footage only. No burned-in text.
 - ABORT jika NANO_BANANA_PRO atau IMAGEN_3 digunakan sebagai video engine
 - ABORT jika engine = GROK + multi_block + block_distribution null dalam work order
 - ABORT jika engine = GROK dan mana-mana block duration bukan 6s atau 10s
+- ABORT jika engine = GROK dan target duration > 10s tetapi output bukan block prompts berasingan
+- ABORT jika engine = GROK dan target duration = 20s tetapi block_distribution ≠ 10s + 10s
+- ABORT jika engine = GROK dan target duration = 30s tetapi default block_distribution ≠ 10s + 10s + 10s
 - ABORT jika `dialogue_authority_mode = SCRIPT_REGISTRY` tetapi `dialogue_payload_resolved` null / incomplete
 - ABORT jika `storyboard_approved != YES`
 - ABORT jika `dialog_budget_words` null atau pace_class null
@@ -1172,7 +1181,7 @@ Video engine renders clean footage only. No burned-in text.
 
 ### AUTO-HEAL — Fix dan teruskan (jangan ABORT)
 - Section 6 ada visual noun → remove noun, rephrase dialogue, log, teruskan
-- Section 9 ada overlay text dijana → buang semua overlay content, output "NO_OVERLAY — post-production CapCut", log, teruskan
+- Section 9 ada overlay text dijana → buang semua overlay content, output "NO_OVERLAY — Clean video only", log, teruskan
 - WPS exceed wps_safe_max (bukan ceiling) → trim dialogue ke dalam Safe Max budget, recalculate, log, teruskan
   [BM: > 2.5 | EN: > 3.0 | ID: > 2.6 | ZH: > 2.6 | HI/BN: > 2.4 | AR: > 2.2]
 - WPS exceed wps_ceiling (hard ceiling) → rebuild Section 6 sepenuhnya ikut optimum WPS, log, teruskan

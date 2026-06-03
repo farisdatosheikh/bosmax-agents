@@ -57,11 +57,14 @@ Valid total examples:
 - `12s` → `6s + 6s`
 - `16s` → `10s + 6s`
 - `20s` → `10s + 10s`
+- `30s` → default `10s + 10s + 10s`
+  - alternate `6s + 6s + 6s + 6s + 6s` only on explicit operator request
 
 Forbidden:
 - `12s base + 8s extension`
 - `8s + 8s`
 - monolithic `20s` block
+- monolithic `30s` block
 - any extension math invented ad hoc
 
 ### Dialogue law
@@ -99,6 +102,9 @@ Required output order:
 3. storyboard
 4. block prompt 1
 5. block prompt 2+ jika ada
+
+For BOSMAX video outputs:
+- `NO_OVERLAY` is absolute unless operator explicitly asks for separate overlay planning
 
 Never emit one giant Grok prompt if the duration requires multiple blocks.
 

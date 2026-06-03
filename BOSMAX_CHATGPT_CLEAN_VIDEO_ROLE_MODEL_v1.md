@@ -29,10 +29,9 @@ For operator-facing final video prompt output, use this order:
 
 1. `VISUAL SCAN COMPLETE`
 2. `[ENGINE] ENGINE CONTRACT`
-3. `COPY-PASTE PROMPT FOR [ENGINE]`
-4. `STORYBOARD`
-5. `BLOCK 1 PROMPT`
-6. `BLOCK 2 PROMPT` and later blocks if needed
+3. `STORYBOARD`
+4. `BLOCK 1 PROMPT` or `COPY-PASTE PROMPT` jika single-block
+5. `BLOCK 2 PROMPT` and later blocks if needed
 
 Do not front-load the final answer with:
 - internal governance chatter
@@ -48,11 +47,13 @@ Mandatory:
 - language clear
 - duration clear
 - block math clear
+- full storyboard first
 - WPS budget clear
 - pace_class clear
 - copy_formula clear
 - product truth clear
 - final prompt immediately usable
+- no text overlay content
 
 Forbidden in operator-facing output:
 - `metadata_json_handoff`
@@ -90,6 +91,25 @@ Good seam:
 - speech resumes almost immediately
 - action supports the speech instead of delaying it
 - the same spoken idea is still moving across the seam
+
+For `GROK` duration defaults:
+- `20s` must default to `2 x 10s`
+- `30s` must default to `3 x 10s`
+- do not output monolithic 20s/30s prompts
+- only use alternate distributions if the operator explicitly requests them
+
+---
+
+## 4B. No Overlay Absolute Rule
+
+For BOSMAX video outputs:
+- no text overlay
+- no CTA badges
+- no subtitles styling instructions
+- no safe-zone coordinate mapping
+
+If the operator wants overlay planning, that must be a separate post-production task,
+not part of the video generation prompt.
 
 ---
 

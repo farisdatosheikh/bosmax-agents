@@ -1,6 +1,6 @@
 # BOSMAX v11.6 — CLAUDE.md
 # Sistem: BOSMAX Command Centre
-# Versi: v11.5 | Schema: GRAND_MASTER_SKELETON
+# Versi: v11.6 | Schema: GRAND_MASTER_SKELETON
 # Authority: SUPREME_SYSTEMS_ARCHITECT
 # Format: Claude Cowork Skill Orchestrator
 # Changelog v11.2: Added PRE-FLIGHT PROTOCOL, ENGINE CONSTRAINT TABLE (full),
@@ -15,8 +15,9 @@
 #                  multi-block contract, WPS budgeting, pacing governance, and
 #                  pre-output checklist enforcement.
 # Changelog v11.6: Added UGC/PGC/HYBRID route decision, shot ladder planning,
-#                  multi-image B-roll authority, and platform/category risk
-#                  routing for commercial video.
+#                  multi-image B-roll authority, platform/category risk
+#                  routing, hard-default GROK block math, and absolute
+#                  no-overlay video enforcement.
 
 ---
 
@@ -356,7 +357,9 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 ```
 → Refer ENGINE CONSTRAINT TABLE
 → Kira: block_count = CEIL(duration / max_per_block)
-→ GROK: present pilihan distribution jika ada lebih dari satu option
+→ GROK: jika hanya SATU distribusi BOSMAX yang sah, auto-lock dan announce terus
+→ GROK: jika ada lebih dari satu distribusi BOSMAX yang sah, gunakan default BOSMAX dahulu
+  dan hanya offer alternate jika operator memang mahu ubah
 → Announce block distribution sebelum proceed ke storyboard
 ```
 
@@ -435,6 +438,8 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 
 ```
 - JANGAN emit prompt terus tanpa storyboard
+- JANGAN emit prompt monolitik tunggal untuk GROK jika target > 10s
+- JANGAN emit prompt tunggal untuk 30s; default BOSMAX ialah 3 block prompts
 - JANGAN skip engine selection jika belum declared
 - JANGAN skip presentation_route declaration untuk commercial video
 - JANGAN skip dialog budget / WPS declaration per block
@@ -449,6 +454,8 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
   untuk TikTok UGC/commercial video
 - JANGAN invent GROK distribution seperti `12s + 8s`, `8s + 8s`, atau extension math
   liar; GROK hanya sah pada block 6s atau 10s
+- JANGAN jana text overlay untuk video outputs; overlay adalah haram secara default dan
+  hanya dibenarkan jika user explicit minta overlay planning sahaja
 ```
 
 ---
@@ -624,15 +631,13 @@ STEP 3A — ANNOUNCE + RESOLVE BLOCK DISTRIBUTION:
 
   GROK SPECIAL CASE — SEBELUM announce ke user:
   Jika engine = GROK dan block distribution tidak jelas:
-  → STOP sebelum announce.
-  → Tanya SATU soalan:
-    "Boss nak GROK [X]s tu dibahagi macam mana?
-     A) [N]×6s (semua blocks 6 saat)
-     B) [N]×10s (semua blocks 10 saat) — jika valid
-     C) Mixed: [e.g., 10s+6s] (explain combination)"
-  → TUNGGU jawapan.
-  → Selepas dapat jawapan: declare distribution, kemudian announce.
-  → JANGAN proceed ke STEP 3B tanpa block distribution confirmed.
+  → Resolve default BOSMAX dahulu.
+  → Jika hanya satu kombinasi sah atau satu default BOSMAX wujud:
+    declare terus distribution itu, kemudian announce.
+  → Tanya operator HANYA jika dia mahu override default:
+    "BOSMAX default untuk GROK [X]s ialah [distribution].
+     Kalau boss mahu alternate distribution, bagitahu sekarang."
+  → JANGAN STOP workflow hanya untuk bertanya distribution yang sudah deterministic.
 
   Engines lain (VEO_3_1_LITE, KLING_3_0, SEEDANCE_2_0):
   → Block distribution adalah fixed. Announce terus, proceed ke STEP 3B.
@@ -678,7 +683,7 @@ STEP 3E — BLOCK CONTINUITY RULES (wajib dipatuhi oleh skill):
   → Visual start state Block N = visual end state Block N-1 (LOCKED).
   → Dialogue Block N menyambung terus dari Block N-1 — tiada restart.
   → Section 8 setiap block mesti declare: "BLOCK [X] OF [N]"
-  → Section 9 overlay mesti consistent dalam tone dan typography.
+  → Section 9 setiap block mesti output `NO_OVERLAY` sahaja.
 ```
 
 ### STEP 4 — IMPLICIT REQUIREMENT DETECTION
@@ -690,7 +695,7 @@ Sebelum route, BOSMAX MESTI detect hidden requirements ini:
 | "[X]s + VEO Lite / VEO_3_1_LITE" | X > 8s → multi-block | Trigger STEP 3 |
 | "[X]s + KLING_3_0" | X > 15s → multi-block | Trigger STEP 3 |
 | "[X]s + SEEDANCE_2_0" | X > 15s → multi-block | Trigger STEP 3 |
-| "[X]s + GROK" | X > 10s → multi-block DUAL-DURATION | Trigger STEP 3A GROK path — tanya block distribution dulu |
+| "[X]s + GROK" | X > 10s → multi-block DUAL-DURATION | Trigger STEP 3A GROK path — auto-lock default distribution jika tunggal/default BOSMAX |
 | "buat video dari gambar ni" | Mode C → source_image_handoff required | Check handoff |
 | "sambung video tadi" | Block continuation → end-state dari block sebelum required | Lock end-state |
 | "Google Flow FRAMES" | Dua gambar required | Confirm upload |
@@ -924,15 +929,16 @@ MULTI-BLOCK TRIGGER MATRIX:
   - BOSMAX truth: walaupun app lane observed sampai 30s, setiap BOSMAX block
     untuk GROK kekal dikunci kepada 6s atau 10s sahaja demi continuity control
 
-  GROK + 12s → 2×6s (satu-satunya kombinasi valid — masih confirm dengan user)
-  GROK + 16s → 10s+6s (satu-satunya kombinasi valid — masih confirm dengan user)
-  GROK + 18s → 3×6s (satu-satunya kombinasi valid — masih confirm dengan user)
-  GROK + 20s → 2×10s (satu-satunya kombinasi valid — confirm dengan user)
-  GROK + 30s → OPTION A: 3×10s | OPTION B: 5×6s  ← PRESENT KEDUA-DUA, tunggu pilihan
+  GROK + 12s → 2×6s  ← auto default (satu-satunya kombinasi valid)
+  GROK + 16s → 10s+6s ← auto default (satu-satunya kombinasi valid)
+  GROK + 18s → 3×6s  ← auto default (satu-satunya kombinasi valid)
+  GROK + 20s → 2×10s ← auto default (satu-satunya kombinasi valid)
+  GROK + 30s → 3×10s ← BOSMAX default
+               Alternate only on explicit operator request: 5×6s
 
   Jika user tidak specify distribution:
-  → BOSMAX STOP. Tanya: "Boss nak berapa saat setiap block? (6s each / 10s each / mixed)"
-  → JANGAN build Master Narrative Brief sebelum dapat jawapan.
+  → Jika BOSMAX hanya ada satu default yang sah, terus gunakan default itu.
+  → Tanya operator hanya jika dia mahu override default BOSMAX.
 
   (formula engine lain: block_count = CEIL(target / max_per_block))
 ```

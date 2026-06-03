@@ -106,6 +106,7 @@ Use language-specific WPS from script-generator authority:
 
 ☐ Semua video outputs:
   — storyboard approved dahulu
+  — `STORYBOARD` section muncul sebelum mana-mana `BLOCK 1 PROMPT`
   — block math valid
   — WPS budget declared
   — pace_class declared
@@ -225,8 +226,11 @@ Use language-specific WPS from script-generator authority:
   — `[PERSISTENCE_AND_CROP_LOCK]`
   — `[PACE_AND_ACTION_DENSITY_LOCK]`
 
-☐ Section 9 (Overlay) ada COORD: X:%, Y:% untuk setiap text overlay
-  Semua coordinates dalam X:4–96%, Y:0–80%
+☐ Section 9 output ialah `NO_OVERLAY` sahaja
+  — tiada overlay text
+  — tiada COORD mapping
+  — tiada safe-zone instruction
+  — tiada caption / CTA badge / subtitle styling
 
 ☐ TIADA raw internal tokens dalam output:
   Forbidden: CLASS_A, CLASS_B, CAM_xxx, CTX_xxx, SHOT_xxx,
@@ -270,7 +274,7 @@ Use language-specific WPS from script-generator authority:
 
 ☐ Section 6 Dialogue: sama rules seperti Mode B — zero visual nouns
 
-☐ Section 9 Overlay: COORD mapping ada dan dalam safe zone
+☐ Section 9 output ialah `NO_OVERLAY` sahaja
 
 ☐ Engine valid dan duration dalam engine limits
 
@@ -287,6 +291,17 @@ Use language-specific WPS from script-generator authority:
 ☐ Setiap block ada header declaration di atas Section 1:
   — "BLOCK [N] OF [TOTAL]" — format betul
   — block_duration, block_start_time, block_end_time declared
+
+☐ Jika engine = GROK dan duration_total = 20s:
+  — output mengandungi EXACTLY 2 block prompts
+  — distribution EXACTLY `10s + 10s`
+  — tiada prompt monolitik tunggal
+
+☐ Jika engine = GROK dan duration_total = 30s:
+  — output mengandungi EXACTLY 3 block prompts by default
+  — distribution default EXACTLY `10s + 10s + 10s`
+  — `5x6s` hanya valid jika user explicit minta atau approve alternate distribution
+  — tiada prompt monolitik tunggal
 
 ☐ Setiap block ada continuity anchors dalam Section 8:
   — "VISUAL END STATE: [character position] | [product position] | [lighting]"

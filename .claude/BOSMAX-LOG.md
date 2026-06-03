@@ -1327,6 +1327,12 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
   - proof beat presence
   - HYBRID route completeness
   - many-image hierarchy consistency
+- Emergency contamination repair:
+  - GROK `20s` hard-default restored to `10s + 10s`
+  - GROK `30s` hard-default restored to `10s + 10s + 10s`
+  - video output order restored to `VISUAL SCAN -> ENGINE CONTRACT -> STORYBOARD -> BLOCK PROMPTS`
+  - monolithic GROK >10s prompts now treated as compliance failure
+  - `NO_OVERLAY` restored as absolute BOSMAX video law
 
 *BOSMAX v11.6 | Log updated: 2026-06-03*
 
