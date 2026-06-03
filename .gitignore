@@ -10,3 +10,5 @@ desktop.ini
 
 # Claude session outputs (local only)
 outputs/
+
+__pycache__/

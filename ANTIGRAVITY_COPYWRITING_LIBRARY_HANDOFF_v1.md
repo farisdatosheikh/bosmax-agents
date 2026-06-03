@@ -1,20 +1,37 @@
-# ANTIGRAVITY COPYWRITING LIBRARY HANDOFF v1
+# ANTIGRAVITY COPYWRITING LIBRARY HANDOFF v2
 
 ## Objective
 
-Continue filling `BOSMAX_PRODUCT_COPYWRITING_LIBRARY_v1.xlsx` as an operator-facing
-copywriting library that supplements:
+Continue filling the **family-based** BOSMAX copywriting workbook:
+
+- `BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx`
+
+This workbook supplements:
 
 - `SCRIPT_REGISTRY_UNIFIED.md`
 - `SCRIPT_VARIANT_LIBRARY.md`
 
-This workbook is **not** a runtime-authority replacement.
+It is **not** a runtime-authority replacement.
 
 ---
 
-## Primary File
+## Read Order
 
-- Workbook to continue: `BOSMAX_PRODUCT_COPYWRITING_LIBRARY_v1.xlsx`
+Before filling anything, read these sheets in order:
+
+1. `README_OR_RULES`
+2. `PRODUCT_FAMILY_MAPPING`
+3. `DEDUPED_PRODUCT_FAMILIES`
+4. `PRODUCT_BOSMAX_SERUM`
+5. `PRODUCT_MW_CAP_BURUNG`
+6. relevant `FAMILY_*` sheets only
+
+Meaning:
+
+- `RAW_FASTMOSS_PRODUCTS` = intake evidence only
+- `PRODUCT_FAMILY_MAPPING` = 300 raw listings mapped into deduped product families
+- `DEDUPED_PRODUCT_FAMILIES` = one row per reusable product family
+- `PRODUCT_*` and `FAMILY_*` sheets = the real copywriting fill surface
 
 ---
 
@@ -25,24 +42,33 @@ Do **not** change:
 - workbook architecture
 - sheet names
 - canonical column order
+- `Family_Code`
+- `Family_Name`
 - flagship product scale truth
-- taxonomy routing logic
-- archetype codes
+- family routing logic already established in `PRODUCT_FAMILY_MAPPING`
 - authority boundary between workbook and script registry
 
 Do **not**:
 
-- delete `INDEX`, `README_OR_RULES`, or `TAXONOMY_MASTER`
-- collapse flagship sheets into generic archetype sheets
-- replace workbook metadata with ad-hoc new columns
-- overwrite `Authority_Source` unless a stronger verified source is explicitly supplied
+- edit `RAW_FASTMOSS_PRODUCTS`
+- rewrite `PRODUCT_FAMILY_MAPPING`
+- rewrite `DEDUPED_PRODUCT_FAMILIES`
+- collapse `PRODUCT_BOSMAX_SERUM` into generic family sheet
+- collapse `PRODUCT_MW_CAP_BURUNG` into generic family sheet
+- replace workbook metadata with ad-hoc columns
 - turn one row into multiple formulas or formula dumps
 
 ---
 
 ## Allowed Fill Surface
 
-You may fill and expand only these fields:
+You may fill and expand only inside:
+
+- `PRODUCT_BOSMAX_SERUM`
+- `PRODUCT_MW_CAP_BURUNG`
+- visible `FAMILY_*` library sheets
+
+You may fill only these fields:
 
 - `Type_of_Content`
 - `Silo_Key`
@@ -62,7 +88,26 @@ You may also assign:
 - `CTA_ID`
 - `Status`
 
-only to keep rows internally organized.
+only for clean row organization.
+
+---
+
+## Family Logic
+
+This workbook is no longer organized by brand or raw marketplace listing.
+
+It is organized by **product family**:
+
+- many men perfume brands -> one `Perfume Lelaki` family
+- many women perfume brands -> one `Perfume Wanita` family
+- many stealth male external oil brands -> one `Male Sensitive External Oil` family
+- many similar bawal listings -> one `Tudung Bawal` family
+
+Antigravity must write copy that is:
+
+- reusable across brands inside the same family
+- not overfit to one listing title
+- commercially usable for the whole family mechanism
 
 ---
 
@@ -96,23 +141,35 @@ Expand these first:
 
 Requirements:
 
-- keep Bosmax Serum as `STEALTH`
-- keep Minyak Warisan as `DIRECT`
-- preserve Bosmax 5ml vs 10ml scale distinction
-- preserve MWCB 30ml WG40 bottle truth
+- keep `PRODUCT_BOSMAX_SERUM` in `STEALTH`
+- keep `PRODUCT_MW_CAP_BURUNG` in `DIRECT`
+- preserve Bosmax 5ml vs 10ml distinction
+- preserve MWCB `30ml WG40` bottle truth
 
-### 2. Archetype sheets second
+### 2. Strategic family sheets second
 
-Then continue with archetype families, especially:
+Then prioritize:
 
-- `ARCH_STEALTH_MASSAGE_OIL`
-- `ARCH_TRADITIONAL_REMEDY_DIRECT`
-- `ARCH_MEN_PERFUME`
-- `ARCH_WOMEN_PERFUME`
-- `ARCH_UNISEX_PERFUME`
-- `ARCH_BEAUTY_CONFIDENCE`
-- `ARCH_BODY_CARE_FRESHNESS`
-- `ARCH_FASHION_STYLE_FIT`
+- `FAMILY_MALE_EXT_OIL`
+- `FAMILY_TRAD_REMEDY_OIL`
+- `FAMILY_MEN_PERFUME`
+- `FAMILY_WOMEN_PERFUME`
+- `FAMILY_UNISEX_PERFUME`
+- `FAMILY_HAIR_SHAMPOO`
+- `FAMILY_HAIR_OIL`
+- `FAMILY_TUDUNG_BAWAL`
+- `FAMILY_KAMBING_PERAP`
+
+### 3. High-density family sheets third
+
+Then continue sheets with clear density in the workbook such as:
+
+- `FAMILY_MAKEUP`
+- `FAMILY_SNACKS`
+- `FAMILY_WOMEN_JERSEY`
+- `FAMILY_SPORTSWEAR`
+- `FAMILY_BEDSHEET_SET`
+- `FAMILY_STORAGE_BOX`
 
 ---
 
@@ -121,9 +178,9 @@ Then continue with archetype families, especially:
 ### For STEALTH lanes
 
 - use euphemistic or metaphor-safe copy
-- keep tone aligned with the product’s sensitive lane
+- keep tone aligned with sensitive-product handling
 - do not rewrite stealth products into blunt explicit copy
-- if relevant, stay compatible with script-registry direction
+- remain compatible with script-registry direction
 
 ### For DIRECT lanes
 
@@ -141,7 +198,7 @@ Choose exactly one formula per row:
 - `HPAS`
 - `SAVAGE_HPAS`
 
-Use the formula that best matches the row’s tone and lane. Do not stack formulas in a single row.
+Do not stack formulas in one cell.
 
 ---
 
@@ -150,24 +207,29 @@ Use the formula that best matches the row’s tone and lane. Do not stack formul
 Every filled row should feel:
 
 - commercially usable
-- product-type appropriate
+- family-appropriate
 - category-consistent
 - non-placeholder
-- reusable across similar products in the same archetype
+- reusable across multiple brands in the same family
 
 Hooks should be distinct from one another.  
-USP triplets should not repeat the same idea three times with different wording.  
-CTA should match the tone and urgency of the row.
+USP triplets should not repeat the same idea three times.  
+CTA should match the row tone.
 
 ---
 
 ## Escalation Rule
 
-If a product family seems to need a brand-new archetype:
+If a new listing does not fit any visible `FAMILY_*` sheet:
 
-- do not improvise a new workbook structure
-- propose the new archetype as a candidate using the same column schema
-- keep the recommendation in `Notes` first unless explicit approval is given
+- first check `DEDUPED_PRODUCT_FAMILIES`
+- if family already exists there but has no sheet, note it in `Notes`
+- do **not** invent a new structure on your own
+
+If you believe a family should be collapsed further:
+
+- write the recommendation in `Notes`
+- do not rewrite mapping tables directly
 
 ---
 
@@ -175,7 +237,8 @@ If a product family seems to need a brand-new archetype:
 
 This handoff is successful when:
 
-- flagship sheets contain richer, non-placeholder copy rows
-- archetype sheets become genuinely reusable libraries
-- workbook structure remains stable
+- flagship sheets become richer and more reusable
+- strategic family sheets become true cross-brand copy libraries
+- raw/mapping/master layers remain untouched
+- workbook remains family-based, not brand-listing-based
 - runtime authority remains outside the workbook

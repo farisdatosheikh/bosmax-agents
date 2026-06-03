@@ -9,21 +9,26 @@ from typing import Any
 import yaml
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.worksheet import Worksheet
 
 
 ROOT = Path(r"C:\Users\USER\Desktop\Claude Cowork Bosmax Agents")
-SOURCE_WORKBOOK = Path(r"C:\Users\USER\Downloads\Product_copywriting_library.xlsx")
-OUTPUT_WORKBOOK = Path(r"C:\Users\USER\Downloads\Product_copywriting_library_IMPLEMENTED.xlsx")
+LEGACY_WORKBOOK = ROOT / "BOSMAX_PRODUCT_COPYWRITING_LIBRARY_v1.xlsx"
+OUTPUT_WORKBOOK = ROOT / "BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx"
 FASTMOSS_WORKBOOK = ROOT / "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx"
+
 FLAGSHIP_SHEET_BOSMAX = "PRODUCT_BOSMAX_SERUM"
 FLAGSHIP_SHEET_MWCB = "PRODUCT_MW_CAP_BURUNG"
+FAMILY_MASTER_SHEET = "DEDUPED_PRODUCT_FAMILIES"
+RAW_FASTMOSS_SHEET = "RAW_FASTMOSS_PRODUCTS"
+FAMILY_MAPPING_SHEET = "PRODUCT_FAMILY_MAPPING"
 
 WORKING_HEADERS = [
     "Row_ID",
-    "Archetype_Code",
-    "Archetype_Name",
+    "Family_Code",
+    "Family_Name",
     "Product_ID_Optional",
     "Product_Name_Optional",
     "SKU_Optional",
@@ -51,17 +56,59 @@ WORKING_HEADERS = [
     "Notes",
 ]
 
-TAXONOMY_HEADERS = [
-    "Archetype_Code",
-    "Archetype_Name",
+RAW_FASTMOSS_HEADERS = [
+    "Rank",
+    "Product_Name",
+    "Shop_Name",
+    "Category",
+    "Sub_Category",
+    "Product_Type",
+    "Raw_Category",
+    "Avg_Price_RM",
+    "Commission_Rate",
+    "Orders",
+    "Order_Growth",
+    "Total_Units_Sold",
+    "Total_Revenue_RM",
+    "Product_Status",
+    "Copywriting_Angle",
+    "Hook",
+    "USP_1",
+    "USP_2",
+    "USP_3",
+    "Body",
+    "CTA",
+    "Fastmoss_Reference",
+]
+
+FAMILY_MAPPING_HEADERS = [
+    "Rank",
+    "Product_Name",
+    "Category",
+    "Sub_Category",
+    "Product_Type",
+    "Assigned_Family_Code",
+    "Assigned_Family_Name",
+    "Worksheet_Name",
+    "Type_of_Content",
+    "Silo_Key",
+    "Mapping_Confidence",
+    "Mapping_Reason",
+    "Representative_Function",
+    "Fastmoss_Reference",
+]
+
+FAMILY_MASTER_HEADERS = [
+    "Family_Code",
+    "Family_Name",
     "Worksheet_Name",
     "Type_of_Content",
     "Silo_Key_Default",
     "Default_Formula",
     "Category_Family",
-    "Sub_Category_Family",
-    "Representative_Product_Type",
+    "Commercial_Mechanic",
     "Mapped_Product_Count",
+    "Representative_Product_Types",
     "Representative_Products",
     "Flagship_Link",
     "Authority_Source",
@@ -71,91 +118,131 @@ TAXONOMY_HEADERS = [
 INDEX_HEADERS = ["Sheet_Name", "Role", "Fill_Owner", "Description"]
 
 READ_ME_ROWS = [
-    ("Workbook Role", "Operator-facing copywriting library that supplements SCRIPT_REGISTRY_UNIFIED.md and SCRIPT_VARIANT_LIBRARY.md."),
-    ("Authority Boundary", "Runtime-sensitive dialogue authority stays in script registry and variant library. Workbook is a structured library and Antigravity input surface."),
-    ("Row Contract", "One row = one coherent angle-hook pair with one USP triplet, one CTA, and one chosen formula."),
-    ("Antigravity Scope", "Antigravity should fill or expand Type_of_Content, Silo_Key, Angle, Hook, USP_1-3, CTA, Copywriting_Formula, and Notes only."),
-    ("Do Not Use", "Do not treat placeholder copy as final. Do not overwrite flagship product truth from products/*.yaml."),
-    ("Status Values", "SEED_READY, ANTIGRAVITY_FILL_PENDING, REVIEW_REQUIRED, APPROVED, LOCKED"),
-    ("Formula Values", "AIDA, PAS, HSO, HPAS, SAVAGE_HPAS"),
-    ("Type_of_Content Values", "DIRECT, STEALTH"),
+    (
+        "Workbook Role",
+        "Operator-facing copywriting library. Raw Fastmoss listings are only source signals; reusable output authority is organized by deduped product family.",
+    ),
+    (
+        "Architecture",
+        "Read in order: RAW_FASTMOSS_PRODUCTS -> PRODUCT_FAMILY_MAPPING -> DEDUPED_PRODUCT_FAMILIES -> flagship sheets -> family library sheets.",
+    ),
+    (
+        "Deduping Rule",
+        "Collapse brands and listings that sell the same underlying product mechanism into one product family. Example: many men perfume brands -> one men perfume family sheet.",
+    ),
+    (
+        "Authority Boundary",
+        "SCRIPT_REGISTRY_UNIFIED.md and SCRIPT_VARIANT_LIBRARY.md remain runtime authority for sensitive dialogue lanes. This workbook is a structured fill surface only.",
+    ),
+    (
+        "Row Contract",
+        "One row = one coherent angle-hook pair with one USP triplet, one CTA, and one chosen formula.",
+    ),
+    (
+        "Antigravity Scope",
+        "Antigravity fills only Type_of_Content, Silo_Key, Angle, Hook, USP_1-3, CTA, Copywriting_Formula, Notes, and optional IDs/Status inside product or family library sheets.",
+    ),
+    (
+        "Do Not Touch",
+        "Do not rewrite RAW_FASTMOSS_PRODUCTS, PRODUCT_FAMILY_MAPPING, DEDUPED_PRODUCT_FAMILIES, flagship product truth, or family codes without explicit architect approval.",
+    ),
+    (
+        "Strategic Families",
+        "Sensitive male external oil, traditional remedy oil, men perfume, women perfume, unisex perfume, hair shampoo, hair oil, tudung bawal, tisu-related lanes, and kambing perap remain first-class routes.",
+    ),
 ]
-
-HEADER_FILL = PatternFill("solid", fgColor="1F4E78")
-SUB_HEADER_FILL = PatternFill("solid", fgColor="D9EAF7")
-TAXONOMY_FILL = PatternFill("solid", fgColor="5B9BD5")
-FLAGSHIP_FILL = PatternFill("solid", fgColor="C00000")
-ARCHETYPE_FILL = PatternFill("solid", fgColor="70AD47")
-WHITE_FONT = Font(color="FFFFFF", bold=True)
-BOLD_FONT = Font(bold=True)
-WRAP_ALIGNMENT = Alignment(wrap_text=True, vertical="top")
 
 FORMULA_OPTIONS = ["AIDA", "PAS", "HSO", "HPAS", "SAVAGE_HPAS"]
 TYPE_OF_CONTENT_OPTIONS = ["DIRECT", "STEALTH"]
 STATUS_OPTIONS = ["SEED_READY", "ANTIGRAVITY_FILL_PENDING", "REVIEW_REQUIRED", "APPROVED", "LOCKED"]
-
-MANDATORY_ARCHETYPES: dict[str, dict[str, str]] = {
-    "ARCH_STEALTH_MASSAGE_OIL": {
-        "name": "Stealth Massage Oil",
-        "type_of_content": "STEALTH",
-        "silo_key": "male_health_stealth_generic",
-        "default_formula": "PAS",
-        "category_family": "Health & Wellness",
-        "sub_category_family": "Men's Health / Vitaliti Lelaki",
-        "notes": "Mandatory archetype parent for BOSMAX Serum and future stealth massage-oil lanes.",
-        "flagship_link": FLAGSHIP_SHEET_BOSMAX,
-        "authority_source": "products/BOSMAX_SERUM.yaml + script registry surfaces",
-    },
-    "ARCH_TRADITIONAL_REMEDY_DIRECT": {
-        "name": "Traditional Remedy Direct",
-        "type_of_content": "DIRECT",
-        "silo_key": "traditional_remedy_direct",
-        "default_formula": "PAS",
-        "category_family": "Health & Wellness",
-        "sub_category_family": "Traditional Remedy / Minyak Urut",
-        "notes": "Mandatory archetype parent for Minyak Warisan Cap Burung and future direct remedy lanes.",
-        "flagship_link": FLAGSHIP_SHEET_MWCB,
-        "authority_source": "products/CAP_BURUNG_MINYAK.yaml",
-    },
-    "ARCH_MEN_PERFUME": {
-        "name": "Men Perfume Direct",
-        "type_of_content": "DIRECT",
-        "silo_key": "men_perfume_direct",
-        "default_formula": "AIDA",
-        "category_family": "Beauty & Personal Care",
-        "sub_category_family": "Perfume",
-        "notes": "Mandatory archetype for future men perfume routing and Antigravity fill.",
-        "flagship_link": "",
-        "authority_source": "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
-    },
-    "ARCH_WOMEN_PERFUME": {
-        "name": "Women Perfume Direct",
-        "type_of_content": "DIRECT",
-        "silo_key": "women_perfume_direct",
-        "default_formula": "AIDA",
-        "category_family": "Beauty & Personal Care",
-        "sub_category_family": "Perfume",
-        "notes": "Mandatory archetype for future women perfume routing and Antigravity fill.",
-        "flagship_link": "",
-        "authority_source": "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
-    },
+STRATEGIC_FAMILY_CODES = {
+    "FAMILY_MALE_EXT_SENSITIVE_OIL",
+    "FAMILY_TRADITIONAL_REMEDY_OIL",
+    "FAMILY_MEN_PERFUME",
+    "FAMILY_WOMEN_PERFUME",
+    "FAMILY_UNISEX_PERFUME",
+    "FAMILY_HAIR_SHAMPOO",
+    "FAMILY_HAIR_OIL",
+    "FAMILY_TUDUNG_BAWAL",
+    "FAMILY_KAMBING_PERAP",
+    "FAMILY_MENS_COLLARED_TSHIRT",
+    "FAMILY_TISU_GENERAL",
 }
 
+HEADER_FILL = PatternFill("solid", fgColor="1F4E78")
+SUB_HEADER_FILL = PatternFill("solid", fgColor="D9EAF7")
+RAW_FILL = PatternFill("solid", fgColor="7F6000")
+MAPPING_FILL = PatternFill("solid", fgColor="BF9000")
+MASTER_FILL = PatternFill("solid", fgColor="5B9BD5")
+FLAGSHIP_FILL = PatternFill("solid", fgColor="C00000")
+FAMILY_FILL = PatternFill("solid", fgColor="70AD47")
+WHITE_FONT = Font(color="FFFFFF", bold=True)
+WRAP_ALIGNMENT = Alignment(wrap_text=True, vertical="top")
 
-@dataclass
-class Archetype:
+
+@dataclass(frozen=True)
+class FastmossRow:
+    rank: int
+    product_name: str
+    shop_name: str
+    category: str
+    sub_category: str
+    product_type: str
+    raw_category: str
+    avg_price_rm: Any
+    commission_rate: Any
+    orders: Any
+    order_growth: Any
+    total_units_sold: Any
+    total_revenue_rm: Any
+    product_status: str
+    copywriting_angle: str
+    hook: str
+    usp_1: str
+    usp_2: str
+    usp_3: str
+    body: str
+    cta: str
+    fastmoss_reference: str
+
+    @property
+    def search_text(self) -> str:
+        return normalize_spaces(
+            " ".join(
+                [
+                    self.product_name,
+                    self.category,
+                    self.sub_category,
+                    self.product_type,
+                    self.raw_category,
+                ]
+            )
+        ).lower()
+
+
+@dataclass(frozen=True)
+class FamilyDefinition:
     code: str
     name: str
-    worksheet_name: str
+    sheet_name: str
     type_of_content: str
     silo_key: str
     default_formula: str
     category_family: str
-    sub_category_family: str
+    commercial_mechanic: str
+    flagship_link: str
+    authority_source: str
     notes: str
 
 
-def normalize_spaces(value: str | None) -> str:
+@dataclass(frozen=True)
+class FamilyAssignment:
+    family_code: str
+    reason: str
+    confidence: str
+
+
+def normalize_spaces(value: Any) -> str:
     if value is None:
         return ""
     return re.sub(r"\s+", " ", str(value)).strip()
@@ -163,496 +250,21 @@ def normalize_spaces(value: str | None) -> str:
 
 def slugify(value: str) -> str:
     cleaned = re.sub(r"[^A-Za-z0-9]+", "_", value.upper()).strip("_")
-    return re.sub(r"_+", "_", cleaned)[:40] or "GENERIC"
+    return re.sub(r"_+", "_", cleaned) or "GENERIC"
 
 
-def excel_sheet_name(name: str) -> str:
-    if len(name) <= 31:
-        return name
-
-    if name == "PRODUCT_MINYAK_WARISAN_CAP_BURUNG":
-        return FLAGSHIP_SHEET_MWCB
-
-    candidate = name
-    replacements = {
-        "ELECTRICAL": "ELEC",
-        "EQUIPMENT": "EQUIP",
-        "SUPPLIES": "SUPPLY",
-        "CLOTHING": "CLOTH",
-        "OUTDOOR": "OUTDR",
-        "SPORT": "SPRT",
-    }
-    for old, new in replacements.items():
-        candidate = candidate.replace(old, new)
-
-    return candidate[:31]
+def sheet_name_for_family(code: str) -> str:
+    if len(code) <= 31:
+        return code
+    return code[:31]
 
 
-def title_case_key(value: str) -> str:
-    value = normalize_spaces(value)
-    if not value:
-        return ""
-    return value.replace("&", "and")
+def contains_any(text: str, keywords: list[str]) -> bool:
+    return any(keyword in text for keyword in keywords)
 
 
-def safe_yaml_load(path: Path) -> dict[str, Any]:
+def product_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
-
-
-def infer_type_of_content(category: str, sub_category: str, product_type: str, product_name: str) -> str:
-    text = " ".join([category, sub_category, product_type, product_name]).lower()
-    stealth_keywords = [
-        "men's health",
-        "vitaliti lelaki",
-        "male health",
-        "feminine care",
-        "female health",
-        "intimate",
-        "sensitif",
-    ]
-    if any(keyword in text for keyword in stealth_keywords):
-        return "STEALTH"
-    return "DIRECT"
-
-
-def archetype_from_fastmoss(category: str, sub_category: str, product_type: str, product_name: str) -> Archetype:
-    category_n = normalize_spaces(category)
-    sub_n = normalize_spaces(sub_category)
-    type_n = normalize_spaces(product_type)
-    name_n = normalize_spaces(product_name)
-    type_text = " ".join([category_n, sub_n, type_n]).lower()
-    full_text = " ".join([category_n, sub_n, type_n, name_n]).lower()
-    content_type = infer_type_of_content(category_n, sub_n, type_n, name_n)
-
-    def build(
-        code: str,
-        name: str,
-        silo_key: str,
-        default_formula: str,
-        notes: str,
-    ) -> Archetype:
-        return Archetype(
-            code=code,
-            name=name,
-            worksheet_name=excel_sheet_name(code),
-            type_of_content=content_type,
-            silo_key=silo_key,
-            default_formula=default_formula,
-            category_family=category_n,
-            sub_category_family=sub_n,
-            notes=notes,
-        )
-
-    if "massage oil" in type_text or "minyak urut" in type_text or "traditional remedy" in type_text or "minyak angin" in type_text:
-        if content_type == "STEALTH":
-            return build(
-                "ARCH_STEALTH_MASSAGE_OIL",
-                "Stealth Massage Oil",
-                "male_health_stealth_generic",
-                "PAS",
-                "Sensitive male/female massage-oil family using euphemistic or metaphor-based copy.",
-            )
-        return build(
-            "ARCH_TRADITIONAL_REMEDY_DIRECT",
-            "Traditional Remedy Direct",
-            "traditional_remedy_direct",
-            "PAS",
-            "Traditional remedy or minyak urut family with direct household-relief copy.",
-        )
-
-    if "men's perfume" in type_text:
-        return build("ARCH_MEN_PERFUME", "Men Perfume Direct", "men_perfume_direct", "AIDA", "Men fragrance products focused on style, scent identity, and confidence.")
-    if "women's perfume" in type_text:
-        return build("ARCH_WOMEN_PERFUME", "Women Perfume Direct", "women_perfume_direct", "AIDA", "Women fragrance products focused on scent mood, style, and confidence.")
-    if "unisex perfume" in type_text or ("perfume" in type_text and "men's perfume" not in type_text and "women's perfume" not in type_text):
-        return build("ARCH_UNISEX_PERFUME", "Unisex Perfume Direct", "unisex_perfume_direct", "AIDA", "Unisex fragrance products built around freshness, confidence, and all-day scent.")
-
-    if any(keyword in type_text for keyword in ["facial cleanser", "moisturizer", "mist", "sunscreen", "sun care", "body serum", "body care kits", "beauty supplement", "wellness supplements", "lipstick", "lip gloss", "concealer", "foundation", "makeup", "fixing spray", "haircare", "shampoo", "conditioner"]):
-        return build("ARCH_BEAUTY_CONFIDENCE", "Beauty Confidence Direct", "beauty_confidence_direct", "HPAS", "Beauty, skincare, and cosmetic products driven by confidence, before-after, and benefit proof.")
-
-    if any(keyword in type_text for keyword in ["body wash", "soap", "deodorant", "antiperspirant"]):
-        return build("ARCH_BODY_CARE_FRESHNESS", "Body Care Freshness Direct", "body_care_freshness_direct", "PAS", "Body care freshness lane focused on smell, hygiene, and daily comfort.")
-
-    if any(keyword in type_text for keyword in ["diapers", "baby care", "baby & maternity"]):
-        return build("ARCH_BABY_CARE_ESSENTIALS", "Baby Care Essentials Direct", "baby_care_essentials_direct", "PAS", "Baby-care products positioned around comfort, safety, and parent pain-points.")
-
-    if any(keyword in type_text for keyword in ["instant hijab", "square hijabs", "tracksuits", "sportswear", "shirts", "blouses", "trousers", "bras", "socks", "underwear", "womenswear", "menswear", "muslim fashion"]):
-        return build("ARCH_FASHION_STYLE_FIT", "Fashion Style Fit Direct", "fashion_style_fit_direct", "AIDA", "Fashion lane centered on fit, style, comfort, and occasion-based hooks.")
-
-    if any(keyword in type_text for keyword in ["household cleaner", "cleaners", "fabric", "freshener", "laundry", "deodorizer"]):
-        return build("ARCH_HOUSEHOLD_CLEANING", "Household Cleaning Direct", "household_cleaning_direct", "HPAS", "Problem-removal household lane built around mess, smell, and visible cleaning proof.")
-
-    if any(keyword in type_text for keyword in ["storage boxes", "bins", "organizer", "organisers", "organizers"]):
-        return build("ARCH_HOME_ORGANIZATION", "Home Organization Direct", "home_organization_direct", "AIDA", "Home organization lane focused on tidy spaces, capacity, and convenience.")
-
-    if any(keyword in type_text for keyword in ["bedding", "sheets", "pillowcases", "curtains", "carpets", "mats", "rugs", "textiles"]):
-        return build("ARCH_HOME_COMFORT_TEXTILES", "Home Comfort Textiles Direct", "home_comfort_textiles_direct", "AIDA", "Home textiles lane focused on comfort, transformation, and cozy-room appeal.")
-
-    if any(keyword in type_text for keyword in ["cookware", "container", "tray", "kitchen", "food saver"]):
-        return build("ARCH_KITCHENWARE_FUNCTIONAL", "Kitchenware Functional Direct", "kitchenware_functional_direct", "HPAS", "Kitchenware lane focused on utility, convenience, and daily use proof.")
-
-    if any(keyword in type_text for keyword in ["instant noodles", "spaghetti", "popcorn", "cooking sauces", "canned", "packaged foods", "food & beverages", "chocolate"]):
-        return build("ARCH_FOOD_CONVENIENCE_TASTE", "Food Convenience Taste Direct", "food_convenience_taste_direct", "AIDA", "Food lane focused on taste, convenience, craving, and serving occasion.")
-
-    if any(keyword in full_text for keyword in ["car fragrance", "air freshener"]):
-        return build("ARCH_CAR_FRAGRANCE", "Car Fragrance Direct", "car_fragrance_direct", "HPAS", "Car fragrance lane focused on smell removal, freshness, and in-car vibe.")
-
-    if any(keyword in type_text for keyword in ["automotive", "motorcycle", "car interior accessories"]):
-        return build("ARCH_AUTOMOTIVE_ACCESSORY", "Automotive Accessory Direct", "automotive_accessory_direct", "HPAS", "Automotive accessory lane built around problem removal, convenience, and visible upgrades.")
-
-    if any(keyword in type_text for keyword in ["cables", "chargers", "adapters", "electronics"]):
-        return build("ARCH_GADGET_ACCESSORY", "Gadget Accessory Direct", "gadget_accessory_direct", "HPAS", "Gadget accessory lane focused on practicality, compatibility, and everyday convenience.")
-
-    if any(keyword in type_text for keyword in ["cat food", "dog", "pet"]):
-        return build("ARCH_PET_CARE", "Pet Care Direct", "pet_care_direct", "PAS", "Pet care lane built around animal comfort, owner worry, and daily-use proof.")
-
-    if any(keyword in full_text for keyword in ["stationery", "office", "writing", "teacher", "gift"]):
-        return build("ARCH_STATIONERY_GIFT", "Stationery Gift Direct", "stationery_gift_direct", "AIDA", "Stationery and gift lane focused on usefulness, gifting, and seasonal moments.")
-
-    if any(keyword in type_text for keyword in ["religion", "philosophy", "book", "books"]):
-        return build("ARCH_KNOWLEDGE_SPIRITUAL", "Knowledge Spiritual Direct", "knowledge_spiritual_direct", "AIDA", "Book and spiritual lane focused on meaning, guidance, and self-improvement.")
-
-    if "health & wellness" in type_text or "wellness" in type_text or "supplements" in type_text:
-        return build("ARCH_WELLNESS_SUPPLEMENTS", "Wellness Supplements Direct", "wellness_supplements_direct", "PAS", "Wellness lane centered on daily relief, routine, and benefit-led proof.")
-
-    fallback_base = slugify(sub_n or type_n or category_n)
-    return build(
-        f"ARCH_MISC_{fallback_base}",
-        f"Misc {title_case_key(sub_n or type_n or category_n)} Direct",
-        f"misc_{fallback_base.lower()}_direct",
-        "AIDA",
-        "Fallback archetype for uncaptured product families. Review if product volume grows.",
-    )
-
-
-def build_fastmoss_reference(product_name: str, shop_name: str) -> str:
-    return f"Copywriting_Product_Map | Product={normalize_spaces(product_name)} | Shop={normalize_spaces(shop_name)}"
-
-
-def load_fastmoss_copy_map() -> list[dict[str, Any]]:
-    wb = load_workbook(FASTMOSS_WORKBOOK, read_only=True, data_only=True)
-    ws = wb["Copywriting_Product_Map"]
-    results: list[dict[str, Any]] = []
-    for row in ws.iter_rows(min_row=5, values_only=True):
-        if not row or not row[1]:
-            continue
-        rank = int(row[0])
-        product_name = normalize_spaces(row[1])
-        shop_name = normalize_spaces(row[2])
-        category = normalize_spaces(row[3]).replace("Beauty & Personal Care", "Beauty & Personal Care")
-        sub_category = normalize_spaces(row[4])
-        product_type = normalize_spaces(row[5])
-        angle = normalize_spaces(row[14])
-        hook = normalize_spaces(row[15])
-        usp_1 = normalize_spaces(row[16])
-        usp_2 = normalize_spaces(row[17])
-        usp_3 = normalize_spaces(row[18])
-        cta = normalize_spaces(row[20])
-        archetype = archetype_from_fastmoss(category, sub_category, product_type, product_name)
-        results.append(
-            {
-                "rank": rank,
-                "product_name": product_name,
-                "shop_name": shop_name,
-                "category": category,
-                "sub_category": sub_category,
-                "product_type": product_type,
-                "angle": angle,
-                "hook": hook,
-                "usp_1": usp_1,
-                "usp_2": usp_2,
-                "usp_3": usp_3,
-                "cta": cta,
-                "fastmoss_reference": build_fastmoss_reference(product_name, shop_name),
-                "archetype": archetype,
-            }
-        )
-    return results
-
-
-def flagship_bosmax_rows() -> list[list[Any]]:
-    product = safe_yaml_load(ROOT / "products" / "BOSMAX_SERUM.yaml")
-    authority = "SCRIPT_REGISTRY_UNIFIED.md + SCRIPT_VARIANT_LIBRARY.md + products/BOSMAX_SERUM.yaml"
-    common = {
-        "Archetype_Code": "ARCH_STEALTH_MASSAGE_OIL",
-        "Archetype_Name": "Stealth Massage Oil",
-        "Product_ID_Optional": product["product_id"],
-        "Product_Name_Optional": product["product_name"],
-        "SKU_Optional": "",
-        "Category": product["category"],
-        "Sub_Category": product["sub_category"],
-        "Product_Type": "Sensitive stealth massage oil flagship",
-        "Type_of_Content": "STEALTH",
-        "Silo_Key": product["dialogue_authority"]["silo_id"],
-        "Authority_Source": authority,
-        "Fastmoss_Reference": "No confirmed direct Fastmoss listing as of 2026-06-02.",
-        "Status": "SEED_READY",
-    }
-
-    starter_rows = [
-        {
-            "variant_id": "5ML",
-            "uom": "Bottle",
-            "size": "5 ml",
-            "scale": "EXACTLY lip balm size, fit into fingers naturally",
-            "angle_id": "ANG_001",
-            "angle": "Maruah recovery with discreet pocket carry",
-            "hook_id": "HOOK_001",
-            "hook": "Enjin panas terus mati. Kesian abang!",
-            "usp_1": "Saiz lip balm, senang simpan dan bawa tanpa nampak seperti produk sensitif.",
-            "usp_2": "Botol hitam premium yang discreet, maskulin, dan tak menarik perhatian.",
-            "usp_3": "Lane copy ini mesti kekal STEALTH supaya maruah dan positioning produk tak bocor.",
-            "cta_id": "CTA_001",
-            "cta": "SERVIS ENJIN KAU.",
-            "formula": "PAS",
-            "notes": "5ml flagship starter row derived from male_health_vintage_car hook set.",
-        },
-        {
-            "variant_id": "5ML",
-            "uom": "Bottle",
-            "size": "5 ml",
-            "scale": "EXACTLY lip balm size, fit into fingers naturally",
-            "angle_id": "ANG_002",
-            "angle": "Performance confidence without obvious product signaling",
-            "hook_id": "HOOK_005",
-            "hook": "Member lain ride sampai pagi, abang tersadai awal?",
-            "usp_1": "Compact travel bottle sesuai untuk emergency carry dan repeat use harian.",
-            "usp_2": "Visual identity kekal premium-black dan selari dengan sensitive male wellness positioning.",
-            "usp_3": "Hook boleh bermain pada ego, tetapi product framing mesti kekal selamat dan euphemistic.",
-            "cta_id": "CTA_002",
-            "cta": "OVERHAUL SEKARANG.",
-            "formula": "SAVAGE_HPAS",
-            "notes": "Aggressive flagship row for Antigravity expansion under BOSMAX control.",
-        },
-        {
-            "variant_id": "10ML",
-            "uom": "Bottle",
-            "size": "10 ml",
-            "scale": "EXACTLY chapstick size, fit into fingers naturally",
-            "angle_id": "ANG_003",
-            "angle": "Chapstick-size confidence reset with premium wellness look",
-            "hook_id": "HOOK_006",
-            "hook": "Bilik dah gelap. Abang pulak yang short-circuit. Malu!",
-            "usp_1": "Saiz chapstick, mudah genggam dan lebih hero-ready untuk visual close-up.",
-            "usp_2": "Label BOSMAX HERBS yang jelas bantu product truth tanpa nampak murah atau pelik.",
-            "usp_3": "Sesuai untuk angle restore confidence sambil kekalkan premium discreet tone.",
-            "cta_id": "CTA_006",
-            "cta": "JANGAN BLACKOUT LAGI.",
-            "formula": "HSO",
-            "notes": "10ml flagship starter row with story-offer structure.",
-        },
-        {
-            "variant_id": "10ML",
-            "uom": "Bottle",
-            "size": "10 ml",
-            "scale": "EXACTLY chapstick size, fit into fingers naturally",
-            "angle_id": "ANG_004",
-            "angle": "Discreet daily carry for lelaki yang tak mahu hilang yakin",
-            "hook_id": "HOOK_011",
-            "hook": "Body sado. Enjin kosong. Abang ni hantu jalanan ke?",
-            "usp_1": "Botol finger-length ini cukup kecil untuk bawa tanpa rasa janggal.",
-            "usp_2": "Packaging hitam premium membantu stealth positioning dalam visual dan copy.",
-            "usp_3": "Formula starter ini patut dikembangkan tanpa memecahkan authority registry untuk sensitive copy.",
-            "cta_id": "CTA_011",
-            "cta": "KUKUHKAN TIANG KAU.",
-            "formula": "PAS",
-            "notes": "10ml flagship row seeded for direct Antigravity expansion.",
-        },
-    ]
-
-    rows: list[list[Any]] = []
-    for idx, starter in enumerate(starter_rows, start=1):
-        row_id = f"{FLAGSHIP_SHEET_BOSMAX}_R{idx:03d}"
-        rows.append(
-            [
-                row_id,
-                common["Archetype_Code"],
-                common["Archetype_Name"],
-                common["Product_ID_Optional"],
-                common["Product_Name_Optional"],
-                common["SKU_Optional"],
-                common["Category"],
-                common["Sub_Category"],
-                common["Product_Type"],
-                starter["uom"],
-                starter["size"],
-                starter["scale"],
-                common["Type_of_Content"],
-                common["Silo_Key"],
-                starter["angle_id"],
-                starter["angle"],
-                starter["hook_id"],
-                starter["hook"],
-                starter["usp_1"],
-                starter["usp_2"],
-                starter["usp_3"],
-                starter["cta_id"],
-                starter["cta"],
-                starter["formula"],
-                common["Authority_Source"],
-                common["Fastmoss_Reference"],
-                common["Status"],
-                starter["notes"],
-            ]
-        )
-    return rows
-
-
-def flagship_mwcb_rows() -> list[list[Any]]:
-    product = safe_yaml_load(ROOT / "products" / "CAP_BURUNG_MINYAK.yaml")
-    variant = product["variants"][0]
-    authority = "products/CAP_BURUNG_MINYAK.yaml"
-    starter_rows = [
-        (
-            "ANG_001",
-            "Household standby remedy with heritage trust",
-            "HOOK_001",
-            "Dalam rumah memang kena ada satu botol standby bila kepala berat, badan sengal, atau angin datang tiba-tiba.",
-            "Warisan keluarga sejak 1958 memberi trust dan rasa produk rumah yang orang simpan lama.",
-            "Botol WG40 30ml ini kecil, senang simpan, dan terus nampak seperti minyak warisan sebenar.",
-            "Boleh diposisikan sebagai peneman harian untuk urut ringan, segar, dan rasa lega cepat.",
-            "CTA_001",
-            "Simpan satu botol dekat rumah dan tekan beg kuning sekarang.",
-            "PAS",
-            "Family-utility direct row for flagship traditional remedy.",
-        ),
-        (
-            "ANG_002",
-            "Pocket-size traditional relief for travel and daily carry",
-            "HOOK_002",
-            "Botol kecil macam ni yang selalu orang cari sebab senang bawa, tapi masih rasa lengkap bila diperlukan.",
-            "Saiz 30ml pocket-size memudahkan carry tanpa makan ruang.",
-            "Red ribbed cap dan botol kaca jernih bantu product truth kekal kuat dalam visual dan demo.",
-            "Aroma herbal-eucalyptus-menthol beri rasa segar dan familiar untuk lane direct household remedy.",
-            "CTA_002",
-            "Masukkan dalam beg sekarang supaya tak cari bila dah perlu nanti.",
-            "AIDA",
-            "Travel-carry flagship direct row.",
-        ),
-        (
-            "ANG_003",
-            "Petua turun-temurun for urut, sengal, and family comfort",
-            "HOOK_003",
-            "Ramai suka jenis minyak yang ada rasa warisan sebenar, bukan sekadar botol cantik tapi kosong fungsi.",
-            "Tagline Petua Turun Temurun kuat untuk angle trust dan familiarity keluarga.",
-            "Boleh dibawa ke angle urut badan, rasa lega, dan kelegaan harian yang mudah difahami.",
-            "Label hijau-krim heritage dan burung bertenggek mengunci identiti produk daripada nampak generic.",
-            "CTA_003",
-            "Klik beg kuning dan tambah minyak warisan ni dalam stok rumah hari ini.",
-            "HSO",
-            "Heritage-story flagship row.",
-        ),
-        (
-            "ANG_004",
-            "Aromatherapy freshness and rumah-tenang positioning",
-            "HOOK_004",
-            "Kadang orang bukan cari produk pelik pun, mereka cuma nak sesuatu yang buat badan rasa ringan dan kepala rasa lapang semula.",
-            "Aroma terapi herbal membantu angle segar, tenang, dan less-stressed.",
-            "Tekstur ringan dan cepat sapu sesuai untuk daily routine without fuss.",
-            "Produk ini boleh masuk lane urut ringan, sapuan harian, dan comfort-at-home positioning.",
-            "CTA_004",
-            "Try satu botol dulu dan rasa sendiri beza dia pada rutin harian.",
-            "HPAS",
-            "Freshness and calm direct row.",
-        ),
-    ]
-
-    rows: list[list[Any]] = []
-    for idx, row in enumerate(starter_rows, start=1):
-        rows.append(
-            [
-                f"{FLAGSHIP_SHEET_MWCB}_R{idx:03d}",
-                "ARCH_TRADITIONAL_REMEDY_DIRECT",
-                "Traditional Remedy Direct",
-                product["product_id"],
-                product["product_name"],
-                "",
-                product["category"],
-                product["sub_category"],
-                product["product_type"],
-                "Bottle",
-                "30 ml",
-                variant["scale_anchor_descriptor"],
-                "DIRECT",
-                "traditional_remedy_direct",
-                row[0],
-                row[1],
-                row[2],
-                row[3],
-                row[4],
-                row[5],
-                row[6],
-                row[7],
-                row[8],
-                row[9],
-                authority,
-                "No confirmed direct Fastmoss listing mapped yet; use product registry truth first.",
-                "SEED_READY",
-                row[10],
-            ]
-        )
-    return rows
-
-
-def build_taxonomy(fastmoss_rows: list[dict[str, Any]]) -> tuple[list[list[Any]], dict[str, list[dict[str, Any]]]]:
-    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for row in fastmoss_rows:
-        grouped[row["archetype"].code].append(row)
-
-    taxonomy_rows: list[list[Any]] = []
-    for code in sorted(grouped):
-        sample_rows = sorted(grouped[code], key=lambda item: item["rank"])
-        archetype = sample_rows[0]["archetype"]
-        examples = " | ".join(item["product_name"] for item in sample_rows[:3])
-        flagship_link = ""
-        if code == "ARCH_STEALTH_MASSAGE_OIL":
-            flagship_link = FLAGSHIP_SHEET_BOSMAX
-        elif code == "ARCH_TRADITIONAL_REMEDY_DIRECT":
-            flagship_link = FLAGSHIP_SHEET_MWCB
-        taxonomy_rows.append(
-            [
-                archetype.code,
-                archetype.name,
-                archetype.worksheet_name,
-                archetype.type_of_content,
-                archetype.silo_key,
-                archetype.default_formula,
-                archetype.category_family,
-                archetype.sub_category_family,
-                sample_rows[0]["product_type"],
-                len(sample_rows),
-                examples,
-                flagship_link,
-                "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
-                archetype.notes,
-            ]
-        )
-
-    existing_codes = {row[0] for row in taxonomy_rows}
-    for code, meta in MANDATORY_ARCHETYPES.items():
-        if code in existing_codes:
-            continue
-        taxonomy_rows.append(
-            [
-                code,
-                meta["name"],
-                excel_sheet_name(code),
-                meta["type_of_content"],
-                meta["silo_key"],
-                meta["default_formula"],
-                meta["category_family"],
-                meta["sub_category_family"],
-                "",
-                0,
-                "",
-                meta["flagship_link"],
-                meta["authority_source"],
-                meta["notes"],
-            ]
-        )
-        grouped.setdefault(code, [])
-    taxonomy_rows.sort(key=lambda row: row[0])
-    return taxonomy_rows, grouped
 
 
 def style_header(ws: Worksheet, fill: PatternFill) -> None:
@@ -664,31 +276,21 @@ def style_header(ws: Worksheet, fill: PatternFill) -> None:
 
 def set_standard_layout(ws: Worksheet) -> None:
     ws.freeze_panes = "A2"
-    ws.auto_filter.ref = ws.dimensions
+    if ws.max_row >= 1 and ws.max_column >= 1:
+        ws.auto_filter.ref = ws.dimensions
     for column in ws.columns:
-        max_length = max(len(normalize_spaces(str(cell.value))) if cell.value is not None else 0 for cell in column)
-        ws.column_dimensions[column[0].column_letter].width = min(max(max_length + 2, 14), 42)
-    for row in ws.iter_rows():
-        for cell in row:
+        max_length = 0
+        for cell in column:
+            if cell.value is not None:
+                max_length = max(max_length, len(normalize_spaces(cell.value)))
             cell.alignment = WRAP_ALIGNMENT
+        ws.column_dimensions[column[0].column_letter].width = min(max(max_length + 2, 12), 42)
 
 
-def add_validations(ws: Worksheet) -> None:
-    type_validation = DataValidation(type="list", formula1='"DIRECT,STEALTH"', allow_blank=True)
-    formula_validation = DataValidation(type="list", formula1='"AIDA,PAS,HSO,HPAS,SAVAGE_HPAS"', allow_blank=True)
-    status_validation = DataValidation(type="list", formula1='"SEED_READY,ANTIGRAVITY_FILL_PENDING,REVIEW_REQUIRED,APPROVED,LOCKED"', allow_blank=True)
-    ws.add_data_validation(type_validation)
-    ws.add_data_validation(formula_validation)
-    ws.add_data_validation(status_validation)
-    type_validation.add("M2:M5000")
-    formula_validation.add("X2:X5000")
-    status_validation.add("AA2:AA5000")
-
-
-def create_sheet_with_headers(wb: Workbook, title: str, headers: list[str], header_fill: PatternFill) -> Worksheet:
+def create_sheet_with_headers(wb: Workbook, title: str, headers: list[str], fill: PatternFill) -> Worksheet:
     ws = wb.create_sheet(title=title)
     ws.append(headers)
-    style_header(ws, header_fill)
+    style_header(ws, fill)
     return ws
 
 
@@ -698,20 +300,982 @@ def write_rows(ws: Worksheet, rows: list[list[Any]]) -> None:
     set_standard_layout(ws)
 
 
-def write_index_sheet(wb: Workbook, archetype_codes: list[str]) -> None:
+def add_validations(ws: Worksheet) -> None:
+    header_positions = {cell.value: idx for idx, cell in enumerate(ws[1], start=1)}
+    if "Type_of_Content" not in header_positions:
+        return
+
+    type_validation = DataValidation(type="list", formula1='"DIRECT,STEALTH"', allow_blank=True)
+    formula_validation = DataValidation(type="list", formula1='"AIDA,PAS,HSO,HPAS,SAVAGE_HPAS"', allow_blank=True)
+    status_validation = DataValidation(type="list", formula1='"SEED_READY,ANTIGRAVITY_FILL_PENDING,REVIEW_REQUIRED,APPROVED,LOCKED"', allow_blank=True)
+    ws.add_data_validation(type_validation)
+    ws.add_data_validation(formula_validation)
+    ws.add_data_validation(status_validation)
+
+    type_col = get_column_letter(header_positions["Type_of_Content"])
+    formula_col = get_column_letter(header_positions["Copywriting_Formula"])
+    status_col = get_column_letter(header_positions["Status"])
+    type_validation.add(f"{type_col}2:{type_col}5000")
+    formula_validation.add(f"{formula_col}2:{formula_col}5000")
+    status_validation.add(f"{status_col}2:{status_col}5000")
+
+
+def load_fastmoss_copy_map() -> list[FastmossRow]:
+    wb = load_workbook(FASTMOSS_WORKBOOK, read_only=True, data_only=True)
+    ws = wb["Copywriting_Product_Map"]
+    rows: list[FastmossRow] = []
+    for raw in ws.iter_rows(min_row=5, values_only=True):
+        if not raw or raw[0] is None:
+            continue
+        rank = int(raw[0])
+        rows.append(
+            FastmossRow(
+                rank=rank,
+                product_name=normalize_spaces(raw[1]),
+                shop_name=normalize_spaces(raw[2]),
+                category=normalize_spaces(raw[3]),
+                sub_category=normalize_spaces(raw[4]),
+                product_type=normalize_spaces(raw[5]),
+                raw_category=normalize_spaces(raw[6]),
+                avg_price_rm=raw[7],
+                commission_rate=raw[8],
+                orders=raw[9],
+                order_growth=raw[10],
+                total_units_sold=raw[11],
+                total_revenue_rm=raw[12],
+                product_status=normalize_spaces(raw[13]),
+                copywriting_angle=normalize_spaces(raw[14]),
+                hook=normalize_spaces(raw[15]),
+                usp_1=normalize_spaces(raw[16]),
+                usp_2=normalize_spaces(raw[17]),
+                usp_3=normalize_spaces(raw[18]),
+                body=normalize_spaces(raw[19]),
+                cta=normalize_spaces(raw[20]),
+                fastmoss_reference=f"FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map#rank={rank}",
+            )
+        )
+    wb.close()
+    return rows
+
+
+def build_family_catalog() -> dict[str, FamilyDefinition]:
+    families = [
+        FamilyDefinition(
+            code="FAMILY_MALE_EXT_SENSITIVE_OIL",
+            name="Male Sensitive External Oil",
+            sheet_name="FAMILY_MALE_EXT_OIL",
+            type_of_content="STEALTH",
+            silo_key="male_health_stealth_01",
+            default_formula="SAVAGE_HPAS",
+            category_family="Health & Wellness",
+            commercial_mechanic="Same stealth male external-oil function sold under many brands and pack names.",
+            flagship_link=FLAGSHIP_SHEET_BOSMAX,
+            authority_source="products/BOSMAX_SERUM.yaml + products/MAVERIX_MAXOIL.yaml + script registry",
+            notes="Collapse Bosmax Serum, Maverix Maxoil, Big Boss-type lanes, and future sensitive external male oil brands into one copy family.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_TRADITIONAL_REMEDY_OIL",
+            name="Traditional Remedy Oil",
+            sheet_name="FAMILY_TRAD_REMEDY_OIL",
+            type_of_content="DIRECT",
+            silo_key="traditional_remedy_direct",
+            default_formula="PAS",
+            category_family="Health & Wellness",
+            commercial_mechanic="Household-relief traditional oil sold through pain-relief, comfort, and heritage positioning.",
+            flagship_link=FLAGSHIP_SHEET_MWCB,
+            authority_source="products/CAP_BURUNG_MINYAK.yaml + products/JUNGLE_GIRL_MINYAK.yaml",
+            notes="Collapse direct minyak urut, minyak angin, and traditional remedy oils that sell through practical relief rather than stealth intimacy.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_MEN_PERFUME",
+            name="Perfume Lelaki",
+            sheet_name="FAMILY_MEN_PERFUME",
+            type_of_content="DIRECT",
+            silo_key="men_perfume_direct",
+            default_formula="AIDA",
+            category_family="Beauty & Personal Care",
+            commercial_mechanic="Many men perfume brands, one repeatable confidence-and-attraction perfume copy engine.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Strategic family retained even when current Fastmoss slice has few or zero men-specific rows.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_WOMEN_PERFUME",
+            name="Perfume Wanita",
+            sheet_name="FAMILY_WOMEN_PERFUME",
+            type_of_content="DIRECT",
+            silo_key="women_perfume_direct",
+            default_formula="AIDA",
+            category_family="Beauty & Personal Care",
+            commercial_mechanic="Many women perfume brands, one repeatable attraction-confidence-freshness perfume family.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Use for fragrance lanes aimed at women and female self-confidence positioning.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_UNISEX_PERFUME",
+            name="Perfume Unisex",
+            sheet_name="FAMILY_UNISEX_PERFUME",
+            type_of_content="DIRECT",
+            silo_key="unisex_perfume_direct",
+            default_formula="AIDA",
+            category_family="Beauty & Personal Care",
+            commercial_mechanic="Fragrance sold on freshness, cleanliness, and easy daily confidence without strict gender coding.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Acts as the neutral perfume family when listing copy is not strongly gendered.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_HAIR_SHAMPOO",
+            name="Shampoo Rambut",
+            sheet_name="FAMILY_HAIR_SHAMPOO",
+            type_of_content="DIRECT",
+            silo_key="hair_shampoo_direct",
+            default_formula="PAS",
+            category_family="Beauty & Personal Care",
+            commercial_mechanic="Scalp-cleaning and smooth-hair promise sold across shampoo brands.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Keep distinct from hair oil and treatment mask families.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_HAIR_OIL",
+            name="Minyak Rambut",
+            sheet_name="FAMILY_HAIR_OIL",
+            type_of_content="DIRECT",
+            silo_key="hair_oil_direct",
+            default_formula="PAS",
+            category_family="Beauty & Personal Care",
+            commercial_mechanic="Hair-growth, anti-hair-fall, or nourishing-oil promise sold as topical hair oil.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Includes castor oil and similar topical rambut-growth lanes.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_TUDUNG_BAWAL",
+            name="Tudung Bawal",
+            sheet_name="FAMILY_TUDUNG_BAWAL",
+            type_of_content="DIRECT",
+            silo_key="tudung_bawal_direct",
+            default_formula="AIDA",
+            category_family="Muslim Fashion",
+            commercial_mechanic="Many bawal designs, one reusable shaping-easy-styling copy engine.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Collapse printed and plain bawal listings into one family if the wearing logic is the same.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_KAMBING_PERAP",
+            name="Kambing Perap",
+            sheet_name="FAMILY_KAMBING_PERAP",
+            type_of_content="DIRECT",
+            silo_key="food_kambing_perap_direct",
+            default_formula="AIDA",
+            category_family="Food & Beverages",
+            commercial_mechanic="Pre-marinated meat sold through taste, convenience, and celebration suitability.",
+            flagship_link="",
+            authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+            notes="Strategic family retained because the user explicitly wants kambing perap as a reusable product family.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_MENS_COLLARED_TSHIRT",
+            name="T-Shirt Berkolar Lelaki",
+            sheet_name="FAMILY_MENS_COLLARED_T",
+            type_of_content="DIRECT",
+            silo_key="mens_collared_tshirt_direct",
+            default_formula="AIDA",
+            category_family="Menswear & Underwear",
+            commercial_mechanic="Men tops sold through neatness, smart-casual look, and easy daily wear.",
+            flagship_link="",
+            authority_source="Future Fastmoss mapping or manual family registration",
+            notes="Placeholder strategic family for future polo/collared-men-top imports, even if current top-300 slice has zero rows.",
+        ),
+        FamilyDefinition(
+            code="FAMILY_TISU_GENERAL",
+            name="Tisu",
+            sheet_name="FAMILY_TISU_GENERAL",
+            type_of_content="DIRECT",
+            silo_key="tisu_general_direct",
+            default_formula="AIDA",
+            category_family="Home Supplies",
+            commercial_mechanic="Disposable wipe/tissue convenience lane retained as a future umbrella family.",
+            flagship_link="",
+            authority_source="Future Fastmoss mapping or manual family registration",
+            notes="Use only when a generic tisu family is genuinely needed. Specific tissue lanes remain more useful when function differs.",
+        ),
+    ]
+    return {family.code: family for family in families}
+
+
+def fallback_family_definition(row: FastmossRow) -> FamilyDefinition:
+    type_slug = slugify(row.product_type)[:18]
+    code = f"FAMILY_{type_slug}"
+    name = normalize_spaces(row.product_type) or "Generic Product Family"
+    family_name = name.title() if name.islower() else name
+    return FamilyDefinition(
+        code=code,
+        name=family_name,
+        sheet_name=sheet_name_for_family(code),
+        type_of_content="DIRECT",
+        silo_key=f"generic_{slugify(name).lower()}",
+        default_formula="AIDA",
+        category_family=row.category,
+        commercial_mechanic="Auto-generated fallback family from Fastmoss type; refine only if a broader commercial family becomes obvious.",
+        flagship_link="",
+        authority_source="FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
+        notes="Fallback family generated from a low-frequency type. Manual review can collapse this further later.",
+    )
+
+
+def classify_family(row: FastmossRow) -> FamilyAssignment:
+    text = row.search_text
+    type_text = row.product_type.lower()
+    sub_text = row.sub_category.lower()
+    category_text = row.category.lower()
+    perfume_context = "perfume" in type_text or sub_text == "perfume"
+    hair_context = sub_text == "haircare & styling" or category_text == "beauty & personal care" and contains_any(text, ["hair", "rambut"])
+
+    if contains_any(
+        text,
+        [
+            "maverix",
+            "bosmax",
+            "maxoil",
+            "big boss",
+            "men's care",
+            "male health",
+            "vitaliti lelaki",
+            "bahagian sensitif",
+            "intimate care oil",
+        ],
+    ) or (sub_text == "men's care" and "bath & body care" in type_text):
+        return FamilyAssignment("FAMILY_MALE_EXT_SENSITIVE_OIL", "Sensitive male external-oil lane detected from brand/product-lane keywords.", "HIGH")
+
+    if contains_any(
+        text,
+        [
+            "traditional remedy",
+            "minyak angin",
+            "minyak urut",
+            "massage oil",
+            "habbatus",
+            "liniment",
+        ],
+    ) or type_text == "body & massage oil":
+        return FamilyAssignment("FAMILY_TRADITIONAL_REMEDY_OIL", "Traditional remedy / massage-oil function detected.", "HIGH")
+
+    if "car fragrance" in type_text or contains_any(text, ["pewangi kereta", "air freshener", "car perfume"]):
+        return FamilyAssignment("FAMILY_CAR_FRAGRANCE", "Vehicle fragrance lane detected.", "HIGH")
+
+    if perfume_context and ("women's perfume" in type_text or contains_any(text, ["women perfume", "for women", "ladies perfume", "perfume wanita", "perfume perempuan", "wangian wanita"])):
+        return FamilyAssignment("FAMILY_WOMEN_PERFUME", "Women-specific perfume signals detected.", "HIGH")
+
+    if perfume_context and "unisex perfume" in type_text:
+        return FamilyAssignment("FAMILY_UNISEX_PERFUME", "Unisex perfume type detected.", "HIGH")
+
+    if perfume_context:
+        if contains_any(text, ["for men", "lelaki", "men perfume", "masculine scent", "for him"]):
+            return FamilyAssignment("FAMILY_MEN_PERFUME", "Men-specific perfume wording detected.", "HIGH")
+        return FamilyAssignment("FAMILY_UNISEX_PERFUME", "Generic perfume without strong gender marker routed to unisex perfume family.", "MEDIUM")
+
+    if hair_context and contains_any(text, ["hair oil", "minyak rambut", "castor oil"]):
+        return FamilyAssignment("FAMILY_HAIR_OIL", "Hair oil function detected.", "HIGH")
+
+    if hair_context and ("hair dye" in type_text or contains_any(text, ["pewarna rambut", "hair colour", "hair color", "tutup uban"])):
+        return FamilyAssignment("FAMILY_HAIR_DYE", "Hair dye / color lane detected.", "HIGH")
+
+    if hair_context and ("hair treatments/scalp treatments" in type_text or contains_any(text, ["keratin", "topeng rawatan", "serum rambut", "rebonding", "rawatan rambut"])):
+        return FamilyAssignment("FAMILY_HAIR_TREATMENT", "Hair treatment or repair-mask lane detected.", "HIGH")
+
+    if hair_context and ("shampoo & conditioner" in type_text or contains_any(text, ["syampu", "shampoo", "hair conditioner"])):
+        return FamilyAssignment("FAMILY_HAIR_SHAMPOO", "Hair shampoo / conditioner lane detected.", "HIGH")
+
+    if "beauty supplement" in type_text:
+        return FamilyAssignment("FAMILY_BEAUTY_SUPPLEMENT", "Beauty supplement lane detected.", "HIGH")
+
+    if sub_text == "food supplements" or "wellness supplements" in type_text:
+        return FamilyAssignment("FAMILY_WELLNESS_SUPPLEMENT", "General wellness supplement lane detected.", "HIGH")
+
+    if type_text == "body wash & soap":
+        return FamilyAssignment("FAMILY_BODY_SOAP", "Body soap / body wash lane detected.", "HIGH")
+
+    if type_text == "facial cleansers":
+        return FamilyAssignment("FAMILY_SKINCARE_CLEANSER", "Facial cleanser lane detected.", "HIGH")
+
+    if "facial sunscreen" in type_text:
+        return FamilyAssignment("FAMILY_SKINCARE_SUNSCREEN", "Sunscreen lane detected.", "HIGH")
+
+    if type_text == "serums & essences":
+        return FamilyAssignment("FAMILY_SKINCARE_SERUM", "Skincare serum lane detected.", "HIGH")
+
+    if type_text == "moisturizers & mists":
+        return FamilyAssignment("FAMILY_SKINCARE_MIST", "Hydration mist / moisturizer lane detected.", "HIGH")
+
+    if type_text == "face masks":
+        return FamilyAssignment("FAMILY_FACE_MASK", "Face mask lane detected.", "HIGH")
+
+    if type_text == "lip treatments":
+        return FamilyAssignment("FAMILY_LIP_CARE", "Lip treatment lane detected.", "HIGH")
+
+    if type_text == "eye treatments":
+        return FamilyAssignment("FAMILY_EYE_CARE", "Eye care lane detected.", "HIGH")
+
+    if type_text == "diapers":
+        return FamilyAssignment("FAMILY_BABY_DIAPER", "Baby diaper lane detected.", "HIGH")
+
+    if type_text == "adult diapers":
+        return FamilyAssignment("FAMILY_ADULT_DIAPER", "Adult diaper lane detected.", "HIGH")
+
+    if type_text == "wipes & holders":
+        return FamilyAssignment("FAMILY_BABY_WIPES", "Baby wipes lane detected.", "HIGH")
+
+    if type_text == "baby bottles & accessories":
+        return FamilyAssignment("FAMILY_BABY_FEEDING_BOTTLE", "Baby feeding bottle lane detected.", "HIGH")
+
+    if type_text == "baby skincare":
+        return FamilyAssignment("FAMILY_BABY_SKINCARE", "Baby skincare lane detected.", "HIGH")
+
+    if type_text == "cleaning cloths" and contains_any(text, ["tisu", "tissue", "paper towel"]):
+        return FamilyAssignment("FAMILY_KITCHEN_TISSUE", "Kitchen tissue / disposable wipe lane detected.", "HIGH")
+
+    if type_text == "makeup remover":
+        return FamilyAssignment("FAMILY_MAKEUP_REMOVER_WIPES", "Makeup-remover tissue lane detected.", "HIGH")
+
+    if "hijabs" in sub_text or "tudung" in text:
+        if "square hijabs" in type_text or "bawal" in text:
+            return FamilyAssignment("FAMILY_TUDUNG_BAWAL", "Bawal/square hijab lane detected.", "HIGH")
+        if "instant hijab" in type_text:
+            return FamilyAssignment("FAMILY_TUDUNG_INSTANT", "Instant hijab lane detected.", "HIGH")
+        if "underscarves" in type_text or contains_any(text, ["anak tudung", "snow cap", "inner hijab"]):
+            return FamilyAssignment("FAMILY_INNER_TUDUNG", "Inner tudung lane detected.", "HIGH")
+
+    if type_text == "socks":
+        return FamilyAssignment("FAMILY_SOCKS", "Socks lane detected.", "HIGH")
+
+    if type_text in {"underwear", "sports underwear"}:
+        return FamilyAssignment("FAMILY_MENS_UNDERWEAR", "Men underwear lane detected.", "HIGH")
+
+    if type_text == "bras":
+        return FamilyAssignment("FAMILY_WOMENS_BRA", "Women bra lane detected.", "HIGH")
+
+    if type_text == "t" and category_text == "menswear & underwear":
+        return FamilyAssignment("FAMILY_MENS_TSHIRT", "Men T-shirt lane detected.", "HIGH")
+
+    if type_text in {"blouses & shirts", "shirts & blouses", "islamic tracksuits"} or contains_any(text, ["jersey muslimah", "jersi muslimah", "microfiber", "athleisure"]):
+        return FamilyAssignment("FAMILY_WOMENS_JERSEY_TOP", "Women jersey / Muslimah top lane detected.", "MEDIUM")
+
+    if type_text == "trousers":
+        if category_text == "menswear & underwear":
+            return FamilyAssignment("FAMILY_MENS_LONG_PANTS", "Men long-pants lane detected.", "HIGH")
+        return FamilyAssignment("FAMILY_WOMENS_LONG_PANTS", "Women long-pants lane detected.", "HIGH")
+
+    if type_text == "shorts":
+        if category_text == "menswear & underwear":
+            return FamilyAssignment("FAMILY_MENS_SHORTS", "Men shorts lane detected.", "HIGH")
+        return FamilyAssignment("FAMILY_WOMENS_SHORTS", "Women shorts lane detected.", "HIGH")
+
+    if type_text == "bedding sets":
+        return FamilyAssignment("FAMILY_BEDDING_SET", "Bedding-set lane detected.", "HIGH")
+
+    if type_text == "sheets & pillowcases":
+        return FamilyAssignment("FAMILY_BEDSHEET_SET", "Bedsheet / pillowcase lane detected.", "HIGH")
+
+    if type_text == "curtains":
+        return FamilyAssignment("FAMILY_CURTAINS", "Curtain lane detected.", "HIGH")
+
+    if type_text == "carpets, mats & rugs":
+        return FamilyAssignment("FAMILY_CARPETS", "Carpet/mat lane detected.", "HIGH")
+
+    if type_text in {"storage boxes & bins", "storage holders & racks"}:
+        return FamilyAssignment("FAMILY_STORAGE_BOX", "Storage/organization lane detected.", "HIGH")
+
+    if type_text in {"household cleaners", "trash bags"}:
+        return FamilyAssignment("FAMILY_HOUSEHOLD_CLEANER", "Household cleaning lane detected.", "MEDIUM")
+
+    if type_text == "pest & weed control":
+        return FamilyAssignment("FAMILY_PEST_CONTROL", "Pest-control lane detected.", "HIGH")
+
+    if type_text == "popcorn":
+        return FamilyAssignment("FAMILY_POPCORN", "Popcorn snack lane detected.", "HIGH")
+
+    if type_text == "cooking sauces":
+        return FamilyAssignment("FAMILY_COOKING_SAUCE", "Cooking sauce / sambal lane detected.", "HIGH")
+
+    if type_text in {"canned, jarred & packaged foods", "instant noodles", "instant food"}:
+        return FamilyAssignment("FAMILY_INSTANT_FOOD", "Instant or ready-to-eat food lane detected.", "MEDIUM")
+
+    if type_text == "frozen food" or contains_any(text, ["kambing perap"]):
+        return FamilyAssignment("FAMILY_KAMBING_PERAP", "Kambing perap / marinated-frozen-food lane detected.", "HIGH")
+
+    if category_text == "beauty & personal care":
+        if sub_text == "makeup":
+            return FamilyAssignment("FAMILY_MAKEUP_COSMETICS", "General makeup lane fallback.", "MEDIUM")
+        if sub_text == "bath & body care":
+            return FamilyAssignment("FAMILY_BODY_CARE_FRESHNESS", "General bath/body-care lane fallback.", "MEDIUM")
+        if sub_text == "haircare & styling":
+            return FamilyAssignment("FAMILY_HAIR_CARE_GENERAL", "General hair-care lane fallback.", "MEDIUM")
+        if sub_text == "feminine care":
+            return FamilyAssignment("FAMILY_FEMININE_CARE", "Feminine-care lane fallback.", "MEDIUM")
+        if sub_text == "hand, foot & nail care":
+            return FamilyAssignment("FAMILY_NAIL_CARE", "Nail-care lane fallback.", "MEDIUM")
+        if sub_text == "nasal & oral care":
+            return FamilyAssignment("FAMILY_ORAL_CARE", "Oral-care lane fallback.", "MEDIUM")
+
+    if category_text == "health":
+        if sub_text == "medical supplies":
+            return FamilyAssignment("FAMILY_HOME_HEALTH_TEST", "Home health-test lane fallback.", "MEDIUM")
+
+    if category_text == "food & beverages":
+        if sub_text == "snacks":
+            return FamilyAssignment("FAMILY_SNACKS", "General snack lane fallback.", "MEDIUM")
+        if sub_text == "staples & cooking essentials":
+            return FamilyAssignment("FAMILY_COOKING_ESSENTIALS", "Cooking-essentials lane fallback.", "MEDIUM")
+        if sub_text == "drinks":
+            return FamilyAssignment("FAMILY_DRINKS", "Drink lane fallback.", "MEDIUM")
+        if sub_text == "fresh & frozen food":
+            return FamilyAssignment("FAMILY_FROZEN_FOOD", "Frozen-food lane fallback.", "MEDIUM")
+
+    if category_text == "phones & electronics":
+        if "smart watches" in type_text:
+            return FamilyAssignment("FAMILY_SMARTWATCH", "Smartwatch lane fallback.", "MEDIUM")
+        return FamilyAssignment("FAMILY_GADGET_ACCESSORY", "General gadget-accessory lane fallback.", "MEDIUM")
+
+    if category_text == "automotive & motorcycle":
+        return FamilyAssignment("FAMILY_AUTO_ACCESSORY", "General automotive-accessory lane fallback.", "MEDIUM")
+
+    if category_text == "household appliances":
+        return FamilyAssignment("FAMILY_HOME_APPLIANCE", "General home-appliance lane fallback.", "MEDIUM")
+
+    if category_text == "pet supplies":
+        return FamilyAssignment("FAMILY_PET_FOOD_ACCESSORY", "Pet-supplies lane fallback.", "MEDIUM")
+
+    if category_text == "books, magazines & audio":
+        return FamilyAssignment("FAMILY_BOOKS_REFERENCE", "Books/reference lane fallback.", "MEDIUM")
+
+    if category_text == "computers & office equipment":
+        return FamilyAssignment("FAMILY_STATIONERY_GIFT", "Stationery/gift lane fallback.", "MEDIUM")
+
+    if category_text == "kitchenware":
+        return FamilyAssignment("FAMILY_KITCHENWARE", "Kitchenware lane fallback.", "MEDIUM")
+
+    if category_text == "home improvement":
+        return FamilyAssignment("FAMILY_HOME_IMPROVEMENT", "Home-improvement lane fallback.", "MEDIUM")
+
+    if category_text == "home supplies":
+        if sub_text == "home decor" or sub_text == "festive & party supplies":
+            return FamilyAssignment("FAMILY_HOME_DECOR_GIFT", "Home-decor or party-gift lane fallback.", "MEDIUM")
+        if sub_text == "bathroom supplies":
+            return FamilyAssignment("FAMILY_BATHROOM_SUPPLY", "Bathroom-supply lane fallback.", "MEDIUM")
+        return FamilyAssignment("FAMILY_HOME_UTILITY", "General home-utility lane fallback.", "MEDIUM")
+
+    if category_text == "textiles & soft furnishings":
+        return FamilyAssignment("FAMILY_HOME_TEXTILE_MISC", "General home-textile lane fallback.", "MEDIUM")
+
+    if category_text == "muslim fashion":
+        if sub_text == "women's islamic clothing" or sub_text == "islamic sportswear":
+            return FamilyAssignment("FAMILY_MUSLIMAH_CLOTHING", "Muslimah clothing lane fallback.", "MEDIUM")
+        if sub_text == "islamic accessories":
+            return FamilyAssignment("FAMILY_HIJAB_ACCESSORY", "Hijab accessory lane fallback.", "MEDIUM")
+        return FamilyAssignment("FAMILY_MUSLIM_FASHION_MISC", "General Muslim fashion lane fallback.", "MEDIUM")
+
+    if category_text == "womenswear & underwear":
+        if "sleepwear" in sub_text:
+            return FamilyAssignment("FAMILY_WOMENS_SLEEPWEAR", "Women sleepwear lane fallback.", "MEDIUM")
+        if "tops" in sub_text:
+            return FamilyAssignment("FAMILY_WOMENS_TOPS", "Women tops lane fallback.", "MEDIUM")
+        if "bottoms" in sub_text:
+            return FamilyAssignment("FAMILY_WOMENS_BOTTOMS", "Women bottoms lane fallback.", "MEDIUM")
+        return FamilyAssignment("FAMILY_WOMENS_FASHION_MISC", "General women-fashion lane fallback.", "MEDIUM")
+
+    if category_text == "menswear & underwear":
+        if "tops" in sub_text:
+            return FamilyAssignment("FAMILY_MENS_TOPS", "Men tops lane fallback.", "MEDIUM")
+        if "bottoms" in sub_text:
+            return FamilyAssignment("FAMILY_MENS_BOTTOMS", "Men bottoms lane fallback.", "MEDIUM")
+        return FamilyAssignment("FAMILY_MENS_FASHION_MISC", "General men-fashion lane fallback.", "MEDIUM")
+
+    if category_text == "sports & outdoor":
+        return FamilyAssignment("FAMILY_SPORTSWEAR_MISC", "Sports/outdoor apparel lane fallback.", "MEDIUM")
+
+    if category_text == "baby & maternity":
+        return FamilyAssignment("FAMILY_BABY_ESSENTIALS", "General baby-essentials lane fallback.", "MEDIUM")
+
+    if category_text == "fashion accessories":
+        return FamilyAssignment("FAMILY_FASHION_ACCESSORY", "Fashion-accessory lane fallback.", "MEDIUM")
+
+    if category_text == "shoes":
+        return FamilyAssignment("FAMILY_FOOTWEAR", "Footwear lane fallback.", "MEDIUM")
+
+    if category_text == "toys & hobbies":
+        return FamilyAssignment("FAMILY_TOYS_CRAFTS", "Toys/crafts lane fallback.", "MEDIUM")
+
+    return FamilyAssignment("", "No strategic family rule matched; fallback family required.", "LOW")
+
+
+def ensure_dynamic_family(families: dict[str, FamilyDefinition], code: str, row: FastmossRow) -> None:
+    if code in families:
+        return
+    families[code] = fallback_family_definition(row)
+
+
+def dynamic_catalog_extension(families: dict[str, FamilyDefinition]) -> None:
+    extra_families = [
+        FamilyDefinition("FAMILY_CAR_FRAGRANCE", "Pewangi Kereta", "FAMILY_CAR_FRAGRANCE", "DIRECT", "car_fragrance_direct", "AIDA", "Automotive & Motorcycle", "Fragrance sold through cabin freshness and long-lasting scent benefit.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Keep separate from body perfume because usage context differs."),
+        FamilyDefinition("FAMILY_HAIR_TREATMENT", "Rawatan Rambut", "FAMILY_HAIR_TREATMENT", "DIRECT", "hair_treatment_direct", "PAS", "Beauty & Personal Care", "Hair repair and smoothness promise sold through treatment/mask logic.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Separate from shampoo and hair oil."),
+        FamilyDefinition("FAMILY_HAIR_DYE", "Pewarna Rambut", "FAMILY_HAIR_DYE", "DIRECT", "hair_dye_direct", "PAS", "Beauty & Personal Care", "Cover-grey and color-refresh hair lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Useful for tutup uban messaging."),
+        FamilyDefinition("FAMILY_BEAUTY_SUPPLEMENT", "Supplement Kecantikan", "FAMILY_BEAUTY_SUPP", "DIRECT", "beauty_supplement_direct", "AIDA", "Health", "Beauty-from-within supplement lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Keep separate from general wellness supplement."),
+        FamilyDefinition("FAMILY_WELLNESS_SUPPLEMENT", "Supplement Kesihatan", "FAMILY_WELLNESS_SUPP", "DIRECT", "wellness_supplement_direct", "PAS", "Health", "General wellness supplement lane with health-maintenance positioning.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Broad family for chewables, detox, and wellness support."),
+        FamilyDefinition("FAMILY_BODY_SOAP", "Sabun Badan", "FAMILY_BODY_SOAP", "DIRECT", "body_soap_direct", "PAS", "Beauty & Personal Care", "Soap/body-wash lane sold through cleanliness and visible-skin comfort.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Keep separate from facial cleanser."),
+        FamilyDefinition("FAMILY_SKINCARE_CLEANSER", "Pencuci Muka", "FAMILY_SKINCARE_CLEANSER", "DIRECT", "skincare_cleanser_direct", "PAS", "Beauty & Personal Care", "Facial cleanser lane sold through brightening, oil-control, or acne-clearing benefit.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Skincare cleanser family."),
+        FamilyDefinition("FAMILY_SKINCARE_SUNSCREEN", "Sunscreen", "FAMILY_SKIN_SUNSCREEN", "DIRECT", "skincare_sunscreen_direct", "AIDA", "Beauty & Personal Care", "Daily UV-defense lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Separate from serum and cleanser."),
+        FamilyDefinition("FAMILY_SKINCARE_SERUM", "Serum Wajah", "FAMILY_SKINCARE_SERUM", "DIRECT", "skincare_serum_direct", "AIDA", "Beauty & Personal Care", "Face serum lane sold through brightening and glow improvement.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Serum-specific face-care family."),
+        FamilyDefinition("FAMILY_SKINCARE_MIST", "Mist Penjagaan Kulit", "FAMILY_SKINCARE_MIST", "DIRECT", "skincare_mist_direct", "AIDA", "Beauty & Personal Care", "Hydration mist / serum spray lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Useful for instant-hydration and glow copy."),
+        FamilyDefinition("FAMILY_FACE_MASK", "Mask Wajah", "FAMILY_FACE_MASK", "DIRECT", "face_mask_direct", "AIDA", "Beauty & Personal Care", "Mask lane sold through hydration or soothing logic.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Face-mask family."),
+        FamilyDefinition("FAMILY_LIP_CARE", "Penjagaan Bibir", "FAMILY_LIP_CARE", "DIRECT", "lip_care_direct", "AIDA", "Beauty & Personal Care", "Lip treatment lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Lip-serum and lip-care family."),
+        FamilyDefinition("FAMILY_EYE_CARE", "Penjagaan Mata", "FAMILY_EYE_CARE", "DIRECT", "eye_care_direct", "AIDA", "Beauty & Personal Care", "Eye-care hydration line-smoothing lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Eye-balm and eye-treatment family."),
+        FamilyDefinition("FAMILY_BABY_DIAPER", "Lampin Bayi", "FAMILY_BABY_DIAPER", "DIRECT", "baby_diaper_direct", "PAS", "Baby & Maternity", "Baby diaper lane sold through comfort, leak protection, and value-pack logic.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Collapse multiple diaper brands into one family."),
+        FamilyDefinition("FAMILY_ADULT_DIAPER", "Lampin Dewasa", "FAMILY_ADULT_DIAPER", "DIRECT", "adult_diaper_direct", "PAS", "Beauty & Personal Care", "Adult diaper lane sold through absorbency and comfort.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Low-frequency but distinct function family."),
+        FamilyDefinition("FAMILY_BABY_WIPES", "Tisu Basah Bayi", "FAMILY_BABY_WIPES", "DIRECT", "baby_wipes_direct", "AIDA", "Baby & Maternity", "Baby wipes lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Keep separate from kitchen tissue."),
+        FamilyDefinition("FAMILY_BABY_FEEDING_BOTTLE", "Botol Bayi", "FAMILY_BABY_BOTTLE", "DIRECT", "baby_bottle_direct", "AIDA", "Baby & Maternity", "Bottle-feeding lane sold through anti-colic and newborn suitability.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Baby bottle family."),
+        FamilyDefinition("FAMILY_BABY_SKINCARE", "Penjagaan Kulit Bayi", "FAMILY_BABY_SKINCARE", "DIRECT", "baby_skincare_direct", "AIDA", "Baby & Maternity", "Baby skincare family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Baby-care topical family."),
+        FamilyDefinition("FAMILY_KITCHEN_TISSUE", "Tisu Dapur", "FAMILY_KITCHEN_TISSUE", "DIRECT", "kitchen_tissue_direct", "AIDA", "Home Supplies", "Disposable cleaning paper/tissue lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Useful for wipe, absorb, and convenience copy."),
+        FamilyDefinition("FAMILY_MAKEUP_REMOVER_WIPES", "Tisu Makeup Remover", "FAMILY_MAKEUP_REMOVER", "DIRECT", "makeup_remover_wipes_direct", "AIDA", "Beauty & Personal Care", "Convenient makeup-remover tissue lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Separate from generic tisu."),
+        FamilyDefinition("FAMILY_TUDUNG_INSTANT", "Tudung Instant", "FAMILY_TUDUNG_INSTANT", "DIRECT", "tudung_instant_direct", "AIDA", "Muslim Fashion", "Quick-wear hijab lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Different wearing logic from bawal."),
+        FamilyDefinition("FAMILY_INNER_TUDUNG", "Inner Tudung", "FAMILY_INNER_TUDUNG", "DIRECT", "inner_tudung_direct", "AIDA", "Muslim Fashion", "Inner scarf / anak tudung lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Support layer family for hijab-wearers."),
+        FamilyDefinition("FAMILY_MENS_TSHIRT", "T-Shirt Lelaki", "FAMILY_MENS_TSHIRT", "DIRECT", "mens_tshirt_direct", "AIDA", "Menswear & Underwear", "Men tops sold through comfort and easy daily wear.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Different from future collared-shirt family."),
+        FamilyDefinition("FAMILY_WOMENS_JERSEY_TOP", "Top/Jersi Wanita", "FAMILY_WOMEN_JERSEY", "DIRECT", "women_jersey_top_direct", "AIDA", "Womenswear & Underwear", "Women jersey and Muslimah activewear top lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Covers microfiber Muslimah jersey and similar easy-wear tops."),
+        FamilyDefinition("FAMILY_MENS_UNDERWEAR", "Seluar Dalam Lelaki", "FAMILY_MENS_UNDERWEAR", "DIRECT", "mens_underwear_direct", "AIDA", "Menswear & Underwear", "Men underwear comfort lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Comfort-fit men undergarment family."),
+        FamilyDefinition("FAMILY_WOMENS_BRA", "Bra Wanita", "FAMILY_WOMENS_BRA", "DIRECT", "womens_bra_direct", "AIDA", "Womenswear & Underwear", "Women bra comfort/support lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Support, coverage, comfort family."),
+        FamilyDefinition("FAMILY_SOCKS", "Stokin", "FAMILY_SOCKS", "DIRECT", "socks_direct", "AIDA", "Fashion", "Socks lane sold through comfort and value-pack simplicity.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Shared across men/women listings because use-case is the same."),
+        FamilyDefinition("FAMILY_MENS_LONG_PANTS", "Seluar Panjang Lelaki", "FAMILY_MENS_PANTS", "DIRECT", "mens_pants_direct", "AIDA", "Menswear & Underwear", "Men long-pants lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Track/jogger/casual long-pants family."),
+        FamilyDefinition("FAMILY_WOMENS_LONG_PANTS", "Seluar Panjang Wanita", "FAMILY_WOMENS_PANTS", "DIRECT", "womens_pants_direct", "AIDA", "Womenswear & Underwear", "Women long-pants lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Bootcut/wide-leg everyday pants family."),
+        FamilyDefinition("FAMILY_MENS_SHORTS", "Seluar Pendek Lelaki", "FAMILY_MENS_SHORTS", "DIRECT", "mens_shorts_direct", "AIDA", "Menswear & Underwear", "Men shorts lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Casual/sports shorts family."),
+        FamilyDefinition("FAMILY_WOMENS_SHORTS", "Seluar Pendek Wanita", "FAMILY_WOMEN_SHORTS", "DIRECT", "womens_shorts_direct", "AIDA", "Womenswear & Underwear", "Women shorts lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Casual shorts family."),
+        FamilyDefinition("FAMILY_BEDDING_SET", "Set Bedding", "FAMILY_BEDDING_SET", "DIRECT", "bedding_set_direct", "AIDA", "Textiles & Soft Furnishings", "Complete bedding-set lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Covers full bedsheet/comforter set offers."),
+        FamilyDefinition("FAMILY_BEDSHEET_SET", "Cadar & Sarung Bantal", "FAMILY_BEDSHEET_SET", "DIRECT", "bedsheet_set_direct", "AIDA", "Textiles & Soft Furnishings", "Bedsheet and pillowcase lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Separate from full bedding set."),
+        FamilyDefinition("FAMILY_CURTAINS", "Langsir", "FAMILY_CURTAINS", "DIRECT", "curtain_direct", "AIDA", "Textiles & Soft Furnishings", "Curtain lane sold through room transformation and blackout comfort.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Home textile transformation family."),
+        FamilyDefinition("FAMILY_CARPETS", "Karpet", "FAMILY_CARPETS", "DIRECT", "carpet_direct", "AIDA", "Textiles & Soft Furnishings", "Carpet lane sold through comfort and room-upgrade effect.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Home-comfort floor textile family."),
+        FamilyDefinition("FAMILY_STORAGE_BOX", "Storage Organizer", "FAMILY_STORAGE_BOX", "DIRECT", "storage_organizer_direct", "AIDA", "Home Supplies", "Home organization lane sold through space-saving clarity.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Storage box and organizer family."),
+        FamilyDefinition("FAMILY_HOUSEHOLD_CLEANER", "Pembersih Rumah", "FAMILY_HOUSE_CLEANER", "DIRECT", "household_cleaner_direct", "PAS", "Home Supplies", "Home-cleaning lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Cleaner, detergent, and trash-bag style practical lane."),
+        FamilyDefinition("FAMILY_PEST_CONTROL", "Kawalan Serangga", "FAMILY_PEST_CONTROL", "DIRECT", "pest_control_direct", "PAS", "Home Supplies", "Pest-control lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Lipas/semut/nyamuk control family."),
+        FamilyDefinition("FAMILY_POPCORN", "Popcorn", "FAMILY_POPCORN", "DIRECT", "popcorn_direct", "AIDA", "Food & Beverages", "Snack lane sold through sedap, rangup, and gifting suitability.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Popcorn family."),
+        FamilyDefinition("FAMILY_COOKING_SAUCE", "Sos & Sambal", "FAMILY_COOKING_SAUCE", "DIRECT", "cooking_sauce_direct", "AIDA", "Food & Beverages", "Flavor booster lane sold through sedap, mudah, and menu-upgrade logic.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Cooking sauce and sambal family."),
+        FamilyDefinition("FAMILY_INSTANT_FOOD", "Makanan Segera", "FAMILY_INSTANT_FOOD", "DIRECT", "instant_food_direct", "AIDA", "Food & Beverages", "Ready-to-eat or quick-serve food lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Instant convenience food family."),
+        FamilyDefinition("FAMILY_MAKEUP_COSMETICS", "Makeup", "FAMILY_MAKEUP", "DIRECT", "makeup_direct", "AIDA", "Beauty & Personal Care", "Color-cosmetic lane sold through beauty transformation and finish.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback umbrella for makeup types not split further."),
+        FamilyDefinition("FAMILY_BODY_CARE_FRESHNESS", "Penjagaan Badan", "FAMILY_BODY_CARE", "DIRECT", "body_care_direct", "AIDA", "Beauty & Personal Care", "Bath/body-care freshness lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Umbrella for bath/body products outside specific soap or remedy families."),
+        FamilyDefinition("FAMILY_HAIR_CARE_GENERAL", "Penjagaan Rambut", "FAMILY_HAIR_CARE", "DIRECT", "hair_care_direct", "PAS", "Beauty & Personal Care", "General hair-care umbrella for anything not classified as shampoo, oil, dye, or treatment.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "General hair-care fallback."),
+        FamilyDefinition("FAMILY_FEMININE_CARE", "Penjagaan Intim Wanita", "FAMILY_FEMININE_CARE", "STEALTH", "female_care_stealth", "PAS", "Beauty & Personal Care", "Women intimate-care lane handled carefully and euphemistically.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Sensitive but non-explicit feminine-care fallback."),
+        FamilyDefinition("FAMILY_NAIL_CARE", "Penjagaan Kuku", "FAMILY_NAIL_CARE", "DIRECT", "nail_care_direct", "AIDA", "Beauty & Personal Care", "Nail polish and nail styling lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Nail-care family."),
+        FamilyDefinition("FAMILY_ORAL_CARE", "Penjagaan Mulut", "FAMILY_ORAL_CARE", "DIRECT", "oral_care_direct", "PAS", "Beauty & Personal Care", "Tooth and oral-care lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Oral-care family."),
+        FamilyDefinition("FAMILY_HOME_HEALTH_TEST", "Alat Ujian Kesihatan", "FAMILY_HEALTH_TEST", "DIRECT", "health_test_direct", "AIDA", "Health", "Home health monitoring and self-test lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Health-test family."),
+        FamilyDefinition("FAMILY_SNACKS", "Snek", "FAMILY_SNACKS", "DIRECT", "snack_direct", "AIDA", "Food & Beverages", "General snack lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Umbrella snack family."),
+        FamilyDefinition("FAMILY_COOKING_ESSENTIALS", "Bahan Masakan", "FAMILY_COOK_ESSENTIALS", "DIRECT", "cooking_essentials_direct", "AIDA", "Food & Beverages", "Cooking essentials and pantry-lane umbrella.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Pantry/cooking fallback family."),
+        FamilyDefinition("FAMILY_DRINKS", "Minuman", "FAMILY_DRINKS", "DIRECT", "drinks_direct", "AIDA", "Food & Beverages", "Drink lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "General drink family."),
+        FamilyDefinition("FAMILY_FROZEN_FOOD", "Makanan Sejuk Beku", "FAMILY_FROZEN_FOOD", "DIRECT", "frozen_food_direct", "AIDA", "Food & Beverages", "Frozen-food lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Frozen-food umbrella outside kambing perap."),
+        FamilyDefinition("FAMILY_GADGET_ACCESSORY", "Aksesori Gadget", "FAMILY_GADGET_ACCESSORY", "DIRECT", "gadget_accessory_direct", "AIDA", "Phones & Electronics", "Gadget-accessory umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Accessories, holders, and cable-related products."),
+        FamilyDefinition("FAMILY_SMARTWATCH", "Smartwatch", "FAMILY_SMARTWATCH", "DIRECT", "smartwatch_direct", "AIDA", "Phones & Electronics", "Smartwatch lane.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Wearable-device family."),
+        FamilyDefinition("FAMILY_AUTO_ACCESSORY", "Aksesori Automotif", "FAMILY_AUTO_ACCESSORY", "DIRECT", "auto_accessory_direct", "AIDA", "Automotive & Motorcycle", "Automotive-accessory umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Car-care and mount/accessory family."),
+        FamilyDefinition("FAMILY_HOME_APPLIANCE", "Peralatan Rumah", "FAMILY_HOME_APPLIANCE", "DIRECT", "home_appliance_direct", "AIDA", "Household Appliances", "Home-appliance umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Portable fans, vacuums, and similar tools."),
+        FamilyDefinition("FAMILY_PET_FOOD_ACCESSORY", "Produk Haiwan Peliharaan", "FAMILY_PET_PRODUCTS", "DIRECT", "pet_products_direct", "AIDA", "Pet Supplies", "Pet-food and pet-accessory umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Pet supplies family."),
+        FamilyDefinition("FAMILY_BOOKS_REFERENCE", "Buku & Rujukan", "FAMILY_BOOKS_REFERENCE", "DIRECT", "books_reference_direct", "AIDA", "Books, Magazines & Audio", "Book and reference-content family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Book/reference family."),
+        FamilyDefinition("FAMILY_STATIONERY_GIFT", "Stationery & Hadiah", "FAMILY_STATIONERY", "DIRECT", "stationery_gift_direct", "AIDA", "Computers & Office Equipment", "Stationery and small-gift umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Stationery/gifting family."),
+        FamilyDefinition("FAMILY_KITCHENWARE", "Kitchenware", "FAMILY_KITCHENWARE", "DIRECT", "kitchenware_direct", "AIDA", "Kitchenware", "Kitchenware umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Kitchen utensil and cookware family."),
+        FamilyDefinition("FAMILY_HOME_IMPROVEMENT", "Home Improvement", "FAMILY_HOME_IMPROVE", "DIRECT", "home_improvement_direct", "AIDA", "Home Improvement", "Home-improvement umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Lighting, wall, and garden helper family."),
+        FamilyDefinition("FAMILY_HOME_DECOR_GIFT", "Dekorasi & Hadiah Rumah", "FAMILY_HOME_DECOR", "DIRECT", "home_decor_gift_direct", "AIDA", "Home Supplies", "Home decor and giftable house-item umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Home decor/party gift family."),
+        FamilyDefinition("FAMILY_BATHROOM_SUPPLY", "Keperluan Bilik Air", "FAMILY_BATHROOM", "DIRECT", "bathroom_supply_direct", "AIDA", "Home Supplies", "Bathroom-supply umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Bathroom utility family."),
+        FamilyDefinition("FAMILY_HOME_UTILITY", "Keperluan Rumah", "FAMILY_HOME_UTILITY", "DIRECT", "home_utility_direct", "AIDA", "Home Supplies", "General home-utility umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback for home supplies."),
+        FamilyDefinition("FAMILY_HOME_TEXTILE_MISC", "Tekstil Rumah", "FAMILY_HOME_TEXTILE", "DIRECT", "home_textile_direct", "AIDA", "Textiles & Soft Furnishings", "General home-textile umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback for remaining home textiles."),
+        FamilyDefinition("FAMILY_MUSLIMAH_CLOTHING", "Pakaian Muslimah", "FAMILY_MUSLIMAH_WEAR", "DIRECT", "muslimah_clothing_direct", "AIDA", "Muslim Fashion", "Muslimah clothing umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "For Islamic clothing not routed to bawal or inner-tudung."),
+        FamilyDefinition("FAMILY_HIJAB_ACCESSORY", "Aksesori Hijab", "FAMILY_HIJAB_ACCESSORY", "DIRECT", "hijab_accessory_direct", "AIDA", "Muslim Fashion", "Hijab accessory family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Pins and brooches family."),
+        FamilyDefinition("FAMILY_MUSLIM_FASHION_MISC", "Fesyen Muslim", "FAMILY_MUSLIM_FASHION", "DIRECT", "muslim_fashion_direct", "AIDA", "Muslim Fashion", "General Muslim fashion umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback for Muslim fashion."),
+        FamilyDefinition("FAMILY_WOMENS_SLEEPWEAR", "Baju Tidur Wanita", "FAMILY_WOMEN_SLEEP", "DIRECT", "women_sleepwear_direct", "AIDA", "Womenswear & Underwear", "Women sleepwear family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Sleepwear family."),
+        FamilyDefinition("FAMILY_WOMENS_TOPS", "Top Wanita", "FAMILY_WOMEN_TOPS", "DIRECT", "women_tops_direct", "AIDA", "Womenswear & Underwear", "Women tops umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback women-top family."),
+        FamilyDefinition("FAMILY_WOMENS_BOTTOMS", "Bottom Wanita", "FAMILY_WOMEN_BOTTOMS", "DIRECT", "women_bottoms_direct", "AIDA", "Womenswear & Underwear", "Women bottoms umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback women-bottom family."),
+        FamilyDefinition("FAMILY_WOMENS_FASHION_MISC", "Fesyen Wanita", "FAMILY_WOMEN_FASHION", "DIRECT", "women_fashion_direct", "AIDA", "Womenswear & Underwear", "General women-fashion umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback women-fashion family."),
+        FamilyDefinition("FAMILY_MENS_TOPS", "Top Lelaki", "FAMILY_MEN_TOPS", "DIRECT", "men_tops_direct", "AIDA", "Menswear & Underwear", "Men tops umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback men-top family."),
+        FamilyDefinition("FAMILY_MENS_BOTTOMS", "Bottom Lelaki", "FAMILY_MEN_BOTTOMS", "DIRECT", "men_bottoms_direct", "AIDA", "Menswear & Underwear", "Men bottoms umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback men-bottom family."),
+        FamilyDefinition("FAMILY_MENS_FASHION_MISC", "Fesyen Lelaki", "FAMILY_MEN_FASHION", "DIRECT", "men_fashion_direct", "AIDA", "Menswear & Underwear", "General men-fashion umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback men-fashion family."),
+        FamilyDefinition("FAMILY_SPORTSWEAR_MISC", "Sportswear", "FAMILY_SPORTSWEAR", "DIRECT", "sportswear_direct", "AIDA", "Sports & Outdoor", "General sportswear umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Sports/outdoor wear family."),
+        FamilyDefinition("FAMILY_BABY_ESSENTIALS", "Keperluan Bayi", "FAMILY_BABY_ESSENTIALS", "DIRECT", "baby_essentials_direct", "AIDA", "Baby & Maternity", "General baby-essentials umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Fallback baby family."),
+        FamilyDefinition("FAMILY_FASHION_ACCESSORY", "Aksesori Fesyen", "FAMILY_FASHION_ACCESSORY", "DIRECT", "fashion_accessory_direct", "AIDA", "Fashion Accessories", "Fashion-accessory umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "General fashion-accessory family."),
+        FamilyDefinition("FAMILY_FOOTWEAR", "Footwear", "FAMILY_FOOTWEAR", "DIRECT", "footwear_direct", "AIDA", "Shoes", "Footwear family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "Footwear family."),
+        FamilyDefinition("FAMILY_TOYS_CRAFTS", "Toys & Crafts", "FAMILY_TOYS_CRAFTS", "DIRECT", "toys_crafts_direct", "AIDA", "Toys & Hobbies", "Toys/crafts umbrella family.", "", "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map", "General toys/crafts family."),
+    ]
+    for family in extra_families:
+        families.setdefault(family.code, family)
+
+
+def load_existing_flagship_rows(sheet_name: str, family_code: str, family_name: str) -> list[list[Any]]:
+    source_workbooks = [OUTPUT_WORKBOOK, LEGACY_WORKBOOK]
+    workbook_path = next((path for path in source_workbooks if path.exists()), None)
+    if workbook_path is None:
+        return []
+
+    wb = load_workbook(workbook_path, read_only=True, data_only=True)
+    if sheet_name not in wb.sheetnames:
+        wb.close()
+        return []
+
+    ws = wb[sheet_name]
+    header_row = [normalize_spaces(cell) for cell in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))]
+    header_index = {header: idx for idx, header in enumerate(header_row)}
+    rows: list[list[Any]] = []
+
+    for raw in ws.iter_rows(min_row=2, values_only=True):
+        if not raw or all(value is None for value in raw):
+            continue
+
+        if "Family_Code" in header_index:
+            source = {header: raw[idx] if idx < len(raw) else "" for header, idx in header_index.items()}
+            row_values = [source.get(header, "") for header in WORKING_HEADERS]
+            row_values[1] = family_code
+            row_values[2] = family_name
+            rows.append(row_values)
+            continue
+
+        source = {header: raw[idx] if idx < len(raw) else "" for header, idx in header_index.items()}
+        rows.append(
+            [
+                source.get("Row_ID", ""),
+                family_code,
+                family_name,
+                source.get("Product_ID_Optional", ""),
+                source.get("Product_Name_Optional", ""),
+                source.get("SKU_Optional", ""),
+                source.get("Category", ""),
+                source.get("Sub_Category", ""),
+                source.get("Product_Type", ""),
+                source.get("UOM", ""),
+                source.get("Product_Size", ""),
+                source.get("Product_Scale", ""),
+                source.get("Type_of_Content", ""),
+                source.get("Silo_Key", ""),
+                source.get("Angle_ID", ""),
+                source.get("Angle", ""),
+                source.get("Hook_ID", ""),
+                source.get("Hook", ""),
+                source.get("USP_1", ""),
+                source.get("USP_2", ""),
+                source.get("USP_3", ""),
+                source.get("CTA_ID", ""),
+                source.get("CTA", ""),
+                source.get("Copywriting_Formula", ""),
+                source.get("Authority_Source", ""),
+                source.get("Fastmoss_Reference", ""),
+                source.get("Status", ""),
+                source.get("Notes", ""),
+            ]
+        )
+
+    wb.close()
+    return rows
+
+
+def default_flagship_bosmax_rows() -> list[list[Any]]:
+    product = product_yaml(ROOT / "products" / "BOSMAX_SERUM.yaml")
+    authority = "products/BOSMAX_SERUM.yaml + SCRIPT_REGISTRY_UNIFIED.md + SCRIPT_VARIANT_LIBRARY.md"
+    rows: list[list[Any]] = []
+    starter_rows = [
+        (
+            "ANG_001",
+            "Masuk rutin self-care senyap-senyap tanpa nampak terlalu obvious.",
+            "HOOK_001",
+            "Ramai lelaki simpan benda macam ni bukan sebab gaya, tapi sebab dia suka ada backup bila perlu.",
+            "Saiz kecil dan discreet, senang simpan dalam poket atau beg tanpa rasa janggal.",
+            "Lane ini sesuai untuk gaya cakap STEALTH, bukan direct atau memalukan penonton.",
+            "Boleh diposisikan sebagai rutin penjagaan confidence harian, bukan cerita besar-besar.",
+            "CTA_001",
+            "Tekan beg kuning kalau nak simpan satu untuk rutin sendiri.",
+            "SAVAGE_HPAS",
+            "Seeded generic stealth row.",
+        ),
+        (
+            "ANG_002",
+            "Produk kecil tapi rasa premium bila dijadikan part of private routine.",
+            "HOOK_002",
+            "Kadang produk yang orang paling senyap simpan tu sebenarnya yang paling rajin repeat order.",
+            "Botol kecil bantu positioning travel-friendly dan easy-carry.",
+            "Dialog lebih selamat bila fokus pada confidence, keselesaan, dan routine.",
+            "Senang masuk lane UGC lelaki yang bercakap secara kiasan dan bersahaja.",
+            "CTA_002",
+            "Cuba dulu satu dan tengok sendiri kenapa lane ni ramai suka repeat.",
+            "PAS",
+            "Seeded premium-routine stealth row.",
+        ),
+    ]
+
+    for variant in product["variants"]:
+        for idx, row in enumerate(starter_rows, start=1):
+            row_index = len(rows) + 1
+            rows.append(
+                [
+                    f"{FLAGSHIP_SHEET_BOSMAX}_R{row_index:03d}",
+                    "FAMILY_MALE_EXT_SENSITIVE_OIL",
+                    "Male Sensitive External Oil",
+                    product["product_id"],
+                    product["product_name"],
+                    variant["variant_id"],
+                    product["category"],
+                    product["sub_category"],
+                    product["product_type"],
+                    "Bottle",
+                    variant["variant_name"],
+                    variant["scale_anchor_descriptor"],
+                    "STEALTH",
+                    "male_health_stealth_01",
+                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[0]}",
+                    row[1],
+                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[2]}",
+                    row[3],
+                    row[4],
+                    row[5],
+                    row[6],
+                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[7]}",
+                    row[8],
+                    row[9],
+                    authority,
+                    product.get("fastmoss_product_name", "") or "No confirmed Fastmoss listing locked in product YAML yet.",
+                    "SEED_READY",
+                    f"{variant['variant_id']} seeded row. {row[10]}",
+                ]
+            )
+    return rows
+
+
+def default_flagship_mwcb_rows() -> list[list[Any]]:
+    product = product_yaml(ROOT / "products" / "CAP_BURUNG_MINYAK.yaml")
+    variant = product["variants"][0]
+    authority = "products/CAP_BURUNG_MINYAK.yaml"
+    starter_rows = [
+        (
+            "ANG_001",
+            "Minyak rumah yang orang capai bila badan rasa tak sedap dan perlukan sapuan cepat.",
+            "HOOK_001",
+            "Benda macam ni biasanya tak perlu intro panjang sebab sekali tengok terus orang tahu kegunaan dia dalam rumah.",
+            "Profil minyak tradisional buat positioning melegakan dan menyegarkan lebih mudah dipercayai.",
+            "Saiz 30ml WG40 sesuai untuk simpan dalam beg, kereta, atau laci rumah.",
+            "Heritage 1958 kuat untuk copy yang tekan unsur turun-temurun dan kepercayaan keluarga.",
+            "CTA_001",
+            "Simpan satu botol di rumah atau dalam kereta sebelum waktu perlu baru tercari-cari.",
+            "PAS",
+            "Seeded household relief row.",
+        ),
+        (
+            "ANG_002",
+            "Produk warisan yang senang dijual bila orang nampak botol kecil tapi gunaannya banyak.",
+            "HOOK_002",
+            "Kalau rumah Melayu ada satu botol minyak serbaguna, memang jenis macam ni yang selalu jadi standby.",
+            "Visual botol klasik terus bantu angle petua lama yang masih dipakai sampai sekarang.",
+            "Copy boleh masuk lane keluarga, travel, dan urut ringan tanpa jadi terlalu sempit.",
+            "Cap merah dan label warisan bantu rasa trusted dan familiar pada pembeli.",
+            "CTA_002",
+            "Klik beg kuning dan standby satu botol untuk kegunaan rumah.",
+            "AIDA",
+            "Seeded heritage direct row.",
+        ),
+    ]
+
+    rows: list[list[Any]] = []
+    for idx, row in enumerate(starter_rows, start=1):
+        rows.append(
+            [
+                f"{FLAGSHIP_SHEET_MWCB}_R{idx:03d}",
+                "FAMILY_TRADITIONAL_REMEDY_OIL",
+                "Traditional Remedy Oil",
+                product["product_id"],
+                product["product_name"],
+                variant["variant_id"],
+                product["category"],
+                product["sub_category"],
+                product["product_type"],
+                "Bottle",
+                variant["variant_name"],
+                variant["scale_anchor_descriptor"],
+                "DIRECT",
+                "traditional_remedy_direct",
+                f"{FLAGSHIP_SHEET_MWCB}_{row[0]}",
+                row[1],
+                f"{FLAGSHIP_SHEET_MWCB}_{row[2]}",
+                row[3],
+                row[4],
+                row[5],
+                row[6],
+                f"{FLAGSHIP_SHEET_MWCB}_{row[7]}",
+                row[8],
+                row[9],
+                authority,
+                product.get("fastmoss_product_name", "") or "No confirmed direct Fastmoss listing locked yet.",
+                "SEED_READY",
+                row[10],
+            ]
+        )
+    return rows
+
+
+def build_raw_rows(rows: list[FastmossRow]) -> list[list[Any]]:
+    return [
+        [
+            row.rank,
+            row.product_name,
+            row.shop_name,
+            row.category,
+            row.sub_category,
+            row.product_type,
+            row.raw_category,
+            row.avg_price_rm,
+            row.commission_rate,
+            row.orders,
+            row.order_growth,
+            row.total_units_sold,
+            row.total_revenue_rm,
+            row.product_status,
+            row.copywriting_angle,
+            row.hook,
+            row.usp_1,
+            row.usp_2,
+            row.usp_3,
+            row.body,
+            row.cta,
+            row.fastmoss_reference,
+        ]
+        for row in rows
+    ]
+
+
+def build_mapping_and_grouped_rows(
+    rows: list[FastmossRow],
+    families: dict[str, FamilyDefinition],
+) -> tuple[list[list[Any]], dict[str, list[FastmossRow]]]:
+    mapping_rows: list[list[Any]] = []
+    grouped: dict[str, list[FastmossRow]] = defaultdict(list)
+
+    for row in rows:
+        assignment = classify_family(row)
+        family_code = assignment.family_code
+        if not family_code:
+            fallback = fallback_family_definition(row)
+            families.setdefault(fallback.code, fallback)
+            family_code = fallback.code
+            assignment = FamilyAssignment(family_code, f"{assignment.reason} Fallback generated from product type '{row.product_type}'.", "LOW")
+
+        ensure_dynamic_family(families, family_code, row)
+        family = families[family_code]
+        grouped[family_code].append(row)
+        mapping_rows.append(
+            [
+                row.rank,
+                row.product_name,
+                row.category,
+                row.sub_category,
+                row.product_type,
+                family.code,
+                family.name,
+                family.sheet_name,
+                family.type_of_content,
+                family.silo_key,
+                assignment.confidence,
+                assignment.reason,
+                family.commercial_mechanic,
+                row.fastmoss_reference,
+            ]
+        )
+
+    return mapping_rows, grouped
+
+
+def build_family_master_rows(
+    families: dict[str, FamilyDefinition],
+    grouped: dict[str, list[FastmossRow]],
+) -> list[list[Any]]:
+    rows: list[list[Any]] = []
+    for code in sorted(families):
+        family = families[code]
+        source_rows = sorted(grouped.get(code, []), key=lambda item: item.rank)
+        representative_products = " | ".join(item.product_name for item in source_rows[:4])
+        product_types = " | ".join(sorted({item.product_type for item in source_rows[:4]}))
+        rows.append(
+            [
+                family.code,
+                family.name,
+                family.sheet_name,
+                family.type_of_content,
+                family.silo_key,
+                family.default_formula,
+                family.category_family,
+                family.commercial_mechanic,
+                len(source_rows),
+                product_types,
+                representative_products,
+                family.flagship_link,
+                family.authority_source,
+                family.notes,
+            ]
+        )
+    return rows
+
+
+def seed_family_library_rows(
+    families: dict[str, FamilyDefinition],
+    grouped: dict[str, list[FastmossRow]],
+) -> dict[str, list[list[Any]]]:
+    seeded: dict[str, list[list[Any]]] = {}
+    for code, family in families.items():
+        rows: list[list[Any]] = []
+        source_rows = sorted(grouped.get(code, []), key=lambda item: item.rank)
+        for idx, row in enumerate(source_rows[:3], start=1):
+            rows.append(
+                [
+                    f"{family.sheet_name}_R{idx:03d}",
+                    family.code,
+                    family.name,
+                    "",
+                    row.product_name,
+                    "",
+                    row.category,
+                    row.sub_category,
+                    row.product_type,
+                    "VARIES",
+                    "VARIES_BY_BRAND",
+                    "SEE_ACTUAL_PRODUCT_TRUTH",
+                    family.type_of_content,
+                    family.silo_key,
+                    f"{family.code}_ANG_{idx:03d}",
+                    row.copywriting_angle,
+                    f"{family.code}_HOOK_{idx:03d}",
+                    row.hook,
+                    row.usp_1,
+                    row.usp_2,
+                    row.usp_3,
+                    f"{family.code}_CTA_{idx:03d}",
+                    row.cta,
+                    family.default_formula,
+                    family.authority_source,
+                    row.fastmoss_reference,
+                    "SEED_READY",
+                    "Representative Fastmoss row extracted for this deduped family. Generalize beyond the brand name when expanding.",
+                ]
+            )
+        seeded[code] = rows
+    return seeded
+
+
+def write_index_sheet(wb: Workbook, family_rows_for_sheets: list[list[Any]]) -> None:
     ws = wb.active
     ws.title = "INDEX"
     ws.append(INDEX_HEADERS)
     style_header(ws, HEADER_FILL)
     rows = [
-        ["INDEX", "Governance", "System", "Navigation sheet for workbook structure and fill responsibilities."],
-        ["README_OR_RULES", "Governance", "System", "Operational rules, authority boundaries, and allowed fill surfaces for Antigravity."],
-        ["TAXONOMY_MASTER", "Taxonomy", "System", "Deduped Fastmoss-to-archetype routing table and worksheet map."],
-        [FLAGSHIP_SHEET_BOSMAX, "Flagship Product", "Human + Antigravity", "Controlled flagship sheet for BOSMAX Serum 5ml and 10ml sensitive copy rows."],
-        [FLAGSHIP_SHEET_MWCB, "Flagship Product", "Human + Antigravity", "Controlled flagship sheet for Minyak Warisan Cap Burung direct copy rows."],
+        ["INDEX", "Governance", "System", "Navigation sheet for workbook structure and ownership."],
+        ["README_OR_RULES", "Governance", "System", "Operating rules, fill boundaries, and family-deduping logic."],
+        [RAW_FASTMOSS_SHEET, "Source Intake", "System", "All 300 raw Fastmoss listings retained exactly as intake evidence."],
+        [FAMILY_MAPPING_SHEET, "Routing", "System", "Per-listing assignment from raw Fastmoss product into one deduped product family."],
+        [FAMILY_MASTER_SHEET, "Master Taxonomy", "System", "One row per deduped product family after collapsing same-function brands/listings."],
+        [FLAGSHIP_SHEET_BOSMAX, "Flagship Product", "Human + Antigravity", "Sensitive male external-oil flagship sheet tied to Bosmax Serum product truth."],
+        [FLAGSHIP_SHEET_MWCB, "Flagship Product", "Human + Antigravity", "Traditional remedy flagship sheet tied to Minyak Warisan Cap Burung product truth."],
     ]
-    for code in archetype_codes:
-        rows.append([excel_sheet_name(code), "Archetype Library", "Antigravity", f"Reusable archetype sheet for {code.replace('ARCH_', '').replace('_', ' ').title()} copy expansion."])
+    for row in family_rows_for_sheets:
+        sheet_name = row[2]
+        rows.append([sheet_name, "Family Library", "Antigravity", f"Reusable copy library for {row[1]} family."])
     write_rows(ws, rows)
 
 
@@ -722,83 +1286,67 @@ def write_readme_sheet(wb: Workbook) -> None:
     set_standard_layout(ws)
 
 
-def seed_archetype_rows(grouped: dict[str, list[dict[str, Any]]]) -> dict[str, list[list[Any]]]:
-    seeded: dict[str, list[list[Any]]] = {}
-    for code, rows in grouped.items():
-        sorted_rows = sorted(rows, key=lambda item: item["rank"])
-        starter_rows: list[list[Any]] = []
-        for idx, row in enumerate(sorted_rows[:3], start=1):
-            archetype: Archetype = row["archetype"]
-            starter_rows.append(
-                [
-                    f"{code}_R{idx:03d}",
-                    code,
-                    archetype.name,
-                    "",
-                    row["product_name"],
-                    "",
-                    row["category"],
-                    row["sub_category"],
-                    row["product_type"],
-                    "VARIES",
-                    "VARIES_BY_PRODUCT",
-                    "SEE_PRODUCT_TRUTH",
-                    archetype.type_of_content,
-                    archetype.silo_key,
-                    f"{code}_ANG_{idx:03d}",
-                    row["angle"],
-                    f"{code}_HOOK_{idx:03d}",
-                    row["hook"],
-                    row["usp_1"],
-                    row["usp_2"],
-                    row["usp_3"],
-                    f"{code}_CTA_{idx:03d}",
-                    row["cta"],
-                    archetype.default_formula,
-                    "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx::Copywriting_Product_Map",
-                    row["fastmoss_reference"],
-                    "SEED_READY",
-                    "Representative Fastmoss starter row. Generalize before large-scale Antigravity fill if needed.",
-                ]
-            )
-        seeded[code] = starter_rows
-    return seeded
+def tint_second_row(ws: Worksheet) -> None:
+    if ws.max_row >= 2:
+        for cell in ws[2]:
+            cell.fill = SUB_HEADER_FILL
 
 
 def build_workbook() -> None:
-    if not SOURCE_WORKBOOK.exists():
-        raise FileNotFoundError(f"Source skeleton workbook not found: {SOURCE_WORKBOOK}")
+    families = build_family_catalog()
+    dynamic_catalog_extension(families)
 
     fastmoss_rows = load_fastmoss_copy_map()
-    taxonomy_rows, grouped = build_taxonomy(fastmoss_rows)
-    seeded_archetypes = seed_archetype_rows(grouped)
+    raw_rows = build_raw_rows(fastmoss_rows)
+    mapping_rows, grouped = build_mapping_and_grouped_rows(fastmoss_rows, families)
+    family_master_rows = build_family_master_rows(families, grouped)
+    family_library_rows = seed_family_library_rows(families, grouped)
+
+    selected_family_rows = [
+        row for row in family_master_rows
+        if (isinstance(row[8], int) and row[8] >= 3) or row[0] in STRATEGIC_FAMILY_CODES
+    ]
 
     wb = Workbook()
-    write_index_sheet(wb, [row[0] for row in taxonomy_rows])
+    write_index_sheet(wb, selected_family_rows)
     write_readme_sheet(wb)
 
-    taxonomy_ws = create_sheet_with_headers(wb, "TAXONOMY_MASTER", TAXONOMY_HEADERS, TAXONOMY_FILL)
-    write_rows(taxonomy_ws, taxonomy_rows)
+    raw_ws = create_sheet_with_headers(wb, RAW_FASTMOSS_SHEET, RAW_FASTMOSS_HEADERS, RAW_FILL)
+    write_rows(raw_ws, raw_rows)
 
+    mapping_ws = create_sheet_with_headers(wb, FAMILY_MAPPING_SHEET, FAMILY_MAPPING_HEADERS, MAPPING_FILL)
+    write_rows(mapping_ws, mapping_rows)
+
+    master_ws = create_sheet_with_headers(wb, FAMILY_MASTER_SHEET, FAMILY_MASTER_HEADERS, MASTER_FILL)
+    write_rows(master_ws, family_master_rows)
+
+    bosmax_rows = load_existing_flagship_rows(
+        FLAGSHIP_SHEET_BOSMAX,
+        "FAMILY_MALE_EXT_SENSITIVE_OIL",
+        "Male Sensitive External Oil",
+    ) or default_flagship_bosmax_rows()
     bosmax_ws = create_sheet_with_headers(wb, FLAGSHIP_SHEET_BOSMAX, WORKING_HEADERS, FLAGSHIP_FILL)
-    write_rows(bosmax_ws, flagship_bosmax_rows())
+    write_rows(bosmax_ws, bosmax_rows)
     add_validations(bosmax_ws)
+    tint_second_row(bosmax_ws)
 
+    mwcb_rows = load_existing_flagship_rows(
+        FLAGSHIP_SHEET_MWCB,
+        "FAMILY_TRADITIONAL_REMEDY_OIL",
+        "Traditional Remedy Oil",
+    ) or default_flagship_mwcb_rows()
     mwcb_ws = create_sheet_with_headers(wb, FLAGSHIP_SHEET_MWCB, WORKING_HEADERS, FLAGSHIP_FILL)
-    write_rows(mwcb_ws, flagship_mwcb_rows())
+    write_rows(mwcb_ws, mwcb_rows)
     add_validations(mwcb_ws)
+    tint_second_row(mwcb_ws)
 
-    for code, rows in seeded_archetypes.items():
-        ws = create_sheet_with_headers(wb, excel_sheet_name(code), WORKING_HEADERS, ARCHETYPE_FILL)
-        write_rows(ws, rows)
+    family_codes_in_order = [row[0] for row in selected_family_rows]
+    for code in family_codes_in_order:
+        family = families[code]
+        ws = create_sheet_with_headers(wb, family.sheet_name, WORKING_HEADERS, FAMILY_FILL)
+        write_rows(ws, family_library_rows.get(code, []))
         add_validations(ws)
-
-    # Visual differentiation for flagship and archetype tabs on row 2 when present.
-    for ws in wb.worksheets:
-        if ws.title.startswith("PRODUCT_") or ws.title.startswith("ARCH_"):
-            if ws.max_row >= 2:
-                for cell in ws[2]:
-                    cell.fill = SUB_HEADER_FILL
+        tint_second_row(ws)
 
     if OUTPUT_WORKBOOK.exists():
         OUTPUT_WORKBOOK.unlink()
