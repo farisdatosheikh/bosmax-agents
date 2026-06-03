@@ -87,7 +87,7 @@ Bad seam:
 
 Good seam:
 - Block 1 ends with speech near final frame
-- Block 2 opens from the same pose
+- the next clip opens from carried-over motion, not a static pose reset
 - speech resumes almost immediately
 - action supports the speech instead of delaying it
 - the same spoken idea is still moving across the seam

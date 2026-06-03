@@ -41,12 +41,12 @@ Use this when the tone is:
 ### Block 2 opener rule
 
 ```text
-Start Block 2 from the exact Block 1 end pose.
+Continue the next clip from the previous clip's exact carried-over ending motion.
 Resume speech within the first 0.5s–1.0s of the clip.
 Use only a slight natural hand adjustment or a small tilt of the product before the next spoken phrase begins.
 Do not create a long silent action setup.
 The feeling should be like one continuous home recommendation, not a reset.
-If Block 1 ended with a lead-in phrase, Block 2 must complete that same thought immediately.
+If the previous clip ended with a lead-in phrase, the next clip must complete that same thought immediately.
 ```
 
 ### Spoken style target
@@ -79,11 +79,11 @@ Use this when the tone is:
 ### Block 2 opener rule
 
 ```text
-Start Block 2 immediately from the final product-facing position of Block 1.
+Continue the next clip immediately from the previous clip's final product-facing motion and carry-over hold.
 Speech resumes almost immediately in the first second.
 The product may tilt slightly, but the motion must support the sentence, not delay it.
 No dead air and no second introduction.
-If Block 1 ended with a selling lead-in, finish that selling thought straight away.
+If the previous clip ended with a selling lead-in, finish that selling thought straight away.
 ```
 
 ### Spoken style target
@@ -116,11 +116,11 @@ Use this when the tone is:
 ### Block 2 opener rule
 
 ```text
-Open Block 2 from the exact same pose and continue the line with near-zero hesitation.
+Continue the next clip from the previous clip's carried-over ending motion, then continue the line with near-zero hesitation.
 Speech should resume within 0.5s–0.8s.
 Use only a small nod, small push, or micro-tilt while speaking.
 Do not stage a silent beauty moment before the CTA continuation.
-If Block 1 already pressured the viewer, Block 2 must land the payoff immediately instead of cooling down.
+If the previous clip already pressured the viewer, the next clip must land the payoff immediately instead of cooling down.
 ```
 
 ### Spoken style target
@@ -148,8 +148,13 @@ Use endings like:
 Use this block directly inside GROK Block 2 prompt construction:
 
 ```text
-Block 2 must continue from the exact Block 1 end state. Resume spoken dialogue within the first 0.5s–1.0s of the block. Opening motion is micro-continuation only: a slight tilt, small nod, or tiny hand adjustment while the sentence continues. Do not spend the early part of Block 2 on silent setup, long product repositioning, or a reset pose. The seam must feel like one continuous spoken recommendation.
+Continue seamlessly from the previous clip's exact ending motion and carried-over state. Resume spoken dialogue within the first 0.5s–1.0s. Opening motion is micro-continuation only: a slight tilt, small nod, or tiny hand adjustment while the sentence continues. Do not spend the early part of the clip on silent setup, long product repositioning, or a reset pose. The seam must feel like one continuous spoken recommendation.
 ```
+
+Interpretation note:
+- in final operator-facing prompts, prefer `previous clip` language rather than `Block 1`
+- `exact ending motion and carried-over state` means seamless motion continuity from the previous clip
+- it does **not** mean a static pose reference or a frozen image-style end pose
 
 ---
 
