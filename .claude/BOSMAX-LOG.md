@@ -1006,6 +1006,40 @@ Authority semasa untuk generation poster, avatar+product, dan video kini diganti
 
 ---
 
+### Session 036 — 2026-06-03
+**Status:** KERNEL ARCHITECTURE INSTALLED — v1 Runtime State Machine
+**Active Mode:** null
+**Milestone:** BOSMAX upgraded from document-driven to runtime-driven. Four core kernel architecture files installed. Shake-hand consensus between Codex and Claude Cowork. Ready for mass production lock-down.
+
+**Architecture decision:**
+Codex and Claude Cowork reached consensus: BOSMAX was too document-driven. No structured packet handoffs. No enforced execution order. No single runtime authority. That caused output inconsistency across AI brands (ChatGPT, Gemini, Grok, Claude). Solution: install kernel architecture with state machine, packet contracts, SOP governor, and test harness.
+
+**4 new canonical files created:**
+
+| File | Purpose |
+|------|---------|
+| `BOSMAX_RUNTIME_STATE_MACHINE_v1.md` | Kernel authority, 9 states, worker isolation rules, absolute fail-closed gates |
+| `BOSMAX_AGENT_HANDOFF_SCHEMA_v1.md` | 9 packet types with full YAML schema, producer/consumer, immutability rules |
+| `BOSMAX_SOP_GOVERNOR_v1.md` | Authority file registry, change control, deprecation law, conflict resolution |
+| `BOSMAX_TEST_HARNESS_v1.md` | 10 test cases covering visual intake, GROK math, dialogue law, repair, VEO multi-block |
+
+**Key architectural principles locked:**
+- Kernel is single runtime authority — no worker self-routes
+- No upstream packet mutation by downstream workers
+- visual_truth_packet is immutable after VALID
+- storyboard_packet requires user approval before Prompt Compiler runs
+- BM commercial UGC video: dialogue mandatory, formula mandatory
+- GROK: 6s or 10s per block only, no exceptions
+- NO_OVERLAY absolute unless explicit operator request
+- Final Emitter formats only — no substance changes
+- Compliance Auditor returns to failed worker, never delivers partial output to user
+
+**Mass production checklist:** See `BOSMAX_SOP_GOVERNOR_v1.md` Section 11.
+
+*BOSMAX v11.6 + Kernel v1 | Log updated: 2026-06-03*
+
+---
+
 ### Session 035 — 2026-06-03
 **Status:** v11.4 PATCH — VISUAL INTAKE GATE + STORYBOARD GATE
 **Active Mode:** null
