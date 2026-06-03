@@ -34,6 +34,12 @@ BOSMAX/
 ├── BOSMAX_HARD_ENGINE_CONTRACTS_v1.md ← Hard anti-stupidity contracts for Grok, Gemini, Claude sandbox, and pre-output kill-switch
 ├── BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md ← Canonical clean operator-facing video prompt shape and Grok seam continuity law
 ├── BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md ← Copy-paste Block 2 opener templates to reduce Grok extension lag and lipsync seam mismatch
+├── BOSMAX_BM_UGC_SELL_THROUGH_COPY_ARCHITECTURE_v1.md ← Hard sell-through dialogue architecture for BM commercial UGC video
+├── BOSMAX_UGC_PGC_VIDEO_RESEARCH_RECONCILIATION_v1.md ← Reconciles ChatGPT and Gemini research into BOSMAX-safe authority
+├── BOSMAX_UGC_PGC_ROUTE_DECISION_v1.md ← Chooses UGC, PGC, or HYBRID route per category and risk
+├── BOSMAX_SHOT_LADDER_ARCHITECTURE_v1.md ← Practical multi-beat shot ladders by duration and route
+├── BOSMAX_MULTI_IMAGE_BROLL_CONTRACT_v1.md ← Authority hierarchy for many uploaded images and B-roll support
+├── BOSMAX_PLATFORM_POLICY_RISK_MATRIX_v1.md ← Conservative platform/category risk routing for commercial video
 ├── BOSMAX_OPERATOR_DRY_RUN_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First real front-door operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_MINYAK_WARISAN_CAP_BURUNG_v1.md ← First direct-product video operator walkthrough
 ├── BOSMAX_OPERATOR_DRY_RUN_VIDEO_NONE_BOSMAX_SERUM_v1.md ← First flagship sensitive operator walkthrough
@@ -153,6 +159,50 @@ Fail ini memberi 3 Block 2 opener templates yang terus boleh dipakai:
 - `soft household UGC`
 - `direct recommendation UGC`
 - `savage sell-through UGC`
+
+**BM UGC sell-through copy architecture:** rujuk `BOSMAX_BM_UGC_SELL_THROUGH_COPY_ARCHITECTURE_v1.md`.
+Fail ini mengunci dialog BM commercial UGC supaya tidak lagi keluar sebagai
+soft commentary yang lemah. Ia mewajibkan:
+- `SELL_THROUGH_HPFRC` atau `STORY_HSARC`
+- hook pada baris pertama
+- pain atau friction sebelum payoff produk
+- sekurang-kurangnya satu reason-to-believe
+- CTA
+- `bridge-out` dan `bridge-in` untuk multi-block GROK
+
+**UGC/PGC research reconciliation:** rujuk `BOSMAX_UGC_PGC_VIDEO_RESEARCH_RECONCILIATION_v1.md`.
+Fail ini menapis dua research report luar supaya BOSMAX hanya promote:
+- prinsip strategik yang kuat
+- heuristic yang berguna
+- sambil menolak hard numbers atau claims yang belum cukup verified
+
+**UGC/PGC route decision:** rujuk `BOSMAX_UGC_PGC_ROUTE_DECISION_v1.md`.
+Fail ini memisahkan dengan jelas:
+- bila guna `UGC`
+- bila guna `PGC`
+- bila guna `HYBRID`
+
+**Shot ladder architecture:** rujuk `BOSMAX_SHOT_LADDER_ARCHITECTURE_v1.md`.
+Fail ini memberi beat-by-beat shot logic untuk:
+- `6s`
+- `10s`
+- `12s`
+- `16s`
+- `20s`
+- `30s`
+
+**Multi-image + B-roll contract:** rujuk `BOSMAX_MULTI_IMAGE_BROLL_CONTRACT_v1.md`.
+Fail ini mengunci:
+- authority order untuk banyak gambar upload
+- bila Grok sesuai sebagai reference pool
+- bila Google Flow Ingredients lebih sesuai
+- bila segmented beat planning lebih selamat daripada satu prompt besar
+
+**Platform policy risk matrix:** rujuk `BOSMAX_PLATFORM_POLICY_RISK_MATRIX_v1.md`.
+Fail ini memberi BOSMAX conservative routing layer untuk:
+- platform risk
+- category risk
+- route choice `UGC | PGC | HYBRID`
 
 **Grok capability wording rule:** BOSMAX kini membezakan tiga layer truth dengan jelas:
 - `public xAI docs truth`

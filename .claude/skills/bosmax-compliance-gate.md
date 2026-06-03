@@ -13,7 +13,7 @@ description: >
 
 # BOSMAX COMPLIANCE GATE — SKILL
 ## Role: Fail-Closed Quality Auditor | Final Gate Before User Output
-## Schema: v11.5 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.6 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -109,8 +109,17 @@ Use language-specific WPS from script-generator authority:
   — block math valid
   — WPS budget declared
   — pace_class declared
+  — presentation_route declared
+  — shot_ladder_summary declared
   — jika BM commercial / UGC / TikTok video: dialog hadir dan bukan `WPS: 0`
+  — jika BM commercial / UGC / TikTok video: copy_formula declared
+  — jika BM commercial / UGC / TikTok video: hook + pain/friction + relief + CTA lengkap
   — operator-facing final output clean dan tidak bocor metadata/debug scaffolding
+
+☐ Jika uploaded_asset_count > 2:
+  — asset_class_manifest declared
+  — broll_support_class declared
+  — hierarchy tidak bercanggah dengan product truth atau hero identity
 
 ☐ GROK image-to-video outputs:
   — persistence lock ada
@@ -119,6 +128,7 @@ Use language-specific WPS from script-generator authority:
   — semua block durations sah: 6s atau 10s sahaja
   — tiada fake extension math seperti `12s + 8s`
   — untuk BM commercial UGC multi-block: Block 2 speech resume awal, tiada dead-air seam
+  — untuk BM commercial UGC multi-block: Block 1 bridge-out dan Block 2 bridge-in align
 
 ---
 
@@ -199,6 +209,11 @@ Use language-specific WPS from script-generator authority:
   — AR ≤ 2.2 safe / 2.5 ceiling
 
 ☐ Storyboard approval evidence exists upstream untuk semua video outputs
+☐ presentation_route selaras dengan category/platform risk semasa
+☐ shot_ladder_summary menunjukkan sekurang-kurangnya satu proof beat
+☐ jika presentation_route = HYBRID:
+  — ada creator/native hook beat
+  — ada product-truth proof beat
 
 ☐ Jika output declare `VISUAL AUTHORITY: USER_UPLOAD` atau `SANDBOX_VISUAL`:
   — Tiada registry persona drift
@@ -290,6 +305,7 @@ Use language-specific WPS from script-generator authority:
 ☐ Block 2+ Section 2: lighting profile LOCKED — Kelvin, shadow direction unchanged
 ☐ Block 2+ Section 2: background elements SAMA — tiada new elements
 ☐ Block 2+ Section 3: camera parameters KONSISTEN — tiada sudden angle change
+☐ Jika angle change berlaku, ia justified oleh shot ladder / narrative beat
 
 ### BLOCK 2+ PRODUCT CONTINUITY CHECKS
 ☐ Block 2+ Section 4: visual action DIMULAKAN dari exact position declared dalam Block N-1 S8 "VISUAL END STATE"
@@ -497,10 +513,15 @@ Use language-specific WPS from script-generator authority:
 ║ Greeting/restart in Block 2+ │ Remove greeting, sambung dari anchor ║
 ║ Section count wrong (Mode B) │ Rebuild missing/extra section        ║
 ║ Missing pace_class           │ Inject dari work order / rebuild S8  ║
+║ Missing presentation_route   │ Inject dari upstream route decision   ║
+║ Missing shot ladder          │ Rebuild storyboard beat ladder        ║
 ║ Missing GROK persistence lock│ Inject lock block, re-audit          ║
 ║ Missing BM UGC dialogue      │ Rebuild Section 6 + recalc WPS       ║
 ║ Metadata leakage in output   │ Reformat to clean operator shape      ║
 ║ Grok seam dialogue starts late│ Pull speech earlier, reduce dead air ║
+║ Flat BM sales copy           │ Rebuild with HPFRC or HSARC formula   ║
+║ Block 2 starts new idea      │ Rewrite with bridge continuation      ║
+║ Many-image authority drift   │ Re-assert asset hierarchy + B-roll role║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 

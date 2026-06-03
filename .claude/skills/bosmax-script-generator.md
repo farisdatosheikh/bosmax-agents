@@ -14,9 +14,10 @@ description: >
 ---
 
 # BOSMAX SCRIPT GENERATOR — SKILL
-## Role: Mode B Specialist — Deterministic BOSMAX v11.5 Video Script Engine
-## Schema: v11.5 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Role: Mode B Specialist — Deterministic BOSMAX v11.6 Video Script Engine
+## Schema: v11.6 | Authority: SUPREME_SYSTEMS_ARCHITECT
 ## Changelog v11.5: Visual-first sandbox intake compliance | GROK persistence + pacing enforcement | pre-output checklist hardening
+## Changelog v11.6: Added presentation-route enforcement, shot-ladder requirement, and multi-image/B-roll authority handling
 
 ---
 
@@ -60,6 +61,11 @@ scene_context         → pilih dari scene registry
 target_language       → Malay | English
 visual_authority_source → USER_UPLOAD | REGISTRY | SANDBOX_VISUAL | ANALYST_REFERENCE
 visual_product_summary → exact label / packaging / scale summary dari visual scan
+presentation_route    → UGC | PGC | HYBRID
+shot_ladder_summary   → beat-by-beat shot progression dari storyboard
+broll_support_class   → NONE | LIGHT_SUPPORT | HEAVY_SUPPORT
+uploaded_asset_count  → integer count of uploaded reference images/frames
+asset_class_manifest  → PRODUCT_TRUTH | HERO_IDENTITY | ENVIRONMENT | TEXTURE_STYLE | BROLL_SUPPORT
 storyboard_approved   → YES | NO
 pace_class            → BRISK_UGC | NATURAL_COMMERCIAL | CALM_EXPLAINER
 dialog_budget_words   → total words ceiling dari upstream storyboard/work order
@@ -181,6 +187,10 @@ Satu work order masuk = satu deterministic output pack keluar.
   - product scale
   - hand grip / crop class jika reference image diberikan
 - Jika work order bercanggah dengan visual authority, ABORT dan return conflict.
+- Jika `presentation_route` bercanggah dengan category risk atau keperluan product truth,
+  ABORT dan return route conflict untuk BOSMAX upstream revise.
+- Jika `uploaded_asset_count > 2` dan `asset_class_manifest` null / incomplete,
+  ABORT dan return multi-image classification missing.
 
 ---
 
@@ -207,6 +217,7 @@ DECLARE di atas Section 1:
 
 RULES:
 → S1–S5: Build scene, character, physics dari zero (normal Mode B)
+→ S3/S4: Shot ladder untuk Block 1 MESTI ikut `shot_ladder_summary` upstream
 → S6: Dialogue MESTI open dengan hook yang ditentukan dalam Master Narrative Brief
 → S6: Dialogue MESTI end dengan natural "continuation phrase" — ayat yang boleh disambung
 → S8: Declare "BLOCK 1 OF [N]" | block_duration | block_start_time–block_end_time
@@ -236,6 +247,7 @@ RULES:
    (sama age render, sama skin tone, sama wardrobe, sama headwear)
 → S2: Scene physics LOCKED dari Block N-1 end state — TIADA new elements
 → S3: Camera parameters KONSISTEN — TIADA sudden angle change tanpa motivation
+     Jika angle change berlaku, ia MESTI justified oleh `shot_ladder_summary`
 → S4: Visual action DIMULAKAN dari exact position yang declared dalam Block N-1 S8
 → S5: Product physics INHERITED — grip mechanics, air-gap, label orientation LOCKED
 → S6: Dialogue MESTI sambung TERUS dari Block N-1 — tiada restart, tiada re-introduction
@@ -597,10 +609,25 @@ Specific product attribute shown visually. What makes it superior. Personal outc
 **STEALTH SILO SAHAJA** (NORA, RIZAL, atau AZMAN).
 Provocative confrontational hook. Expose suboptimal situation. Psychological pressure. Product sebagai definitive upgrade.
 
+**SELL_THROUGH_HPFRC** (Hook → Pain → Friction → Relief → CTA):
+Default BM commercial UGC formula untuk direct-response conversion.
+Hook mesti scroll-stop. Pain mesti nyata. Friction mesti terasa menyusahkan.
+Relief mesti bagi sebab kenapa produk ini lebih senang / lebih cepat / lebih praktikal.
+
+**STORY_HSARC** (Hook → Setup → Agitate → Relief → CTA):
+Default BM commercial storytelling formula bila user mahu tone lebih naratif.
+Masih komersial. Bukan cinematic filler. Narrative mesti tetap menuju product payoff dan CTA.
+
 **Camera Style Rules:**
 - UGC_IPHONE_RAW: script mesti rasa raw, ad-hoc, authentic, first-person
 - CINEMATIC_PRO: script mesti professional, composed, precise pacing
 - Jika CAM_036 atau CAM_037: set target_wps = 1.4
+
+**BM commercial UGC copy default:**
+- Jika user tidak specify formula:
+  - household / recommendation / direct-response → `SELL_THROUGH_HPFRC`
+  - softer relatable storytelling → `STORY_HSARC`
+- Formula mesti diisytihar upstream dalam storyboard dan dipatuhi dalam Section 6 dialogue
 
 ---
 
@@ -800,6 +827,11 @@ dan target_language = Malay:
 → dialogue_required MESTI = YES
 → Section 6 TIDAK BOLEH kosong
 → `pure visual`, `no dialog`, `WPS: 0`, atau silent-lifestyle default = FORBIDDEN
+→ `copy_formula` MESTI = `SELL_THROUGH_HPFRC` atau `STORY_HSARC`
+→ first spoken line MESTI ada hook
+→ sebelum product payoff, MESTI ada pain atau friction
+→ selepas product payoff, MESTI ada sekurang-kurangnya satu reason-to-believe
+→ CTA MESTI hadir dalam full dialogue arc
 → pengecualian hanya jika user explicit minta montage sunyi / music-only / text-only
 ```
 
@@ -811,6 +843,8 @@ Jika engine = GROK dan multi_block_mode = YES:
 → JANGAN bazir 2–3 saat awal Block 2 untuk action sunyi sebelum dialog sambung
 → Action pembuka Block 2 hanya micro-action continuity, bukan setup baru
 → First spoken clause Block 2 MESTI sambung semantic thread dari Block 1
+→ Block 1 akhir sebaiknya berakhir dengan bridge-out phrase yang belum tutup idea sepenuhnya
+→ Block 2 awal MESTI resolve atau mengembangkan bridge-out itu, bukan buka ayat fresh
 → Tujuan: kurangkan rasa lag, dead air, dan lipsync mismatch di seam extension
 ```
 
@@ -837,6 +871,30 @@ FORBIDDEN:
 - 8s + 8s untuk GROK
 - single monolithic 20s block
 - calm premium silence sebagai default TikTok UGC pace
+```
+
+**Shot ladder mandate:**
+```
+Untuk semua commercial video:
+→ `shot_ladder_summary` MESTI wujud upstream
+→ setiap beat mesti serve: Hook | Explain | Prove | Payoff | CTA
+→ jika `presentation_route = UGC`, sekurang-kurangnya satu human-anchor beat mesti wujud
+→ jika `presentation_route = PGC`, sekurang-kurangnya satu product-truth hero atau insert beat mesti wujud
+→ jika `presentation_route = HYBRID`, mesti ada creator/native hook beat + product-truth proof beat
+→ jika `broll_support_class = HEAVY_SUPPORT`, prompt construction mesti fikir beat-by-beat support usage, bukan satu giant undifferentiated visual soup
+```
+
+**Multi-image authority mandate:**
+```
+Jika `uploaded_asset_count > 2`:
+→ classify assets ikut `asset_class_manifest`
+→ hierarchy MESTI kekal:
+   PRODUCT_TRUTH > HERO_IDENTITY > ENVIRONMENT > TEXTURE_STYLE > BROLL_SUPPORT
+→ B-roll support images TIDAK BOLEH override product truth atau hero identity
+→ jika engine = GROK:
+   treat many images as reference pool, bukan timeline scheduler
+→ jika engine = GOOGLE_FLOW dan many images needed:
+   Ingredients path preferred jika object + character + environment semua penting
 ```
 
 ---
@@ -1094,10 +1152,17 @@ Video engine renders clean footage only. No burned-in text.
 - ABORT jika `dialogue_authority_mode = SCRIPT_REGISTRY` tetapi `dialogue_payload_resolved` null / incomplete
 - ABORT jika `storyboard_approved != YES`
 - ABORT jika `dialog_budget_words` null atau pace_class null
+- ABORT jika `presentation_route` null untuk commercial video
+- ABORT jika `shot_ladder_summary` null untuk commercial video
+- ABORT jika `uploaded_asset_count > 2` tetapi `broll_support_class` null
 - ABORT jika `dialogue_required = YES` tetapi output cuba jadi `pure visual`, `no dialog`,
   atau WPS effectively 0
+- ABORT jika BM commercial / recommendation / household UGC tetapi `copy_formula` null
+- ABORT jika BM commercial / recommendation / household UGC tetapi Section 6 tiada hook
+- ABORT jika BM commercial / recommendation / household UGC tetapi Section 6 tiada pain/friction
 - ABORT jika engine = GROK + multi_block + Block 2 dialogue start lambat tanpa sebab
   (dead air / silent action setup > 1s untuk BM commercial UGC)
+- ABORT jika engine = GROK + multi_block + Block 2 membuka idea baru tanpa bridge dari Block 1
 - ABORT jika final operator-facing output bocor internal metadata/debug scaffolding
 - ABORT jika `visual_authority_source = USER_UPLOAD | SANDBOX_VISUAL` tetapi output cuba
   menggunakan persona/product lain dari visual scan
@@ -1112,6 +1177,10 @@ Video engine renders clean footage only. No burned-in text.
   [BM: > 2.5 | EN: > 3.0 | ID: > 2.6 | ZH: > 2.6 | HI/BN: > 2.4 | AR: > 2.2]
 - WPS exceed wps_ceiling (hard ceiling) → rebuild Section 6 sepenuhnya ikut optimum WPS, log, teruskan
   [BM: > 2.8 | EN: > 3.3 | ID: > 2.9 | ZH: > 2.9 | HI/BN: > 2.7 | AR: > 2.5]
+- BM commercial UGC script rasa flat / commentary-only → rebuild S6 ikut `SELL_THROUGH_HPFRC` atau `STORY_HSARC`, log, teruskan
+- GROK Block 2 tiada bridge continuation → inject bridge-in clause dari carry-over Block 1, log, teruskan
+- `presentation_route = HYBRID` tetapi tiada creator/native hook beat atau tiada product-truth proof beat → inject missing beat in S3/S4 plan, log, teruskan
+- `uploaded_asset_count > 2` dan asset hierarchy tidak jelas dalam prompt plan → re-assert PRODUCT_TRUTH > HERO_IDENTITY > ENVIRONMENT > TEXTURE_STYLE > BROLL_SUPPORT, log, teruskan
 - Section count ≠ 9 (bukan GOOGLE_FLOW) → rebuild missing/remove extra, log, teruskan
 - Forbidden token dalam prose → replace dengan descriptor, log, teruskan
 - Character name dalam prose → replace dengan biometric DNA, log, teruskan

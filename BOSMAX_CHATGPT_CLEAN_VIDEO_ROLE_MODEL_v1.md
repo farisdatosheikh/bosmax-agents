@@ -50,6 +50,7 @@ Mandatory:
 - block math clear
 - WPS budget clear
 - pace_class clear
+- copy_formula clear
 - product truth clear
 - final prompt immediately usable
 
@@ -88,6 +89,7 @@ Good seam:
 - Block 2 opens from the same pose
 - speech resumes almost immediately
 - action supports the speech instead of delaying it
+- the same spoken idea is still moving across the seam
 
 ---
 
@@ -103,6 +105,15 @@ then:
 - dialogue is mandatory
 - natural conversational Malay is preferred
 - practical spoken rhythm beats premium cinematic silence
+- default copy formula must be declared:
+  - `SELL_THROUGH_HPFRC` for direct-response selling
+  - `STORY_HSARC` for softer storytelling with conversion intent
+
+Minimum commercial copy payload:
+- hook in the first spoken line
+- pain or friction before the payoff
+- one concrete reason-to-believe
+- CTA
 
 `pure visual` only if the user explicitly wants:
 - silent montage
@@ -117,3 +128,4 @@ Use this file as the role model whenever:
 - ChatGPT output is clearly better than Claude/Grok/Gemini output shape
 - the operator wants cleaner, more direct, more copy-paste-ready prompts
 - multi-block Grok prompts need tighter seam continuity
+- BM UGC dialogue needs stronger sell-through structure

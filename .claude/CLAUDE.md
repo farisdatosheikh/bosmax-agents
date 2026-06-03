@@ -1,4 +1,4 @@
-# BOSMAX v11.5 — CLAUDE.md
+# BOSMAX v11.6 — CLAUDE.md
 # Sistem: BOSMAX Command Centre
 # Versi: v11.5 | Schema: GRAND_MASTER_SKELETON
 # Authority: SUPREME_SYSTEMS_ARCHITECT
@@ -14,6 +14,9 @@
 # Changelog v11.5: Enforcement hardening for VISUAL-FIRST sandbox, GROK
 #                  multi-block contract, WPS budgeting, pacing governance, and
 #                  pre-output checklist enforcement.
+# Changelog v11.6: Added UGC/PGC/HYBRID route decision, shot ladder planning,
+#                  multi-image B-roll authority, and platform/category risk
+#                  routing for commercial video.
 
 ---
 
@@ -69,6 +72,7 @@ VIDEO mode:
   duration_target
   product_info_simple
   reference_mode
+  presentation_route
 ```
 
 ### ROUTE RESOLUTION MATRIX — DETERMINISTIC
@@ -360,6 +364,13 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 ```
 → Lookup WPS table mengikut target_language
 → Kira total_dialog_budget dan budget per block
+→ Declare presentation_route sebelum storyboard:
+   · UGC
+   · PGC
+   · HYBRID
+→ Declare copy_formula sebelum storyboard:
+   · SELL_THROUGH_HPFRC → hook + pain + friction + relief + CTA
+   · STORY_HSARC        → hook + setup + agitate + relief + CTA
 → Declare pace_class sebelum storyboard:
    · BRISK_UGC           → pace laju, minimum dead air, 1 action beat setiap 2–3 saat
    · NATURAL_COMMERCIAL  → pace normal iklan
@@ -367,11 +378,14 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 → Default rules:
    · TikTok household / UGC / recommendation → BRISK_UGC
    · BM commercial / recommendation / household UGC → dialogue wajib
+   · BM commercial / recommendation / household UGC → hook + pain/friction wajib hadir
+   · household / gadget / fashion practical sell-through → default HYBRID jika user tidak specify
+   · premium launch / wellness / traditional / sensitive → default PGC atau educator-style HYBRID
    · "pure visual / no dialog / WPS: 0" FORBIDDEN kecuali user explicit minta
      montage sunyi / music-only / text-only
    · JANGAN guna CALM_EXPLAINER untuk GROK UGC tanpa explicit request user
 → Present kepada user:
-   "Dialog budget Block 1 = [x] words | Block 2 = [y] words | pace = [class]"
+   "Route = [UGC/PGC/HYBRID] | Dialog budget Block 1 = [x] words | Block 2 = [y] words | pace = [class] | formula = [formula]"
 → JANGAN proceed ke storyboard jika word budget per block belum dikira
 ```
 
@@ -386,13 +400,18 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
   │   Opening: [apa berlaku awal]          │
   │   Middle:  [apa berlaku tengah]        │
   │   Product moment: [bila produk focus]  │
+  │   Shot ladder: [CU / MCU / POV / ...]  │
+  │   Copy arc: [Hook / Pain / Friction...]│
   │   Dialogue: "[dialog penuh]"           │
   │   Words max: [budget block]            │
   │   Pace: [BRISK_UGC / NATURAL / CALM]   │
   │   End state: [visual akhir block]      │
+  │   Bridge out: [frasa sambungan jika multi-block] │
   ├────────────────────────────────────────┤
   │ Block 2 ([duration]s): [jika ada]      │
   │   Continues from: [end state B1]       │
+  │   Bridge in: [ayat sambung awal]       │
+  │   Copy arc: [Relief / Proof / CTA...]  │
   │   Words max: [budget block]            │
   │   Pace: [class]                        │
   │   ...                                  │
@@ -417,8 +436,11 @@ Aktif untuk semua video requests (Route B, Route C, Route D → video).
 ```
 - JANGAN emit prompt terus tanpa storyboard
 - JANGAN skip engine selection jika belum declared
+- JANGAN skip presentation_route declaration untuk commercial video
 - JANGAN skip dialog budget / WPS declaration per block
+- JANGAN skip copy_formula declaration untuk BM commercial / UGC / recommendation
 - JANGAN generate Block 2 tanpa Block 1 end-state dalam storyboard
+- JANGAN generate Block 2 tanpa bridge-in jika multi-block BM commercial UGC
 - JIKA user reject storyboard: revise, present semula, tunggu approval
 - JIKA single block: storyboard ringkas masih wajib (SB_03 format)
 - JANGAN guna pace perlahan untuk GROK UGC recommendation jika user tidak minta

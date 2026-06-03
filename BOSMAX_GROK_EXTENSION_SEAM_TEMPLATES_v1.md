@@ -14,6 +14,8 @@ For `GROK` BM commercial UGC extension:
 - opening action must be micro-continuation only
 - do not spend the first `2s–3s` on silent repositioning
 - first spoken clause must continue the same semantic thread from Block 1
+- Block 1 should end with a bridge-out phrase when possible
+- Block 2 should resolve or develop that bridge immediately
 
 Good opening actions:
 - slight tilt
@@ -44,6 +46,7 @@ Resume speech within the first 0.5s–1.0s of the clip.
 Use only a slight natural hand adjustment or a small tilt of the product before the next spoken phrase begins.
 Do not create a long silent action setup.
 The feeling should be like one continuous home recommendation, not a reset.
+If Block 1 ended with a lead-in phrase, Block 2 must complete that same thought immediately.
 ```
 
 ### Spoken style target
@@ -53,6 +56,15 @@ The first spoken clause should sound like a practical continuation, for example:
 - "...jadi memang senang nak simpan."
 - "...sebab tu aku suka stok yang macam ni."
 - "...jadi rumah pun nampak lebih teratur."
+```
+
+### Bridge-out examples for Block 1
+
+```text
+Use endings like:
+- "...sebab yang paling senang,"
+- "...yang aku suka tentang benda ni,"
+- "...sebab bila nak guna cepat,"
 ```
 
 ---
@@ -71,6 +83,7 @@ Start Block 2 immediately from the final product-facing position of Block 1.
 Speech resumes almost immediately in the first second.
 The product may tilt slightly, but the motion must support the sentence, not delay it.
 No dead air and no second introduction.
+If Block 1 ended with a selling lead-in, finish that selling thought straight away.
 ```
 
 ### Spoken style target
@@ -80,6 +93,15 @@ The first spoken clause should sound like a direct continuation, for example:
 - "...dan paling penting, memang mudah capai."
 - "...jadi tak payah fikir stok selalu habis."
 - "...itu yang buat dia rasa lebih praktikal."
+```
+
+### Bridge-out examples for Block 1
+
+```text
+Use endings like:
+- "...sebab yang bezakan dia,"
+- "...yang buat aku terus pilih ni,"
+- "...sebab dekat situ nampak,"
 ```
 
 ---
@@ -98,6 +120,7 @@ Open Block 2 from the exact same pose and continue the line with near-zero hesit
 Speech should resume within 0.5s–0.8s.
 Use only a small nod, small push, or micro-tilt while speaking.
 Do not stage a silent beauty moment before the CTA continuation.
+If Block 1 already pressured the viewer, Block 2 must land the payoff immediately instead of cooling down.
 ```
 
 ### Spoken style target
@@ -107,6 +130,15 @@ The first spoken clause should sound like momentum carrying forward, for example
 - "...sebab tu ramai terus repeat order."
 - "...jadi kalau nak yang lebih mudah, ambil yang ni."
 - "...memang ini yang paling senang untuk jalan cepat."
+```
+
+### Bridge-out examples for Block 1
+
+```text
+Use endings like:
+- "...sebab yang orang cari sebenarnya,"
+- "...yang buat ramai terus ambil,"
+- "...sebab kalau lambat fikir,"
 ```
 
 ---

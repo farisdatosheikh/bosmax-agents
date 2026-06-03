@@ -23,6 +23,7 @@ Forbidden defaults:
 - registry fallback drift
 - fake scale reinterpretation
 - slow elegant dead-air pacing for TikTok UGC unless explicitly requested
+- flat recommendation copy with no hook/pain/friction
 
 ---
 
@@ -77,6 +78,13 @@ then the Grok prompt must include:
 - WPS budget
 - pace class
 - action density
+- copy formula family
+
+For BM commercial / recommendation / household UGC video, dialogue must also:
+- declare either `SELL_THROUGH_HPFRC` or `STORY_HSARC`
+- contain a real hook in the first spoken line
+- contain pain or friction before the product payoff
+- contain a reason-to-believe before CTA
 
 `pure visual no dialog` is forbidden unless the user explicitly asks:
 - silent montage
@@ -101,6 +109,8 @@ For BM commercial UGC extension:
 - Block 2 should resume speech within the first `0.5s–1.0s`
 - do not waste the seam on long silent action before dialogue continues
 - use only micro-continuation action at the opening of Block 2
+- Block 1 should preferably end on a forward-moving bridge clause
+- Block 2 should complete or advance the same semantic thread, not start a new calm sentence
 
 ---
 
@@ -169,9 +179,12 @@ Do not release the prompt unless every item passes.
 ☐ WPS budget is declared
 ☐ pace_class is declared
 ☐ if BM commercial UGC video: dialogue is present
+☐ if BM commercial UGC video: formula family is declared
+☐ if BM commercial UGC video: hook + pain/friction + relief + CTA are all present
 ☐ if engine = GROK: every block is only 6s or 10s
 ☐ if engine = GROK: no fake extension math
 ☐ if image-to-video: persistence lock is present
+☐ if multi-block BM commercial UGC: Block 1 bridge-out and Block 2 bridge-in are explicit
 ```
 
 ---

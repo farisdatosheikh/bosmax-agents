@@ -1285,6 +1285,84 @@ AI lain seperti Grok / Gemini dan juga cowork sessions boleh gagal pada kesalaha
 
 ---
 
+### Session 046 — 2026-06-03
+**Status:** UGC PGC VIDEO AUTHORITY STACK INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada lapisan authority baru untuk menapis research luar dan menukarkannya menjadi operating system video yang lebih matang. Fokus utama patch ini ialah membezakan `UGC`, `PGC`, dan `HYBRID`, membina shot ladder by duration, mengawal multi-image/B-roll authority, dan menambah platform/category risk routing yang lebih jelas.
+
+**Authority decisions:**
+- `ChatGPT` research dipromote sebagai strategic source utama
+- `Gemini` research dipakai secara selective sebagai table/structure skeleton
+- hard numbers, exact legal claims, atau exact operational quotas dari research luar TIDAK dipromote tanpa verification lanjut
+- BOSMAX kini menganggap `HYBRID` sebagai default kuat untuk banyak commerce cases:
+  - creator-native open
+  - product-truth proof di tengah
+  - clean CTA close
+- multi-image uploads kini perlu difikir sebagai:
+  - `product truth`
+  - `hero identity`
+  - `environment`
+  - `texture/style`
+  - `B-roll support`
+- route komersial video kini wajib fikir:
+  - `presentation_route`
+  - `copy_formula`
+  - `shot ladder`
+  - `platform/category risk`
+
+**Files patched:**
+- `BOSMAX_UGC_PGC_VIDEO_RESEARCH_RECONCILIATION_v1.md` — new authority file untuk reconcile research luar
+- `BOSMAX_UGC_PGC_ROUTE_DECISION_v1.md` — new authority file untuk memilih UGC / PGC / HYBRID
+- `BOSMAX_SHOT_LADDER_ARCHITECTURE_v1.md` — new authority file untuk beat-by-beat shot planning
+- `BOSMAX_MULTI_IMAGE_BROLL_CONTRACT_v1.md` — new authority file untuk many-image and B-roll routing
+- `BOSMAX_PLATFORM_POLICY_RISK_MATRIX_v1.md` — new authority file untuk conservative policy/category routing
+- `.claude/CLAUDE.md` — add `presentation_route` declaration + shot ladder requirement in storyboard gate
+- `README.md` — register all five authority files into live repo truth map
+
+**Enforcement upgrade (same lane):**
+- `.claude/skills/bosmax-script-generator.md` kini treat `presentation_route`, `shot_ladder_summary`, `broll_support_class`, `uploaded_asset_count`, dan `asset_class_manifest` sebagai operational fields, bukan nota sampingan
+- `.claude/skills/bosmax-compliance-gate.md` kini audit:
+  - route declaration
+  - shot ladder existence
+  - proof beat presence
+  - HYBRID route completeness
+  - many-image hierarchy consistency
+
+*BOSMAX v11.6 | Log updated: 2026-06-03*
+
+---
+
+### Session 045 — 2026-06-03
+**Status:** BM UGC SELL-THROUGH COPY ARCHITECTURE INSTALLED
+**Active Mode:** null
+**Milestone:** BOSMAX kini ada authority baru untuk membezakan dialog `soft commentary` daripada dialog `sell-through` yang sebenar. Patch ini juga mengunci `dialogue bridge` antara Block 1 dan Block 2 supaya sambungan GROK tidak lagi terasa lambat atau seperti ayat fresh take.
+
+**Authority decisions:**
+- BM commercial / recommendation / TikTok UGC kini wajib declare:
+  - `SELL_THROUGH_HPFRC`
+  - atau `STORY_HSARC`
+- hook pada baris pertama kini dianggap mandatory
+- pain atau friction sebelum payoff produk kini dianggap mandatory
+- relief mesti bawa sekurang-kurangnya satu `reason-to-believe`
+- untuk multi-block GROK:
+  - Block 1 disyorkan tamat dengan `bridge-out`
+  - Block 2 mesti buka dengan `bridge-in` yang sambung thread sama
+- dialog yang berbunyi seperti flat recommendation tanpa tension kini dianggap failure pattern yang sah untuk auto-heal / rebuild
+
+**Files patched:**
+- `BOSMAX_BM_UGC_SELL_THROUGH_COPY_ARCHITECTURE_v1.md` — new authority file untuk formula copy BM commercial UGC
+- `.claude/CLAUDE.md` — storyboard gate kini require `copy_formula` + `bridge-out/in`
+- `.claude/skills/bosmax-script-generator.md` — formula defaults, UGC copy mandate, seam bridge law, abort/auto-heal updates
+- `.claude/skills/bosmax-compliance-gate.md` — audit checklist untuk formula completeness dan bridge continuity
+- `BOSMAX_HARD_ENGINE_CONTRACTS_v1.md` — hard law untuk hook/pain/friction/relief/CTA dan bridge continuity
+- `BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md` — clean-output role model kini merangkumi copy formula clarity
+- `BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md` — bridge-out / bridge-in examples ditambah
+- `README.md` — operator-facing authority map updated
+
+*BOSMAX v11.5 | Log updated: 2026-06-03*
+
+---
+
 ### Session 012 — 2026-06-01
 **Status:** UNIVERSAL COMMERCIAL DESIGN SKILL INSTALLED
 **Active Mode:** null
