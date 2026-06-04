@@ -325,7 +325,7 @@ between image and text inputs.
 **Validator coverage:** NO — no standalone product truth drift validator exists yet.
 Currently enforced via CLAUDE.md VISUAL INTAKE GATE and BOSMAX_RUNTIME_STATE_MACHINE_v1.md
 STATE_ASSET_ANALYSIS (documentation enforcement only).
-Future validator needed: `validate_product_truth_drift.py`.
+Registry-layer validator: `validate_product_truth_drift.py` — created in PR #5.
 
 **Notion impact:** Product truth fields in Notion (packaging, scale anchor) must originate from
 `products/*.yaml` entries, not free-typed by operators.
@@ -592,7 +592,7 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 | G-02    | EXECUTION_MODE         | video_engine_duration_contracts.yaml + RUNTIME_SM       | validate_video_block_contracts.py    | Multi-Block Execution Mode field      | PARTIAL         |
 | G-03    | WPS_DIALOGUE           | dialogue_budget_corridor.yaml + HARD_ENGINE_CONTRACTS   | validate_video_block_contracts.py    | Dialogue Budget, Word Count fields    | PARTIAL (per-block standalone gap) |
 | G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY       | validate_copywriting_ecosystem.py    | Copy Pack ID relation                 | READY for BOSMAX Serum STEALTH; PARTIAL globally |
-| G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | None (docs-only)                     | Product fields in Video Runs          | PARTIAL         |
+| G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | validate_product_truth_drift.py      | Product fields in Video Runs          | PARTIAL (registry layer validated; prompt-level drift remains docs-only) |
 | G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md                 | None (docs-only)                     | Avatar Mode, Avatar Source fields     | PARTIAL         |
 | G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py    | Bridge-Out, Bridge-In, Seam Template  | READY (GROK); PARTIAL (VEO); MANUAL_REVIEW (Flow) |
 | G-08    | NOTION_DOWNSTREAM_ONLY | NOTION_COPY_PACK_HANDOFF + NOTION_MULTI_BLOCK_HANDOFF   | None (docs-only)                     | Block Status, READY posture fields    | PARTIAL         |
@@ -608,7 +608,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 
 | Validator                               | Gate covered | Priority |
 |-----------------------------------------|--------------|----------|
-| `validate_product_truth_drift.py`       | G-05         | HIGH     |
+| ~~`validate_product_truth_drift.py`~~   | G-05         | CLOSED — PR #5 |
 | `validate_avatar_registry_coverage.py`  | G-06         | MEDIUM   |
 | `validate_notion_sample_readiness.py`   | G-08, G-10   | MEDIUM   |
 | `validate_wps_per_block.py`             | G-03         | MEDIUM   |
@@ -617,6 +617,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 **Closed (no longer required):**
 - `validate_execution_kernel_contract.py` — G-09 — created in PR #3
 - VEO_3_1_LITE registry + validator — G-01, G-02 — VEO_3_1_LITE parity closed in PR #4
+- `validate_product_truth_drift.py` — G-05 — registry-layer validator created in PR #5
 
 ---
 
