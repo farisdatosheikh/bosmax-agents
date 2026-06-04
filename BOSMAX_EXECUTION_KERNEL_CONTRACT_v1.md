@@ -595,9 +595,9 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 | G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | validate_product_truth_drift.py      | Product fields in Video Runs          | PARTIAL (registry layer validated; prompt-level drift remains docs-only) |
 | G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md                 | validate_avatar_registry_coverage.py | Avatar Mode, Avatar Source fields     | PARTIAL (registry layer validated; USER_UPLOAD runtime + Notion mirror remain docs-only) |
 | G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py    | Bridge-Out, Bridge-In, Seam Template  | READY (GROK); PARTIAL (VEO); MANUAL_REVIEW (Flow) |
-| G-08    | NOTION_DOWNSTREAM_ONLY | NOTION_COPY_PACK_HANDOFF + NOTION_MULTI_BLOCK_HANDOFF   | None (docs-only)                     | Block Status, READY posture fields    | PARTIAL         |
-| G-09    | VALIDATOR_PROOF        | This contract + validate_*.py                           | validate_execution_kernel_contract.py (new) | QA Notes, proof block sections | PARTIAL         |
-| G-10    | SAMPLE_OUTPUT          | NOTION_MULTI_BLOCK_HANDOFF + sample run specs           | None (docs-only)                     | Block Status, page proof sections     | PARTIAL         |
+| G-08    | NOTION_DOWNSTREAM_ONLY | NOTION_COPY_PACK_HANDOFF + NOTION_MULTI_BLOCK_HANDOFF   | validate_notion_sample_readiness.py  | Block Status, READY posture fields    | PARTIAL (manifest-layer validated; live Notion/MCP rendering remains docs-only) |
+| G-09    | VALIDATOR_PROOF        | This contract + validate_*.py                           | validate_execution_kernel_contract.py | QA Notes, proof block sections       | PARTIAL         |
+| G-10    | SAMPLE_OUTPUT          | NOTION_MULTI_BLOCK_HANDOFF + notion_sample_readiness.yaml | validate_notion_sample_readiness.py | Block Status, page proof sections    | PARTIAL (manifest-layer validated; live Notion proof requires operator fill + rerun) |
 | G-11    | MERGE_PROOF            | This contract                                           | Process review                       | N/A                                   | PROCESS GATE    |
 
 ---
@@ -610,7 +610,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 |-----------------------------------------|--------------|----------|
 | ~~`validate_product_truth_drift.py`~~   | G-05         | CLOSED — PR #5 |
 | ~~`validate_avatar_registry_coverage.py`~~ | G-06      | CLOSED — PR #7 |
-| `validate_notion_sample_readiness.py`   | G-08, G-10   | MEDIUM   |
+| ~~`validate_notion_sample_readiness.py`~~ | G-08, G-10 | CLOSED — PR #8 |
 | `validate_wps_per_block.py`             | G-03         | MEDIUM   |
 | `validate_flow_extend_proof.py`         | G-07         | LOW (manual review only posture retained) |
 
@@ -619,6 +619,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 - VEO_3_1_LITE registry + validator — G-01, G-02 — VEO_3_1_LITE parity closed in PR #4
 - `validate_product_truth_drift.py` — G-05 — registry-layer validator created in PR #5
 - `validate_avatar_registry_coverage.py` — G-06 — registry-layer validator created in PR #7
+- `validate_notion_sample_readiness.py` — G-08, G-10 — manifest-layer validator created in PR #8
 
 ---
 

@@ -220,3 +220,29 @@ For BOSMAX Serum and other STEALTH lanes:
 7. Mark run:
    - `Ready` only when validator truth and block proof both exist
    - `Needs Compliance Review` for manual overrides or Flow/VEO review-only runs
+
+---
+
+## 10. BOSMAX Sample Readiness Validator
+
+Repo authority now includes `scripts/validate_notion_sample_readiness.py` and
+`registries/notion_sample_readiness.yaml`.
+
+READY sample claims must be backed by:
+- engine contract proof (block plan matches `scripts/video_block_plan.py`)
+- block plan summary present
+- product truth check passed
+- avatar source check passed
+- WPS audit passed per block
+- output test report present
+- child block records for all multi-block runs
+
+`formulaResult://...` and `<omitted />` rollups are not accepted as proof.
+`GOOGLE_FLOW.FLOW_EXTEND` remains `MANUAL_REVIEW_ONLY`.
+
+To promote a sample run to READY:
+1. Fill all proof fields in `registries/notion_sample_readiness.yaml`
+2. Run `python scripts/validate_notion_sample_readiness.py`
+3. Paste `VALIDATION PASSED` output into `validator_capture` field
+4. Update `execution_status: READY`
+5. Re-run validator to confirm
