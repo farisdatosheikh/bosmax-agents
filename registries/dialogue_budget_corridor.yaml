@@ -25,6 +25,16 @@ corridors:
     overfill_risk: Spoken compression starts to sound rushed and unnatural.
   - language: BM
     pace_class: BRISK_UGC
+    duration_seconds: 7
+    minimum_words: 17
+    target_min_words: 18
+    target_max_words: 19
+    safe_max_words: 20
+    hard_ceiling_words: 21
+    underfill_risk: VEO_3_1_LITE renders approximately 7s per 8s API block; underfilling the spoken arc leaves dead air in the actual render window.
+    overfill_risk: Overpacking beyond 21 words for a 7s actual render compresses lip sync and breaks natural UGC cadence.
+  - language: BM
+    pace_class: BRISK_UGC
     duration_seconds: 8
     minimum_words: 19
     target_min_words: 20

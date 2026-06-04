@@ -37,7 +37,7 @@ def validate_registry_shape() -> dict[str, Any]:
     engines = registry.get("engines")
     require(isinstance(engines, dict) and engines, "video_engine_duration_contracts.yaml has no engines map")
 
-    for engine_id in ("GROK", "VEO_3_1", "GOOGLE_FLOW"):
+    for engine_id in ("GROK", "VEO_3_1", "VEO_3_1_LITE", "GOOGLE_FLOW"):
         require(engine_id in engines, f"Registry missing required engine entry: {engine_id}")
 
     return engines
@@ -115,6 +115,56 @@ def validate_veo_contract(engines: dict[str, Any]) -> list[str]:
     return checks
 
 
+def validate_veo31_lite_contract(engines: dict[str, Any]) -> list[str]:
+    checks: list[str] = []
+    lite = engines["VEO_3_1_LITE"]
+    require(lite.get("authority_status") == "PARTIAL_VERIFIED", "VEO_3_1_LITE must be PARTIAL_VERIFIED")
+    require(lite.get("notion_execution_status") == "READY_CLIP_MODE", "VEO_3_1_LITE notion_execution_status must be READY_CLIP_MODE")
+    clip_chain = (lite.get("execution_modes") or {}).get("CLIP_CHAIN") or {}
+    require(str(clip_chain.get("status", "")).upper() == "READY", "VEO_3_1_LITE.CLIP_CHAIN must be READY")
+    require(int(clip_chain.get("actual_render_duration_seconds", 0)) == 7, "VEO_3_1_LITE must declare actual_render_duration_seconds: 7")
+    require(int(clip_chain.get("dialogue_budget_actual_render_seconds", 0)) == 7, "VEO_3_1_LITE must declare dialogue_budget_actual_render_seconds: 7")
+
+    bundle = load_registry_bundle()
+    seven_s_budget = bundle.budgets.get(("BM", "BRISK_UGC", 7))
+    require(isinstance(seven_s_budget, dict), "Dialogue budget corridor missing BM/BRISK_UGC/7s (required for VEO_3_1_LITE)")
+
+    expected_plans = {
+        8: [8],
+        16: [8, 8],
+        24: [8, 8, 8],
+        32: [8, 8, 8, 8],
+        40: [8, 8, 8, 8, 8],
+        48: [8, 8, 8, 8, 8, 8],
+        56: [8, 8, 8, 8, 8, 8, 8],
+    }
+    for duration, expected_blocks in expected_plans.items():
+        plan = build_plan("VEO_3_1_LITE", duration)
+        actual_blocks = [int(item) for item in plan["block_durations_seconds"]]
+        require(plan["status"] == "READY", f"VEO_3_1_LITE {duration}s must resolve READY")
+        require(actual_blocks == expected_blocks, f"VEO_3_1_LITE {duration}s mismatch: expected {expected_blocks}, got {actual_blocks}")
+        require(plan["requires_frame_bridge"] is True, f"VEO_3_1_LITE {duration}s missing frame bridge requirement")
+        require(plan["requires_identity_reanchor"] is True, f"VEO_3_1_LITE {duration}s missing identity re-anchor requirement")
+        require(plan["requires_product_reanchor"] is True, f"VEO_3_1_LITE {duration}s missing product re-anchor requirement")
+        for block in plan["blocks"]:
+            block_budget = block.get("dialogue_budget") or {}
+            require(
+                int(block_budget.get("duration_seconds", 0)) == 7,
+                f"VEO_3_1_LITE {duration}s block {block['block_index']} dialogue_budget must use 7s actual-render corridor, got {block_budget.get('duration_seconds')}",
+            )
+        for block in plan["blocks"][1:]:
+            require(block["requires_frame_bridge"] is True, f"VEO_3_1_LITE {duration}s block {block['block_index']} missing frame bridge flag")
+            require(block["bridge_in_required"] is True, f"VEO_3_1_LITE {duration}s block {block['block_index']} missing bridge-in")
+        checks.append(f"VEO_3_1_LITE {duration}s -> {'+'.join(str(item) for item in actual_blocks)}")
+
+    try:
+        build_plan("VEO_3_1_LITE", 14)
+        fail("VEO_3_1_LITE 14s should fail closed")
+    except ValueError:
+        checks.append("VEO_3_1_LITE invalid 14s rejected")
+    return checks
+
+
 def validate_flow_contract(engines: dict[str, Any]) -> list[str]:
     flow = engines["GOOGLE_FLOW"]
     require(flow.get("authority_status") == "PARTIAL_VERIFIED", "GOOGLE_FLOW must be PARTIAL_VERIFIED")
@@ -140,7 +190,7 @@ def validate_flow_contract(engines: dict[str, Any]) -> list[str]:
 
 def validate_dialogue_budget_coverage() -> list[str]:
     bundle = load_registry_bundle()
-    expected = [6, 8, 10, 12, 16, 18, 20, 24, 30, 32, 40, 48, 56]
+    expected = [6, 7, 8, 10, 12, 16, 18, 20, 24, 30, 32, 40, 48, 56]
     checks: list[str] = []
     for duration in expected:
         budget = bundle.budgets.get(("BM", "BRISK_UGC", duration))
@@ -161,6 +211,7 @@ def main() -> None:
     engines = validate_registry_shape()
     grok_checks = validate_grok_contract(engines)
     veo_checks = validate_veo_contract(engines)
+    veo_lite_checks = validate_veo31_lite_contract(engines)
     flow_checks = validate_flow_contract(engines)
     budget_checks = validate_dialogue_budget_coverage()
 
@@ -169,7 +220,7 @@ def main() -> None:
     print(f"Dialogue Budget Registry: {DIALOGUE_BUDGET_PATH}")
     print(f"Handoff Doc: {HANDOFF_DOC_PATH}")
     print(f"Decision Record: {DECISION_DOC_PATH}")
-    for item in grok_checks + veo_checks + flow_checks + budget_checks:
+    for item in grok_checks + veo_checks + veo_lite_checks + flow_checks + budget_checks:
         print(item)
 
 

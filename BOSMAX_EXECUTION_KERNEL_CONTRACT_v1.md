@@ -535,38 +535,52 @@ prompt text quality or Notion page proof existence.
 
 ---
 
-## 15. ENGINE ALIAS COMPLETENESS — VEO_3_1_LITE LIVE GAP
+## 15. ENGINE ALIAS COMPLETENESS — VEO_3_1_LITE
 
-**Status: LIVE GAP**
+**Status: PARTIAL_VERIFIED / READY_CLIP_MODE** (previously LIVE GAP — resolved in PR #4)
 
-`VEO_3_1_LITE` is defined in `.claude/CLAUDE.md` ENGINE CONSTRAINT TABLE:
-- max 8s per block
-- dialog budget: 7s per block (actual render, not 8s API value)
-- multi-block triggered when target duration > 8s (16s = 2 blocks, 24s = 3 blocks)
+`VEO_3_1_LITE` was previously a LIVE GAP: defined in `.claude/CLAUDE.md` ENGINE CONSTRAINT
+TABLE but absent from registry, planner, and validator. PR #4 closes this gap.
 
-`VEO_3_1_LITE` is **absent** from:
-- `registries/video_engine_duration_contracts.yaml`
-- `scripts/validate_video_block_contracts.py`
-- `scripts/video_block_plan.py`
+`VEO_3_1_LITE` is now present in:
+- `registries/video_engine_duration_contracts.yaml` — PARTIAL_VERIFIED / READY_CLIP_MODE
+- `scripts/video_block_plan.py` — deterministic clip-chain block planning
+- `scripts/validate_video_block_contracts.py` — validator coverage with 7s budget assertion
 
-**Impact:** Any BOSMAX run declaring `VEO_3_1_LITE` as its engine cannot be validated by
-the current validator. G-01 (ENGINE_DURATION_GATE) would fail for this engine.
+**Contract rules:**
 
-**Interim rule:** Until the registry entry is added, VEO_3_1_LITE must be treated as
-`MANUAL_REVIEW_ONLY` for any run that requires validator-backed READY status.
+```
+API block duration:        8s per request
+Actual render duration:    approximately 7s per block
+Dialogue budget:           uses 7s actual-render corridor (NOT the 8s API block value)
+Multi-block trigger:       target > 8s
+Valid totals:              8, 16, 24, 32, 40, 48, 56 seconds
+Invalid durations:         rejected by planner (e.g. 14s → ValueError)
+```
 
-**Required action (future patch):**
-1. Add `VEO_3_1_LITE` entry to `registries/video_engine_duration_contracts.yaml`:
-   - authority_status: PARTIAL_VERIFIED (same basis as VEO_3_1)
-   - block_duration_seconds: 8
-   - dialog_budget_override_seconds: 7
-   - valid_total_durations_seconds: [8, 16, 24, 32, ...]
-   - seam_contract: same as VEO_3_1.CLIP_CHAIN
-2. Add `VEO_3_1_LITE` to `validate_video_block_contracts.py` coverage.
-3. Update this contract to move VEO_3_1_LITE from LIVE GAP to PARTIAL_VERIFIED.
+**Block math:**
 
-This gap must not be hidden. VEO_3_1_LITE runs must not be marked READY until the registry
-entry exists and the validator covers it.
+```
+8s  = [8]
+16s = [8, 8]
+24s = [8, 8, 8]
+32s = [8, 8, 8, 8]
+40s = [8, 8, 8, 8, 8]
+48s = [8, 8, 8, 8, 8, 8]
+56s = [8, 8, 8, 8, 8, 8, 8]
+```
+
+**Seam rules (inherits VEO_3_1.CLIP_CHAIN):**
+- Frame bridge required on every non-first block
+- Identity re-anchor required every block
+- Product re-anchor required every block
+- First/last frame continuity required
+
+**Authority basis:** Same as VEO_3_1 (PARTIAL_VERIFIED). Clip-chain math validated by
+`scripts/validate_video_block_contracts.py`.
+
+**Interim rule removed:** VEO_3_1_LITE runs CAN now receive READY_CLIP_MODE status when
+validator proof (`VALIDATION PASSED`) is captured for the run.
 
 ---
 
@@ -574,7 +588,7 @@ entry exists and the validator covers it.
 
 | Gate ID | Gate Name              | Repo authority file                                    | Current validator                    | Notion surface                        | Status          |
 |---------|------------------------|--------------------------------------------------------|--------------------------------------|---------------------------------------|-----------------|
-| G-01    | ENGINE_DURATION        | video_engine_duration_contracts.yaml + CLAUDE.md        | validate_video_block_contracts.py    | Block Duration, Block Count fields    | PARTIAL (VEO_3_1_LITE absent) |
+| G-01    | ENGINE_DURATION        | video_engine_duration_contracts.yaml + CLAUDE.md        | validate_video_block_contracts.py    | Block Duration, Block Count fields    | READY (all engines covered) |
 | G-02    | EXECUTION_MODE         | video_engine_duration_contracts.yaml + RUNTIME_SM       | validate_video_block_contracts.py    | Multi-Block Execution Mode field      | PARTIAL         |
 | G-03    | WPS_DIALOGUE           | dialogue_budget_corridor.yaml + HARD_ENGINE_CONTRACTS   | validate_video_block_contracts.py    | Dialogue Budget, Word Count fields    | PARTIAL (per-block standalone gap) |
 | G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY       | validate_copywriting_ecosystem.py    | Copy Pack ID relation                 | READY for BOSMAX Serum STEALTH; PARTIAL globally |
@@ -594,13 +608,15 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 
 | Validator                               | Gate covered | Priority |
 |-----------------------------------------|--------------|----------|
-| `validate_execution_kernel_contract.py` | G-09         | HIGH — created in this PR |
 | `validate_product_truth_drift.py`       | G-05         | HIGH     |
 | `validate_avatar_registry_coverage.py`  | G-06         | MEDIUM   |
 | `validate_notion_sample_readiness.py`   | G-08, G-10   | MEDIUM   |
-| VEO_3_1_LITE registry + validator       | G-01, G-02   | HIGH (live gap) |
 | `validate_wps_per_block.py`             | G-03         | MEDIUM   |
 | `validate_flow_extend_proof.py`         | G-07         | LOW (manual review only posture retained) |
+
+**Closed (no longer required):**
+- `validate_execution_kernel_contract.py` — G-09 — created in PR #3
+- VEO_3_1_LITE registry + validator — G-01, G-02 — VEO_3_1_LITE parity closed in PR #4
 
 ---
 
