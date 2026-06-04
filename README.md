@@ -6,6 +6,14 @@ Sistem ini mengorkestrasi pipeline imej, video, dan pendaftaran produk menggunak
 
 ---
 
+## Top-Level Execution Authority
+
+**`BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md`** adalah fail kontrak kernel tertinggi.
+
+Setiap video template, Notion sample, Codex patch, Claude Code generation, dan ChatGPT output test mesti lulus semua gate yang ditakrifkan dalam fail ini sebelum ditandakan READY atau DONE. Fail ini mentakrifkan authority order (repo > registries > validators > Notion > AI prose), semua kernel readiness gates (engine duration, WPS dialogue, copy authority, product truth, avatar source, multi-block seam, Notion downstream, validator proof, sample output, merge proof), dan canonical block math untuk semua engines. Ia mendokumentasikan VEO_3_1_LITE sebagai LIVE GAP dalam registry semasa.
+
+---
+
 ## Struktur Sistem
 
 `

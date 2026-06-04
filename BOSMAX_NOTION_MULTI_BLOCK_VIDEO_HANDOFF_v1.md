@@ -1,12 +1,18 @@
 # BOSMAX NOTION MULTI-BLOCK VIDEO HANDOFF v1
 
 Authority:
+- `BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md` ← top-level gate (all template READY claims must pass)
 - `.claude/CLAUDE.md`
 - `BOSMAX_HARD_ENGINE_CONTRACTS_v1.md`
 - `BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md`
 - `BOSMAX_RUNTIME_STATE_MACHINE_v1.md`
 - `registries/video_engine_duration_contracts.yaml`
 - `registries/dialogue_budget_corridor.yaml`
+
+Note: Notion remains downstream UI only. Multi-block runs require child block records in
+`🎞️ BOSMAX Video Run Blocks`. VEO/Flow readiness depends on engine contract registry and
+validator proof — see BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md Section 15 for VEO_3_1_LITE
+live gap status.
 
 Purpose:
 - give Notion a reusable parent-child execution surface for BOSMAX long-duration video
