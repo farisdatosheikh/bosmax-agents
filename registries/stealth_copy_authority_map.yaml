@@ -1,0 +1,65 @@
+registry_id: BOSMAX_STEALTH_COPY_AUTHORITY_MAP_V1
+description: >
+  Authority lock for BOSMAX Serum / BOSMAX Herbs STEALTH copywriting.
+  Copy pack fields must resolve from SCRIPT_REGISTRY_UNIFIED.md plus
+  SCRIPT_VARIANT_LIBRARY.md only. Product scale anchors and packaging truth stay
+  in product YAML, not in workbook copy text.
+
+products:
+  BOSMAX_SERUM:
+    product_truth_source: products/BOSMAX_SERUM.yaml
+    product_aliases:
+      - BOSMAX Serum
+      - BOSMAX Herbs
+      - BOSMAX Herbs Serum
+    copywriting_mode: script_registry_and_variant_only
+    workbook_targets:
+      - PRODUCT_BOSMAX_SERUM
+      - FAMILY_MALE_EXT_OIL
+    product_yaml_contract:
+      silo_id: male_health_stealth_01
+      variant_family: EGO_01
+      resolve_to_copywriting: true
+    runtime_authority_nodes:
+      script_registry_family: male_health_vintage_car
+      formula_nodes:
+        PAS:
+          - SCRIPT_REGISTRY_UNIFIED.md::male_health_vintage_car.formula_templates.PAS.scripts.STEALTH_CAR_PAS_001
+          - SCRIPT_REGISTRY_UNIFIED.md::male_health_vintage_car.formula_templates.PAS.scripts.STEALTH_CAR_PAS_002
+        SAVAGE_HPAS:
+          - SCRIPT_REGISTRY_UNIFIED.md::male_health_vintage_car.formula_templates.PAS.scripts.STEALTH_CAR_PAS_002
+        HSO:
+          - SCRIPT_REGISTRY_UNIFIED.md::male_health_vintage_car.formula_templates.HSO.scripts.STEALTH_CAR_HSO_001
+        AIDA:
+          - SCRIPT_REGISTRY_UNIFIED.md::male_health_vintage_car.formula_templates.AIDA.scripts.STEALTH_CAR_AIDA_001
+      variant_nodes:
+        primary_family: SCRIPT_VARIANT_LIBRARY.md::variant_library.male_health_vintage_car.EGO_01
+        sparse_silo_overlay: SCRIPT_VARIANT_LIBRARY.md::variant_library.male_health_stealth_01.EGO_01.dialogue_payload
+    workbook_source_metadata:
+      - Source_Script_Node
+      - Source_Variant_Hook_Node
+      - Source_Variant_Problem_Node
+      - Source_Variant_Solution_Node
+      - Source_Variant_CTA_Node
+    forbidden_copy_sources:
+      - product scale anchor descriptors
+      - packaging convenience claims
+      - generic Fastmoss copy rows
+      - ad hoc AI-generated stealth phrasing
+    validation_rules:
+      require_source_metadata: true
+      require_stealth_metaphor_vocabulary: true
+      forbid_generic_packaging_phrases: true
+      forbid_direct_pronouns:
+        - saya
+        - anda
+        - awak
+        - kamu
+      forbid_medical_claims:
+        - melancarkan darah
+        - ubat
+        - merawat
+        - menyembuhkan
+        - mati pucuk
+        - erektil
+        - kebas

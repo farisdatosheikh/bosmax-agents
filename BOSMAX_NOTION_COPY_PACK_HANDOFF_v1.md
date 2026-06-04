@@ -47,6 +47,25 @@ When Notion relates to a `Copy Pack ID`, the downstream relation or rollup must 
 - STEALTH products must only expose approved `STEALTH` packs unless an operator intentionally sends the run to review.
 - DIRECT products must only expose approved `DIRECT` packs unless an operator intentionally sends the run to review.
 
+## Hard Rules For BOSMAX Serum / BOSMAX Herbs STEALTH
+
+- `BOSMAX_SERUM` and BOSMAX Herbs aliases must resolve copywriting from:
+  - `SCRIPT_REGISTRY_UNIFIED.md`
+  - `SCRIPT_VARIANT_LIBRARY.md`
+  - `registries/stealth_copy_authority_map.yaml`
+- Do not let Notion reuse product scale anchors, packaging convenience, or carry-size descriptors as `Hook`, `Pain_or_Friction`, `USP_1`, `USP_2`, `USP_3`, or `CTA`.
+- Required row provenance for these STEALTH packs:
+  - `Source_Script_Node`
+  - `Source_Variant_Hook_Node`
+  - `Source_Variant_Problem_Node`
+  - `Source_Variant_Solution_Node`
+  - `Source_Variant_CTA_Node`
+- If any one of those provenance fields is blank, the Notion row is invalid and must be treated as `Needs Compliance Review`.
+- Do not accept generic convenience copy such as `saiz lip balm`, `botol hitam premium`, `senang simpan`, `travel-friendly`, or equivalent wording for BOSMAX Serum STEALTH packs.
+- Do not accept formal direct pronouns (`saya`, `anda`, `awak`, `kamu`) in BOSMAX Serum STEALTH copy packs.
+- Do not accept medical claims in downstream STEALTH copy packs.
+- Manual output blocks such as `AI-Ready Request Manual Output` must paste the exact repo-approved copy pack fields only. Notion operators are not allowed to freestyle replacement lines for this lane.
+
 ## Dialogue Budget Corridor
 
 The Dialogue Budget Corridor must also be imported or synced from repo source:
