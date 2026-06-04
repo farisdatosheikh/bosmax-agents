@@ -113,3 +113,43 @@ corridors:
     hard_ceiling_words: 90
     underfill_risk: Half-built dialogue arcs cause obvious empty-time hallucination risk in long clips.
     overfill_risk: Spoken content becomes too compressed to feel like believable BM UGC.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 32
+    minimum_words: 76
+    target_min_words: 80
+    target_max_words: 84
+    safe_max_words: 88
+    hard_ceiling_words: 96
+    underfill_risk: Four-block clip chains start showing obvious filler drift when each 8s window is not carrying its own spoken load.
+    overfill_risk: Overstuffed dialogue starts crushing seam continuity and proof-handling beats.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 40
+    minimum_words: 95
+    target_min_words: 100
+    target_max_words: 105
+    safe_max_words: 110
+    hard_ceiling_words: 120
+    underfill_risk: Five chained clip windows create dead zones quickly if the spoken arc is not sustained block by block.
+    overfill_risk: Density starts sounding mechanically compressed instead of spoken BM commerce language.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 48
+    minimum_words: 114
+    target_min_words: 120
+    target_max_words: 126
+    safe_max_words: 132
+    hard_ceiling_words: 144
+    underfill_risk: Long chained clips expose weak continuity and invite hallucinated filler action between proof beats.
+    overfill_risk: Spoken pacing loses believable rhythm and competes with every product-handling beat.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 56
+    minimum_words: 133
+    target_min_words: 140
+    target_max_words: 147
+    safe_max_words: 154
+    hard_ceiling_words: 168
+    underfill_risk: Seven chained clip windows will feel structurally empty unless every block carries deliberate spoken intent.
+    overfill_risk: Overdense dialogue overwhelms continuity management and breaks natural UGC cadence.

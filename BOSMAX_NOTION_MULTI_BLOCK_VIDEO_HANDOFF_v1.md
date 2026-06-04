@@ -11,7 +11,8 @@ Authority:
 Purpose:
 - give Notion a reusable parent-child execution surface for BOSMAX long-duration video
 - stop invalid monolithic GROK prompts for 12s, 16s, 20s, and 30s
-- keep Google Flow / VEO 3.1 visible as review-only until repo authority is hardened
+- separate raw `VEO_3_1` clip-chain planning from `GOOGLE_FLOW` extend workflow
+- keep Google Flow manual-review only until direct operational proof is hardened
 
 ---
 
@@ -119,17 +120,37 @@ For all GROK extension runs:
 
 ---
 
-## 5. Google Flow / VEO 3.1 Rule
+## 5. VEO / Flow Rule
 
-Current repo authority is not yet hardened enough for deterministic downstream Notion execution.
+### `VEO_3_1`
 
-Therefore:
-- create sample parent run only as `NEEDS_REVIEW`
-- do not mark Flow/VEO long-form as ready
-- do not pretend the block contract is verified
+Repo authority now promotes `VEO_3_1.CLIP_CHAIN` to downstream-ready planning.
+
+Allowed clip-chain totals:
+- `16s = 8 + 8`
+- `24s = 8 + 8 + 8`
+- `32s = 8 + 8 + 8 + 8`
+- `40s = 8 + 8 + 8 + 8 + 8`
+- `48s = 8 + 8 + 8 + 8 + 8 + 8`
+- `56s = 8 + 8 + 8 + 8 + 8 + 8 + 8`
+
+For every clip after the first:
+- frame bridge required
+- identity re-anchor required
+- product re-anchor required
+
+### `GOOGLE_FLOW`
+
+Keep Google Flow separate from raw Veo clip-chain math.
+
+Current downstream posture:
+- `FLOW_EXTEND` remains `MANUAL_REVIEW_ONLY`
+- do not treat `FLOW_EXTEND` as ordinary `8 + 8` clip math
+- require previous clip final-second state
+- require continuity notes, frame-bridge notes, and re-anchor notes
 
 Suggested review-facing phrasing:
-- `Flow/VEO long-form plan is proposed only. Repo authority still requires architect review before production execution.`
+- `Flow Extend is officially real but remains BOSMAX manual-review only. Do not treat it as production-ready deterministic long-form math.`
 
 ---
 
@@ -139,7 +160,9 @@ Create parent runs:
 - `SAMPLE-HYBRID-GROK-16S-RIZAL`
 - `SAMPLE-HYBRID-GROK-20S-RIZAL`
 - `SAMPLE-HYBRID-GROK-30S-RIZAL`
-- `SAMPLE-FLOW-VEO31-LONGFORM-NEEDS-REVIEW` only because Flow/VEO authority is incomplete
+- `SAMPLE-VEO31-16S-CLIP-CHAIN-RIZAL`
+- `SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL`
+- `SAMPLE-FLOW-VEO31-LONGFORM-NEEDS-REVIEW` because Flow extend remains manual-review only
 
 For `SAMPLE-HYBRID-GROK-16S-RIZAL`, create two child rows:
 - Block 1: `10s`
@@ -182,8 +205,8 @@ For BOSMAX Serum and other STEALTH lanes:
 
 1. Resolve engine and total duration using `scripts/video_block_plan.py`
 2. Confirm authority status:
-   - `VERIFIED` -> proceed
-   - `NEEDS_REVIEW` -> create review-only run, not ready run
+   - `READY` / `READY_CLIP_MODE` -> proceed
+   - `MANUAL_REVIEW_ONLY` / `NEEDS_REVIEW` -> create review-only run, not ready run
 3. Create/update parent run
 4. Create child block rows from resolved plan
 5. Paste manual prompt output per block
