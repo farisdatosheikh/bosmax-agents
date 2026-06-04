@@ -68,6 +68,7 @@ wardrobe_catalogue:
 # ASSIGNED PRODUCTS
 assigned_products:
   - "BOSMAX_SERUM"
+  - "MAVERIX_MAXOIL"
 
 # VISUAL DNA PROMPT FRAGMENT
 # Inject this directly into [SUBJECT_INITIALIZATION] or [REFERENCE_IMAGE_LOCK] prose
