@@ -8,7 +8,7 @@ Checks:
   - Required sections exist (by heading)
   - Registry files referenced exist
   - Validator scripts referenced exist
-  - VEO_3_1_LITE live gap is documented (not silently absent)
+  - VEO_3_1_LITE parity is resolved — PARTIAL_VERIFIED / READY_CLIP_MODE (PR #4)
 """
 
 import sys
