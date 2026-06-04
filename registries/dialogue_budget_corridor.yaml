@@ -75,6 +75,16 @@ corridors:
     overfill_risk: Overpacked continuation creates rushed seam audio and thin visual breathing room.
   - language: BM
     pace_class: BRISK_UGC
+    duration_seconds: 18
+    minimum_words: 45
+    target_min_words: 48
+    target_max_words: 50
+    safe_max_words: 50
+    hard_ceiling_words: 54
+    underfill_risk: Three-beat commercial clips expose seam delay quickly when the middle payload is too thin.
+    overfill_risk: Over-compressing 18s dialogue makes mid-clip continuation sound mechanical instead of spoken.
+  - language: BM
+    pace_class: BRISK_UGC
     duration_seconds: 20
     minimum_words: 50
     target_min_words: 54
