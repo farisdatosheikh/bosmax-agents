@@ -103,3 +103,12 @@ The Notion downstream view should show:
 - Do not let Notion infer STEALTH vs DIRECT from operator memory.
 - Do not leave `Pain_or_Friction` only in Notion.
 - Do not leave dialogue budget logic only in Notion.
+
+## Sample Readiness Authority
+
+Notion sample READY status must be backed by `registries/notion_sample_readiness.yaml`.
+
+`formulaResult://...` and `<omitted />` rollups are not accepted as proof.
+Live Notion pages remain downstream UI. `GOOGLE_FLOW.FLOW_EXTEND` remains `MANUAL_REVIEW_ONLY`.
+
+Validator: `scripts/validate_notion_sample_readiness.py`
