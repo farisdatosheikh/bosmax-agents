@@ -1,0 +1,105 @@
+version: 1
+description: >
+  Repo-level dialogue budget corridor for BOSMAX commercial spoken lanes.
+  This registry exists to prevent both underfilled dialogue and overfilled dialogue.
+guidance:
+  underfill_actions:
+    - expand_dialogue
+    - reduce_duration
+    - add_intentional_visual_proof_beats
+  status_logic:
+    UNDERFILLED: final_word_count < minimum_words
+    TARGET_RANGE: target_min_words <= final_word_count <= target_max_words
+    OVER SAFE: safe_max_words < final_word_count <= hard_ceiling_words
+    HARD FAIL: final_word_count > hard_ceiling_words
+corridors:
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 6
+    minimum_words: 14
+    target_min_words: 15
+    target_max_words: 16
+    safe_max_words: 17
+    hard_ceiling_words: 18
+    underfill_risk: Empty visual time opens space for filler motion and weak sell-through.
+    overfill_risk: Spoken compression starts to sound rushed and unnatural.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 8
+    minimum_words: 19
+    target_min_words: 20
+    target_max_words: 21
+    safe_max_words: 22
+    hard_ceiling_words: 24
+    underfill_risk: Early silence weakens the product turn and proof beat density.
+    overfill_risk: Too many clauses start colliding with gestures and lip sync.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 10
+    minimum_words: 24
+    target_min_words: 26
+    target_max_words: 28
+    safe_max_words: 28
+    hard_ceiling_words: 30
+    underfill_risk: Product reveal feels unsupported and invites hallucinated filler action.
+    overfill_risk: Voice pacing drifts out of believable UGC rhythm.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 12
+    minimum_words: 30
+    target_min_words: 32
+    target_max_words: 34
+    safe_max_words: 34
+    hard_ceiling_words: 36
+    underfill_risk: Mid-clip dead air makes the cut feel stitched together instead of deliberate.
+    overfill_risk: Spoken beats crowd out proof visuals and product handling.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 15
+    minimum_words: 37
+    target_min_words: 40
+    target_max_words: 42
+    safe_max_words: 42
+    hard_ceiling_words: 45
+    underfill_risk: Long clip length amplifies filler behavior when the dialogue arc is too thin.
+    overfill_risk: Dialogue loses clarity because phrases stack faster than visual proof can support.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 16
+    minimum_words: 40
+    target_min_words: 42
+    target_max_words: 44
+    safe_max_words: 45
+    hard_ceiling_words: 48
+    underfill_risk: Extension clips risk seam lag if the second block has too little spoken payload.
+    overfill_risk: Overpacked continuation creates rushed seam audio and thin visual breathing room.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 20
+    minimum_words: 50
+    target_min_words: 54
+    target_max_words: 56
+    safe_max_words: 56
+    hard_ceiling_words: 60
+    underfill_risk: Two-block commercial clips drift into filler business when tension is too sparse.
+    overfill_risk: Density pushes the script beyond natural consumer speech cadence.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 24
+    minimum_words: 60
+    target_min_words: 64
+    target_max_words: 67
+    safe_max_words: 67
+    hard_ceiling_words: 72
+    underfill_risk: Extra duration exposes every weak transition and invites random idle action.
+    overfill_risk: Message overload starts competing with product proof and scene readability.
+  - language: BM
+    pace_class: BRISK_UGC
+    duration_seconds: 30
+    minimum_words: 75
+    target_min_words: 80
+    target_max_words: 84
+    safe_max_words: 84
+    hard_ceiling_words: 90
+    underfill_risk: Half-built dialogue arcs cause obvious empty-time hallucination risk in long clips.
+    overfill_risk: Spoken content becomes too compressed to feel like believable BM UGC.

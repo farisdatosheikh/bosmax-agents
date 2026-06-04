@@ -35,6 +35,7 @@ BOSMAX/
 ├── BOSMAX_CHATGPT_CLEAN_VIDEO_ROLE_MODEL_v1.md ← Canonical clean operator-facing video prompt shape and Grok seam continuity law
 ├── BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md ← Copy-paste Block 2 opener templates to reduce Grok extension lag and lipsync seam mismatch
 ├── BOSMAX_BM_UGC_SELL_THROUGH_COPY_ARCHITECTURE_v1.md ← Hard sell-through dialogue architecture for BM commercial UGC video
+├── BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md ← Downstream Notion sync rules for Copy Pack Registry and dialogue-budget import
 ├── BOSMAX_UGC_PGC_VIDEO_RESEARCH_RECONCILIATION_v1.md ← Reconciles ChatGPT and Gemini research into BOSMAX-safe authority
 ├── BOSMAX_UGC_PGC_ROUTE_DECISION_v1.md ← Chooses UGC, PGC, or HYBRID route per category and risk
 ├── BOSMAX_SHOT_LADDER_ARCHITECTURE_v1.md ← Practical multi-beat shot ladders by duration and route
@@ -63,8 +64,9 @@ BOSMAX/
 ├── Prompt_Framework_v1_STRICT.yaml  ← Prompt framework rules
 ├── Model_Behaviour_v1_STRICT.yaml   ← Model behaviour rules
 ├── Platform_Specs_v1_STRICT.yaml    ← Platform spec reference
-└── SCRIPT_REGISTRY_UNIFIED.md       ← Unified script registry
-├── BOSMAX_SERUM_MARKET_TRUTH_AUDIT_v1.md ← Fail-closed market truth audit for BOSMAX Serum
+├── SCRIPT_REGISTRY_UNIFIED.md       ← Unified script registry
+├── registries/dialogue_budget_corridor.yaml ← Repo source of truth for dialogue word-count corridors and underfill/overfill risk
+└── BOSMAX_SERUM_MARKET_TRUTH_AUDIT_v1.md ← Fail-closed market truth audit for BOSMAX Serum
 `
 
 ---
@@ -169,6 +171,21 @@ soft commentary yang lemah. Ia mewajibkan:
 - sekurang-kurangnya satu reason-to-believe
 - CTA
 - `bridge-out` dan `bridge-in` untuk multi-block GROK
+
+**Notion copy pack handoff:** rujuk `BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md`.
+Fail ini mengunci rule downstream supaya Notion hanya menjadi UI/assembler untuk:
+- `Copy Pack ID` relation
+- pull field `Pain_or_Friction`
+- lane-aware `STEALTH | DIRECT` filtering
+- import status untuk dialogue budget corridor
+
+**Dialogue budget corridor registry:** rujuk `registries/dialogue_budget_corridor.yaml`.
+Fail ini menjadi source-of-truth untuk:
+- minimum word floor
+- target range
+- safe max
+- hard ceiling
+- underfill vs overfill risk
 
 **UGC/PGC research reconciliation:** rujuk `BOSMAX_UGC_PGC_VIDEO_RESEARCH_RECONCILIATION_v1.md`.
 Fail ini menapis dua research report luar supaya BOSMAX hanya promote:

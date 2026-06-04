@@ -44,6 +44,7 @@ WORKING_HEADERS = [
     "Angle",
     "Hook_ID",
     "Hook",
+    "Pain_or_Friction",
     "USP_1",
     "USP_2",
     "USP_3",
@@ -136,11 +137,11 @@ READ_ME_ROWS = [
     ),
     (
         "Row Contract",
-        "One row = one coherent angle-hook pair with one USP triplet, one CTA, and one chosen formula.",
+        "One row = one coherent angle-hook-pain/friction arc with one USP triplet, one CTA, and one chosen formula.",
     ),
     (
         "Antigravity Scope",
-        "Antigravity fills only Type_of_Content, Silo_Key, Angle, Hook, USP_1-3, CTA, Copywriting_Formula, Notes, and optional IDs/Status inside product or family library sheets.",
+        "Antigravity fills only Type_of_Content, Silo_Key, Angle, Hook, Pain_or_Friction, USP_1-3, CTA, Copywriting_Formula, Notes, and optional IDs/Status inside product or family library sheets.",
     ),
     (
         "Do Not Touch",
@@ -246,6 +247,33 @@ def normalize_spaces(value: Any) -> str:
     if value is None:
         return ""
     return re.sub(r"\s+", " ", str(value)).strip()
+
+
+def derive_pain_from_body(body: str, fallback_hook: str) -> str:
+    body_text = normalize_spaces(body)
+    hook_text = normalize_spaces(fallback_hook)
+    if body_text:
+        match = re.search(r"Ramai orang ada masalah (.+?)\.", body_text, flags=re.IGNORECASE)
+        if match:
+            candidate = normalize_spaces(match.group(1))
+            if candidate:
+                return candidate[0].upper() + candidate[1:] + "."
+
+        if "mula dengan masalah ini:" in body_text:
+            after = body_text.split("mula dengan masalah ini:", 1)[1]
+            candidate = normalize_spaces(after.split(". ", 1)[0])
+            if candidate:
+                return f"Bila {candidate[0].lower() + candidate[1:]}, orang terus cari pilihan yang lebih praktikal."
+
+        first_sentence = normalize_spaces(body_text.split(". ", 1)[0])
+        if first_sentence:
+            return first_sentence if first_sentence.endswith(".") else f"{first_sentence}."
+
+    if hook_text:
+        lowered = hook_text.rstrip("?!")
+        return f"Bila {lowered[0].lower() + lowered[1:]}, rutin terus terasa terganggu."
+
+    return ""
 
 
 def slugify(value: str) -> str:
@@ -954,6 +982,7 @@ def load_existing_flagship_rows(sheet_name: str, family_code: str, family_name: 
                 source.get("Angle", ""),
                 source.get("Hook_ID", ""),
                 source.get("Hook", ""),
+                source.get("Pain_or_Friction", ""),
                 source.get("USP_1", ""),
                 source.get("USP_2", ""),
                 source.get("USP_3", ""),
@@ -981,6 +1010,7 @@ def default_flagship_bosmax_rows() -> list[list[Any]]:
             "Masuk rutin self-care senyap-senyap tanpa nampak terlalu obvious.",
             "HOOK_001",
             "Ramai lelaki simpan benda macam ni bukan sebab gaya, tapi sebab dia suka ada backup bila perlu.",
+            "Bila keyakinan rasa tak stabil masa saat penting, lelaki biasanya cari jalan yang tak perlu kecoh atau bocor maruah.",
             "Saiz kecil dan discreet, senang simpan dalam poket atau beg tanpa rasa janggal.",
             "Lane ini sesuai untuk gaya cakap STEALTH, bukan direct atau memalukan penonton.",
             "Boleh diposisikan sebagai rutin penjagaan confidence harian, bukan cerita besar-besar.",
@@ -994,6 +1024,7 @@ def default_flagship_bosmax_rows() -> list[list[Any]]:
             "Produk kecil tapi rasa premium bila dijadikan part of private routine.",
             "HOOK_002",
             "Kadang produk yang orang paling senyap simpan tu sebenarnya yang paling rajin repeat order.",
+            "Friction sebenar selalunya datang bila orang mahu rasa lebih bersedia, tapi tak mahu simpan sesuatu yang terlalu obvious atau memalukan.",
             "Botol kecil bantu positioning travel-friendly dan easy-carry.",
             "Dialog lebih selamat bila fokus pada confidence, keselesaan, dan routine.",
             "Senang masuk lane UGC lelaki yang bercakap secara kiasan dan bersahaja.",
@@ -1030,13 +1061,13 @@ def default_flagship_bosmax_rows() -> list[list[Any]]:
                     row[4],
                     row[5],
                     row[6],
-                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[7]}",
-                    row[8],
+                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[8]}",
                     row[9],
+                    row[10],
                     authority,
                     product.get("fastmoss_product_name", "") or "No confirmed Fastmoss listing locked in product YAML yet.",
                     "SEED_READY",
-                    f"{variant['variant_id']} seeded row. {row[10]}",
+                    f"{variant['variant_id']} seeded row. {row[11]}",
                 ]
             )
     return rows
@@ -1052,6 +1083,7 @@ def default_flagship_mwcb_rows() -> list[list[Any]]:
             "Minyak rumah yang orang capai bila badan rasa tak sedap dan perlukan sapuan cepat.",
             "HOOK_001",
             "Benda macam ni biasanya tak perlu intro panjang sebab sekali tengok terus orang tahu kegunaan dia dalam rumah.",
+            "Masalah dia selalu datang tanpa amaran: badan terasa tak sedap, kepala berat, atau angin naik masa orang dah sibuk dengan rutin lain.",
             "Profil minyak tradisional buat positioning melegakan dan menyegarkan lebih mudah dipercayai.",
             "Saiz 30ml WG40 sesuai untuk simpan dalam beg, kereta, atau laci rumah.",
             "Heritage 1958 kuat untuk copy yang tekan unsur turun-temurun dan kepercayaan keluarga.",
@@ -1065,6 +1097,7 @@ def default_flagship_mwcb_rows() -> list[list[Any]]:
             "Produk warisan yang senang dijual bila orang nampak botol kecil tapi gunaannya banyak.",
             "HOOK_002",
             "Kalau rumah Melayu ada satu botol minyak serbaguna, memang jenis macam ni yang selalu jadi standby.",
+            "Friction biasa berlaku bila keperluan kecil datang berulang kali, tetapi orang malas simpan terlalu banyak botol untuk masalah yang berbeza-beza.",
             "Visual botol klasik terus bantu angle petua lama yang masih dipakai sampai sekarang.",
             "Copy boleh masuk lane keluarga, travel, dan urut ringan tanpa jadi terlalu sempit.",
             "Cap merah dan label warisan bantu rasa trusted dan familiar pada pembeli.",
@@ -1100,13 +1133,13 @@ def default_flagship_mwcb_rows() -> list[list[Any]]:
                 row[4],
                 row[5],
                 row[6],
-                f"{FLAGSHIP_SHEET_MWCB}_{row[7]}",
-                row[8],
+                f"{FLAGSHIP_SHEET_MWCB}_{row[8]}",
                 row[9],
+                row[10],
                 authority,
                 product.get("fastmoss_product_name", "") or "No confirmed direct Fastmoss listing locked yet.",
                 "SEED_READY",
-                row[10],
+                row[11],
             ]
         )
     return rows
@@ -1243,6 +1276,7 @@ def seed_family_library_rows(
                     row.copywriting_angle,
                     f"{family.code}_HOOK_{idx:03d}",
                     row.hook,
+                    derive_pain_from_body(row.body, row.hook),
                     row.usp_1,
                     row.usp_2,
                     row.usp_3,
