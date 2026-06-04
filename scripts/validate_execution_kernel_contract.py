@@ -53,9 +53,13 @@ REFERENCED_SCRIPTS = [
     "scripts/video_block_plan.py",
 ]
 
-LIVE_GAP_MARKERS = [
+VEO31_LITE_PARITY_MARKERS = [
     "VEO_3_1_LITE",
-    "LIVE GAP",
+    "PARTIAL_VERIFIED / READY_CLIP_MODE",
+    "previously LIVE GAP",
+    "8s per request",
+    "7s per block",
+    "7s actual-render corridor",
 ]
 
 
@@ -97,13 +101,13 @@ def validate_referenced_files(text: str) -> list[str]:
     return checks
 
 
-def validate_live_gap_documented(text: str) -> list[str]:
-    for marker in LIVE_GAP_MARKERS:
+def validate_veo31_lite_parity_resolved(text: str) -> list[str]:
+    for marker in VEO31_LITE_PARITY_MARKERS:
         require(
             marker in text,
-            f"Contract must document the VEO_3_1_LITE live gap. Missing marker: {marker!r}",
+            f"Contract must document VEO_3_1_LITE parity as resolved. Missing: {marker!r}",
         )
-    return ["VEO_3_1_LITE live gap documented in contract"]
+    return ["VEO_3_1_LITE parity resolved in kernel contract"]
 
 
 def validate_authority_order(text: str) -> list[str]:
@@ -132,7 +136,7 @@ def main() -> None:
     text = validate_contract_exists()
     section_checks = validate_sections(text)
     file_checks = validate_referenced_files(text)
-    gap_checks = validate_live_gap_documented(text)
+    gap_checks = validate_veo31_lite_parity_resolved(text)
     authority_checks = validate_authority_order(text)
     rule_checks = validate_fail_closed_rules(text)
 

@@ -287,6 +287,159 @@ engines:
               role: CTA_CLOSE
               bridge_out_required: false
               bridge_in_required: true
+  VEO_3_1_LITE:
+    authority_status: PARTIAL_VERIFIED
+    notion_execution_status: READY_CLIP_MODE
+    engine_family: LONGFORM_CLIP_CHAIN
+    supports_multi_block: true
+    default_execution_mode: CLIP_CHAIN
+    decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+    lite_note: >
+      VEO_3_1_LITE API requests 8s per block but renders approximately 7s.
+      Dialogue budget uses the 7s actual-render corridor, not the 8s API block value.
+    authority_refs:
+      - BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
+      - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+      - .claude/CLAUDE.md
+      - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+    execution_modes:
+      CLIP_CHAIN:
+        status: READY
+        api_block_duration_seconds: 8
+        actual_render_duration_seconds: 7
+        dialogue_budget_actual_render_seconds: 7
+        single_clip_durations_seconds: [8]
+        valid_total_durations_seconds: [8, 16, 24, 32, 40, 48, 56]
+        default_total_to_blocks:
+          8: [8]
+          16: [8, 8]
+          24: [8, 8, 8]
+          32: [8, 8, 8, 8]
+          40: [8, 8, 8, 8, 8]
+          48: [8, 8, 8, 8, 8, 8]
+          56: [8, 8, 8, 8, 8, 8, 8]
+        seam_contract:
+          require_frame_bridge: true
+          proposed_temporal_bridge: 24_FRAME_TEMPORAL_BRIDGE
+          require_identity_reanchor_every_block: true
+          require_product_reanchor_every_block: true
+          require_first_last_frame_continuity: true
+          require_previous_clip_final_second: false
+        block_role_defaults:
+          16:
+            - block_index: 1
+              role: HOOK_PAIN_FRICTION
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: RELIEF_CTA
+              bridge_out_required: false
+              bridge_in_required: true
+          24:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_CTA
+              bridge_out_required: false
+              bridge_in_required: true
+          32:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+          40:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 5
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+          48:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 5
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 6
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+          56:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 5
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 6
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 7
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
   GOOGLE_FLOW:
     authority_status: PARTIAL_VERIFIED
     notion_execution_status: MANUAL_REVIEW_ONLY
