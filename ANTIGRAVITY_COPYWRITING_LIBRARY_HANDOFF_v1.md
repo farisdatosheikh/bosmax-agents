@@ -74,6 +74,7 @@ You may fill only these fields:
 - `Silo_Key`
 - `Angle`
 - `Hook`
+- `Pain_or_Friction`
 - `USP_1`
 - `USP_2`
 - `USP_3`
@@ -117,6 +118,7 @@ One row must represent:
 
 - one coherent angle
 - one hook
+- one pain or friction
 - one USP triplet
 - one CTA
 - one chosen formula
@@ -186,6 +188,7 @@ Then continue sheets with clear density in the workbook such as:
 
 - use direct consumer-facing problem/benefit language
 - keep hooks understandable without registry knowledge
+- make sure `Pain_or_Friction` is a real inconvenience, not a duplicate hook
 - optimize for TikTok Shop conversion clarity
 
 ### Formula use
