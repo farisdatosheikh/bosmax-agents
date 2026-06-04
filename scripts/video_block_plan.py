@@ -62,12 +62,14 @@ def build_blocks(
     bundle: RegistryBundle,
     seam_contract: dict[str, Any],
     role_defaults: dict[int, list[dict[str, Any]]],
+    budget_duration_override: int | None = None,
 ) -> list[dict[str, Any]]:
     role_rows = role_defaults.get(total_duration_seconds, [])
     blocks: list[dict[str, Any]] = []
     for index, block_duration in enumerate(block_durations, start=1):
         role_meta = next((item for item in role_rows if int(item["block_index"]) == index), {})
-        block_budget = get_budget(bundle, language, pace_class, block_duration)
+        budget_lookup_duration = budget_duration_override if budget_duration_override is not None else block_duration
+        block_budget = get_budget(bundle, language, pace_class, budget_lookup_duration)
         blocks.append(
             {
                 "block_index": index,
@@ -172,6 +174,8 @@ def build_mode_plan(
         int(key): value
         for key, value in (mode_contract.get("block_role_defaults") or {}).items()
     }
+    raw_budget_override = mode_contract.get("dialogue_budget_actual_render_seconds")
+    budget_duration_override = int(raw_budget_override) if raw_budget_override is not None else None
     blocks = build_blocks(
         block_durations=block_durations,
         total_duration_seconds=total_duration_seconds,
@@ -180,6 +184,7 @@ def build_mode_plan(
         bundle=bundle,
         seam_contract=seam_contract,
         role_defaults=role_defaults,
+        budget_duration_override=budget_duration_override,
     ) if block_durations else []
 
     status = "READY" if mode_status == "READY" else "NEEDS_REVIEW"
