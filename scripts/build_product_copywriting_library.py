@@ -13,8 +13,13 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.worksheet import Worksheet
 
+from stealth_copy_authority import (
+    ROOT,
+    STEALTH_SOURCE_HEADERS,
+    build_family_sheet_rows,
+    build_product_sheet_rows,
+)
 
-ROOT = Path(r"C:\Users\USER\Desktop\Claude Cowork Bosmax Agents")
 LEGACY_WORKBOOK = ROOT / "BOSMAX_PRODUCT_COPYWRITING_LIBRARY_v1.xlsx"
 OUTPUT_WORKBOOK = ROOT / "BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx"
 FASTMOSS_WORKBOOK = ROOT / "FASTMOSS_COMBINED_10_FILES_WORKBOOK.xlsx"
@@ -52,6 +57,7 @@ WORKING_HEADERS = [
     "CTA",
     "Copywriting_Formula",
     "Authority_Source",
+    *STEALTH_SOURCE_HEADERS,
     "Fastmoss_Reference",
     "Status",
     "Notes",
@@ -990,6 +996,11 @@ def load_existing_flagship_rows(sheet_name: str, family_code: str, family_name: 
                 source.get("CTA", ""),
                 source.get("Copywriting_Formula", ""),
                 source.get("Authority_Source", ""),
+                source.get("Source_Script_Node", ""),
+                source.get("Source_Variant_Hook_Node", ""),
+                source.get("Source_Variant_Problem_Node", ""),
+                source.get("Source_Variant_Solution_Node", ""),
+                source.get("Source_Variant_CTA_Node", ""),
                 source.get("Fastmoss_Reference", ""),
                 source.get("Status", ""),
                 source.get("Notes", ""),
@@ -1001,76 +1012,7 @@ def load_existing_flagship_rows(sheet_name: str, family_code: str, family_name: 
 
 
 def default_flagship_bosmax_rows() -> list[list[Any]]:
-    product = product_yaml(ROOT / "products" / "BOSMAX_SERUM.yaml")
-    authority = "products/BOSMAX_SERUM.yaml + SCRIPT_REGISTRY_UNIFIED.md + SCRIPT_VARIANT_LIBRARY.md"
-    rows: list[list[Any]] = []
-    starter_rows = [
-        (
-            "ANG_001",
-            "Masuk rutin self-care senyap-senyap tanpa nampak terlalu obvious.",
-            "HOOK_001",
-            "Ramai lelaki simpan benda macam ni bukan sebab gaya, tapi sebab dia suka ada backup bila perlu.",
-            "Bila keyakinan rasa tak stabil masa saat penting, lelaki biasanya cari jalan yang tak perlu kecoh atau bocor maruah.",
-            "Saiz kecil dan discreet, senang simpan dalam poket atau beg tanpa rasa janggal.",
-            "Lane ini sesuai untuk gaya cakap STEALTH, bukan direct atau memalukan penonton.",
-            "Boleh diposisikan sebagai rutin penjagaan confidence harian, bukan cerita besar-besar.",
-            "CTA_001",
-            "Tekan beg kuning kalau nak simpan satu untuk rutin sendiri.",
-            "SAVAGE_HPAS",
-            "Seeded generic stealth row.",
-        ),
-        (
-            "ANG_002",
-            "Produk kecil tapi rasa premium bila dijadikan part of private routine.",
-            "HOOK_002",
-            "Kadang produk yang orang paling senyap simpan tu sebenarnya yang paling rajin repeat order.",
-            "Friction sebenar selalunya datang bila orang mahu rasa lebih bersedia, tapi tak mahu simpan sesuatu yang terlalu obvious atau memalukan.",
-            "Botol kecil bantu positioning travel-friendly dan easy-carry.",
-            "Dialog lebih selamat bila fokus pada confidence, keselesaan, dan routine.",
-            "Senang masuk lane UGC lelaki yang bercakap secara kiasan dan bersahaja.",
-            "CTA_002",
-            "Cuba dulu satu dan tengok sendiri kenapa lane ni ramai suka repeat.",
-            "PAS",
-            "Seeded premium-routine stealth row.",
-        ),
-    ]
-
-    for variant in product["variants"]:
-        for idx, row in enumerate(starter_rows, start=1):
-            row_index = len(rows) + 1
-            rows.append(
-                [
-                    f"{FLAGSHIP_SHEET_BOSMAX}_R{row_index:03d}",
-                    "FAMILY_MALE_EXT_SENSITIVE_OIL",
-                    "Male Sensitive External Oil",
-                    product["product_id"],
-                    product["product_name"],
-                    variant["variant_id"],
-                    product["category"],
-                    product["sub_category"],
-                    product["product_type"],
-                    "Bottle",
-                    variant["variant_name"],
-                    variant["scale_anchor_descriptor"],
-                    "STEALTH",
-                    "male_health_stealth_01",
-                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[0]}",
-                    row[1],
-                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[2]}",
-                    row[3],
-                    row[4],
-                    row[5],
-                    row[6],
-                    f"{FLAGSHIP_SHEET_BOSMAX}_{row[8]}",
-                    row[9],
-                    row[10],
-                    authority,
-                    product.get("fastmoss_product_name", "") or "No confirmed Fastmoss listing locked in product YAML yet.",
-                    "SEED_READY",
-                    f"{variant['variant_id']} seeded row. {row[11]}",
-                ]
-            )
-    return rows
+    return [[row.get(header, "") for header in WORKING_HEADERS] for row in build_product_sheet_rows()]
 
 
 def default_flagship_mwcb_rows() -> list[list[Any]]:
@@ -1137,6 +1079,11 @@ def default_flagship_mwcb_rows() -> list[list[Any]]:
                 row[9],
                 row[10],
                 authority,
+                "",
+                "",
+                "",
+                "",
+                "",
                 product.get("fastmoss_product_name", "") or "No confirmed direct Fastmoss listing locked yet.",
                 "SEED_READY",
                 row[11],
@@ -1253,6 +1200,10 @@ def seed_family_library_rows(
 ) -> dict[str, list[list[Any]]]:
     seeded: dict[str, list[list[Any]]] = {}
     for code, family in families.items():
+        if code == "FAMILY_MALE_EXT_SENSITIVE_OIL":
+            seeded[code] = [[row.get(header, "") for header in WORKING_HEADERS] for row in build_family_sheet_rows()]
+            continue
+
         rows: list[list[Any]] = []
         source_rows = sorted(grouped.get(code, []), key=lambda item: item.rank)
         for idx, row in enumerate(source_rows[:3], start=1):
@@ -1284,6 +1235,11 @@ def seed_family_library_rows(
                     row.cta,
                     family.default_formula,
                     family.authority_source,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     row.fastmoss_reference,
                     "SEED_READY",
                     "Representative Fastmoss row extracted for this deduped family. Generalize beyond the brand name when expanding.",
