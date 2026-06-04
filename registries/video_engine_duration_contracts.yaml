@@ -1,0 +1,335 @@
+version: 1
+description: >
+  Repo-level deterministic duration and block-planning contract for BOSMAX video
+  runs. This registry exists to stop invalid long-form math, seam dead-air, and
+  unverified Flow/VEO assumptions from leaking into Notion execution.
+governance:
+  canonical_authority:
+    - .claude/CLAUDE.md
+    - BOSMAX_HARD_ENGINE_CONTRACTS_v1.md
+    - BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md
+    - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+    - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+  validator: scripts/validate_video_block_contracts.py
+  planner: scripts/video_block_plan.py
+  fail_closed_rules:
+    - GROK blocks must be exactly 6s or 10s.
+    - GROK totals above 10s must resolve into explicit block arrays.
+    - Non-final GROK blocks must carry bridge-out.
+    - Non-first GROK blocks must carry bridge-in and speech resume inside 0.5s-1.0s.
+    - VEO_3_1 clip-chain ready status must be backed by BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md.
+    - GOOGLE_FLOW must not be promoted to production-ready long-form execution without explicit verified evidence.
+engines:
+  GROK:
+    authority_status: VERIFIED
+    notion_execution_status: READY
+    engine_family: SHORT_FORM_EXTENSION
+    supports_multi_block: true
+    execution_mode: EXTENSION
+    authority_refs:
+      - .claude/CLAUDE.md
+      - BOSMAX_HARD_ENGINE_CONTRACTS_v1.md
+      - BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md
+      - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+      - BOSMAX_BM_UGC_SELL_THROUGH_COPY_ARCHITECTURE_v1.md
+    single_block_durations_seconds: [6, 10]
+    valid_block_durations_seconds: [6, 10]
+    valid_total_durations_seconds: [6, 10, 12, 16, 18, 20, 30]
+    default_total_to_blocks:
+      6: [6]
+      10: [10]
+      12: [6, 6]
+      16: [10, 6]
+      18: [6, 6, 6]
+      20: [10, 10]
+      30: [10, 10, 10]
+    seam_contract:
+      require_previous_clip_wording: true
+      require_bridge_out_on_non_final_blocks: true
+      require_bridge_in_on_non_first_blocks: true
+      speech_resume_window_seconds:
+        min: 0.5
+        max: 1.0
+      continuity_goal: Continue the exact semantic thread from the previous clip without dead air.
+      forbidden_patterns:
+        - Internal labels such as Block 1 or Block 2 in operator-facing prompt text.
+        - Fresh greeting or re-introduction at the start of extension blocks.
+        - Reposition-only opening beats before speech resumes.
+    block_role_defaults:
+      12:
+        - block_index: 1
+          role: HOOK_PAIN
+          bridge_out_required: true
+          bridge_in_required: false
+        - block_index: 2
+          role: RELIEF_CTA
+          bridge_out_required: false
+          bridge_in_required: true
+      16:
+        - block_index: 1
+          role: HOOK_PAIN_FRICTION
+          bridge_out_required: true
+          bridge_in_required: false
+        - block_index: 2
+          role: RELIEF_CTA
+          bridge_out_required: false
+          bridge_in_required: true
+      18:
+        - block_index: 1
+          role: HOOK_PAIN
+          bridge_out_required: true
+          bridge_in_required: false
+        - block_index: 2
+          role: FRICTION_PROOF
+          bridge_out_required: true
+          bridge_in_required: true
+        - block_index: 3
+          role: RELIEF_CTA
+          bridge_out_required: false
+          bridge_in_required: true
+      20:
+        - block_index: 1
+          role: HOOK_PAIN_FRICTION
+          bridge_out_required: true
+          bridge_in_required: false
+        - block_index: 2
+          role: RELIEF_PROOF_CTA
+          bridge_out_required: false
+          bridge_in_required: true
+      30:
+        - block_index: 1
+          role: HOOK_PAIN_FRICTION
+          bridge_out_required: true
+          bridge_in_required: false
+        - block_index: 2
+          role: RELIEF_PROOF_DEVELOPMENT
+          bridge_out_required: true
+          bridge_in_required: true
+        - block_index: 3
+          role: CTA_CLOSE
+          bridge_out_required: false
+          bridge_in_required: true
+  KLING_3_0:
+    authority_status: VERIFIED
+    notion_execution_status: READY
+    engine_family: SINGLE_BLOCK
+    supports_multi_block: false
+    execution_mode: SINGLE_BLOCK_EXECUTION
+    authority_refs:
+      - .claude/CLAUDE.md
+      - MASTER_IGNITION_TEMPLATE.md
+      - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+    single_block_durations_seconds: [3, 5, 10, 15]
+    valid_total_durations_seconds: [3, 5, 10, 15]
+  SEEDANCE_2_0:
+    authority_status: VERIFIED
+    notion_execution_status: READY
+    engine_family: SINGLE_BLOCK
+    supports_multi_block: false
+    execution_mode: SINGLE_BLOCK_EXECUTION
+    authority_refs:
+      - .claude/CLAUDE.md
+      - MASTER_IGNITION_TEMPLATE.md
+      - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+    single_block_durations_seconds: [5, 10, 15]
+    valid_total_durations_seconds: [5, 10, 15]
+  VEO_3_1:
+    authority_status: PARTIAL_VERIFIED
+    notion_execution_status: READY_CLIP_MODE
+    engine_family: LONGFORM_CLIP_CHAIN
+    supports_multi_block: true
+    default_execution_mode: CLIP_CHAIN
+    decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+    authority_refs:
+      - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+      - https://ai.google.dev/gemini-api/docs/video
+      - https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/veo/3-1-generate
+      - https://docs.cloud.google.com/vertex-ai/generative-ai/docs/video/extend-a-veo-video
+      - https://blog.google/innovation-and-ai/products/veo-updates-flow/
+      - MASTER_IGNITION_TEMPLATE.md
+      - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+      - .claude/CLAUDE.md
+    execution_modes:
+      CLIP_CHAIN:
+        status: READY
+        block_duration_seconds: 8
+        single_clip_durations_seconds: [4, 6, 8]
+        valid_total_durations_seconds: [4, 6, 8, 16, 24, 32, 40, 48, 56]
+        default_total_to_blocks:
+          4: [4]
+          6: [6]
+          8: [8]
+          16: [8, 8]
+          24: [8, 8, 8]
+          32: [8, 8, 8, 8]
+          40: [8, 8, 8, 8, 8]
+          48: [8, 8, 8, 8, 8, 8]
+          56: [8, 8, 8, 8, 8, 8, 8]
+        seam_contract:
+          require_frame_bridge: true
+          proposed_temporal_bridge: 24_FRAME_TEMPORAL_BRIDGE
+          require_identity_reanchor_every_block: true
+          require_product_reanchor_every_block: true
+          require_first_last_frame_continuity: true
+          require_previous_clip_final_second: false
+        block_role_defaults:
+          16:
+            - block_index: 1
+              role: HOOK_PAIN_FRICTION
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: RELIEF_CTA
+              bridge_out_required: false
+              bridge_in_required: true
+          24:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_CTA
+              bridge_out_required: false
+              bridge_in_required: true
+          32:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+          40:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 5
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+          48:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 5
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 6
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+          56:
+            - block_index: 1
+              role: HOOK_PAIN
+              bridge_out_required: true
+              bridge_in_required: false
+            - block_index: 2
+              role: FRICTION_PROOF
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 3
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 4
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 5
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 6
+              role: RELIEF_PROOF_DEVELOPMENT
+              bridge_out_required: true
+              bridge_in_required: true
+            - block_index: 7
+              role: CTA_CLOSE
+              bridge_out_required: false
+              bridge_in_required: true
+  GOOGLE_FLOW:
+    authority_status: PARTIAL_VERIFIED
+    notion_execution_status: MANUAL_REVIEW_ONLY
+    engine_family: WORKFLOW_LAYER
+    supports_multi_block: true
+    default_execution_mode: FLOW_EXTEND
+    decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+    review_reason: >
+      Official Google sources verify Flow features such as Frames to Video and
+      Extend, but the BOSMAX repo does not yet promote a deterministic
+      production-safe Flow long-form contract. Keep Flow execution manual-review
+      only until direct operational proof closes the gap.
+    authority_refs:
+      - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+      - https://blog.google/innovation-and-ai/products/veo-updates-flow/
+      - https://support.google.com/flow/answer/16352836
+      - https://docs.cloud.google.com/vertex-ai/generative-ai/docs/video/extend-a-veo-video
+      - .claude/CLAUDE.md
+      - BOSMAX_RUNTIME_STATE_MACHINE_v1.md
+    execution_modes:
+      VEO31_CLIP_CHAIN:
+        status: NEEDS_REVIEW
+        reason: >
+          Flow is a workflow layer over Veo, but the repo does not yet promote
+          Veo clip-chain math as a production-safe Flow UI contract.
+        required_fields:
+          - Previous Clip Final Second State
+          - Continuity Goal
+          - Identity Reanchor
+          - Product Reanchor
+          - Frame Bridge Notes
+      FLOW_EXTEND:
+        status: NEEDS_REVIEW
+        extension_basis: previous_clip_final_second
+        requires_previous_clip_final_second: true
+        reason: >
+          Official sources verify that Flow Extend continues from the final
+          second of the previous clip, but BOSMAX does not yet promote a
+          deterministic production-ready total-duration contract for this mode.
+        required_fields:
+          - Previous Clip Final Second State
+          - Continuation Goal
+          - Identity Reanchor
+          - Product Reanchor
+          - Audio Continuity Notes
+          - Frame Bridge Notes

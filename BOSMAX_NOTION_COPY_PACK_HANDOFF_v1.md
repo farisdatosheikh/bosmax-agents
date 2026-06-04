@@ -6,11 +6,13 @@ This file exists so Claude Cowork can update Notion later without changing BOSMA
 
 ## Authority Order
 
-1. BOSMAX repo / local ecosystem
-2. Workbook and registries inside this repo
-3. Notion downstream UI
+1. `BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md` ← top-level gate (COPY_AUTHORITY_GATE G-04)
+2. BOSMAX repo / local ecosystem
+3. Workbook and registries inside this repo
+4. Notion downstream UI
 
 Notion is **not** allowed to invent copywriting or become the source of truth.
+All template READY claims must pass BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md before being marked production-ready.
 
 ## Copy Pack Source
 
