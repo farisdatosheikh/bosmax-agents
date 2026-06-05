@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+from collections import Counter
 from pathlib import Path
 
 import yaml
@@ -61,6 +62,10 @@ MWCB_FORBIDDEN_COPY_TERMS = (
     "mengecutkan rahim",
     "mengempiskan perut",
 )
+PHASE1_MARKER = "PHASE_1_MWCB|"
+PHASE1_MCA_IDS = {"MWCB-MCA01", "MWCB-MCA03", "MWCB-MCA07"}
+PHASE1_FORMULAS = {"PAS", "AIDA", "HSO", "HPAS"}
+PHASE1_CONTEXTS = {"CTX-A_SEGARA", "CTX-B_RUTIN", "CTX-C_SYOR"}
 
 
 def normalize(value: object) -> str:
@@ -327,11 +332,148 @@ def validate_mwcb_taxonomy() -> None:
                         )
 
 
+def validate_mwcb_phase1_distribution() -> None:
+    if not MWCB_TAXONOMY_PATH.exists():
+        fail(f"MWCB taxonomy registry missing: {MWCB_TAXONOMY_PATH}")
+
+    with MWCB_TAXONOMY_PATH.open("r", encoding="utf-8") as fh:
+        taxonomy = yaml.safe_load(fh)
+
+    forbidden_review_phrases: set[str] = set()
+    for use_case in taxonomy.get("review_only_use_cases", []):
+        forbidden_review_phrases.update(normalize(item).lower() for item in use_case.get("forbidden_phrases", []))
+
+    if not WORKBOOK_PATH.exists():
+        fail(f"Workbook missing: {WORKBOOK_PATH}")
+
+    wb = load_workbook(WORKBOOK_PATH, data_only=True)
+    ws = wb["PRODUCT_MW_CAP_BURUNG"]
+    headers = [normalize(cell.value) for cell in ws[1]]
+    header_index = {header: idx for idx, header in enumerate(headers)}
+
+    required_headers = {
+        "Row_ID",
+        "Angle_ID",
+        "MCA_ID",
+        "Compliance_Risk",
+        "Hook_ID",
+        "CTA_ID",
+        "Hook",
+        "Pain_or_Friction",
+        "USP_1",
+        "USP_2",
+        "USP_3",
+        "CTA",
+        "Copywriting_Formula",
+        "Status",
+        "Notes",
+    }
+    missing_headers = [header for header in required_headers if header not in header_index]
+    if missing_headers:
+        fail(f"PRODUCT_MW_CAP_BURUNG missing headers for Phase 1 validation: {', '.join(missing_headers)}")
+
+    phase1_rows: list[dict[str, str]] = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        notes = normalize(row[header_index["Notes"]])
+        if not notes.startswith(PHASE1_MARKER):
+            continue
+        phase1_rows.append(
+            {
+                "row_id": normalize(row[header_index["Row_ID"]]),
+                "angle_id": normalize(row[header_index["Angle_ID"]]),
+                "mca_id": normalize(row[header_index["MCA_ID"]]),
+                "risk": normalize(row[header_index["Compliance_Risk"]]),
+                "hook_id": normalize(row[header_index["Hook_ID"]]),
+                "cta_id": normalize(row[header_index["CTA_ID"]]),
+                "hook": normalize(row[header_index["Hook"]]),
+                "pain": normalize(row[header_index["Pain_or_Friction"]]),
+                "usp_1": normalize(row[header_index["USP_1"]]),
+                "usp_2": normalize(row[header_index["USP_2"]]),
+                "usp_3": normalize(row[header_index["USP_3"]]),
+                "cta": normalize(row[header_index["CTA"]]),
+                "formula": normalize(row[header_index["Copywriting_Formula"]]),
+                "status": normalize(row[header_index["Status"]]),
+                "notes": notes,
+            }
+        )
+
+    if len(phase1_rows) != 36:
+        fail(f"MWCB Phase 1 row count mismatch. Expected 36, found {len(phase1_rows)}")
+
+    row_ids = [row["row_id"] for row in phase1_rows]
+    angle_ids = [row["angle_id"] for row in phase1_rows]
+    hook_ids = [row["hook_id"] for row in phase1_rows]
+    cta_ids = [row["cta_id"] for row in phase1_rows]
+    for label, values in {
+        "Row_ID": row_ids,
+        "Angle_ID": angle_ids,
+        "Hook_ID": hook_ids,
+        "CTA_ID": cta_ids,
+    }.items():
+        if len(values) != len(set(values)):
+            fail(f"MWCB Phase 1 duplicate {label} detected")
+
+    expected_row_ids = [f"PRODUCT_MW_CAP_BURUNG_R{index:03d}" for index in range(31, 67)]
+    if sorted(row_ids) != expected_row_ids:
+        fail("MWCB Phase 1 Row_ID range mismatch; expected PRODUCT_MW_CAP_BURUNG_R031..R066")
+
+    mca_counts = Counter(row["mca_id"] for row in phase1_rows)
+    expected_mca_counts = Counter({mca_id: 12 for mca_id in PHASE1_MCA_IDS})
+    if mca_counts != expected_mca_counts:
+        fail(f"MWCB Phase 1 MCA distribution mismatch: {mca_counts}")
+
+    formula_counts = Counter(row["formula"] for row in phase1_rows)
+    expected_formula_counts = Counter({formula: 9 for formula in PHASE1_FORMULAS})
+    if formula_counts != expected_formula_counts:
+        fail(f"MWCB Phase 1 formula distribution mismatch: {formula_counts}")
+
+    context_counts: Counter[str] = Counter()
+    for row in phase1_rows:
+        if row["mca_id"] not in PHASE1_MCA_IDS:
+            fail(f"MWCB Phase 1 row has invalid MCA_ID: {row['mca_id']}")
+        if row["risk"] != "GREEN":
+            fail(f"MWCB Phase 1 row must have Compliance_Risk=GREEN: {row['row_id']}")
+        if row["formula"] not in PHASE1_FORMULAS:
+            fail(f"MWCB Phase 1 row has invalid formula '{row['formula']}': {row['row_id']}")
+        if row["status"] != "APPROVED":
+            fail(f"MWCB Phase 1 row must have Status=APPROVED: {row['row_id']}")
+
+        parts = {}
+        for segment in row["notes"].split("|")[1:]:
+            if "=" not in segment:
+                continue
+            key, value = segment.split("=", 1)
+            parts[key] = value
+        ctx = parts.get("CTX")
+        if ctx not in PHASE1_CONTEXTS:
+            fail(f"MWCB Phase 1 row has invalid context marker '{ctx}': {row['row_id']}")
+        if parts.get("MCA") != row["mca_id"]:
+            fail(f"MWCB Phase 1 notes/MCA mismatch: {row['row_id']}")
+        if parts.get("FORMULA") != row["formula"]:
+            fail(f"MWCB Phase 1 notes/formula mismatch: {row['row_id']}")
+        context_counts[ctx] += 1
+
+        blob = " | ".join(
+            [row["hook"], row["pain"], row["usp_1"], row["usp_2"], row["usp_3"], row["cta"], row["notes"]]
+        ).lower()
+        for term in MWCB_FORBIDDEN_COPY_TERMS:
+            if term in blob:
+                fail(f"MWCB Phase 1 row contains forbidden MWCB term '{term}': {row['row_id']}")
+        for phrase in forbidden_review_phrases:
+            if phrase and phrase in blob:
+                fail(f"MWCB Phase 1 row contains review-only phrase '{phrase}': {row['row_id']}")
+
+    expected_context_counts = Counter({context: 12 for context in PHASE1_CONTEXTS})
+    if context_counts != expected_context_counts:
+        fail(f"MWCB Phase 1 context distribution mismatch: {context_counts}")
+
+
 def main() -> None:
     row_counts = validate_workbook()
     validate_registry()
     validate_stealth_authority_map()
     validate_mwcb_taxonomy()
+    validate_mwcb_phase1_distribution()
 
     print("VALIDATION PASSED")
     print(f"Workbook: {WORKBOOK_PATH}")

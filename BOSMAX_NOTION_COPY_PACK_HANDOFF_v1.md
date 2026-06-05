@@ -108,10 +108,15 @@ The Notion downstream view should show:
 
 **Taxonomy authority:** `registries/mwcb_copywriting_angle_taxonomy.yaml`
 
+- MWCB Phase 1 copy packs are generated only for:
+  - `MWCB-MCA01`
+  - `MWCB-MCA03`
+  - `MWCB-MCA07`
 - A01–A20 in `products/CAP_BURUNG_MINYAK.yaml` are **raw source seeds only** — NOT approved final copy.
 - `MCA_ID` and `Compliance_Risk` columns are now required on `PRODUCT_MW_CAP_BURUNG` and `FAMILY_TRAD_REMEDY_OIL`.
 - **REVIEW_ONLY rows must not surface to Notion** unless operator explicitly overrides with `Needs Compliance Review` status.
-- Notion must wait until approved copy rows exist (Phase 1 copy generation is a future PR).
+- REVIEW_ONLY MWCB use cases remain blocked even after Phase 1 generation.
+- Notion sync remains deferred until after Phase 1 workbook validation for this PR.
 - Copy packs derived from REVIEW_ONLY MCAs (MWCB-MCA06) or REVIEW_ONLY use cases must never reach `APPROVED` or `LOCKED` status without independent compliance sign-off.
 
 ## Flow Extend Proof Authority
