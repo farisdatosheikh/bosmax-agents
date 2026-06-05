@@ -1,0 +1,285 @@
+version: 1
+
+authority:
+  repo_truth: true
+  notion_downstream_only: true
+  fastmoss_is_source_signal_not_permission_gate: true
+
+route_modes:
+  REGISTERED_PRODUCT:
+    description: Product resolved from products/*.yaml or an existing product-specific workbook sheet.
+    output_status: REGISTERED
+    source_tier: product_specific_registry
+  FAMILY_MATCHED_PRODUCT:
+    description: Product is not individually registered but maps cleanly into an existing family workbook lane.
+    output_status: FAMILY_MATCHED
+    source_tier: product_family_workbook_copy_pack
+  ON_THE_FLY_PRODUCT:
+    description: Product is neither registered nor family-matched, but intake is sufficient and the compliance posture is not high-risk.
+    output_status: ON_THE_FLY
+    source_tier: on_the_fly_intake
+  REVIEW_ONLY_PRODUCT:
+    description: Product or claim posture is high-risk and must fail closed into manual review.
+    output_status: REVIEW_ONLY
+    source_tier: review_only_fallback
+
+source_hierarchy:
+  - product_specific_registry
+  - product_specific_workbook_copy_pack
+  - product_family_workbook_copy_pack
+  - category_mechanic_archetype
+  - on_the_fly_intake
+  - review_only_fallback
+
+minimum_on_the_fly_intake:
+  required_fields:
+    - product_name
+    - category
+    - target_user
+    - main_problem_solved
+    - main_benefit
+    - product_format
+    - product_size_or_scale
+    - platform
+    - language
+    - compliance_class
+    - visual_reference_status
+  optional_fields:
+    - price
+    - offer
+    - differentiator
+    - competitor_context
+    - product_image
+    - target_persona
+    - claim_restrictions
+    - usage_scenario
+
+risk_detection:
+  high_risk_categories:
+    - baby
+    - maternity
+    - pregnancy
+    - supplement
+    - medical
+    - medicine
+    - health test
+    - sexual wellness
+    - adult
+    - restricted
+  review_only_triggers:
+    keywords:
+      - baby
+      - bayi
+      - maternity
+      - pregnancy
+      - pregnant
+      - hamil
+      - supplement
+      - supplemen
+      - vitamin
+      - medical
+      - medicine
+      - ubat
+      - penawar
+      - cure
+      - sembuh
+      - merawat
+      - merawat penyakit
+      - disease
+      - diagnosis
+      - clinic
+      - clinical
+      - prescription
+      - sexual wellness
+      - intimate
+      - erectile
+      - libido
+      - fertility
+      - adult
+      - restricted
+    compliance_classes:
+      - HIGH
+      - REVIEW_ONLY
+      - RED
+  forbidden_claim_patterns:
+    - cure
+    - sembuh
+    - merawat
+    - ubat
+    - penawar
+    - treat disease
+    - diagnose
+    - prescription strength
+    - clinical proof
+
+family_matching:
+  existing_family_sheets:
+    - FAMILY_AUTO_ACCESSORY
+    - FAMILY_BABY_DIAPER
+    - FAMILY_BABY_ESSENTIALS
+    - FAMILY_BEAUTY_SUPP
+    - FAMILY_BEDDING_SET
+    - FAMILY_BEDSHEET_SET
+    - FAMILY_BODY_CARE
+    - FAMILY_BODY_SOAP
+    - FAMILY_BOOKS_REFERENCE
+    - FAMILY_CAR_FRAGRANCE
+    - FAMILY_COOK_ESSENTIALS
+    - FAMILY_COOKING_SAUCE
+    - FAMILY_CURTAINS
+    - FAMILY_DRINKS
+    - FAMILY_GADGET_ACCESSORY
+    - FAMILY_HAIR_OIL
+    - FAMILY_HAIR_SHAMPOO
+    - FAMILY_HAIR_TREATMENT
+    - FAMILY_HOME_APPLIANCE
+    - FAMILY_HOME_DECOR
+    - FAMILY_HOME_IMPROVE
+    - FAMILY_HOUSE_CLEANER
+    - FAMILY_INSTANT_FOOD
+    - FAMILY_KAMBING_PERAP
+    - FAMILY_KITCHENWARE
+    - FAMILY_MAKEUP
+    - FAMILY_MALE_EXT_OIL
+    - FAMILY_MENS_COLLARED_T
+    - FAMILY_MENS_UNDERWEAR
+    - FAMILY_MEN_PERFUME
+    - FAMILY_MUSLIMAH_WEAR
+    - FAMILY_NAIL_CARE
+    - FAMILY_PET_PRODUCTS
+    - FAMILY_POPCORN
+    - FAMILY_SKINCARE_CLEANSER
+    - FAMILY_SKINCARE_MIST
+    - FAMILY_SNACKS
+    - FAMILY_SOCKS
+    - FAMILY_SPORTSWEAR
+    - FAMILY_STATIONERY
+    - FAMILY_STORAGE_BOX
+    - FAMILY_TISU_GENERAL
+    - FAMILY_TOYS_CRAFTS
+    - FAMILY_TRAD_REMEDY_OIL
+    - FAMILY_TUDUNG_BAWAL
+    - FAMILY_TUDUNG_INSTANT
+    - FAMILY_UNISEX_PERFUME
+    - FAMILY_WELLNESS_SUPP
+    - FAMILY_WOMENS_BRA
+    - FAMILY_WOMEN_JERSEY
+    - FAMILY_WOMENS_PANTS
+    - FAMILY_WOMEN_SLEEP
+    - FAMILY_WOMEN_PERFUME
+  keyword_to_family_map:
+    FAMILY_TRAD_REMEDY_OIL:
+      family_code: FAMILY_TRADITIONAL_REMEDY_OIL
+      lane: DIRECT
+      keywords:
+        - traditional remedy
+        - traditional medicated oil
+        - medicated oil
+        - minyak urut
+        - minyak angin
+        - minyak herba
+        - minyak gosok
+        - balm herba
+        - liniment
+    FAMILY_MEN_PERFUME:
+      family_code: FAMILY_MEN_PERFUME
+      lane: DIRECT
+      keywords:
+        - men perfume
+        - mens perfume
+        - perfume lelaki
+        - cologne lelaki
+    FAMILY_WOMEN_PERFUME:
+      family_code: FAMILY_WOMEN_PERFUME
+      lane: DIRECT
+      keywords:
+        - women perfume
+        - womens perfume
+        - perfume wanita
+        - fragrance wanita
+    FAMILY_UNISEX_PERFUME:
+      family_code: FAMILY_UNISEX_PERFUME
+      lane: DIRECT
+      keywords:
+        - perfume
+        - fragrance
+        - eau de parfum
+        - body mist
+        - minyak wangi
+    FAMILY_TUDUNG_BAWAL:
+      family_code: FAMILY_TUDUNG_BAWAL
+      lane: DIRECT
+      keywords:
+        - tudung bawal
+        - bawal
+        - square hijab
+    FAMILY_TUDUNG_INSTANT:
+      family_code: FAMILY_TUDUNG_INSTANT
+      lane: DIRECT
+      keywords:
+        - tudung instant
+        - instant hijab
+    FAMILY_HAIR_SHAMPOO:
+      family_code: FAMILY_HAIR_SHAMPOO
+      lane: DIRECT
+      keywords:
+        - shampoo
+        - syampu
+        - conditioner
+    FAMILY_HAIR_OIL:
+      family_code: FAMILY_HAIR_OIL
+      lane: DIRECT
+      keywords:
+        - hair oil
+        - minyak rambut
+        - scalp oil
+    FAMILY_BODY_SOAP:
+      family_code: FAMILY_BODY_SOAP
+      lane: DIRECT
+      keywords:
+        - body wash
+        - sabun badan
+        - shower gel
+    FAMILY_GADGET_ACCESSORY:
+      family_code: FAMILY_GADGET_ACCESSORY
+      lane: DIRECT
+      keywords:
+        - phone holder
+        - phone stand
+        - charging cable
+        - gadget accessory
+    FAMILY_HOME_APPLIANCE:
+      family_code: FAMILY_HOME_APPLIANCE
+      lane: DIRECT
+      keywords:
+        - vacuum
+        - portable fan
+        - steam iron
+        - mini iron
+
+output_status:
+  REGISTERED: REGISTERED
+  FAMILY_MATCHED: FAMILY_MATCHED
+  ON_THE_FLY: AD_HOC_GENERATED
+  REVIEW_ONLY: REVIEW_ONLY
+  PROMOTE_PENDING: PROMOTE_PENDING
+
+promotion_rules:
+  triggers:
+    - product used in 2+ sessions
+    - user wants TikTok Shop reusable template
+    - bulk copy packs requested
+    - high-risk product needs permanent quarantine record
+    - recurring product family demand
+
+test_cases:
+  - name: CAP_BURUNG_MINYAK
+    expected_route_mode: REGISTERED_PRODUCT
+  - name: BOSMAX_SERUM
+    expected_route_mode: REGISTERED_PRODUCT
+  - name: Minyak Herba Tradisional
+    expected_route_mode: FAMILY_MATCHED_PRODUCT
+  - name: Portable Blender
+    expected_route_mode: ON_THE_FLY_PRODUCT
+  - name: Baby Supplement
+    expected_route_mode: REVIEW_ONLY_PRODUCT

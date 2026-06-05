@@ -153,6 +153,16 @@ Fail ini memberitahu operator bila patut guna:
 - product-specific self-healing
 - sandbox / on-the-fly
 
+**Universal product copy router:** rujuk `registries/product_copy_router.yaml`,
+`scripts/product_copy_router.py`, dan `scripts/validate_product_copy_router.py`.
+Fail ini mengunci 4 route modes:
+- `REGISTERED_PRODUCT`
+- `FAMILY_MATCHED_PRODUCT`
+- `ON_THE_FLY_PRODUCT`
+- `REVIEW_ONLY_PRODUCT`
+Supaya produk baharu tidak dipaksa register dahulu hanya untuk satu sesi, tetapi juga tidak
+boleh bypass fail-closed review untuk lane berisiko tinggi.
+
 **Hard engine contracts:** rujuk `BOSMAX_HARD_ENGINE_CONTRACTS_v1.md`.
 Fail ini mengunci lane kritikal supaya AI tidak lagi bebas mengeluarkan prompt
 video BM commercial UGC tanpa dialog, invent GROK block math palsu, atau

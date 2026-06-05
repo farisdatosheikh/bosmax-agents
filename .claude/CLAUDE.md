@@ -447,6 +447,8 @@ ON LOOKUP SUCCESS (TIER 1 atau TIER 2):
   → scale_anchor_descriptor extracted per variant (INJECT ke semua content generation skills)
   → subject_dna loaded (jika exist — untuk Route C continuity)
   → copywriting data available (hook, USP 1-3, body, CTA)
+  → route mode defer ke `registries/product_copy_router.yaml`
+    (`REGISTERED_PRODUCT | FAMILY_MATCHED_PRODUCT | ON_THE_FLY_PRODUCT | REVIEW_ONLY_PRODUCT`)
 
 ON LOOKUP FAIL (TIER 1 + TIER 2 kedua-dua miss):
   → Produk baru didetect
@@ -464,6 +466,7 @@ ON LOOKUP FAIL (TIER 1 + TIER 2 kedua-dua miss):
       jika visual_product_stub tiada:
         · run full MINI-INTAKE WIZARD
     → sandbox_product_record built → inject ke session → proceed ke route
+      ikut `registries/product_copy_router.yaml`; JANGAN paksa permanent registration
   → Pilihan B → REGISTER MODE → appoint bosmax-product-registration
     → selepas register: load product_record → proceed ke route
 
