@@ -104,6 +104,16 @@ The Notion downstream view should show:
 - Do not leave `Pain_or_Friction` only in Notion.
 - Do not leave dialogue budget logic only in Notion.
 
+## Per-Block WPS Authority
+
+Per-block WPS is validated by `scripts/validate_wps_per_block.py`.
+
+Rules:
+- Multi-block outputs must not use total-duration WPS only.
+- GROK 16s uses separate 10s and 6s budgets.
+- VEO_3_1_LITE 8s API blocks use 7s actual-render dialogue budget.
+- GOOGLE_FLOW.FLOW_EXTEND remains MANUAL_REVIEW_ONLY.
+
 ## Sample Readiness Authority
 
 Notion sample READY status must be backed by `registries/notion_sample_readiness.yaml`.

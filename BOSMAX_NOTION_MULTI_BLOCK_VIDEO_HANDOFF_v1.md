@@ -223,6 +223,21 @@ For BOSMAX Serum and other STEALTH lanes:
 
 ---
 
+## 11. BOSMAX Per-Block WPS Validator
+
+Repo authority now includes `scripts/validate_wps_per_block.py`.
+
+Rules:
+- Multi-block videos must use per-block dialogue budgets. Total duration WPS alone is not accepted.
+- GROK 16s = 10s + 6s, with separate 10s and 6s dialogue corridors.
+- VEO_3_1 clip-chain uses 8s block corridors.
+- VEO_3_1_LITE uses 8s API blocks but 7s actual-render dialogue budgets.
+- GOOGLE_FLOW.FLOW_EXTEND remains MANUAL_REVIEW_ONLY and is not deterministic WPS block math.
+
+READY claims require validator proof: `python scripts\validate_wps_per_block.py`
+
+---
+
 ## 10. BOSMAX Sample Readiness Validator
 
 Repo authority now includes `scripts/validate_notion_sample_readiness.py` and
