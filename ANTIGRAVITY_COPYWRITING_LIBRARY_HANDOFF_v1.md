@@ -98,11 +98,15 @@ only for clean row organization.
 For `PRODUCT_MW_CAP_BURUNG` and `FAMILY_TRAD_REMEDY_OIL` sheets:
 
 - **MCA taxonomy authority:** `registries/mwcb_copywriting_angle_taxonomy.yaml`
+- **Phase 1 status:** MWCB Phase 1 copy packs are now generated on `PRODUCT_MW_CAP_BURUNG`
+  for `MWCB-MCA01`, `MWCB-MCA03`, and `MWCB-MCA07` only.
 - **A01–A20 in `products/CAP_BURUNG_MINYAK.yaml` are raw source seeds only** — NOT approved final copy.
   Some contain forbidden language (roll-on, antiseptik, child-safety claims, etc.).
 - **REVIEW_ONLY rows** must carry `Status = REVIEW_REQUIRED` — never `APPROVED` or `LOCKED`.
+- **Review-only MWCB use cases remain blocked** and must not be promoted into new approved rows.
 - **Notion is downstream UI only** — do not surface REVIEW_ONLY rows to Notion until approved
   copy rows exist and operator override is confirmed.
+- **Notion sync remains deferred** until Phase 1 workbook validation is complete for this PR.
 
 ---
 
