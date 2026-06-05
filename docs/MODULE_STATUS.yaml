@@ -17,6 +17,7 @@ modules:
       - scripts/product_on_the_fly_video_prompt.py
       - scripts/validate_product_on_the_fly_video_prompt.py
       - docs/notion_resolver_database_handoff_v1.md
+      - docs/notion_bosmax_command_centre_template_v1.md
       - README.md
       - BOSMAX_INPUT_HELPER_v1.md
       - BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md

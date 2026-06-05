@@ -11,6 +11,14 @@ This spec defines the **sanitized Notion-facing resolver surfaces** for:
 Repo truth remains upstream.
 Notion is **downstream UI only**.
 
+Default user flow:
+- `Command Centre Plug & Play`
+
+Legacy flow:
+- expert / trusted operator only
+- `LEGACY_EXPERT_MODE`
+- `MANUAL_OVERRIDE_REVIEW_ONLY`
+
 ---
 
 ## Update Direction
@@ -21,6 +29,7 @@ Allowed:
 - sync sanitized resolver rows from `registries/copywriting_id_resolver.yaml`
 - sync sanitized resolver rows from `registries/avatar_context_rotation.yaml`
 - relate operator run rows to approved resolver IDs
+- use mini databases as reference-only ID selectors
 
 Forbidden:
 - Notion generating new IDs
@@ -32,7 +41,8 @@ Forbidden:
 
 ## Database 1: Copywriting ID View
 
-**Recommended source:** `NOTION_EXPORT_VIEW` from `BOSMAX_COPYWRITING_ID_RESOLVER_v1.xlsx`
+**Default Command Centre source:** `NOTION_COMMAND_CENTRE_COPY_ID_VIEW` in registry/YAML.
+Workbook sheet alias in `BOSMAX_COPYWRITING_ID_RESOLVER_v1.xlsx`: `CC_COPY_ID_VIEW` (Excel 31-char sheet limit).
 
 ### Allowed fields
 - `Copywriting_ID`
@@ -40,19 +50,17 @@ Forbidden:
 - `Product_Name`
 - `Family_Name`
 - `Lane`
-- `Silo_Key`
 - `Submode_Formula`
-- `Angle`
-- `Hook`
-- `USP_1`
-- `USP_2`
-- `USP_3`
-- `CTA`
 - `Compliance`
 - `Status`
 - `Safe_Usage_Notes`
 
 ### Forbidden fields
+- `Hook`
+- `USP_1`
+- `USP_2`
+- `USP_3`
+- `CTA`
 - `Authority_Source`
 - `Source_Script_Node`
 - `Source_Variant_Hook_Node`
@@ -62,11 +70,14 @@ Forbidden:
 - private source paths
 - compliance internals or review heuristics beyond operator-safe `Compliance` / `Status`
 
+Full copywriting lines belong only to trusted operator / legacy expert views.
+
 ---
 
 ## Database 2: Avatar Context ID View
 
-**Recommended source:** `NOTION_EXPORT_VIEW` from `BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx`
+**Default Command Centre source:** `NOTION_COMMAND_CENTRE_AVATAR_ID_VIEW` in registry/YAML.
+Workbook sheet alias in `BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx`: `CC_AVATAR_ID_VIEW` (Excel 31-char sheet limit).
 
 ### Allowed fields
 - `Avatar_Context_ID`
@@ -94,7 +105,8 @@ Forbidden:
 
 ## Database 3: Avatar Pool View
 
-**Recommended source:** `ROTATION_POOLS` from `BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx`
+**Default Command Centre source:** `NOTION_COMMAND_CENTRE_AVATAR_POOL_VIEW` in registry/YAML.
+Workbook sheet alias in `BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx`: `CC_AVATAR_POOL_VIEW` (Excel 31-char sheet limit).
 
 ### Allowed fields
 - `Pool_ID`
@@ -102,15 +114,14 @@ Forbidden:
 - `Product_ID`
 - `Product_Family`
 - `Silo`
-- `Allowed_Avatar_Context_IDs`
 - `Rotation_Mode`
 - `No_Repeat_Window`
 - `Minimum_Approved_Count`
 - `Status`
-- `Runtime_Allowed`
 - `Safe_Usage_Notes`
 
 ### Forbidden fields
+- raw allowed-avatar lists
 - private registry source paths
 - raw persona DNA
 - prompt fragments
@@ -127,6 +138,7 @@ If an operator manually overrides any resolved copywriting or avatar field:
 - resolver IDs remain the source pointer for the original approved row
 
 Manual override without `Needs Compliance Review` is invalid.
+This override path is not the default user flow.
 
 ---
 
@@ -167,3 +179,5 @@ Use:
 
 Notion operators select approved IDs only.
 The repo resolver injects Hook / USP / CTA / persona / wardrobe / mannequin / scene context downstream.
+
+Default Command Centre view must not expose full copywriting lines.

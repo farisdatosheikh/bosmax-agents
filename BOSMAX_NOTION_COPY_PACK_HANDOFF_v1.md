@@ -79,6 +79,9 @@ When Notion relates to an `Avatar Pool ID`, the downstream relation or rollup mu
 ## Downstream Rules
 
 - Notion is downstream UI only.
+- Default beginner flow = `COMMAND_CENTRE_PLUG_AND_PLAY`.
+- Manual copy / avatar edits = `LEGACY_EXPERT_MODE`.
+- Manual override posture = `MANUAL_OVERRIDE_REVIEW_ONLY`.
 - Copywriting ID relation must resolve ecosystem-approved fields, not freeform Notion copy.
 - Avatar Context ID relation must resolve ecosystem-approved persona + wardrobe + mannequin + scene context, not ad hoc operator assembly.
 - Avatar Pool ID relation must remain repo-owned rotation logic only.
@@ -86,6 +89,20 @@ When Notion relates to an `Avatar Pool ID`, the downstream relation or rollup mu
 - STEALTH products must only expose approved `STEALTH` packs unless an operator intentionally sends the run to review.
 - DIRECT products must only expose approved `DIRECT` packs unless an operator intentionally sends the run to review.
 - Notion must not expose prompt fragment sources, biometric DNA, raw prompt fragments, private source paths, or P&C ecosystem logic.
+
+## Command Centre Beginner View
+
+The default Command Centre beginner copy selector must use:
+- `NOTION_COMMAND_CENTRE_COPY_ID_VIEW`
+
+It must not expose:
+- `Hook`
+- `USP_1`
+- `USP_2`
+- `USP_3`
+- `CTA`
+
+Full copy lines remain trusted-operator / legacy-expert surfaces only.
 
 ## Hard Rules For BOSMAX Serum / BOSMAX Herbs STEALTH
 

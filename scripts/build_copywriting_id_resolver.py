@@ -39,6 +39,18 @@ SAFE_NOTION_HEADERS = [
     "Status",
     "Safe_Usage_Notes",
 ]
+COMMAND_CENTRE_HEADERS = [
+    "Copywriting_ID",
+    "Display_Name",
+    "Product_Name",
+    "Family_Name",
+    "Lane",
+    "Submode_Formula",
+    "Compliance",
+    "Status",
+    "Safe_Usage_Notes",
+]
+COMMAND_CENTRE_SHEET_ALIAS = "CC_COPY_ID_VIEW"
 
 REGISTRY_HEADERS = [
     "Copywriting_ID",
@@ -86,6 +98,8 @@ VALIDATION_RULES = [
     ("BOSMAX_SERUM_PROVENANCE_REQUIRED", "Fail closed if BOSMAX_SERUM STEALTH packs lack required provenance nodes."),
     ("UNSAFE_MANUAL_OVERRIDE", "Fail closed if manual override is present without Needs Compliance Review."),
     ("NOTION_SAFE_EXPORT_ONLY", "Do not expose source paths, raw provenance nodes, or compliance internals in NOTION_EXPORT_VIEW."),
+    ("COMMAND_CENTRE_BEGINNER_VIEW_ONLY", "Command Centre beginner copy ID view must exclude Hook, USP_1, USP_2, USP_3, and CTA."),
+    ("COMMAND_CENTRE_PRODUCTION_STATUS", "Command Centre default production view should use APPROVED or LOCKED only; SEED_READY must be clearly marked staging."),
 ]
 
 
@@ -146,6 +160,12 @@ def build_safe_usage_notes(lane: str, compliance: str, product_name: str) -> str
         f"{product_name} DIRECT lane only. Do not freestyle replacement copy. "
         "Manual override requires Needs Compliance Review."
     )
+
+
+def build_command_centre_usage_notes(status: str, base_note: str) -> str:
+    if status == "SEED_READY":
+        return f"STAGING_ONLY — {base_note}"
+    return base_note
 
 
 def iter_product_rows() -> list[dict[str, Any]]:
@@ -258,6 +278,7 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
     generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     alias_rows: list[dict[str, str]] = []
     notion_rows = []
+    command_centre_rows = []
 
     for record in records:
         notion_rows.append(
@@ -278,6 +299,19 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "compliance": record["compliance"],
                 "status": record["status"],
                 "safe_usage_notes": record["safe_usage_notes"],
+            }
+        )
+        command_centre_rows.append(
+            {
+                "copywriting_id": record["copywriting_id"],
+                "display_name": record["display_name"],
+                "product_name": record["product_name"],
+                "family_name": record["family_name"],
+                "lane": record["lane"],
+                "submode_formula": record["submode_formula"],
+                "compliance": record["compliance"],
+                "status": record["status"],
+                "safe_usage_notes": build_command_centre_usage_notes(record["status"], record["safe_usage_notes"]),
             }
         )
 
@@ -311,7 +345,10 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
             "canonical_id_pattern": r"^[A-Z0-9_]+_CP_[0-9]{4}$",
             "allowed_runtime_statuses": ["APPROVED", "LOCKED", "SEED_READY"],
             "manual_override_requires_review_status": "Needs Compliance Review",
+            "default_notion_flow": "COMMAND_CENTRE_PLUG_AND_PLAY",
+            "legacy_manual_flow": "LEGACY_EXPERT_MODE | MANUAL_OVERRIDE_REVIEW_ONLY",
             "notion_safe_fields": [header.lower() for header in SAFE_NOTION_HEADERS],
+            "command_centre_safe_fields": [header.lower() for header in COMMAND_CENTRE_HEADERS],
             "forbidden_notion_fields": [
                 "authority_source",
                 "source_script_node",
@@ -330,6 +367,32 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
         "copy_packs": records,
         "alias_map": alias_rows,
         "notion_export_view": notion_rows,
+        "notion_command_centre_copy_id_view": command_centre_rows,
+        "legacy_expert_mode": {
+            "status": "ACTIVE",
+            "label": "LEGACY_EXPERT_MODE",
+            "manual_override_posture": "MANUAL_OVERRIDE_REVIEW_ONLY",
+            "required_review_status": "Needs Compliance Review",
+            "notes": "Manual Hook/USP/CTA editing remains available only for trusted expert operators.",
+        },
+        "default_command_centre_template": {
+            "platform": "TikTok",
+            "mode": "B",
+            "engine": "VEO_3_1_LITE",
+            "duration": "8s",
+            "submode_formula": "SAVAGE_HPAS",
+            "silo": "STEALTH",
+            "avatar_context_id": "BOSMAX_AVP_0001",
+            "avatar_mode": "AUTO_RESOLVE",
+            "camera_style": "UGC_IPHONE_RAW",
+            "language": "Malay",
+            "produk": "BOSMAX Serum 5ML",
+            "scale_anchor": "EXACTLY lip balm size, fit into fingers naturally",
+            "physics_class": "CLASS_A",
+            "copywriting_id": "BOSMAX_SERUM_CP_0001",
+            "copywriting_mode": "AUTO_RESOLVE",
+            "compliance": "STEALTH_METAPHOR_REQUIRED",
+        },
         "samples": {
             "sample_copywriting_id": "BOSMAX_SERUM_CP_0001",
         },
@@ -337,11 +400,12 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
             "copy_packs": len(records),
             "alias_rows": len(alias_rows),
             "notion_rows": len(notion_rows),
+            "command_centre_rows": len(command_centre_rows),
         },
         "changelog": [
             {
                 "timestamp_utc": generated_at,
-                "change_note": "Generated resolver workbook and YAML registry from approved product workbook rows.",
+                "change_note": "Generated resolver workbook and YAML registry from approved product workbook rows with Command Centre beginner view and legacy expert labeling.",
             }
         ],
     }
@@ -428,6 +492,21 @@ def write_workbook(registry: dict[str, Any]) -> None:
         for row in registry["alias_map"]
     ]
 
+    command_centre_rows = [
+        [
+            row["copywriting_id"],
+            row["display_name"],
+            row["product_name"],
+            row["family_name"],
+            row["lane"],
+            row["submode_formula"],
+            row["compliance"],
+            row["status"],
+            row["safe_usage_notes"],
+        ]
+        for row in registry["notion_command_centre_copy_id_view"]
+    ]
+
     notion_rows = [
         [
             row["copywriting_id"],
@@ -457,6 +536,7 @@ def write_workbook(registry: dict[str, Any]) -> None:
 
     populate_sheet(workbook.create_sheet("COPY_PACK_REGISTRY"), REGISTRY_HEADERS, registry_rows)
     populate_sheet(workbook.create_sheet("COPY_ID_ALIAS_MAP"), ALIAS_HEADERS, alias_rows)
+    populate_sheet(workbook.create_sheet(COMMAND_CENTRE_SHEET_ALIAS), COMMAND_CENTRE_HEADERS, command_centre_rows)
     populate_sheet(workbook.create_sheet("NOTION_EXPORT_VIEW"), SAFE_NOTION_HEADERS, notion_rows)
     populate_sheet(workbook.create_sheet("VALIDATION_RULES"), VALIDATION_RULE_HEADERS, rule_rows)
     populate_sheet(workbook.create_sheet("CHANGELOG"), CHANGELOG_HEADERS, changelog_rows)

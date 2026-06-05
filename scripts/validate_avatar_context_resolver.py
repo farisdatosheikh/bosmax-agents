@@ -13,6 +13,10 @@ from resolver_runtime import (
     resolve_avatar_context_id,
     resolve_avatar_pool,
 )
+from build_avatar_context_resolver import (
+    COMMAND_CENTRE_AVATAR_SHEET_ALIAS,
+    COMMAND_CENTRE_POOL_SHEET_ALIAS,
+)
 
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -28,6 +32,8 @@ REQUIRED_SHEETS = {
     "MANNEQUIN_POSE_LIBRARY",
     "SCENE_CONTEXT_LIBRARY",
     "ROTATION_POOLS",
+    COMMAND_CENTRE_AVATAR_SHEET_ALIAS,
+    COMMAND_CENTRE_POOL_SHEET_ALIAS,
     "NOTION_EXPORT_VIEW",
     "VALIDATION_RULES",
     "CHANGELOG",
@@ -51,6 +57,39 @@ EXPECTED_NOTION_HEADERS = [
     "Status",
     "Safe_Usage_Notes",
 ]
+EXPECTED_COMMAND_CENTRE_AVATAR_HEADERS = [
+    "Avatar_Context_ID",
+    "Display_Name",
+    "Persona_Label",
+    "Gender",
+    "Age_Range",
+    "Silo_Allowed",
+    "Product_Family_Allowed",
+    "Scene_Label",
+    "Mannequin_Label",
+    "Camera_Style_Allowed",
+    "Status",
+    "Safe_Usage_Notes",
+]
+EXPECTED_COMMAND_CENTRE_POOL_HEADERS = [
+    "Pool_ID",
+    "Display_Name",
+    "Product_ID",
+    "Product_Family",
+    "Silo",
+    "Rotation_Mode",
+    "No_Repeat_Window",
+    "Minimum_Approved_Count",
+    "Status",
+    "Safe_Usage_Notes",
+]
+FORBIDDEN_COMMAND_CENTRE_HEADERS = {
+    "Prompt_Fragment_Source",
+    "Internal_Notes",
+    "Compatible_Physics_Classes",
+    "Allowed_Avatar_Context_IDs",
+    "Runtime_Allowed",
+}
 
 
 def normalize(value: object) -> str:
@@ -83,6 +122,16 @@ def validate_workbook_shape() -> None:
     notion_headers = [normalize(cell.value) for cell in next(notion_sheet.iter_rows(max_row=1))]
     expect(notion_headers == EXPECTED_NOTION_HEADERS, "NOTION_EXPORT_VIEW headers drift detected")
     expect(not FORBIDDEN_NOTION_HEADERS.intersection(set(notion_headers)), "NOTION_EXPORT_VIEW exposes forbidden fields")
+
+    command_avatar_sheet = workbook[COMMAND_CENTRE_AVATAR_SHEET_ALIAS]
+    command_avatar_headers = [normalize(cell.value) for cell in next(command_avatar_sheet.iter_rows(max_row=1))]
+    expect(command_avatar_headers == EXPECTED_COMMAND_CENTRE_AVATAR_HEADERS, f"{COMMAND_CENTRE_AVATAR_SHEET_ALIAS} headers drift detected")
+    expect(not FORBIDDEN_COMMAND_CENTRE_HEADERS.intersection(set(command_avatar_headers)), f"{COMMAND_CENTRE_AVATAR_SHEET_ALIAS} exposes forbidden fields")
+
+    command_pool_sheet = workbook[COMMAND_CENTRE_POOL_SHEET_ALIAS]
+    command_pool_headers = [normalize(cell.value) for cell in next(command_pool_sheet.iter_rows(max_row=1))]
+    expect(command_pool_headers == EXPECTED_COMMAND_CENTRE_POOL_HEADERS, f"{COMMAND_CENTRE_POOL_SHEET_ALIAS} headers drift detected")
+    expect(not FORBIDDEN_COMMAND_CENTRE_HEADERS.intersection(set(command_pool_headers)), f"{COMMAND_CENTRE_POOL_SHEET_ALIAS} exposes forbidden fields")
     print("workbook shape ok")
 
 
@@ -91,8 +140,14 @@ def validate_registry_shape(registry: dict[str, Any]) -> None:
     expect(registry.get("registry_id") == "BOSMAX_AVATAR_CONTEXT_ROTATION_V1", "registry_id drift detected")
     expect(bool(registry.get("avatar_context_packs")), "avatar_context_packs cannot be empty")
     expect(bool(registry.get("rotation_pools")), "rotation_pools cannot be empty")
+    expect(bool(registry.get("notion_command_centre_avatar_id_view")), "notion_command_centre_avatar_id_view cannot be empty")
+    expect(bool(registry.get("notion_command_centre_avatar_pool_view")), "notion_command_centre_avatar_pool_view cannot be empty")
     expect(registry.get("samples", {}).get("sample_avatar_context_id") == "BOSMAX_AVP_0001", "sample_avatar_context_id drift detected")
     expect(registry.get("samples", {}).get("sample_avatar_pool_id") == "BOSMAX_MALE_STEALTH_POOL_001", "sample_avatar_pool_id drift detected")
+    expect(registry.get("runtime_contract", {}).get("default_notion_flow") == "COMMAND_CENTRE_PLUG_AND_PLAY", "default_notion_flow drift detected")
+    legacy = registry.get("legacy_expert_mode", {})
+    expect(legacy.get("label") == "LEGACY_EXPERT_MODE", "legacy expert label drift detected")
+    expect(legacy.get("manual_override_posture") == "MANUAL_OVERRIDE_REVIEW_ONLY", "manual override posture drift detected")
     print("registry shape ok")
 
 
@@ -115,6 +170,21 @@ def validate_runtime_records(registry: dict[str, Any]) -> None:
     expect(len(allowed_ids) == len(packs), "Stealth pool should include every generated avatar context pack")
     expect(pool.get("no_repeat_window") == max(1, len(packs) - 1), "No-repeat window drift detected")
     expect(pool.get("minimum_approved_count") == len(packs), "Minimum approved count should match generated pack count")
+
+    command_avatar_rows = registry.get("notion_command_centre_avatar_id_view", [])
+    command_avatar_headers = set(command_avatar_rows[0].keys())
+    expect("prompt_fragment_source" not in command_avatar_headers, "Command Centre avatar view must exclude prompt fragment sources")
+    expect("internal_notes" not in command_avatar_headers, "Command Centre avatar view must exclude internal notes")
+
+    command_pool_rows = registry.get("notion_command_centre_avatar_pool_view", [])
+    command_pool_headers = set(command_pool_rows[0].keys())
+    expect("allowed_avatar_context_ids" not in command_pool_headers, "Command Centre pool view must exclude raw avatar ID lists")
+    if any(normalize(row.get("status")) == "SEED_READY" for row in command_avatar_rows + command_pool_rows):
+        staging_rows = [row for row in command_avatar_rows + command_pool_rows if normalize(row.get("status")) == "SEED_READY"]
+        expect(
+            all("STAGING_ONLY" in normalize(row.get("safe_usage_notes")) for row in staging_rows),
+            "SEED_READY Command Centre avatar rows must be clearly marked as staging",
+        )
     print("runtime record invariants ok")
 
 

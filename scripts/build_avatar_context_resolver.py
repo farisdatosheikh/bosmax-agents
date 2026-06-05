@@ -80,6 +80,34 @@ POOL_HEADERS = [
     "Runtime_Allowed",
     "Safe_Usage_Notes",
 ]
+COMMAND_CENTRE_AVATAR_HEADERS = [
+    "Avatar_Context_ID",
+    "Display_Name",
+    "Persona_Label",
+    "Gender",
+    "Age_Range",
+    "Silo_Allowed",
+    "Product_Family_Allowed",
+    "Scene_Label",
+    "Mannequin_Label",
+    "Camera_Style_Allowed",
+    "Status",
+    "Safe_Usage_Notes",
+]
+COMMAND_CENTRE_POOL_HEADERS = [
+    "Pool_ID",
+    "Display_Name",
+    "Product_ID",
+    "Product_Family",
+    "Silo",
+    "Rotation_Mode",
+    "No_Repeat_Window",
+    "Minimum_Approved_Count",
+    "Status",
+    "Safe_Usage_Notes",
+]
+COMMAND_CENTRE_AVATAR_SHEET_ALIAS = "CC_AVATAR_ID_VIEW"
+COMMAND_CENTRE_POOL_SHEET_ALIAS = "CC_AVATAR_POOL_VIEW"
 NOTION_HEADERS = [
     "Avatar_Context_ID",
     "Display_Name",
@@ -107,6 +135,7 @@ VALIDATION_RULES = [
     ("AVATAR_PHYSICS_MISMATCH", "Fail closed if mannequin pose is incompatible with requested Physics class."),
     ("AVATAR_POOL_REPEAT_WINDOW", "Fail closed if AUTO_ROTATE cannot satisfy the configured no-repeat window."),
     ("UNSAFE_MANUAL_OVERRIDE", "Fail closed if manual override is present without Needs Compliance Review."),
+    ("COMMAND_CENTRE_AVATAR_VIEW_ONLY", "Command Centre avatar and pool views must remain frontend-safe selector surfaces only."),
 ]
 
 SCENE_LIBRARY = {
@@ -338,6 +367,32 @@ def build_registry(
         }
         for row in context_packs
     ]
+    command_centre_avatar_rows = [
+        {
+            **row,
+            "safe_usage_notes": (
+                f"STAGING_ONLY — {row['safe_usage_notes']}" if row["status"] == "SEED_READY" else row["safe_usage_notes"]
+            ),
+        }
+        for row in notion_rows
+    ]
+    command_centre_pool_rows = [
+        {
+            "pool_id": row["pool_id"],
+            "display_name": row["display_name"],
+            "product_id": row["product_id"],
+            "product_family": row["product_family"],
+            "silo": row["silo"],
+            "rotation_mode": row["rotation_mode"],
+            "no_repeat_window": row["no_repeat_window"],
+            "minimum_approved_count": row["minimum_approved_count"],
+            "status": row["status"],
+            "safe_usage_notes": (
+                f"STAGING_ONLY — {row['safe_usage_notes']}" if row["status"] == "SEED_READY" else row["safe_usage_notes"]
+            ),
+        }
+        for row in pools
+    ]
 
     return {
         "schema_version": "1.0",
@@ -354,7 +409,11 @@ def build_registry(
             "manual_override_requires_review_status": "Needs Compliance Review",
             "supported_avatar_modes": ["AUTO_RESOLVE", "AUTO_ROTATE"],
             "supported_rotation_rules": ["ROUND_ROBIN_NO_REPEAT"],
+            "default_notion_flow": "COMMAND_CENTRE_PLUG_AND_PLAY",
+            "legacy_manual_flow": "LEGACY_EXPERT_MODE | MANUAL_OVERRIDE_REVIEW_ONLY",
             "notion_safe_fields": [header.lower() for header in NOTION_HEADERS],
+            "command_centre_avatar_fields": [header.lower() for header in COMMAND_CENTRE_AVATAR_HEADERS],
+            "command_centre_pool_fields": [header.lower() for header in COMMAND_CENTRE_POOL_HEADERS],
             "forbidden_notion_fields": [
                 "prompt_fragment_source",
                 "internal_notes",
@@ -371,6 +430,35 @@ def build_registry(
         "scene_context_library": scene_rows,
         "rotation_pools": pools,
         "notion_export_view": notion_rows,
+        "notion_command_centre_avatar_id_view": command_centre_avatar_rows,
+        "notion_command_centre_avatar_pool_view": command_centre_pool_rows,
+        "legacy_expert_mode": {
+            "status": "ACTIVE",
+            "label": "LEGACY_EXPERT_MODE",
+            "manual_override_posture": "MANUAL_OVERRIDE_REVIEW_ONLY",
+            "required_review_status": "Needs Compliance Review",
+            "notes": "Manual Avatar/Mannequin/Wardrobe/Scene edits remain expert-only and review-gated.",
+        },
+        "default_command_centre_batch_template": {
+            "platform": "TikTok",
+            "mode": "B",
+            "engine": "VEO_3_1_LITE",
+            "duration": "8s",
+            "submode_formula": "SAVAGE_HPAS",
+            "silo": "STEALTH",
+            "avatar_pool_id": "BOSMAX_MALE_STEALTH_POOL_001",
+            "avatar_mode": "AUTO_ROTATE",
+            "camera_style": "UGC_IPHONE_RAW",
+            "language": "Malay",
+            "produk": "BOSMAX Serum 5ML",
+            "scale_anchor": "EXACTLY lip balm size, fit into fingers naturally",
+            "physics_class": "CLASS_A",
+            "copywriting_id": "BOSMAX_SERUM_CP_0001",
+            "copywriting_mode": "AUTO_RESOLVE",
+            "compliance": "STEALTH_METAPHOR_REQUIRED",
+            "batch_count": 20,
+            "rotation_rule": "ROUND_ROBIN_NO_REPEAT",
+        },
         "samples": {
             "sample_avatar_context_id": "BOSMAX_AVP_0001",
             "sample_avatar_pool_id": "BOSMAX_MALE_STEALTH_POOL_001",
@@ -378,11 +466,13 @@ def build_registry(
         "counts": {
             "avatar_context_packs": len(context_packs),
             "avatar_pools": len(pools),
+            "command_centre_avatar_rows": len(command_centre_avatar_rows),
+            "command_centre_pool_rows": len(command_centre_pool_rows),
         },
         "changelog": [
             {
                 "timestamp_utc": generated_at,
-                "change_note": "Generated first-pass avatar context resolver and rotation pool for stealth male batch prompting.",
+                "change_note": "Generated first-pass avatar context resolver and rotation pool for stealth male batch prompting with Command Centre beginner selector views.",
             }
         ],
     }
@@ -518,6 +608,38 @@ def write_workbook(registry: dict[str, Any]) -> None:
         ]
         for row in registry["notion_export_view"]
     ]
+    command_centre_avatar_rows = [
+        [
+            row["avatar_context_id"],
+            row["display_name"],
+            row["persona_label"],
+            row["gender"],
+            row["age_range"],
+            " | ".join(row["silo_allowed"]),
+            " | ".join(row["product_family_allowed"]),
+            row["scene_label"],
+            row["mannequin_label"],
+            " | ".join(row["camera_style_allowed"]),
+            row["status"],
+            row["safe_usage_notes"],
+        ]
+        for row in registry["notion_command_centre_avatar_id_view"]
+    ]
+    command_centre_pool_rows = [
+        [
+            row["pool_id"],
+            row["display_name"],
+            row["product_id"],
+            row["product_family"],
+            row["silo"],
+            row["rotation_mode"],
+            row["no_repeat_window"],
+            row["minimum_approved_count"],
+            row["status"],
+            row["safe_usage_notes"],
+        ]
+        for row in registry["notion_command_centre_avatar_pool_view"]
+    ]
 
     validation_rows = [[rule_id, description] for rule_id, description in VALIDATION_RULES]
     changelog_rows = [
@@ -529,6 +651,8 @@ def write_workbook(registry: dict[str, Any]) -> None:
     populate_sheet(workbook.create_sheet("MANNEQUIN_POSE_LIBRARY"), MANNEQUIN_HEADERS, mannequin_rows)
     populate_sheet(workbook.create_sheet("SCENE_CONTEXT_LIBRARY"), SCENE_HEADERS, scene_rows)
     populate_sheet(workbook.create_sheet("ROTATION_POOLS"), POOL_HEADERS, pool_rows)
+    populate_sheet(workbook.create_sheet(COMMAND_CENTRE_AVATAR_SHEET_ALIAS), COMMAND_CENTRE_AVATAR_HEADERS, command_centre_avatar_rows)
+    populate_sheet(workbook.create_sheet(COMMAND_CENTRE_POOL_SHEET_ALIAS), COMMAND_CENTRE_POOL_HEADERS, command_centre_pool_rows)
     populate_sheet(workbook.create_sheet("NOTION_EXPORT_VIEW"), NOTION_HEADERS, notion_rows)
     populate_sheet(workbook.create_sheet("VALIDATION_RULES"), VALIDATION_RULE_HEADERS, validation_rows)
     populate_sheet(workbook.create_sheet("CHANGELOG"), CHANGELOG_HEADERS, changelog_rows)

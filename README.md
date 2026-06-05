@@ -206,6 +206,13 @@ Fail ini mengunci resolver surface untuk:
 - repo → Notion sync only
 - manual override = `Needs Compliance Review`
 
+**BOSMAX Command Centre Notion template:** rujuk `docs/notion_bosmax_command_centre_template_v1.md`.
+Fail ini menetapkan default beginner flow sebagai:
+- `Command Centre Plug & Play`
+- single template guna `Copywriting ID` + `Avatar Context ID`
+- batch template guna `Copywriting ID` + `Avatar Pool ID`
+- manual Hook / USP / CTA / Avatar edits = `LEGACY_EXPERT_MODE`
+
 **Resolver build + validation commands:**
 - `python scripts/build_copywriting_id_resolver.py`
 - `python scripts/validate_copywriting_id_resolver.py`

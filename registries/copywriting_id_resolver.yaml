@@ -1,6 +1,6 @@
 schema_version: '1.0'
 registry_id: BOSMAX_COPYWRITING_ID_RESOLVER_V1
-generated_at_utc: '2026-06-05T13:55:10+00:00'
+generated_at_utc: '2026-06-05T14:30:35+00:00'
 source_authority:
   workbook: BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx
   support_files:
@@ -18,6 +18,8 @@ runtime_contract:
   - LOCKED
   - SEED_READY
   manual_override_requires_review_status: Needs Compliance Review
+  default_notion_flow: COMMAND_CENTRE_PLUG_AND_PLAY
+  legacy_manual_flow: LEGACY_EXPERT_MODE | MANUAL_OVERRIDE_REVIEW_ONLY
   notion_safe_fields:
   - copywriting_id
   - display_name
@@ -32,6 +34,16 @@ runtime_contract:
   - usp_2
   - usp_3
   - cta
+  - compliance
+  - status
+  - safe_usage_notes
+  command_centre_safe_fields:
+  - copywriting_id
+  - display_name
+  - product_name
+  - family_name
+  - lane
+  - submode_formula
   - compliance
   - status
   - safe_usage_notes
@@ -66,6 +78,12 @@ validation_rules:
 - rule_id: NOTION_SAFE_EXPORT_ONLY
   description: Do not expose source paths, raw provenance nodes, or compliance internals
     in NOTION_EXPORT_VIEW.
+- rule_id: COMMAND_CENTRE_BEGINNER_VIEW_ONLY
+  description: Command Centre beginner copy ID view must exclude Hook, USP_1, USP_2,
+    USP_3, and CTA.
+- rule_id: COMMAND_CENTRE_PRODUCTION_STATUS
+  description: Command Centre default production view should use APPROVED or LOCKED
+    only; SEED_READY must be clearly marked staging.
 copy_packs:
 - copywriting_id: BOSMAX_SERUM_CP_0001
   display_name: BOSMAX Serum | PAS | PAS stealth reset | Piston dah l | 0001
@@ -7875,13 +7893,1045 @@ notion_export_view:
   status: APPROVED
   safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
     copy. Manual override requires Needs Compliance Review.
+notion_command_centre_copy_id_view:
+- copywriting_id: BOSMAX_SERUM_CP_0001
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Piston dah l | 0001
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0002
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Gear | 0002
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0003
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Tanah kera | 0003
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0004
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Abang ni | 0004
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0005
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Nak jadi pah | 0005
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0006
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Kere | 0006
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0007
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Baru panas | 0007
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0008
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Sembang | 0008
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0009
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Baru tarik s | 0009
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0010
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Laju | 0010
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0011
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Baru nak s | 0011
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0012
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Ego aban | 0012
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0013
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Bulldozer ka | 0013
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0014
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Gear | 0014
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0015
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Baru nak s | 0015
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0016
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Penggera | 0016
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0017
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Masa cemburu | 0017
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0018
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Time | 0018
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0019
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Member lai | 0019
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0020
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Malu jir | 0020
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0021
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Alpha konon. | 0021
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0022
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Enji | 0022
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0023
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Baru nak w | 0023
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0024
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Raja Sem | 0024
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0025
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Kebocoran ku | 0025
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0026
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Semb | 0026
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0027
+  display_name: BOSMAX Serum | HSO | HSO stealth restore | Tarik miny | 0027
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: HSO
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0028
+  display_name: BOSMAX Serum | AIDA | AIDA stealth ignition | Gearbox | 0028
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: AIDA
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0029
+  display_name: BOSMAX Serum | PAS | PAS stealth reset | Sembang pahl | 0029
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: PAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: BOSMAX_SERUM_CP_0030
+  display_name: BOSMAX Serum | SAVAGE_HPAS | SAVAGE_HPAS stealth reset | Aban | 0030
+  product_name: BOSMAX Serum
+  family_name: Male Sensitive External Oil
+  lane: STEALTH
+  submode_formula: SAVAGE_HPAS
+  compliance: STEALTH_METAPHOR_REQUIRED
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — BOSMAX Serum STEALTH lane only. Keep repo-approved
+    metaphor copy intact. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0001
+  display_name: Minyak Warisan Cap Burung | PAS | Household standby remedy with he
+    | 0001
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0002
+  display_name: Minyak Warisan Cap Burung | AIDA | Pocket-size traditional relief
+    f | 0002
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0003
+  display_name: Minyak Warisan Cap Burung | HSO | Petua turun-temurun for urut, se
+    | 0003
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0004
+  display_name: Minyak Warisan Cap Burung | HPAS | Aromatherapy freshness and rumah
+    | 0004
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0005
+  display_name: Minyak Warisan Cap Burung | PAS | Luka Kecil & Surut Bengkak | 0005
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0006
+  display_name: Minyak Warisan Cap Burung | AIDA | Sakit Gigi & Bengkak Gusi | 0006
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0007
+  display_name: Minyak Warisan Cap Burung | PAS | Bayi Kembung Perut | 0007
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0008
+  display_name: Minyak Warisan Cap Burung | PAS | Urutan Badan & Saraf | 0008
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0009
+  display_name: Minyak Warisan Cap Burung | PAS | Sakit Kepala & Migrain | 0009
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0010
+  display_name: Minyak Warisan Cap Burung | PAS | Kembung Perut & Senggugut (Haid)
+    | 0010
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0011
+  display_name: Minyak Warisan Cap Burung | PAS | Mual & Muntah / Mabuk Kenderaan
+    | 0011
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0012
+  display_name: Minyak Warisan Cap Burung | PAS | Kencing Malam (Nocturia) | 0012
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0013
+  display_name: Minyak Warisan Cap Burung | PAS | Urutan Sebelum & Selepas Bersali
+    | 0013
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0014
+  display_name: Minyak Warisan Cap Burung | PAS | Param & Bengkung Postnatal | 0014
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0015
+  display_name: Minyak Warisan Cap Burung | AIDA | Travel Essential / Simpanan Poke
+    | 0015
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0016
+  display_name: Minyak Warisan Cap Burung | HSO | Warisan 1958 / Heritage Trust |
+    0016
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0017
+  display_name: Minyak Warisan Cap Burung | AIDA | Multi-Fungsi / Value Proposition
+    | 0017
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0018
+  display_name: Minyak Warisan Cap Burung | HSO | Postnatal Recovery Comprehensive
+    | 0018
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0019
+  display_name: Minyak Warisan Cap Burung | PAS | Baby & Kids Care | 0019
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0020
+  display_name: Minyak Warisan Cap Burung | PAS | Wanita Aktif / Busy Mom | 0020
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0021
+  display_name: Minyak Warisan Cap Burung | PAS | Traditional joint relief | 0021
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0022
+  display_name: Minyak Warisan Cap Burung | PAS | Aromatherapy sleep aid | 0022
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0023
+  display_name: Minyak Warisan Cap Burung | AIDA | Travel muscle recovery | 0023
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0024
+  display_name: Minyak Warisan Cap Burung | HSO | Heritage wellness standby | 0024
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0025
+  display_name: Minyak Warisan Cap Burung | PAS | Stomach gas relief | 0025
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0026
+  display_name: Minyak Warisan Cap Burung | PAS | Aroma refresh on task | 0026
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0027
+  display_name: Minyak Warisan Cap Burung | AIDA | Insect repellent protection | 0027
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0028
+  display_name: Minyak Warisan Cap Burung | HSO | Postnatal param routine | 0028
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0029
+  display_name: Minyak Warisan Cap Burung | PAS | Morning freshness sweep | 0029
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0030
+  display_name: Minyak Warisan Cap Burung | AIDA | First-aid emergency cut | 0030
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: SEED_READY
+  safe_usage_notes: STAGING_ONLY — Minyak Warisan Cap Burung DIRECT lane only. Do
+    not freestyle replacement copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0031
+  display_name: Minyak Warisan Cap Burung | PAS | Kepala Berat & Stress Harian — A
+    | 0031
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0032
+  display_name: Minyak Warisan Cap Burung | PAS | Kepala Berat & Stress Harian — B
+    | 0032
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0033
+  display_name: Minyak Warisan Cap Burung | PAS | Kepala Berat & Stress Harian — C
+    | 0033
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0034
+  display_name: Minyak Warisan Cap Burung | AIDA | Kepala Berat & Stress Harian —
+    A | 0034
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0035
+  display_name: Minyak Warisan Cap Burung | AIDA | Kepala Berat & Stress Harian —
+    B | 0035
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0036
+  display_name: Minyak Warisan Cap Burung | AIDA | Kepala Berat & Stress Harian —
+    C | 0036
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0037
+  display_name: Minyak Warisan Cap Burung | HSO | Kepala Berat & Stress Harian — A
+    | 0037
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0038
+  display_name: Minyak Warisan Cap Burung | HSO | Kepala Berat & Stress Harian — B
+    | 0038
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0039
+  display_name: Minyak Warisan Cap Burung | HSO | Kepala Berat & Stress Harian — C
+    | 0039
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0040
+  display_name: Minyak Warisan Cap Burung | HPAS | Kepala Berat & Stress Harian —
+    A | 0040
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0041
+  display_name: Minyak Warisan Cap Burung | HPAS | Kepala Berat & Stress Harian —
+    B | 0041
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0042
+  display_name: Minyak Warisan Cap Burung | HPAS | Kepala Berat & Stress Harian —
+    C | 0042
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0043
+  display_name: Minyak Warisan Cap Burung | PAS | Perut Tak Selesa & Wanita Harian
+    | 0043
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0044
+  display_name: Minyak Warisan Cap Burung | PAS | Perut Tak Selesa & Wanita Harian
+    | 0044
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0045
+  display_name: Minyak Warisan Cap Burung | PAS | Perut Tak Selesa & Wanita Harian
+    | 0045
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0046
+  display_name: Minyak Warisan Cap Burung | AIDA | Perut Tak Selesa & Wanita Harian
+    | 0046
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0047
+  display_name: Minyak Warisan Cap Burung | AIDA | Perut Tak Selesa & Wanita Harian
+    | 0047
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0048
+  display_name: Minyak Warisan Cap Burung | AIDA | Perut Tak Selesa & Wanita Harian
+    | 0048
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0049
+  display_name: Minyak Warisan Cap Burung | HSO | Perut Tak Selesa & Wanita Harian
+    | 0049
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0050
+  display_name: Minyak Warisan Cap Burung | HSO | Perut Tak Selesa & Wanita Harian
+    | 0050
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0051
+  display_name: Minyak Warisan Cap Burung | HSO | Perut Tak Selesa & Wanita Harian
+    | 0051
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0052
+  display_name: Minyak Warisan Cap Burung | HPAS | Perut Tak Selesa & Wanita Harian
+    | 0052
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0053
+  display_name: Minyak Warisan Cap Burung | HPAS | Perut Tak Selesa & Wanita Harian
+    | 0053
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0054
+  display_name: Minyak Warisan Cap Burung | HPAS | Perut Tak Selesa & Wanita Harian
+    | 0054
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0055
+  display_name: Minyak Warisan Cap Burung | PAS | Satu Botol Standby Rumah — A Seg
+    | 0055
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0056
+  display_name: Minyak Warisan Cap Burung | PAS | Satu Botol Standby Rumah — B Rut
+    | 0056
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0057
+  display_name: Minyak Warisan Cap Burung | PAS | Satu Botol Standby Rumah — C Syo
+    | 0057
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: PAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0058
+  display_name: Minyak Warisan Cap Burung | AIDA | Satu Botol Standby Rumah — A Seg
+    | 0058
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0059
+  display_name: Minyak Warisan Cap Burung | AIDA | Satu Botol Standby Rumah — B Rut
+    | 0059
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0060
+  display_name: Minyak Warisan Cap Burung | AIDA | Satu Botol Standby Rumah — C Syo
+    | 0060
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: AIDA
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0061
+  display_name: Minyak Warisan Cap Burung | HSO | Satu Botol Standby Rumah — A Seg
+    | 0061
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0062
+  display_name: Minyak Warisan Cap Burung | HSO | Satu Botol Standby Rumah — B Rut
+    | 0062
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0063
+  display_name: Minyak Warisan Cap Burung | HSO | Satu Botol Standby Rumah — C Syo
+    | 0063
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HSO
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0064
+  display_name: Minyak Warisan Cap Burung | HPAS | Satu Botol Standby Rumah — A Seg
+    | 0064
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0065
+  display_name: Minyak Warisan Cap Burung | HPAS | Satu Botol Standby Rumah — B Rut
+    | 0065
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+- copywriting_id: CAP_BURUNG_MINYAK_CP_0066
+  display_name: Minyak Warisan Cap Burung | HPAS | Satu Botol Standby Rumah — C Syo
+    | 0066
+  product_name: Minyak Warisan Cap Burung
+  family_name: Traditional Remedy Oil
+  lane: DIRECT
+  submode_formula: HPAS
+  compliance: DIRECT
+  status: APPROVED
+  safe_usage_notes: Minyak Warisan Cap Burung DIRECT lane only. Do not freestyle replacement
+    copy. Manual override requires Needs Compliance Review.
+legacy_expert_mode:
+  status: ACTIVE
+  label: LEGACY_EXPERT_MODE
+  manual_override_posture: MANUAL_OVERRIDE_REVIEW_ONLY
+  required_review_status: Needs Compliance Review
+  notes: Manual Hook/USP/CTA editing remains available only for trusted expert operators.
+default_command_centre_template:
+  platform: TikTok
+  mode: B
+  engine: VEO_3_1_LITE
+  duration: 8s
+  submode_formula: SAVAGE_HPAS
+  silo: STEALTH
+  avatar_context_id: BOSMAX_AVP_0001
+  avatar_mode: AUTO_RESOLVE
+  camera_style: UGC_IPHONE_RAW
+  language: Malay
+  produk: BOSMAX Serum 5ML
+  scale_anchor: EXACTLY lip balm size, fit into fingers naturally
+  physics_class: CLASS_A
+  copywriting_id: BOSMAX_SERUM_CP_0001
+  copywriting_mode: AUTO_RESOLVE
+  compliance: STEALTH_METAPHOR_REQUIRED
 samples:
   sample_copywriting_id: BOSMAX_SERUM_CP_0001
 counts:
   copy_packs: 96
   alias_rows: 348
   notion_rows: 96
+  command_centre_rows: 96
 changelog:
-- timestamp_utc: '2026-06-05T13:55:10+00:00'
+- timestamp_utc: '2026-06-05T14:30:35+00:00'
   change_note: Generated resolver workbook and YAML registry from approved product
-    workbook rows.
+    workbook rows with Command Centre beginner view and legacy expert labeling.

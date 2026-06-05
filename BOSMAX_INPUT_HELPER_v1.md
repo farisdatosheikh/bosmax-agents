@@ -241,6 +241,9 @@ Hard rule:
 - `camera_style`
 - `physics_class`
 
+This is now the default beginner flow:
+- `COMMAND_CENTRE_PLUG_AND_PLAY`
+
 ### Registered resolver batch run
 
 - `product_name`
@@ -257,6 +260,19 @@ Hard rule:
 - `rotation_rule = ROUND_ROBIN_NO_REPEAT`
 - `camera_style`
 - `physics_class`
+
+### Legacy manual run
+
+Only use for:
+- trusted expert operator
+- review-only exception
+
+Label:
+- `LEGACY_EXPERT_MODE`
+- `MANUAL_OVERRIDE_REVIEW_ONLY`
+
+If manual Hook / USP / CTA / Avatar / Mannequin / Wardrobe / Scene fields are edited:
+- mark `Needs Compliance Review`
 
 ### IMAGE checklist
 - product name

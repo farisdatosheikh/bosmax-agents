@@ -23,6 +23,7 @@ REQUIRED_ROUTE_MODES = [
     "ON_THE_FLY_PRODUCT",
     "REVIEW_ONLY_PRODUCT",
 ]
+COMMAND_CENTRE_DOC = ROOT / "docs" / "notion_bosmax_command_centre_template_v1.md"
 
 
 def fail(message: str) -> None:
@@ -40,12 +41,16 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
     authority = contract.get("authority", {})
     expect(authority.get("repo_truth") is True, "repo_truth must be true")
     expect(authority.get("notion_downstream_only") is True, "notion_downstream_only must be true")
+    expect(authority.get("default_notion_flow") == "COMMAND_CENTRE_PLUG_AND_PLAY", "default_notion_flow drift detected")
+    expect(authority.get("legacy_manual_flow") == "LEGACY_EXPERT_MODE", "legacy_manual_flow drift detected")
+    expect(authority.get("legacy_manual_override_posture") == "MANUAL_OVERRIDE_REVIEW_ONLY", "legacy_manual_override_posture drift detected")
     field_candidates = authority.get("downstream_output_field_candidates", [])
     expect("AI-Ready Request Manual Output" in field_candidates, "AI-Ready Request Manual Output must remain a field candidate")
 
     templates = contract.get("route_templates", {})
     for mode in REQUIRED_ROUTE_MODES:
         expect(mode in templates, f"route template missing: {mode}")
+    expect(COMMAND_CENTRE_DOC.exists(), "notion_bosmax_command_centre_template_v1.md missing")
     print("contract shape ok")
 
 
@@ -96,6 +101,29 @@ def validate_registered_resolver_examples(contract: dict[str, Any]) -> None:
     print("registered resolver output ok")
 
 
+def validate_command_centre_doc() -> None:
+    text = COMMAND_CENTRE_DOC.read_text(encoding="utf-8")
+    required_markers = [
+        "BOSMAX Command Centre",
+        "Plug & Play Video Prompt Template",
+        "Copywriting ID Mini Database",
+        "Avatar Context ID Mini Database",
+        "Avatar Pool ID Mini Database",
+        "Batch Production Template",
+        "Legacy Expert Mode / Manual Override Notice",
+        "Operator Rules",
+        "Avatar Context ID: BOSMAX_AVP_0001",
+        "Copywriting ID: BOSMAX_SERUM_CP_0001",
+        "Avatar Pool ID: BOSMAX_MALE_STEALTH_POOL_001",
+        "LEGACY_EXPERT_MODE",
+        "MANUAL_OVERRIDE_REVIEW_ONLY",
+        "Needs Compliance Review",
+    ]
+    for marker in required_markers:
+        expect(marker in text, f"Command Centre doc missing marker: {marker}")
+    print("command centre doc ok")
+
+
 def validate_on_the_fly_example(contract: dict[str, Any]) -> None:
     payload = contract["sample_payloads"]["on_the_fly_portable_blender"]
     result = build_manual_request(payload)
@@ -126,6 +154,7 @@ def main() -> None:
     validate_contract_shape(contract)
     validate_registered_example(contract)
     validate_registered_resolver_examples(contract)
+    validate_command_centre_doc()
     validate_family_example(contract)
     validate_on_the_fly_example(contract)
     validate_review_only_example(contract)

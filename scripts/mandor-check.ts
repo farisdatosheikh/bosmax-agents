@@ -39,6 +39,7 @@ const requiredFiles = [
 	"registries/copywriting_id_resolver.yaml",
 	"registries/avatar_context_rotation.yaml",
 	"docs/notion_resolver_database_handoff_v1.md",
+	"docs/notion_bosmax_command_centre_template_v1.md",
 ];
 
 for (const relativePath of requiredFiles) {
