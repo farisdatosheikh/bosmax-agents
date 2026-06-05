@@ -75,6 +75,27 @@ def validate_family_example(contract: dict[str, Any]) -> None:
     print("family route output ok")
 
 
+def validate_registered_resolver_examples(contract: dict[str, Any]) -> None:
+    single_payload = contract["sample_payloads"]["registered_bosmax_resolver_single"]
+    single_result = build_manual_request(single_payload)
+    single_text = single_result["manual_output"]
+    expect(single_result["route_result"]["route_mode"] == "REGISTERED_PRODUCT", "resolver single sample did not remain REGISTERED_PRODUCT")
+    expect("copywriting_id: BOSMAX_SERUM_CP_0001" in single_text, "resolver single output missing copywriting ID")
+    expect("avatar_context_id: BOSMAX_AVP_0001" in single_text, "resolver single output missing avatar context ID")
+    expect("resolved_persona_id: RIZAL" in single_text, "resolver single output missing resolved persona")
+    expect("resolved_scene_context_id: CTX_HOME_STEALTH_RESET_001" in single_text, "resolver single output missing scene context")
+
+    batch_payload = contract["sample_payloads"]["registered_bosmax_resolver_batch"]
+    batch_result = build_manual_request(batch_payload)
+    batch_text = batch_result["manual_output"]
+    expect(batch_result["route_result"]["route_mode"] == "REGISTERED_PRODUCT", "resolver batch sample did not remain REGISTERED_PRODUCT")
+    expect("avatar_pool_id: BOSMAX_MALE_STEALTH_POOL_001" in batch_text, "resolver batch output missing avatar pool ID")
+    expect("rotation_rule: ROUND_ROBIN_NO_REPEAT" in batch_text, "resolver batch output missing rotation rule")
+    expect("batch_count: 20" in batch_text, "resolver batch output missing batch count")
+    expect("rotation_sequence: BOSMAX_AVP_0001, BOSMAX_AVP_0002" in batch_text, "resolver batch output missing deterministic rotation sequence")
+    print("registered resolver output ok")
+
+
 def validate_on_the_fly_example(contract: dict[str, Any]) -> None:
     payload = contract["sample_payloads"]["on_the_fly_portable_blender"]
     result = build_manual_request(payload)
@@ -104,6 +125,7 @@ def main() -> None:
     contract = load_contract()
     validate_contract_shape(contract)
     validate_registered_example(contract)
+    validate_registered_resolver_examples(contract)
     validate_family_example(contract)
     validate_on_the_fly_example(contract)
     validate_review_only_example(contract)

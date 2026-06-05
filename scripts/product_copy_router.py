@@ -43,6 +43,8 @@ def load_products() -> dict:
             "aliases": product.get("product_aliases", []) or [],
             "category": product.get("category", ""),
             "sub_category": product.get("sub_category", ""),
+            "silo": product.get("silo", ""),
+            "compliance_class": product.get("compliance_class", ""),
             "product_status": product.get("product_status", ""),
             "dialogue_authority": product.get("dialogue_authority"),
             "source_file": path.relative_to(ROOT).as_posix(),

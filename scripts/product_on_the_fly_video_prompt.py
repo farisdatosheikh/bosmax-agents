@@ -18,6 +18,12 @@ from product_copy_router import (
     normalize,
     route_product,
 )
+from resolver_runtime import (
+    ResolverError,
+    resolve_avatar_context_id,
+    resolve_avatar_pool,
+    resolve_copywriting_id,
+)
 
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -144,16 +150,153 @@ def append_shared_context(lines: list[str], payload: dict[str, Any], route_resul
     )
 
 
+def resolve_runtime_contract(
+    payload: dict[str, Any],
+    route_result: dict[str, Any],
+    product_record: dict[str, Any] | None,
+    copy_pack: dict[str, str] | None,
+) -> dict[str, Any]:
+    manual_override = normalize(payload.get("manual_override")).lower() in {"1", "true", "yes"}
+    review_status = normalize(payload.get("review_status"))
+
+    expected_template_lane = (
+        normalize(payload.get("template_lane"))
+        or normalize(payload.get("silo"))
+        or normalize((product_record or {}).get("silo"))
+        or normalize((copy_pack or {}).get("Type_of_Content"))
+    )
+    expected_template_silo = (
+        normalize(payload.get("silo_key"))
+        or normalize((copy_pack or {}).get("Silo_Key"))
+        or normalize(((product_record or {}).get("dialogue_authority") or {}).get("silo_id"))
+    )
+    expected_product_family = normalize(payload.get("product_family") or route_result.get("family_code"))
+    expected_camera_style = normalize(payload.get("camera_style"))
+    physics_class = normalize(payload.get("physics_class"))
+
+    resolved: dict[str, Any] = {}
+
+    if normalize(payload.get("copywriting_mode")) == "auto_resolve":
+        copywriting_id = normalize(payload.get("copywriting_id"))
+        if not copywriting_id:
+            raise ResolverError("Copywriting Mode AUTO_RESOLVE requires copywriting_id.")
+        resolved["copywriting"] = resolve_copywriting_id(
+            copywriting_id,
+            expected_template_lane=expected_template_lane,
+            expected_template_silo=expected_template_silo,
+            manual_override=manual_override,
+            review_status=review_status,
+        )
+
+    avatar_mode = normalize(payload.get("avatar_mode"))
+    if avatar_mode == "auto_resolve":
+        avatar_context_id = normalize(payload.get("avatar_context_id"))
+        if not avatar_context_id:
+            raise ResolverError("Avatar Mode AUTO_RESOLVE requires avatar_context_id.")
+        resolved["avatar_context"] = resolve_avatar_context_id(
+            avatar_context_id,
+            expected_template_silo=expected_template_lane or expected_template_silo,
+            expected_product_family=expected_product_family,
+            expected_camera_style=expected_camera_style,
+            physics_class=physics_class,
+            manual_override=manual_override,
+            review_status=review_status,
+        )
+    elif avatar_mode == "auto_rotate":
+        avatar_pool_id = normalize(payload.get("avatar_pool_id"))
+        rotation_rule = normalize(payload.get("rotation_rule"))
+        batch_count = int(payload.get("batch_count") or 0)
+        if not avatar_pool_id:
+            raise ResolverError("Avatar Mode AUTO_ROTATE requires avatar_pool_id.")
+        if not rotation_rule:
+            raise ResolverError("Avatar Mode AUTO_ROTATE requires rotation_rule.")
+        resolved["avatar_pool"] = resolve_avatar_pool(
+            avatar_pool_id,
+            batch_count=batch_count,
+            rotation_rule=rotation_rule,
+            expected_template_silo=expected_template_lane or expected_template_silo,
+            expected_product_family=expected_product_family,
+            expected_camera_style=expected_camera_style,
+            physics_class=physics_class,
+            manual_override=manual_override,
+            review_status=review_status,
+        )
+
+    return resolved
+
+
+def append_resolver_output(lines: list[str], payload: dict[str, Any], resolved_contract: dict[str, Any]) -> None:
+    copywriting = resolved_contract.get("copywriting")
+    if copywriting:
+        lines.extend(
+            [
+                f"copywriting_id: {format_scalar(copywriting.get('copywriting_id'))}",
+                f"copywriting_mode: {format_scalar(payload.get('copywriting_mode'))}",
+                f"resolved_copy_formula: {format_scalar(copywriting.get('submode_formula'))}",
+                f"resolved_copy_hook: {format_scalar(copywriting.get('hook'))}",
+                f"resolved_copy_pain_or_friction: {format_scalar(copywriting.get('pain_or_friction'))}",
+                f"resolved_copy_usp_1: {format_scalar(copywriting.get('usp_1'))}",
+                f"resolved_copy_usp_2: {format_scalar(copywriting.get('usp_2'))}",
+                f"resolved_copy_usp_3: {format_scalar(copywriting.get('usp_3'))}",
+                f"resolved_copy_cta: {format_scalar(copywriting.get('cta'))}",
+            ]
+        )
+
+    avatar_context = resolved_contract.get("avatar_context")
+    if avatar_context:
+        lines.extend(
+            [
+                f"avatar_context_id: {format_scalar(avatar_context.get('avatar_context_id'))}",
+                f"avatar_mode: {format_scalar(payload.get('avatar_mode'))}",
+                f"resolved_persona_id: {format_scalar(avatar_context.get('persona_id'))}",
+                f"resolved_wardrobe_id: {format_scalar(avatar_context.get('wardrobe_id'))}",
+                f"resolved_scene_context_id: {format_scalar(avatar_context.get('scene_context_id'))}",
+                f"resolved_mannequin_id: {format_scalar(avatar_context.get('mannequin_id'))}",
+                f"resolved_camera_style: {format_scalar(format_list(avatar_context.get('camera_style_allowed') or []))}",
+            ]
+        )
+
+    avatar_pool = resolved_contract.get("avatar_pool")
+    if avatar_pool:
+        pool = avatar_pool["pool"]
+        first_selection = avatar_pool["sequence"][0] if avatar_pool["sequence"] else {}
+        lines.extend(
+            [
+                f"avatar_pool_id: {format_scalar(pool.get('pool_id'))}",
+                f"avatar_mode: {format_scalar(payload.get('avatar_mode'))}",
+                f"batch_count: {format_scalar(payload.get('batch_count'))}",
+                f"rotation_rule: {format_scalar(payload.get('rotation_rule'))}",
+                f"rotation_sequence: {format_scalar(', '.join(avatar_pool['sequence_ids']))}",
+                f"resolved_persona_id: {format_scalar(first_selection.get('persona_id'))}",
+                f"resolved_wardrobe_id: {format_scalar(first_selection.get('wardrobe_id'))}",
+                f"resolved_scene_context_id: {format_scalar(first_selection.get('scene_context_id'))}",
+                f"resolved_mannequin_id: {format_scalar(first_selection.get('mannequin_id'))}",
+            ]
+        )
+
+
 def build_registered_output(
     payload: dict[str, Any],
     route_result: dict[str, Any],
     template: dict[str, Any],
     product_record: dict[str, Any] | None,
     copy_pack: dict[str, str] | None,
+    resolved_contract: dict[str, Any],
 ) -> str:
+    resolved_copywriting = resolved_contract.get("copywriting")
     repo_authority_parts = [product_record["source_file"]] if product_record else []
     if copy_pack:
         repo_authority_parts.append(f"{copy_pack['sheet_name']}::{copy_pack['Row_ID']}")
+    if resolved_copywriting:
+        repo_authority_parts.append(f"registries/copywriting_id_resolver.yaml::{resolved_copywriting['copywriting_id']}")
+    if resolved_contract.get("avatar_context"):
+        repo_authority_parts.append(
+            f"registries/avatar_context_rotation.yaml::{resolved_contract['avatar_context']['avatar_context_id']}"
+        )
+    if resolved_contract.get("avatar_pool"):
+        repo_authority_parts.append(
+            f"registries/avatar_context_rotation.yaml::{resolved_contract['avatar_pool']['pool']['pool_id']}"
+        )
 
     lines = [
         "[BOSMAX_ROUTE_MANUAL_OUTPUT]",
@@ -169,16 +312,17 @@ def build_registered_output(
         f"category: {format_scalar((product_record or {}).get('category') or payload.get('category'))}",
         f"sub_category: {format_scalar((product_record or {}).get('sub_category') or payload.get('sub_category'))}",
         f"copy_pack_row_id: {format_scalar((copy_pack or {}).get('Row_ID'))}",
-        f"copy_formula: {format_scalar((copy_pack or {}).get('Copywriting_Formula'))}",
-        f"copy_hook: {format_scalar((copy_pack or {}).get('Hook'))}",
-        f"copy_pain_or_friction: {format_scalar((copy_pack or {}).get('Pain_or_Friction'))}",
-        f"copy_usp_1: {format_scalar((copy_pack or {}).get('USP_1'))}",
-        f"copy_usp_2: {format_scalar((copy_pack or {}).get('USP_2'))}",
-        f"copy_usp_3: {format_scalar((copy_pack or {}).get('USP_3'))}",
-        f"copy_cta: {format_scalar((copy_pack or {}).get('CTA'))}",
+        f"copy_formula: {format_scalar((resolved_copywriting or {}).get('submode_formula') or (copy_pack or {}).get('Copywriting_Formula'))}",
+        f"copy_hook: {format_scalar((resolved_copywriting or {}).get('hook') or (copy_pack or {}).get('Hook'))}",
+        f"copy_pain_or_friction: {format_scalar((resolved_copywriting or {}).get('pain_or_friction') or (copy_pack or {}).get('Pain_or_Friction'))}",
+        f"copy_usp_1: {format_scalar((resolved_copywriting or {}).get('usp_1') or (copy_pack or {}).get('USP_1'))}",
+        f"copy_usp_2: {format_scalar((resolved_copywriting or {}).get('usp_2') or (copy_pack or {}).get('USP_2'))}",
+        f"copy_usp_3: {format_scalar((resolved_copywriting or {}).get('usp_3') or (copy_pack or {}).get('USP_3'))}",
+        f"copy_cta: {format_scalar((resolved_copywriting or {}).get('cta') or (copy_pack or {}).get('CTA'))}",
         f"product_scale_anchor: {format_scalar((copy_pack or {}).get('Product_Scale'))}",
         "operator_request:",
     ]
+    append_resolver_output(lines, payload, resolved_contract)
     for rule in template["operator_rules"]:
         lines.append(f"- {rule}")
     lines.extend(
@@ -264,12 +408,28 @@ def build_manual_request(payload: dict[str, Any]) -> dict[str, Any]:
     workbook_index = load_workbook_index()
     route_result = route_product(payload, registry=router_registry, products=products, workbook_index=workbook_index)
     route_mode = route_result["route_mode"]
-    template = contract["route_templates"][route_mode]
     product_record = find_product_record(payload, route_result, products)
     copy_pack = find_registered_copy_pack(payload, route_result) if route_mode == "REGISTERED_PRODUCT" else None
+    resolved_contract: dict[str, Any] = {}
+
+    if route_mode != "REVIEW_ONLY_PRODUCT":
+        try:
+            resolved_contract = resolve_runtime_contract(payload, route_result, product_record, copy_pack)
+        except ResolverError as exc:
+            route_result = {
+                **route_result,
+                "route_mode": "REVIEW_ONLY_PRODUCT",
+                "output_status": contract["route_templates"]["REVIEW_ONLY_PRODUCT"]["router_output_status"],
+                "ready_for_generation": False,
+                "requires_review": True,
+                "notes": [*route_result.get("notes", []), str(exc)],
+            }
+            route_mode = "REVIEW_ONLY_PRODUCT"
+
+    template = contract["route_templates"][route_mode]
 
     if route_mode == "REGISTERED_PRODUCT":
-        manual_output = build_registered_output(payload, route_result, template, product_record, copy_pack)
+        manual_output = build_registered_output(payload, route_result, template, product_record, copy_pack, resolved_contract)
     elif route_mode == "FAMILY_MATCHED_PRODUCT":
         manual_output = build_family_output(payload, route_result, template)
     elif route_mode == "ON_THE_FLY_PRODUCT":
@@ -284,6 +444,7 @@ def build_manual_request(payload: dict[str, Any]) -> dict[str, Any]:
         "manual_output_field_candidates": contract["authority"]["downstream_output_field_candidates"],
         "manual_output": manual_output,
         "copy_pack_row_id": (copy_pack or {}).get("Row_ID", ""),
+        "resolved_contract": resolved_contract,
     }
 
 
@@ -304,6 +465,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--language", default="")
     parser.add_argument("--compliance-class", default="")
     parser.add_argument("--visual-reference-status", default="")
+    parser.add_argument("--template-lane", default="")
+    parser.add_argument("--silo", default="")
+    parser.add_argument("--silo-key", default="")
+    parser.add_argument("--product-family", default="")
+    parser.add_argument("--camera-style", default="")
+    parser.add_argument("--physics-class", default="")
+    parser.add_argument("--copywriting-id", default="")
+    parser.add_argument("--copywriting-mode", default="")
+    parser.add_argument("--avatar-context-id", default="")
+    parser.add_argument("--avatar-pool-id", default="")
+    parser.add_argument("--avatar-mode", default="")
+    parser.add_argument("--batch-count", default="")
+    parser.add_argument("--rotation-rule", default="")
+    parser.add_argument("--manual-override", default="")
+    parser.add_argument("--review-status", default="")
     return parser.parse_args()
 
 
@@ -329,6 +505,21 @@ def build_payload_from_args(args: argparse.Namespace) -> dict[str, Any]:
         "language": args.language,
         "compliance_class": args.compliance_class,
         "visual_reference_status": args.visual_reference_status,
+        "template_lane": args.template_lane,
+        "silo": args.silo,
+        "silo_key": args.silo_key,
+        "product_family": args.product_family,
+        "camera_style": args.camera_style,
+        "physics_class": args.physics_class,
+        "copywriting_id": args.copywriting_id,
+        "copywriting_mode": args.copywriting_mode,
+        "avatar_context_id": args.avatar_context_id,
+        "avatar_pool_id": args.avatar_pool_id,
+        "avatar_mode": args.avatar_mode,
+        "batch_count": args.batch_count,
+        "rotation_rule": args.rotation_rule,
+        "manual_override": args.manual_override,
+        "review_status": args.review_status,
     }
 
 

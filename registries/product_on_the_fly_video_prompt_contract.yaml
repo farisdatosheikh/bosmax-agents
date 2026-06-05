@@ -5,6 +5,8 @@ authority:
   notion_downstream_only: true
   router_contract: registries/product_copy_router.yaml
   workbook_source: BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx
+  copywriting_resolver_registry: registries/copywriting_id_resolver.yaml
+  avatar_context_resolver_registry: registries/avatar_context_rotation.yaml
   downstream_output_field_candidates:
     - AI-Ready Request Manual Output
     - Router AI-Ready Manual Output
@@ -116,6 +118,48 @@ sample_payloads:
     platform: TikTok
     language: BM
     visual_reference_status: USER_PROVIDED
+
+  registered_bosmax_resolver_single:
+    product_id: BOSMAX_SERUM
+    product_name: BOSMAX Serum
+    category: Health & Wellness
+    sub_category: Men's Health / Vitaliti Lelaki
+    compliance_class: STEALTH_METAPHOR_REQUIRED
+    platform: TikTok
+    language: Malay
+    visual_reference_status: USER_PROVIDED
+    template_lane: STEALTH
+    silo: STEALTH
+    silo_key: male_health_stealth_01
+    product_family: FAMILY_MALE_EXT_SENSITIVE_OIL
+    camera_style: UGC_IPHONE_RAW
+    physics_class: CLASS_A
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    copywriting_mode: AUTO_RESOLVE
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_mode: AUTO_RESOLVE
+
+  registered_bosmax_resolver_batch:
+    product_id: BOSMAX_SERUM
+    product_name: BOSMAX Serum
+    category: Health & Wellness
+    sub_category: Men's Health / Vitaliti Lelaki
+    compliance_class: STEALTH_METAPHOR_REQUIRED
+    platform: TikTok
+    language: Malay
+    visual_reference_status: USER_PROVIDED
+    template_lane: STEALTH
+    silo: STEALTH
+    silo_key: male_health_stealth_01
+    product_family: FAMILY_MALE_EXT_SENSITIVE_OIL
+    camera_style: UGC_IPHONE_RAW
+    physics_class: CLASS_A
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    copywriting_mode: AUTO_RESOLVE
+    avatar_pool_id: BOSMAX_MALE_STEALTH_POOL_001
+    avatar_mode: AUTO_ROTATE
+    batch_count: 20
+    rotation_rule: ROUND_ROBIN_NO_REPEAT
 
   family_traditional_remedy:
     product_name: Minyak Herba Tradisional

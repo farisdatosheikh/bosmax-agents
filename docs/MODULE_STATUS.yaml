@@ -1,0 +1,27 @@
+modules:
+  resolver_runtime:
+    status: IN_PROGRESS
+    owner: CODEX
+    issue: 15
+    scope:
+      - BOSMAX_COPYWRITING_ID_RESOLVER_v1.xlsx
+      - BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx
+      - registries/copywriting_id_resolver.yaml
+      - registries/avatar_context_rotation.yaml
+      - registries/product_on_the_fly_video_prompt_contract.yaml
+      - scripts/resolver_runtime.py
+      - scripts/build_copywriting_id_resolver.py
+      - scripts/validate_copywriting_id_resolver.py
+      - scripts/build_avatar_context_resolver.py
+      - scripts/validate_avatar_context_resolver.py
+      - scripts/product_on_the_fly_video_prompt.py
+      - scripts/validate_product_on_the_fly_video_prompt.py
+      - docs/notion_resolver_database_handoff_v1.md
+      - README.md
+      - BOSMAX_INPUT_HELPER_v1.md
+      - BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md
+      - BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
+      - MASTER_IGNITION_TEMPLATE.md
+    notes: >
+      Resolver-runtime lane for Issue #15. Repo truth remains upstream; Notion
+      remains downstream UI only.

@@ -298,9 +298,11 @@ For DIRECT products (MWCB, Jungle Girl, Maverix):
 into prompt composition only. It must NOT appear as a copy slot value.
 
 **Validator coverage:** YES — `scripts/validate_copywriting_ecosystem.py` validates workbook STEALTH rows,
-authority map integrity, and forbidden copy patterns.
+authority map integrity, and forbidden copy patterns. `scripts/validate_copywriting_id_resolver.py`
+now validates canonical `Copywriting ID` resolution, alias normalization, runtime status, silo match,
+and unsafe manual override failure paths.
 
-**Notion impact:** `Copy Pack ID` relation must resolve from approved workbook rows only. Manual
+**Notion impact:** `Copywriting ID` relation must resolve from approved resolver rows only. Manual
 override requires `Needs Compliance Review` status.
 
 ---
@@ -379,11 +381,13 @@ avatar identity persists across all blocks.
 - avatar_record.source null → ABORT
 - Multi-block run with no avatar re-anchor declaration → ABORT
 
-**Validator coverage:** PARTIAL — state machine (BOSMAX_RUNTIME_STATE_MACHINE_v1.md)
-enforces this at STATE_ASSET_ANALYSIS. No standalone validator.
-Future validator needed: `validate_avatar_registry_coverage.py`.
+**Validator coverage:** READY at registry/resolver layer — `validate_avatar_registry_coverage.py`
+validates persona registry integrity, and `validate_avatar_context_resolver.py` validates
+`Avatar Context ID`, `Avatar Pool ID`, silo/product-family/camera-style compatibility,
+physics-class compatibility, rotation pools, and unsafe manual override failure paths.
 
 **Notion impact:** Avatar fields in Notion templates must reflect avatar_record.source.
+For registry mode, Notion must use `Avatar Context ID` or `Avatar Pool ID` only.
 Notion may not default to a registry persona if an image was uploaded.
 
 ---
@@ -612,9 +616,9 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 | G-01    | ENGINE_DURATION        | video_engine_duration_contracts.yaml + CLAUDE.md        | validate_video_block_contracts.py    | Block Duration, Block Count fields    | READY (all engines covered) |
 | G-02    | EXECUTION_MODE         | video_engine_duration_contracts.yaml + RUNTIME_SM       | validate_video_block_contracts.py    | Multi-Block Execution Mode field      | PARTIAL         |
 | G-03    | WPS_DIALOGUE           | dialogue_budget_corridor.yaml + HARD_ENGINE_CONTRACTS   | validate_wps_per_block.py + validate_video_block_contracts.py | Dialogue Budget, Word Count fields | READY registry/planner/sample-manifest layer; PARTIAL runtime speech timing |
-| G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY       | validate_copywriting_ecosystem.py    | Copy Pack ID relation                 | READY for BOSMAX Serum STEALTH; PARTIAL globally |
+| G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY + copywriting_id_resolver.yaml | validate_copywriting_ecosystem.py + validate_copywriting_id_resolver.py | Copywriting ID relation              | READY for resolver-backed BOSMAX Serum and registered lanes; PARTIAL globally |
 | G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | validate_product_truth_drift.py      | Product fields in Video Runs          | PARTIAL (registry layer validated; prompt-level drift remains docs-only) |
-| G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md                 | validate_avatar_registry_coverage.py | Avatar Mode, Avatar Source fields     | PARTIAL (registry layer validated; USER_UPLOAD runtime + Notion mirror remain docs-only) |
+| G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md + avatar_context_rotation.yaml | validate_avatar_registry_coverage.py + validate_avatar_context_resolver.py | Avatar Mode, Avatar Context ID, Avatar Pool ID | READY for registry/resolver layer; PARTIAL for USER_UPLOAD runtime mirror |
 | G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py + validate_flow_extend_proof.py | Bridge-Out, Bridge-In, Seam Template | READY (GROK + VEO + Flow proof-manifest layer); PARTIAL live Flow execution |
 | G-08    | NOTION_DOWNSTREAM_ONLY | NOTION_COPY_PACK_HANDOFF + NOTION_MULTI_BLOCK_HANDOFF   | validate_notion_sample_readiness.py  | Block Status, READY posture fields    | PARTIAL (manifest-layer validated; live Notion/MCP rendering remains docs-only) |
 | G-09    | VALIDATOR_PROOF        | This contract + validate_*.py                           | validate_execution_kernel_contract.py | QA Notes, proof block sections       | PARTIAL         |
