@@ -1,0 +1,466 @@
+# MWCB COPYWRITING ANGLE TAXONOMY REGISTRY
+# ─────────────────────────────────────────────────────────────────────────────
+# Product:        Minyak Warisan Cap Burung (MWCB)
+# Authority:      BOSMAX EXECUTION KERNEL CONTRACT v1, G-04 COPY_AUTHORITY_GATE
+# Version:        v1.0
+# Created:        2026-06-05
+# Purpose:        Define the 7 Master Commercial Angles (MCA) for MWCB Phase 1
+#                 and Phase 2 copy pack generation. Quarantine high-risk and
+#                 review-only use cases before any approved copy is generated.
+# ─────────────────────────────────────────────────────────────────────────────
+
+metadata:
+  product_id: "CAP_BURUNG_MINYAK"
+  product_name: "Minyak Warisan Cap Burung"
+  authority_source:
+    - "products/CAP_BURUNG_MINYAK.yaml"
+    - "uploaded label source (verified 2026-06-01)"
+  mode: "DIRECT"
+  source_status:
+    A01_A20: "RAW_SOURCE_SEED_ONLY"
+    final_copy_requires_compliance_filter: true
+  note: >
+    A01–A20 in products/CAP_BURUNG_MINYAK.yaml are raw seed angles only.
+    They are NOT approved final copywriting. Some contain risky or outdated
+    language (roll-on wording, child-safety claims, medical phrasing,
+    antiseptik/antibakteria, mengecutkan rahim, etc.).
+    All Phase 1 copy packs must be generated fresh from approved MCAs only,
+    not lifted verbatim from A01–A20.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MASTER COMMERCIAL ANGLES (MCA)
+# ─────────────────────────────────────────────────────────────────────────────
+
+mca_list:
+
+  - mca_id: "MWCB-MCA01"
+    mca_name: "Kepala Berat & Stress Harian"
+    priority: 1
+    phase_status: "PHASE_1_READY"
+    source_benefit_ids:
+      - "B01"
+      - "B09"
+    source_angle_ids:
+      - "A01"
+      - "A09"
+    compliance_risk: "GREEN"
+    allowed_claim_style:
+      - "Sensory / experiential — sapu, hidu, rasa beza"
+      - "Aromatherapy framing — aroma herba semulajadi"
+      - "Relief language — melegakan, membantu melegakan"
+      - "Softened temporal claims — 'rasa beza dalam minit' (sensory, not cure)"
+    forbidden_claim_style:
+      - "Cure or medical treatment framing (sembuh migrain, rawat sakit kepala)"
+      - "Guaranteed time claims without sensory qualifier (dalam 10 saat — only allowed as sensory/experience)"
+      - "Pharmaceutical comparison (lebih berkesan dari ubat sakit kepala)"
+    notes: >
+      Core daily-use angle. Stress + headache covers the largest addressable
+      audience segment. Sensory framing is safe. Avoid cure / medical claims.
+
+  - mca_id: "MWCB-MCA02"
+    mca_name: "Hidung & Nafas Tak Selesa"
+    priority: 2
+    phase_status: "PHASE_2_READY"
+    source_benefit_ids:
+      - "B02"
+      - "B03"
+    source_angle_ids:
+      - "A02"
+      - "A03"
+    compliance_risk: "YELLOW"
+    allowed_claim_style:
+      - "Sensory relief — melegakan ketidakselesaan hidung"
+      - "External-use application framing — sapu di sekitar hidung"
+      - "Heritage / traditional use framing"
+    forbidden_claim_style:
+      - "buka saluran hidung"
+      - "longgarkan kahak"
+      - "selamat untuk kanak-kanak (requires separate age-safety review)"
+      - "sakit dada claims (B03 sub-claim — REVIEW_ONLY, see review_only_use_cases)"
+      - "longgarkan phlegm / mucus language"
+      - "antiseptik"
+      - "antibakteria"
+    notes: >
+      YELLOW risk. Respiratory claims must stay at sensory/comfort level only.
+      B03 sakit dada sub-claim is quarantined to review_only_use_cases.
+      Do NOT import A03 verbatim — it contains forbidden lang.
+      Phase 2 only after Phase 1 compliance is proven.
+
+  - mca_id: "MWCB-MCA03"
+    mca_name: "Perut Tak Selesa & Wanita Harian"
+    priority: 3
+    phase_status: "PHASE_1_READY"
+    source_benefit_ids:
+      - "B10"
+      - "B11"
+    source_angle_ids:
+      - "A10"
+      - "A11"
+    compliance_risk: "GREEN"
+    allowed_claim_style:
+      - "Comfort / relief framing — melegakan ketidakselesaan perut"
+      - "Traditional / warisan framing"
+      - "Sensory / heat application framing"
+      - "Mual/nausea: aroma override framing"
+    forbidden_claim_style:
+      - "Direct uterus contraction language (relakskan otot uterus — use: melegakan ketidakselesaan)"
+      - "Medical menstrual treatment claims (rawat senggugut)"
+      - "mengecutkan rahim"
+      - "mengempiskan perut"
+    notes: >
+      GREEN risk. Soften A10 'relakskan otot uterus' to comfort/relief language.
+      Morning sickness (A11 B11) must include 'guna dengan bimbingan doktor' disclaimer
+      or soften to aroma/sensory framing only.
+
+  - mca_id: "MWCB-MCA04"
+    mca_name: "Badan Lenguh & Urutan"
+    priority: 4
+    phase_status: "PHASE_2_READY"
+    source_benefit_ids:
+      - "B08"
+    source_angle_ids:
+      - "A08"
+    compliance_risk: "GREEN"
+    allowed_claim_style:
+      - "Physical comfort framing — badan rasa lebih ringan"
+      - "Traditional massage / urutan framing"
+      - "Sensory warmth framing — haba semulajadi"
+      - "Daily routine framing"
+    forbidden_claim_style:
+      - "Medical nerve treatment (merawat saraf)"
+      - "Joint disease treatment (ubat sendi)"
+    notes: >
+      GREEN risk. Safe angle. Phase 2 to allow Phase 1 validation first.
+
+  - mca_id: "MWCB-MCA05"
+    mca_name: "Kulit Gatal & Gigitan Serangga"
+    priority: 5
+    phase_status: "PHASE_2_READY"
+    source_benefit_ids:
+      - "B04"
+    source_angle_ids:
+      - "A04"
+    compliance_risk: "YELLOW"
+    allowed_claim_style:
+      - "Insect repellent / deterrent framing (sensory — aroma halau nyamuk)"
+      - "Soothing / comfort framing (melegakan gatal)"
+      - "No-steroid / no-antihistamine framing (safe)"
+    forbidden_claim_style:
+      - "antiseptik"
+      - "antibakteria"
+      - "Wound treatment (merawat luka — B05 use-case is REVIEW_ONLY)"
+      - "Guaranteed repellent efficacy claims"
+    notes: >
+      YELLOW risk due to potential insect repellent efficacy claims.
+      B05 (luka kecil, bengkak surut) is quarantined to review_only_use_cases.
+      A05 is REVIEW_ONLY (contains roll-on + antiseptik language) — do NOT import verbatim.
+      Only B04 scope is approved for Phase 2.
+
+  - mca_id: "MWCB-MCA06"
+    mca_name: "Ibu Berpantang & Tradisi"
+    priority: 6
+    phase_status: "REVIEW_ONLY"
+    source_benefit_ids:
+      - "B13"
+      - "B14"
+    source_angle_ids:
+      - "A13"
+      - "A14"
+      - "A18"
+    compliance_risk: "REVIEW_ONLY"
+    allowed_claim_style:
+      - "Traditional / warisan framing only (when approved)"
+      - "General comfort framing (melegakan ketidakselesaan postnatal)"
+    forbidden_claim_style:
+      - "mengecutkan rahim"
+      - "mengempiskan perut"
+      - "urutan sebelum & selepas bersalin without medical qualifier"
+      - "param / bengkung treatment claims"
+      - "membantu proses involution uterus"
+      - "selamat untuk ibu menyusu (requires separate safety review)"
+    notes: >
+      REVIEW_ONLY. This MCA contains the highest-risk claims in the MWCB range.
+      Cannot proceed to any approved copy without independent compliance review.
+      All MWCB-MCA06 workbook rows must carry Status = REVIEW_REQUIRED,
+      never APPROVED or LOCKED.
+
+  - mca_id: "MWCB-MCA07"
+    mca_name: "Satu Botol Standby Rumah"
+    priority: 7
+    phase_status: "PHASE_1_READY"
+    source_benefit_ids:
+      - "MULTI"
+    source_angle_ids:
+      - "A15"
+      - "A16"
+      - "A17"
+      - "A20"
+    compliance_risk: "GREEN"
+    allowed_claim_style:
+      - "Multi-use / value proposition framing"
+      - "Heritage / warisan trust framing"
+      - "Travel-friendly / compact size framing"
+      - "Cover multiple common issues — sensory / general framing"
+    forbidden_claim_style:
+      - "Medical multi-cure claims (boleh rawat 14 masalah)"
+      - "Guaranteed cure framing for any listed use-case"
+    notes: >
+      GREEN risk. Strong conversion angle anchored to heritage trust and value.
+      Phase 1 priority. A16 (warisan 1958) and A17 (multi-fungsi) are the
+      strongest seed angles for this MCA.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REVIEW-ONLY / HIGH-RISK USE CASE MAP
+# These use cases must not appear in any approved workbook copy rows.
+# ─────────────────────────────────────────────────────────────────────────────
+
+review_only_use_cases:
+
+  - use_case_id: "RO-UC-01"
+    label: "Sakit Dada"
+    benefit_ref: "B03"
+    source_angle_ref: "A03 (sub-claim)"
+    risk_reason: >
+      B03 benefit includes sakit dada / sesak dada. Any copy claiming chest pain
+      relief crosses into respiratory / cardiac-adjacent territory. REVIEW_ONLY
+      until independent compliance sign-off.
+    forbidden_phrases:
+      - "sakit dada"
+      - "sesak dada"
+      - "lapang dada"
+
+  - use_case_id: "RO-UC-02"
+    label: "Kencing Malam"
+    benefit_ref: "B12"
+    source_angle_ref: "A12"
+    risk_reason: >
+      Urological claim. B12 instructs lumur kawasan perut dan ari-ari.
+      Any copy linking product to nocturia / overactive bladder treatment
+      is a medical claim. REVIEW_ONLY.
+    forbidden_phrases:
+      - "kencing malam"
+      - "nocturia"
+      - "pundi kencing"
+      - "kawasan ari-ari"
+
+  - use_case_id: "RO-UC-03"
+    label: "Bayi Kembung Perut"
+    benefit_ref: "B07"
+    source_angle_ref: "A07"
+    risk_reason: >
+      Infant use claim requires specific safety validation for product contact
+      with infant skin. A07 also contains roll-on language. REVIEW_ONLY.
+    forbidden_phrases:
+      - "selamat untuk bayi"
+      - "bayi kembung"
+      - "perut bayi"
+      - "kembung bayi"
+
+  - use_case_id: "RO-UC-04"
+    label: "Luka Kecil & Bengkak"
+    benefit_ref: "B05"
+    source_angle_ref: "A05"
+    risk_reason: >
+      A05 contains antiseptik semulajadi and roll-on applicator language.
+      Wound treatment and antiseptic claims require separate compliance review.
+    forbidden_phrases:
+      - "antiseptik"
+      - "antibakteria"
+      - "luka kecil"
+      - "bengkak surut"
+      - "pecahkan tumpukan darah"
+
+  - use_case_id: "RO-UC-05"
+    label: "Sakit Gigi & Bengkak Gusi"
+    benefit_ref: "B06"
+    source_angle_ref: "A06"
+    risk_reason: >
+      Dental relief claims (eugenol numbing agent, gusi) are medical device
+      adjacent. Any claim of pain relief for dental conditions requires
+      separate compliance review. REVIEW_ONLY.
+    forbidden_phrases:
+      - "sakit gigi"
+      - "bengkak gusi"
+      - "numbing"
+      - "eugenol"
+      - "gigi ngilu"
+
+  - use_case_id: "RO-UC-06"
+    label: "Urutan Sebelum & Selepas Bersalin"
+    benefit_ref: "B13"
+    source_angle_ref: "A13"
+    risk_reason: >
+      Pre/postnatal massage with herbal oil near pregnancy requires safety
+      qualification. Covered under MWCB-MCA06 REVIEW_ONLY umbrella.
+    forbidden_phrases:
+      - "urutan sebelum bersalin"
+      - "urutan selepas bersalin"
+      - "selamat untuk trimester"
+      - "selamat untuk ibu hamil"
+
+  - use_case_id: "RO-UC-07"
+    label: "Param / Bengkung"
+    benefit_ref: "B14"
+    source_angle_ref: "A14"
+    risk_reason: >
+      Contains mengecutkan rahim and mengempiskan perut — direct uterus
+      involution claims. Highest compliance risk in the MWCB range.
+      Covered under MWCB-MCA06 REVIEW_ONLY umbrella.
+    forbidden_phrases:
+      - "mengecutkan rahim"
+      - "mengempiskan perut"
+      - "involution uterus"
+      - "param"
+      - "bengkung"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SITUATION CONTEXTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+situation_contexts:
+
+  - ctx_id: "CTX-A_SEGARA"
+    ctx_name: "Segara (Acute)"
+    description: >
+      Acute need. Problem is happening NOW. User is in pain or discomfort
+      and is actively seeking immediate relief. Copy tone: urgent, direct,
+      action-now. Best paired with: MWCB-MCA01, MWCB-MCA03.
+
+  - ctx_id: "CTX-B_RUTIN"
+    ctx_name: "Rutin (Daily Habit)"
+    description: >
+      Daily habit, standby, lifestyle integration. User is not in acute
+      pain but wants to be prepared or make this part of daily routine.
+      Copy tone: habitual, practical, soft-sell. Best paired with: MWCB-MCA07.
+
+  - ctx_id: "CTX-C_SYOR"
+    ctx_name: "Syor (Recommendation)"
+    description: >
+      Social proof trigger. User is recommending the product to others
+      or is themselves persuaded by a recommendation. Copy tone: trust,
+      proven, word-of-mouth. Best paired with: MWCB-MCA07, MWCB-MCA01.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE 1 FORMULA PLAN
+# ─────────────────────────────────────────────────────────────────────────────
+
+phase_1_formula_plan:
+  approved_formulas:
+    - "PAS"
+    - "AIDA"
+    - "HSO"
+    - "HPAS"
+  deferred_formulas:
+    - formula: "SAVAGE_HPAS"
+      status: "DEFERRED_UNTIL_COMPLIANCE_PROVEN"
+      reason: >
+        SAVAGE_HPAS uses aggressive friction framing. Defer until Phase 1
+        copy packs have cleared compliance review and proven safe framing
+        patterns are established for MWCB.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE 1 MCA SUMMARY
+# ─────────────────────────────────────────────────────────────────────────────
+
+phase_1_ready_mcas:
+  - "MWCB-MCA01"
+  - "MWCB-MCA03"
+  - "MWCB-MCA07"
+
+phase_2_ready_mcas:
+  - "MWCB-MCA02"
+  - "MWCB-MCA04"
+  - "MWCB-MCA05"
+
+review_only_mcas:
+  - "MWCB-MCA06"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FORBIDDEN PHRASE CLASSES — FOR ALL MWCB FINAL / APPROVED COPY ROWS
+# ─────────────────────────────────────────────────────────────────────────────
+
+forbidden_phrase_classes:
+
+  product_truth_violations:
+    description: "These phrases describe applicator types that do not exist on the WG40 bottle."
+    phrases:
+      - "roll-on"
+      - "roll on"
+      - "roller"
+      - "rollerball"
+      - "pump"
+      - "spray"
+      - "dropper"
+
+  medical_cure_claims:
+    description: "These phrases assert treatment, cure, or medical action."
+    phrases:
+      - "ubat"
+      - "sembuh"
+      - "merawat"
+      - "penawar"
+      - "rawatan medis"
+      - "antiseptik"
+      - "antibakteria"
+
+  child_safety_claims:
+    description: "Child and infant safety claims require separate safety review approval."
+    phrases:
+      - "selamat untuk bayi"
+      - "selamat untuk kanak-kanak"
+      - "baby safe"
+
+  respiratory_channel_claims:
+    description: "Direct respiratory mechanism claims beyond sensory comfort framing."
+    phrases:
+      - "buka saluran hidung"
+      - "longgarkan kahak"
+      - "lapangkan saluran pernafasan"
+
+  postnatal_high_risk_claims:
+    description: "Postnatal mechanism claims that imply medical physiological action."
+    phrases:
+      - "mengecutkan rahim"
+      - "mengempiskan perut"
+      - "involution uterus"
+
+  guaranteed_time_claims:
+    description: >
+      Guaranteed time claims are forbidden unless explicitly framed as
+      sensory/experience claims (e.g. 'rasa beza dalam 10 saat' is allowed
+      if clearly sensory; 'sembuh dalam 10 saat' is forbidden).
+    phrases:
+      - "sembuh dalam"
+      - "hilang dalam"
+      - "pulih dalam"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ANGLE → MCA MAPPING (for workbook column assignment)
+# ─────────────────────────────────────────────────────────────────────────────
+# Used by validator and workbook patch to assign MCA_ID and Compliance_Risk
+# to existing A01–A20 seed rows.
+# These assignments are WORKBOOK_COLUMN_LABELS only.
+# They do NOT promote A01–A20 to APPROVED status.
+# ─────────────────────────────────────────────────────────────────────────────
+
+angle_to_mca_map:
+  A01: { mca_id: "MWCB-MCA01", compliance_risk: "GREEN" }
+  A02: { mca_id: "MWCB-MCA02", compliance_risk: "YELLOW" }
+  A03: { mca_id: "REVIEW_ONLY", compliance_risk: "REVIEW_ONLY" }
+  A04: { mca_id: "MWCB-MCA05", compliance_risk: "YELLOW" }
+  A05: { mca_id: "REVIEW_ONLY", compliance_risk: "REVIEW_ONLY" }
+  A06: { mca_id: "REVIEW_ONLY", compliance_risk: "REVIEW_ONLY" }
+  A07: { mca_id: "REVIEW_ONLY", compliance_risk: "REVIEW_ONLY" }
+  A08: { mca_id: "MWCB-MCA04", compliance_risk: "GREEN" }
+  A09: { mca_id: "MWCB-MCA01", compliance_risk: "GREEN" }
+  A10: { mca_id: "MWCB-MCA03", compliance_risk: "GREEN" }
+  A11: { mca_id: "MWCB-MCA03", compliance_risk: "GREEN" }
+  A12: { mca_id: "REVIEW_ONLY", compliance_risk: "REVIEW_ONLY" }
+  A13: { mca_id: "MWCB-MCA06", compliance_risk: "REVIEW_ONLY" }
+  A14: { mca_id: "MWCB-MCA06", compliance_risk: "REVIEW_ONLY" }
+  A15: { mca_id: "MWCB-MCA07", compliance_risk: "GREEN" }
+  A16: { mca_id: "MWCB-MCA07", compliance_risk: "GREEN" }
+  A17: { mca_id: "MWCB-MCA07", compliance_risk: "GREEN" }
+  A18: { mca_id: "MWCB-MCA06", compliance_risk: "REVIEW_ONLY" }
+  A19: { mca_id: "REVIEW_ONLY", compliance_risk: "REVIEW_ONLY" }
+  A20: { mca_id: "MWCB-MCA07", compliance_risk: "GREEN" }

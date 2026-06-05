@@ -46,6 +46,8 @@ WORKING_HEADERS = [
     "Type_of_Content",
     "Silo_Key",
     "Angle_ID",
+    "MCA_ID",
+    "Compliance_Risk",
     "Angle",
     "Hook_ID",
     "Hook",

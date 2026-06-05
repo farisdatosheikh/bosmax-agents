@@ -104,6 +104,16 @@ The Notion downstream view should show:
 - Do not leave `Pain_or_Friction` only in Notion.
 - Do not leave dialogue budget logic only in Notion.
 
+## MWCB Copy Pack Taxonomy Rules
+
+**Taxonomy authority:** `registries/mwcb_copywriting_angle_taxonomy.yaml`
+
+- A01–A20 in `products/CAP_BURUNG_MINYAK.yaml` are **raw source seeds only** — NOT approved final copy.
+- `MCA_ID` and `Compliance_Risk` columns are now required on `PRODUCT_MW_CAP_BURUNG` and `FAMILY_TRAD_REMEDY_OIL`.
+- **REVIEW_ONLY rows must not surface to Notion** unless operator explicitly overrides with `Needs Compliance Review` status.
+- Notion must wait until approved copy rows exist (Phase 1 copy generation is a future PR).
+- Copy packs derived from REVIEW_ONLY MCAs (MWCB-MCA06) or REVIEW_ONLY use cases must never reach `APPROVED` or `LOCKED` status without independent compliance sign-off.
+
 ## Flow Extend Proof Authority
 
 Flow Extend proof is governed by `scripts/validate_flow_extend_proof.py` and `registries/flow_extend_proof.yaml`.

@@ -85,11 +85,24 @@ You may fill only these fields:
 You may also assign:
 
 - `Angle_ID`
+- `MCA_ID`
+- `Compliance_Risk`
 - `Hook_ID`
 - `CTA_ID`
 - `Status`
 
 only for clean row organization.
+
+## MWCB Taxonomy Authority
+
+For `PRODUCT_MW_CAP_BURUNG` and `FAMILY_TRAD_REMEDY_OIL` sheets:
+
+- **MCA taxonomy authority:** `registries/mwcb_copywriting_angle_taxonomy.yaml`
+- **A01–A20 in `products/CAP_BURUNG_MINYAK.yaml` are raw source seeds only** — NOT approved final copy.
+  Some contain forbidden language (roll-on, antiseptik, child-safety claims, etc.).
+- **REVIEW_ONLY rows** must carry `Status = REVIEW_REQUIRED` — never `APPROVED` or `LOCKED`.
+- **Notion is downstream UI only** — do not surface REVIEW_ONLY rows to Notion until approved
+  copy rows exist and operator override is confirmed.
 
 ---
 
