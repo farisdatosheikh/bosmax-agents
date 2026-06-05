@@ -10,7 +10,9 @@ from product_on_the_fly_video_prompt import (
     CONTRACT_PATH,
     build_manual_request,
     load_contract,
+    parse_batch_count,
 )
+from resolver_runtime import ResolverError
 
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -181,6 +183,47 @@ def validate_review_only_example(contract: dict[str, Any]) -> None:
     print("review-only route output ok")
 
 
+def validate_auto_rotate_batch_count_parsing(contract: dict[str, Any]) -> None:
+    # PASS cases — valid integer and integer-string must parse cleanly
+    expect(parse_batch_count(20) == 20, "parse_batch_count: int 20 should return 20")
+    expect(parse_batch_count("20") == 20, "parse_batch_count: str '20' should return 20")
+    expect(parse_batch_count(None) == 0, "parse_batch_count: None should return 0")
+    expect(parse_batch_count("") == 0, "parse_batch_count: empty string should return 0")
+
+    # FAIL-CLOSED cases — non-integer strings must raise ResolverError (not raw ValueError)
+    for bad_value in ("20 videos", "twenty"):
+        caught = None
+        try:
+            parse_batch_count(bad_value)
+        except ResolverError as exc:
+            caught = exc
+        except Exception as exc:  # noqa: BLE001
+            fail(f"parse_batch_count({bad_value!r}) raised {type(exc).__name__} instead of ResolverError — not fail-closed")
+
+        expect(caught is not None, f"parse_batch_count({bad_value!r}) did not raise ResolverError")
+        expect("AUTO_ROTATE" in str(caught), f"ResolverError for {bad_value!r} missing AUTO_ROTATE context")
+        expect(repr(bad_value) in str(caught), f"ResolverError for {bad_value!r} missing value repr in message")
+
+    # FAIL-CLOSED via build_manual_request — non-integer batch_count must route to REVIEW_ONLY_PRODUCT
+    batch_payload = dict(contract["sample_payloads"]["registered_bosmax_resolver_batch"])
+    batch_payload["batch_count"] = "20 videos"
+    result = build_manual_request(batch_payload)
+    expect(
+        result["route_result"]["route_mode"] == "REVIEW_ONLY_PRODUCT",
+        "AUTO_ROTATE invalid batch_count '20 videos' did not route to REVIEW_ONLY_PRODUCT",
+    )
+    notes_text = " ".join(result["route_result"].get("notes", []))
+    expect(
+        "AUTO_ROTATE" in notes_text or "batch_count" in notes_text,
+        "REVIEW_ONLY_PRODUCT notes must reference AUTO_ROTATE or batch_count for invalid value",
+    )
+    expect(
+        result["prompt_module_status"] == "BLOCKED_REVIEW_ONLY",
+        "AUTO_ROTATE invalid batch_count must produce BLOCKED_REVIEW_ONLY prompt status",
+    )
+    print("AUTO_ROTATE batch_count fail-closed parsing ok")
+
+
 def main() -> None:
     contract = load_contract()
     validate_contract_shape(contract)
@@ -191,6 +234,7 @@ def main() -> None:
     validate_family_example(contract)
     validate_on_the_fly_example(contract)
     validate_review_only_example(contract)
+    validate_auto_rotate_batch_count_parsing(contract)
     print("VALIDATION PASSED")
 
 

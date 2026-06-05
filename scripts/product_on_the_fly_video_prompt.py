@@ -122,6 +122,13 @@ def select_prompt_module_status(route_mode: str, route_result: dict[str, Any], t
     return template.get("prompt_module_status_hold", "HOLD_MISSING_INPUT")
 
 
+def parse_batch_count(value: Any) -> int:
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError) as exc:
+        raise ResolverError(f"Invalid batch_count for AUTO_ROTATE: {value!r}") from exc
+
+
 def format_scalar(value: Any, default: str = "none") -> str:
     text = str(value or "").strip()
     return text if text else default
@@ -205,7 +212,7 @@ def resolve_runtime_contract(
     elif avatar_mode == "auto_rotate":
         avatar_pool_id = normalize(payload.get("avatar_pool_id"))
         rotation_rule = normalize(payload.get("rotation_rule"))
-        batch_count = int(payload.get("batch_count") or 0)
+        batch_count = parse_batch_count(payload.get("batch_count"))
         if not avatar_pool_id:
             raise ResolverError("Avatar Mode AUTO_ROTATE requires avatar_pool_id.")
         if not rotation_rule:
