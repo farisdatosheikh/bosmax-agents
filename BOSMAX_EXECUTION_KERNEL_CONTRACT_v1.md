@@ -247,8 +247,13 @@ risk) in BM commercial UGC video.
 per-block budget. Underfilled blocks create dead-air / hallucinated filler risk. Overfilled
 blocks create rushed speech / lip sync seam mismatch.
 
-**Validator coverage:** YES — `validate_video_block_contracts.py` checks corridor coverage
-and monotonicity for all BM/BRISK_UGC durations. Per-block budget injected by `video_block_plan.py`.
+**Validator coverage:** READY (registry/planner/sample-manifest layer) — PARTIAL (runtime speech timing)
+- `validate_video_block_contracts.py` — corridor coverage and monotonicity for all BM/BRISK_UGC durations
+- `validate_wps_per_block.py` (PR #9) — per-block WPS for all GROK, VEO_3_1, VEO_3_1_LITE engine plans;
+  VEO_3_1_LITE 7s actual-render budget assertion; total-vs-block budget gap assertion; sample manifest
+  WPS audit requirements; Flow Extend MANUAL_REVIEW_ONLY posture.
+- Per-block budget injected by `video_block_plan.py`.
+- Runtime speech timing of actual generated video remains PARTIAL (future: `validate_runtime_speech_timing.py`).
 
 **Notion impact:** `Dialogue Budget`, `Block Dialogue Word Count` fields must reflect registry values,
 not ad hoc operator estimates.
@@ -590,7 +595,7 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 |---------|------------------------|--------------------------------------------------------|--------------------------------------|---------------------------------------|-----------------|
 | G-01    | ENGINE_DURATION        | video_engine_duration_contracts.yaml + CLAUDE.md        | validate_video_block_contracts.py    | Block Duration, Block Count fields    | READY (all engines covered) |
 | G-02    | EXECUTION_MODE         | video_engine_duration_contracts.yaml + RUNTIME_SM       | validate_video_block_contracts.py    | Multi-Block Execution Mode field      | PARTIAL         |
-| G-03    | WPS_DIALOGUE           | dialogue_budget_corridor.yaml + HARD_ENGINE_CONTRACTS   | validate_video_block_contracts.py    | Dialogue Budget, Word Count fields    | PARTIAL (per-block standalone gap) |
+| G-03    | WPS_DIALOGUE           | dialogue_budget_corridor.yaml + HARD_ENGINE_CONTRACTS   | validate_wps_per_block.py + validate_video_block_contracts.py | Dialogue Budget, Word Count fields | READY registry/planner/sample-manifest layer; PARTIAL runtime speech timing |
 | G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY       | validate_copywriting_ecosystem.py    | Copy Pack ID relation                 | READY for BOSMAX Serum STEALTH; PARTIAL globally |
 | G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | validate_product_truth_drift.py      | Product fields in Video Runs          | PARTIAL (registry layer validated; prompt-level drift remains docs-only) |
 | G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md                 | validate_avatar_registry_coverage.py | Avatar Mode, Avatar Source fields     | PARTIAL (registry layer validated; USER_UPLOAD runtime + Notion mirror remain docs-only) |
@@ -611,7 +616,8 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 | ~~`validate_product_truth_drift.py`~~   | G-05         | CLOSED — PR #5 |
 | ~~`validate_avatar_registry_coverage.py`~~ | G-06      | CLOSED — PR #7 |
 | ~~`validate_notion_sample_readiness.py`~~ | G-08, G-10 | CLOSED — PR #8 |
-| `validate_wps_per_block.py`             | G-03         | MEDIUM   |
+| ~~`validate_wps_per_block.py`~~         | G-03         | CLOSED — PR #9 |
+| `validate_runtime_speech_timing.py`     | G-03         | LOW — runtime speech timing of generated video |
 | `validate_flow_extend_proof.py`         | G-07         | LOW (manual review only posture retained) |
 
 **Closed (no longer required):**
@@ -620,6 +626,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 - `validate_product_truth_drift.py` — G-05 — registry-layer validator created in PR #5
 - `validate_avatar_registry_coverage.py` — G-06 — registry-layer validator created in PR #7
 - `validate_notion_sample_readiness.py` — G-08, G-10 — manifest-layer validator created in PR #8
+- `validate_wps_per_block.py` — G-03 — per-block WPS validator created in PR #9
 
 ---
 
