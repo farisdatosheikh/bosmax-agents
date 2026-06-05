@@ -1,6 +1,6 @@
 schema_version: '1.0'
 registry_id: BOSMAX_AVATAR_CONTEXT_ROTATION_V1
-generated_at_utc: '2026-06-05T14:30:34+00:00'
+generated_at_utc: '2026-06-05T15:02:33+00:00'
 source_authority:
   avatar_schema: avatars/_SCHEMA.yaml
   avatar_registry: avatars/*.yaml
@@ -61,6 +61,14 @@ runtime_contract:
   - prompt_fragment_source
   - internal_notes
   - compatible_physics_classes
+workbook_sheet_aliases:
+- public_view_id: NOTION_COMMAND_CENTRE_AVATAR_ID_VIEW
+  workbook_sheet_alias: CC_AVATAR_ID_VIEW
+  description: Generic beginner avatar selector view across approved runtime packs.
+- public_view_id: NOTION_COMMAND_CENTRE_AVATAR_POOL_VIEW
+  workbook_sheet_alias: CC_AVATAR_POOL_VIEW
+  description: Generic beginner avatar pool selector view across approved runtime
+    pools.
 validation_rules:
 - rule_id: AVATAR_CONTEXT_ID_NOT_FOUND
   description: Fail closed if Avatar_Context_ID cannot resolve from the runtime registry.
@@ -87,6 +95,9 @@ validation_rules:
 - rule_id: COMMAND_CENTRE_AVATAR_VIEW_ONLY
   description: Command Centre avatar and pool views must remain frontend-safe selector
     surfaces only.
+- rule_id: COMMAND_CENTRE_PRODUCT_WORKFLOW_SUPPORT
+  description: Registered Command Centre workflows must expose separate STEALTH and
+    DIRECT avatar support without leaking prompt internals.
 avatar_context_packs:
 - avatar_context_id: BOSMAX_AVP_0001
   display_name: RIZAL | RIZAL_CASUAL_01 | Quiet Home Reset Corner
@@ -97,7 +108,7 @@ avatar_context_packs:
   age_range: 27-34
   silo_allowed: &id001
   - STEALTH
-  product_family_allowed: &id002
+  product_family_allowed: &id016
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_HOME_STEALTH_RESET_001
   scene_label: Quiet Home Reset Corner
@@ -105,9 +116,9 @@ avatar_context_packs:
   mannequin_label: Close Hold Reset
   wardrobe_id: RIZAL_CASUAL_01
   headwear_style: NONE
-  camera_style_allowed: &id003
+  camera_style_allowed: &id002
   - UGC_IPHONE_RAW
-  compatible_physics_classes:
+  compatible_physics_classes: &id003
   - CLASS_A
   prompt_fragment_source: avatars/RIZAL.yaml::prompt_fragment
   status: APPROVED
@@ -124,9 +135,9 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 27-34
-  silo_allowed: &id004
+  silo_allowed: &id007
   - STEALTH
-  product_family_allowed: &id005
+  product_family_allowed: &id017
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_STREET_MORNING_RESET_001
   scene_label: Morning Street Confidence Walk
@@ -134,9 +145,9 @@ avatar_context_packs:
   mannequin_label: Walk And Talk
   wardrobe_id: RIZAL_ACTIVE_01
   headwear_style: NONE
-  camera_style_allowed: &id006
+  camera_style_allowed: &id008
   - UGC_IPHONE_RAW
-  compatible_physics_classes:
+  compatible_physics_classes: &id009
   - CLASS_A
   prompt_fragment_source: avatars/RIZAL.yaml::prompt_fragment
   status: APPROVED
@@ -153,9 +164,9 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 27-34
-  silo_allowed: &id007
+  silo_allowed: &id004
   - STEALTH
-  product_family_allowed: &id008
+  product_family_allowed: &id018
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_OFFICE_CONFIDENCE_CORNER_001
   scene_label: Office Confidence Corner
@@ -163,9 +174,9 @@ avatar_context_packs:
   mannequin_label: Desk Reveal Confidence
   wardrobe_id: RIZAL_SMART_01
   headwear_style: NONE
-  camera_style_allowed: &id009
+  camera_style_allowed: &id005
   - UGC_IPHONE_RAW
-  compatible_physics_classes:
+  compatible_physics_classes: &id006
   - CLASS_A
   prompt_fragment_source: avatars/RIZAL.yaml::prompt_fragment
   status: APPROVED
@@ -182,9 +193,8 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 27-34
-  silo_allowed: &id010
-  - STEALTH
-  product_family_allowed: &id011
+  silo_allowed: *id001
+  product_family_allowed: &id019
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_HOME_STEALTH_RESET_001
   scene_label: Quiet Home Reset Corner
@@ -192,10 +202,8 @@ avatar_context_packs:
   mannequin_label: Close Hold Reset
   wardrobe_id: RIZAL_RAYA_01
   headwear_style: SONGKOK
-  camera_style_allowed: &id012
-  - UGC_IPHONE_RAW
-  compatible_physics_classes:
-  - CLASS_A
+  camera_style_allowed: *id002
+  compatible_physics_classes: *id003
   prompt_fragment_source: avatars/RIZAL.yaml::prompt_fragment
   status: APPROVED
   runtime_allowed: true
@@ -211,9 +219,8 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 30-38
-  silo_allowed: &id013
-  - STEALTH
-  product_family_allowed: &id014
+  silo_allowed: *id001
+  product_family_allowed: &id020
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_HOME_STEALTH_RESET_001
   scene_label: Quiet Home Reset Corner
@@ -221,10 +228,8 @@ avatar_context_packs:
   mannequin_label: Close Hold Reset
   wardrobe_id: AZMAN_CASUAL_01
   headwear_style: NONE
-  camera_style_allowed: &id015
-  - UGC_IPHONE_RAW
-  compatible_physics_classes:
-  - CLASS_A
+  camera_style_allowed: *id002
+  compatible_physics_classes: *id003
   prompt_fragment_source: avatars/AZMAN.yaml::prompt_fragment
   status: APPROVED
   runtime_allowed: true
@@ -240,9 +245,8 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 30-38
-  silo_allowed: &id016
-  - STEALTH
-  product_family_allowed: &id017
+  silo_allowed: *id004
+  product_family_allowed: &id021
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_OFFICE_CONFIDENCE_CORNER_001
   scene_label: Office Confidence Corner
@@ -250,10 +254,8 @@ avatar_context_packs:
   mannequin_label: Desk Reveal Confidence
   wardrobe_id: AZMAN_SMART_01
   headwear_style: NONE
-  camera_style_allowed: &id018
-  - UGC_IPHONE_RAW
-  compatible_physics_classes:
-  - CLASS_A
+  camera_style_allowed: *id005
+  compatible_physics_classes: *id006
   prompt_fragment_source: avatars/AZMAN.yaml::prompt_fragment
   status: APPROVED
   runtime_allowed: true
@@ -269,9 +271,8 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 30-38
-  silo_allowed: &id019
-  - STEALTH
-  product_family_allowed: &id020
+  silo_allowed: *id007
+  product_family_allowed: &id022
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_STREET_MORNING_RESET_001
   scene_label: Morning Street Confidence Walk
@@ -279,10 +280,8 @@ avatar_context_packs:
   mannequin_label: Walk And Talk
   wardrobe_id: AZMAN_ACTIVE_01
   headwear_style: NONE
-  camera_style_allowed: &id021
-  - UGC_IPHONE_RAW
-  compatible_physics_classes:
-  - CLASS_A
+  camera_style_allowed: *id008
+  compatible_physics_classes: *id009
   prompt_fragment_source: avatars/AZMAN.yaml::prompt_fragment
   status: APPROVED
   runtime_allowed: true
@@ -298,8 +297,7 @@ avatar_context_packs:
   base_archetype: MALAY_MALE_YOUNG_01
   gender: Male
   age_range: 30-38
-  silo_allowed: &id022
-  - STEALTH
+  silo_allowed: *id001
   product_family_allowed: &id023
   - FAMILY_MALE_EXT_SENSITIVE_OIL
   scene_context_id: CTX_HOME_STEALTH_RESET_001
@@ -308,10 +306,8 @@ avatar_context_packs:
   mannequin_label: Close Hold Reset
   wardrobe_id: AZMAN_RAYA_01
   headwear_style: SONGKOK
-  camera_style_allowed: &id024
-  - UGC_IPHONE_RAW
-  compatible_physics_classes:
-  - CLASS_A
+  camera_style_allowed: *id002
+  compatible_physics_classes: *id003
   prompt_fragment_source: avatars/AZMAN.yaml::prompt_fragment
   status: APPROVED
   runtime_allowed: true
@@ -320,12 +316,71 @@ avatar_context_packs:
     AZMAN_RAYA_01. Manual override requires Needs Compliance Review.
   internal_notes: Wardrobe sourced from AZMAN.yaml::AZMAN_RAYA_01; scene keyed from
     home_indoor; mannequin pose resolved in avatar context builder.
+- avatar_context_id: MWCB_DIRECT_AVP_0001
+  display_name: RIZAL | RIZAL_CASUAL_01 | Household Relief Shelf Reset
+  persona_id: RIZAL
+  persona_label: Rizal
+  base_archetype: MALAY_MALE_YOUNG_01
+  gender: Male
+  age_range: 27-34
+  silo_allowed: &id012
+  - DIRECT
+  product_family_allowed: &id024
+  - FAMILY_TRADITIONAL_REMEDY_OIL
+  scene_context_id: CTX_HOME_TRAD_REMEDY_001
+  scene_label: Household Relief Shelf Reset
+  mannequin_id: MAN_DIRECT_BOTTLE_PICKUP_001
+  mannequin_label: Bottle Pickup Utility
+  wardrobe_id: RIZAL_CASUAL_01
+  headwear_style: NONE
+  camera_style_allowed: &id013
+  - UGC_IPHONE_RAW
+  compatible_physics_classes: &id010
+  - CLASS_A
+  prompt_fragment_source: avatars/RIZAL.yaml::prompt_fragment
+  status: APPROVED
+  runtime_allowed: true
+  rotation_weight: 1
+  safe_usage_notes: DIRECT resolver pack for Minyak Warisan Cap Burung family. Persona
+    RIZAL with RIZAL_CASUAL_01. Manual override requires Needs Compliance Review.
+  internal_notes: Wardrobe sourced from RIZAL.yaml::RIZAL_CASUAL_01; scene keyed from
+    mwcb_home_relief; mannequin pose resolved in avatar context builder.
+- avatar_context_id: MWCB_DIRECT_AVP_0002
+  display_name: AZMAN | AZMAN_CASUAL_01 | On-The-Go Remedy Grab
+  persona_id: AZMAN
+  persona_label: Azman
+  base_archetype: MALAY_MALE_YOUNG_01
+  gender: Male
+  age_range: 30-38
+  silo_allowed: &id014
+  - DIRECT
+  product_family_allowed: &id025
+  - FAMILY_TRADITIONAL_REMEDY_OIL
+  scene_context_id: CTX_TRAVEL_TRAD_REMEDY_001
+  scene_label: On-The-Go Remedy Grab
+  mannequin_id: MAN_DIRECT_BAG_REACH_001
+  mannequin_label: Bag Reach Practicality
+  wardrobe_id: AZMAN_CASUAL_01
+  headwear_style: NONE
+  camera_style_allowed: &id015
+  - UGC_IPHONE_RAW
+  compatible_physics_classes: &id011
+  - CLASS_A
+  prompt_fragment_source: avatars/AZMAN.yaml::prompt_fragment
+  status: APPROVED
+  runtime_allowed: true
+  rotation_weight: 1
+  safe_usage_notes: DIRECT resolver pack for Minyak Warisan Cap Burung family. Persona
+    AZMAN with AZMAN_CASUAL_01. Manual override requires Needs Compliance Review.
+  internal_notes: Wardrobe sourced from AZMAN.yaml::AZMAN_CASUAL_01; scene keyed from
+    mwcb_bag_ready; mannequin pose resolved in avatar context builder.
 persona_index:
 - persona_id: RIZAL
   persona_label: Rizal
   base_archetype: MALAY_MALE_YOUNG_01
   assigned_products:
   - BOSMAX_SERUM
+  - CAP_BURUNG_MINYAK
   - MAVERIX_MAXOIL
   compatible_silos:
   - STEALTH
@@ -338,6 +393,7 @@ persona_index:
   base_archetype: MALAY_MALE_YOUNG_01
   assigned_products:
   - BOSMAX_SERUM
+  - CAP_BURUNG_MINYAK
   - MAVERIX_MAXOIL
   compatible_silos:
   - STEALTH
@@ -351,8 +407,7 @@ mannequin_pose_library:
   mannequin_label: Close Hold Reset
   pose_summary: Standing or seated medium-close talk with one natural hand accent
     and no static mannequin freeze.
-  compatible_physics_classes:
-  - CLASS_A
+  compatible_physics_classes: *id003
   camera_style_allowed:
   - UGC_IPHONE_RAW
   scene_context_ids:
@@ -361,8 +416,7 @@ mannequin_pose_library:
   mannequin_label: Walk And Talk
   pose_summary: Slow forward or side-walk delivery with light arm swing and relaxed
     shoulder posture.
-  compatible_physics_classes:
-  - CLASS_A
+  compatible_physics_classes: *id009
   camera_style_allowed:
   - UGC_IPHONE_RAW
   scene_context_ids:
@@ -371,32 +425,45 @@ mannequin_pose_library:
   mannequin_label: Desk Reveal Confidence
   pose_summary: Controlled standing or leaning office posture with measured hand reveal
     and grounded eye line.
-  compatible_physics_classes:
-  - CLASS_A
+  compatible_physics_classes: *id006
   camera_style_allowed:
   - UGC_IPHONE_RAW
   scene_context_ids:
   - CTX_OFFICE_CONFIDENCE_CORNER_001
+- mannequin_id: MAN_DIRECT_BOTTLE_PICKUP_001
+  mannequin_label: Bottle Pickup Utility
+  pose_summary: Natural household reach, bottle pickup, or side-table explanation
+    gesture with grounded family-man practicality.
+  compatible_physics_classes: *id010
+  camera_style_allowed:
+  - UGC_IPHONE_RAW
+  scene_context_ids:
+  - CTX_HOME_TRAD_REMEDY_001
+- mannequin_id: MAN_DIRECT_BAG_REACH_001
+  mannequin_label: Bag Reach Practicality
+  pose_summary: Simple bag, drawer, or car-pocket reach motion showing compact everyday-carry
+    readiness without exaggerated acting.
+  compatible_physics_classes: *id011
+  camera_style_allowed:
+  - UGC_IPHONE_RAW
+  scene_context_ids:
+  - CTX_TRAVEL_TRAD_REMEDY_001
 scene_context_library:
 - scene_context_id: CTX_HOME_STEALTH_RESET_001
   scene_label: Quiet Home Reset Corner
   base_scene_key: home_indoor
   environment_summary: Warm indoor private corner with low-noise everyday props and
     product-neutral framing.
-  silo_allowed:
-  - STEALTH
-  camera_style_allowed:
-  - UGC_IPHONE_RAW
+  silo_allowed: *id001
+  camera_style_allowed: *id002
   safe_usage_notes: Private indoor stealth lane. Keep framing conversational and product-neutral.
 - scene_context_id: CTX_STREET_MORNING_RESET_001
   scene_label: Morning Street Confidence Walk
   base_scene_key: outdoor_street
   environment_summary: Soft daylight outdoor walkway with authentic motion and subtle
     background depth.
-  silo_allowed:
-  - STEALTH
-  camera_style_allowed:
-  - UGC_IPHONE_RAW
+  silo_allowed: *id007
+  camera_style_allowed: *id008
   safe_usage_notes: Outdoor stealth lane. Keep gestures natural and avoid fitness-bro
     exaggeration.
 - scene_context_id: CTX_OFFICE_CONFIDENCE_CORNER_001
@@ -404,11 +471,27 @@ scene_context_library:
   base_scene_key: office_interior
   environment_summary: Smart indoor office nook with grounded professional texture
     and light desk cues.
-  silo_allowed:
-  - STEALTH
-  camera_style_allowed:
-  - UGC_IPHONE_RAW
+  silo_allowed: *id004
+  camera_style_allowed: *id005
   safe_usage_notes: Professional stealth lane. Keep the setting calm and non-clinical.
+- scene_context_id: CTX_HOME_TRAD_REMEDY_001
+  scene_label: Household Relief Shelf Reset
+  base_scene_key: mwcb_home_relief
+  environment_summary: Warm rumah setting with small household storage cues, everyday
+    reachability, and practical family utility framing.
+  silo_allowed: *id012
+  camera_style_allowed: *id013
+  safe_usage_notes: DIRECT traditional-remedy lane. Keep the bottle within normal
+    household use context and avoid clinical implication.
+- scene_context_id: CTX_TRAVEL_TRAD_REMEDY_001
+  scene_label: On-The-Go Remedy Grab
+  base_scene_key: mwcb_bag_ready
+  environment_summary: Natural grab-from-bag or dashboard-side readiness moment showing
+    compact everyday carry practicality.
+  silo_allowed: *id014
+  camera_style_allowed: *id015
+  safe_usage_notes: DIRECT traditional-remedy lane. Keep usage practical, pocketable,
+    and non-medical.
 rotation_pools:
 - pool_id: BOSMAX_MALE_STEALTH_POOL_001
   display_name: BOSMAX Male Stealth Pool | BOSMAX Serum Family
@@ -431,6 +514,22 @@ rotation_pools:
   runtime_allowed: true
   safe_usage_notes: Repo-owned AUTO_ROTATE pool for BOSMAX Serum stealth batch runs.
     Notion may display IDs only; manual override requires Needs Compliance Review.
+- pool_id: MWCB_TRAD_REMEDY_POOL_001
+  display_name: MWCB Direct Remedy Pool | Minyak Warisan Cap Burung
+  product_id: CAP_BURUNG_MINYAK
+  product_family: FAMILY_TRADITIONAL_REMEDY_OIL
+  silo: DIRECT
+  allowed_avatar_context_ids:
+  - MWCB_DIRECT_AVP_0001
+  - MWCB_DIRECT_AVP_0002
+  rotation_mode: ROUND_ROBIN_NO_REPEAT
+  no_repeat_window: 1
+  minimum_approved_count: 2
+  status: APPROVED
+  runtime_allowed: true
+  safe_usage_notes: Repo-owned AUTO_ROTATE pool for Minyak Warisan Cap Burung DIRECT
+    batch runs. Notion may display IDs only; manual override requires Needs Compliance
+    Review.
 notion_export_view:
 - avatar_context_id: BOSMAX_AVP_0001
   display_name: RIZAL | RIZAL_CASUAL_01 | Quiet Home Reset Corner
@@ -438,10 +537,10 @@ notion_export_view:
   gender: Male
   age_range: 27-34
   silo_allowed: *id001
-  product_family_allowed: *id002
+  product_family_allowed: *id016
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id003
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_CASUAL_01. Manual override requires Needs Compliance Review.
@@ -450,11 +549,11 @@ notion_export_view:
   persona_label: Rizal
   gender: Male
   age_range: 27-34
-  silo_allowed: *id004
-  product_family_allowed: *id005
+  silo_allowed: *id007
+  product_family_allowed: *id017
   scene_label: Morning Street Confidence Walk
   mannequin_label: Walk And Talk
-  camera_style_allowed: *id006
+  camera_style_allowed: *id008
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_ACTIVE_01. Manual override requires Needs Compliance Review.
@@ -463,11 +562,11 @@ notion_export_view:
   persona_label: Rizal
   gender: Male
   age_range: 27-34
-  silo_allowed: *id007
-  product_family_allowed: *id008
+  silo_allowed: *id004
+  product_family_allowed: *id018
   scene_label: Office Confidence Corner
   mannequin_label: Desk Reveal Confidence
-  camera_style_allowed: *id009
+  camera_style_allowed: *id005
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_SMART_01. Manual override requires Needs Compliance Review.
@@ -476,11 +575,11 @@ notion_export_view:
   persona_label: Rizal
   gender: Male
   age_range: 27-34
-  silo_allowed: *id010
-  product_family_allowed: *id011
+  silo_allowed: *id001
+  product_family_allowed: *id019
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id012
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_RAYA_01. Manual override requires Needs Compliance Review.
@@ -489,11 +588,11 @@ notion_export_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id013
-  product_family_allowed: *id014
+  silo_allowed: *id001
+  product_family_allowed: *id020
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id015
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_CASUAL_01. Manual override requires Needs Compliance Review.
@@ -502,11 +601,11 @@ notion_export_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id016
-  product_family_allowed: *id017
+  silo_allowed: *id004
+  product_family_allowed: *id021
   scene_label: Office Confidence Corner
   mannequin_label: Desk Reveal Confidence
-  camera_style_allowed: *id018
+  camera_style_allowed: *id005
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_SMART_01. Manual override requires Needs Compliance Review.
@@ -515,11 +614,11 @@ notion_export_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id019
-  product_family_allowed: *id020
+  silo_allowed: *id007
+  product_family_allowed: *id022
   scene_label: Morning Street Confidence Walk
   mannequin_label: Walk And Talk
-  camera_style_allowed: *id021
+  camera_style_allowed: *id008
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_ACTIVE_01. Manual override requires Needs Compliance Review.
@@ -528,14 +627,40 @@ notion_export_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id022
+  silo_allowed: *id001
   product_family_allowed: *id023
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id024
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_RAYA_01. Manual override requires Needs Compliance Review.
+- avatar_context_id: MWCB_DIRECT_AVP_0001
+  display_name: RIZAL | RIZAL_CASUAL_01 | Household Relief Shelf Reset
+  persona_label: Rizal
+  gender: Male
+  age_range: 27-34
+  silo_allowed: *id012
+  product_family_allowed: *id024
+  scene_label: Household Relief Shelf Reset
+  mannequin_label: Bottle Pickup Utility
+  camera_style_allowed: *id013
+  status: APPROVED
+  safe_usage_notes: DIRECT resolver pack for Minyak Warisan Cap Burung family. Persona
+    RIZAL with RIZAL_CASUAL_01. Manual override requires Needs Compliance Review.
+- avatar_context_id: MWCB_DIRECT_AVP_0002
+  display_name: AZMAN | AZMAN_CASUAL_01 | On-The-Go Remedy Grab
+  persona_label: Azman
+  gender: Male
+  age_range: 30-38
+  silo_allowed: *id014
+  product_family_allowed: *id025
+  scene_label: On-The-Go Remedy Grab
+  mannequin_label: Bag Reach Practicality
+  camera_style_allowed: *id015
+  status: APPROVED
+  safe_usage_notes: DIRECT resolver pack for Minyak Warisan Cap Burung family. Persona
+    AZMAN with AZMAN_CASUAL_01. Manual override requires Needs Compliance Review.
 notion_command_centre_avatar_id_view:
 - avatar_context_id: BOSMAX_AVP_0001
   display_name: RIZAL | RIZAL_CASUAL_01 | Quiet Home Reset Corner
@@ -543,10 +668,10 @@ notion_command_centre_avatar_id_view:
   gender: Male
   age_range: 27-34
   silo_allowed: *id001
-  product_family_allowed: *id002
+  product_family_allowed: *id016
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id003
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_CASUAL_01. Manual override requires Needs Compliance Review.
@@ -555,11 +680,11 @@ notion_command_centre_avatar_id_view:
   persona_label: Rizal
   gender: Male
   age_range: 27-34
-  silo_allowed: *id004
-  product_family_allowed: *id005
+  silo_allowed: *id007
+  product_family_allowed: *id017
   scene_label: Morning Street Confidence Walk
   mannequin_label: Walk And Talk
-  camera_style_allowed: *id006
+  camera_style_allowed: *id008
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_ACTIVE_01. Manual override requires Needs Compliance Review.
@@ -568,11 +693,11 @@ notion_command_centre_avatar_id_view:
   persona_label: Rizal
   gender: Male
   age_range: 27-34
-  silo_allowed: *id007
-  product_family_allowed: *id008
+  silo_allowed: *id004
+  product_family_allowed: *id018
   scene_label: Office Confidence Corner
   mannequin_label: Desk Reveal Confidence
-  camera_style_allowed: *id009
+  camera_style_allowed: *id005
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_SMART_01. Manual override requires Needs Compliance Review.
@@ -581,11 +706,11 @@ notion_command_centre_avatar_id_view:
   persona_label: Rizal
   gender: Male
   age_range: 27-34
-  silo_allowed: *id010
-  product_family_allowed: *id011
+  silo_allowed: *id001
+  product_family_allowed: *id019
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id012
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona RIZAL with
     RIZAL_RAYA_01. Manual override requires Needs Compliance Review.
@@ -594,11 +719,11 @@ notion_command_centre_avatar_id_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id013
-  product_family_allowed: *id014
+  silo_allowed: *id001
+  product_family_allowed: *id020
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id015
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_CASUAL_01. Manual override requires Needs Compliance Review.
@@ -607,11 +732,11 @@ notion_command_centre_avatar_id_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id016
-  product_family_allowed: *id017
+  silo_allowed: *id004
+  product_family_allowed: *id021
   scene_label: Office Confidence Corner
   mannequin_label: Desk Reveal Confidence
-  camera_style_allowed: *id018
+  camera_style_allowed: *id005
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_SMART_01. Manual override requires Needs Compliance Review.
@@ -620,11 +745,11 @@ notion_command_centre_avatar_id_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id019
-  product_family_allowed: *id020
+  silo_allowed: *id007
+  product_family_allowed: *id022
   scene_label: Morning Street Confidence Walk
   mannequin_label: Walk And Talk
-  camera_style_allowed: *id021
+  camera_style_allowed: *id008
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_ACTIVE_01. Manual override requires Needs Compliance Review.
@@ -633,14 +758,40 @@ notion_command_centre_avatar_id_view:
   persona_label: Azman
   gender: Male
   age_range: 30-38
-  silo_allowed: *id022
+  silo_allowed: *id001
   product_family_allowed: *id023
   scene_label: Quiet Home Reset Corner
   mannequin_label: Close Hold Reset
-  camera_style_allowed: *id024
+  camera_style_allowed: *id002
   status: APPROVED
   safe_usage_notes: STEALTH resolver pack for BOSMAX Serum family. Persona AZMAN with
     AZMAN_RAYA_01. Manual override requires Needs Compliance Review.
+- avatar_context_id: MWCB_DIRECT_AVP_0001
+  display_name: RIZAL | RIZAL_CASUAL_01 | Household Relief Shelf Reset
+  persona_label: Rizal
+  gender: Male
+  age_range: 27-34
+  silo_allowed: *id012
+  product_family_allowed: *id024
+  scene_label: Household Relief Shelf Reset
+  mannequin_label: Bottle Pickup Utility
+  camera_style_allowed: *id013
+  status: APPROVED
+  safe_usage_notes: DIRECT resolver pack for Minyak Warisan Cap Burung family. Persona
+    RIZAL with RIZAL_CASUAL_01. Manual override requires Needs Compliance Review.
+- avatar_context_id: MWCB_DIRECT_AVP_0002
+  display_name: AZMAN | AZMAN_CASUAL_01 | On-The-Go Remedy Grab
+  persona_label: Azman
+  gender: Male
+  age_range: 30-38
+  silo_allowed: *id014
+  product_family_allowed: *id025
+  scene_label: On-The-Go Remedy Grab
+  mannequin_label: Bag Reach Practicality
+  camera_style_allowed: *id015
+  status: APPROVED
+  safe_usage_notes: DIRECT resolver pack for Minyak Warisan Cap Burung family. Persona
+    AZMAN with AZMAN_CASUAL_01. Manual override requires Needs Compliance Review.
 notion_command_centre_avatar_pool_view:
 - pool_id: BOSMAX_MALE_STEALTH_POOL_001
   display_name: BOSMAX Male Stealth Pool | BOSMAX Serum Family
@@ -653,12 +804,35 @@ notion_command_centre_avatar_pool_view:
   status: APPROVED
   safe_usage_notes: Repo-owned AUTO_ROTATE pool for BOSMAX Serum stealth batch runs.
     Notion may display IDs only; manual override requires Needs Compliance Review.
+- pool_id: MWCB_TRAD_REMEDY_POOL_001
+  display_name: MWCB Direct Remedy Pool | Minyak Warisan Cap Burung
+  product_id: CAP_BURUNG_MINYAK
+  product_family: FAMILY_TRADITIONAL_REMEDY_OIL
+  silo: DIRECT
+  rotation_mode: ROUND_ROBIN_NO_REPEAT
+  no_repeat_window: 1
+  minimum_approved_count: 2
+  status: APPROVED
+  safe_usage_notes: Repo-owned AUTO_ROTATE pool for Minyak Warisan Cap Burung DIRECT
+    batch runs. Notion may display IDs only; manual override requires Needs Compliance
+    Review.
 legacy_expert_mode:
   status: ACTIVE
   label: LEGACY_EXPERT_MODE
   manual_override_posture: MANUAL_OVERRIDE_REVIEW_ONLY
   required_review_status: Needs Compliance Review
   notes: Manual Avatar/Mannequin/Wardrobe/Scene edits remain expert-only and review-gated.
+command_centre_product_workflows:
+  BOSMAX_SERUM_STEALTH_REGISTERED_PRODUCT:
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_pool_id: BOSMAX_MALE_STEALTH_POOL_001
+    avatar_mode_single: AUTO_RESOLVE
+    avatar_mode_batch: AUTO_ROTATE
+  MINYAK_WARISAN_CAP_BURUNG_DIRECT_REGISTERED_PRODUCT:
+    avatar_context_id: MWCB_DIRECT_AVP_0001
+    avatar_pool_id: MWCB_TRAD_REMEDY_POOL_001
+    avatar_mode_single: AUTO_RESOLVE
+    avatar_mode_batch: AUTO_ROTATE
 default_command_centre_batch_template:
   platform: TikTok
   mode: B
@@ -681,12 +855,15 @@ default_command_centre_batch_template:
 samples:
   sample_avatar_context_id: BOSMAX_AVP_0001
   sample_avatar_pool_id: BOSMAX_MALE_STEALTH_POOL_001
+  sample_mwcb_avatar_context_id: MWCB_DIRECT_AVP_0001
+  sample_mwcb_avatar_pool_id: MWCB_TRAD_REMEDY_POOL_001
 counts:
-  avatar_context_packs: 8
-  avatar_pools: 1
-  command_centre_avatar_rows: 8
-  command_centre_pool_rows: 1
+  avatar_context_packs: 10
+  avatar_pools: 2
+  command_centre_avatar_rows: 10
+  command_centre_pool_rows: 2
 changelog:
-- timestamp_utc: '2026-06-05T14:30:34+00:00'
-  change_note: Generated first-pass avatar context resolver and rotation pool for
-    stealth male batch prompting with Command Centre beginner selector views.
+- timestamp_utc: '2026-06-05T15:02:33+00:00'
+  change_note: Generated avatar context resolver and rotation pools for BOSMAX STEALTH
+    and MWCB DIRECT Command Centre workflows with workbook aliases and beginner selector
+    views.

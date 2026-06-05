@@ -51,6 +51,11 @@ COMMAND_CENTRE_HEADERS = [
     "Safe_Usage_Notes",
 ]
 COMMAND_CENTRE_SHEET_ALIAS = "CC_COPY_ID_VIEW"
+BOSMAX_STEALTH_COMMAND_CENTRE_VIEW_ID = "NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW"
+BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS = "CC_BSMX_ST_COPY"
+MWCB_DIRECT_COMMAND_CENTRE_VIEW_ID = "NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW"
+MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS = "CC_MWCB_DIR_COPY"
+VIEW_ALIAS_HEADERS = ["Public_View_ID", "Workbook_Sheet_Alias", "Description"]
 
 REGISTRY_HEADERS = [
     "Copywriting_ID",
@@ -100,6 +105,26 @@ VALIDATION_RULES = [
     ("NOTION_SAFE_EXPORT_ONLY", "Do not expose source paths, raw provenance nodes, or compliance internals in NOTION_EXPORT_VIEW."),
     ("COMMAND_CENTRE_BEGINNER_VIEW_ONLY", "Command Centre beginner copy ID view must exclude Hook, USP_1, USP_2, USP_3, and CTA."),
     ("COMMAND_CENTRE_PRODUCTION_STATUS", "Command Centre default production view should use APPROVED or LOCKED only; SEED_READY must be clearly marked staging."),
+    ("COMMAND_CENTRE_PRODUCT_VIEW_FILTER", "Product-specific Command Centre copy ID views must fail closed on cross-product or cross-silo rows."),
+    ("SESSION_ONLY_NO_REGISTRY_WRITEBACK", "ON_THE_FLY session-only templates must not claim reusable registry writeback authority."),
+]
+
+VIEW_ALIASES = [
+    {
+        "public_view_id": "NOTION_COMMAND_CENTRE_COPY_ID_VIEW",
+        "workbook_sheet_alias": COMMAND_CENTRE_SHEET_ALIAS,
+        "description": "Generic beginner copywriting selector view across all approved runtime packs.",
+    },
+    {
+        "public_view_id": BOSMAX_STEALTH_COMMAND_CENTRE_VIEW_ID,
+        "workbook_sheet_alias": BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS,
+        "description": "Product-specific Command Centre view for BOSMAX Serum STEALTH registered-product operators.",
+    },
+    {
+        "public_view_id": MWCB_DIRECT_COMMAND_CENTRE_VIEW_ID,
+        "workbook_sheet_alias": MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS,
+        "description": "Product-specific Command Centre view for Minyak Warisan Cap Burung DIRECT registered-product operators.",
+    },
 ]
 
 
@@ -166,6 +191,20 @@ def build_command_centre_usage_notes(status: str, base_note: str) -> str:
     if status == "SEED_READY":
         return f"STAGING_ONLY — {base_note}"
     return base_note
+
+
+def build_command_centre_row(record: dict[str, Any]) -> dict[str, str]:
+    return {
+        "copywriting_id": record["copywriting_id"],
+        "display_name": record["display_name"],
+        "product_name": record["product_name"],
+        "family_name": record["family_name"],
+        "lane": record["lane"],
+        "submode_formula": record["submode_formula"],
+        "compliance": record["compliance"],
+        "status": record["status"],
+        "safe_usage_notes": build_command_centre_usage_notes(record["status"], record["safe_usage_notes"]),
+    }
 
 
 def iter_product_rows() -> list[dict[str, Any]]:
@@ -301,19 +340,7 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "safe_usage_notes": record["safe_usage_notes"],
             }
         )
-        command_centre_rows.append(
-            {
-                "copywriting_id": record["copywriting_id"],
-                "display_name": record["display_name"],
-                "product_name": record["product_name"],
-                "family_name": record["family_name"],
-                "lane": record["lane"],
-                "submode_formula": record["submode_formula"],
-                "compliance": record["compliance"],
-                "status": record["status"],
-                "safe_usage_notes": build_command_centre_usage_notes(record["status"], record["safe_usage_notes"]),
-            }
-        )
+        command_centre_rows.append(build_command_centre_row(record))
 
         for alias in record["aliases"]:
             alias_rows.append(
@@ -325,6 +352,17 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
                     "legacy_row_id": record["legacy_row_id"],
                 }
             )
+
+    bosmax_stealth_rows = [
+        build_command_centre_row(record)
+        for record in records
+        if record["product_id"] == "BOSMAX_SERUM" and record["lane"] == "STEALTH"
+    ]
+    mwcb_direct_rows = [
+        build_command_centre_row(record)
+        for record in records
+        if record["product_id"] == "CAP_BURUNG_MINYAK" and record["lane"] == "DIRECT"
+    ]
 
     return {
         "schema_version": "1.0",
@@ -360,6 +398,7 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "require_provenance_nodes",
             ],
         },
+        "workbook_sheet_aliases": VIEW_ALIASES,
         "validation_rules": [
             {"rule_id": rule_id, "description": description}
             for rule_id, description in VALIDATION_RULES
@@ -368,12 +407,45 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
         "alias_map": alias_rows,
         "notion_export_view": notion_rows,
         "notion_command_centre_copy_id_view": command_centre_rows,
+        "notion_command_centre_bosmax_stealth_copy_id_view": bosmax_stealth_rows,
+        "notion_command_centre_mwcb_direct_copy_id_view": mwcb_direct_rows,
         "legacy_expert_mode": {
             "status": "ACTIVE",
             "label": "LEGACY_EXPERT_MODE",
             "manual_override_posture": "MANUAL_OVERRIDE_REVIEW_ONLY",
             "required_review_status": "Needs Compliance Review",
             "notes": "Manual Hook/USP/CTA editing remains available only for trusted expert operators.",
+        },
+        "command_centre_product_workflows": {
+            "BOSMAX_SERUM_STEALTH_REGISTERED_PRODUCT": {
+                "product_workflow": "BOSMAX Serum / STEALTH Registered Product",
+                "product_id": "BOSMAX_SERUM",
+                "copywriting_view_id": BOSMAX_STEALTH_COMMAND_CENTRE_VIEW_ID,
+                "copywriting_view_alias": BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS,
+                "copywriting_id": "BOSMAX_SERUM_CP_0001",
+                "copywriting_mode": "AUTO_RESOLVE",
+                "avatar_context_id": "BOSMAX_AVP_0001",
+                "avatar_mode": "AUTO_RESOLVE",
+                "registry_writeback": "ALLOWED_REGISTERED_PRODUCT_ONLY",
+            },
+            "MINYAK_WARISAN_CAP_BURUNG_DIRECT_REGISTERED_PRODUCT": {
+                "product_workflow": "Minyak Warisan Cap Burung / DIRECT Registered Product",
+                "product_id": "CAP_BURUNG_MINYAK",
+                "copywriting_view_id": MWCB_DIRECT_COMMAND_CENTRE_VIEW_ID,
+                "copywriting_view_alias": MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS,
+                "copywriting_id": "CAP_BURUNG_MINYAK_CP_0031",
+                "copywriting_mode": "AUTO_RESOLVE",
+                "avatar_context_id": "MWCB_DIRECT_AVP_0001",
+                "avatar_mode": "AUTO_RESOLVE",
+                "registry_writeback": "ALLOWED_REGISTERED_PRODUCT_ONLY",
+            },
+            "ON_THE_FLY_SESSION_ONLY_TEMPLATE": {
+                "product_workflow": "ON_THE_FLY Product / SESSION_ONLY",
+                "copywriting_id": None,
+                "copywriting_mode": "SESSION_ONLY_GENERATE",
+                "registry_writeback": "FORBIDDEN",
+                "review_only_products": "BLOCK_GENERATION",
+            },
         },
         "default_command_centre_template": {
             "platform": "TikTok",
@@ -401,11 +473,13 @@ def build_registry(records: list[dict[str, Any]]) -> dict[str, Any]:
             "alias_rows": len(alias_rows),
             "notion_rows": len(notion_rows),
             "command_centre_rows": len(command_centre_rows),
+            "bosmax_stealth_command_centre_rows": len(bosmax_stealth_rows),
+            "mwcb_direct_command_centre_rows": len(mwcb_direct_rows),
         },
         "changelog": [
             {
                 "timestamp_utc": generated_at,
-                "change_note": "Generated resolver workbook and YAML registry from approved product workbook rows with Command Centre beginner view and legacy expert labeling.",
+                "change_note": "Generated resolver workbook and YAML registry from approved product workbook rows with generic and product-specific Command Centre copy ID selector views, workbook aliases, and session-only workflow metadata.",
             }
         ],
     }
@@ -491,6 +565,14 @@ def write_workbook(registry: dict[str, Any]) -> None:
         ]
         for row in registry["alias_map"]
     ]
+    alias_view_rows = [
+        [
+            row["public_view_id"],
+            row["workbook_sheet_alias"],
+            row["description"],
+        ]
+        for row in registry["workbook_sheet_aliases"]
+    ]
 
     command_centre_rows = [
         [
@@ -505,6 +587,34 @@ def write_workbook(registry: dict[str, Any]) -> None:
             row["safe_usage_notes"],
         ]
         for row in registry["notion_command_centre_copy_id_view"]
+    ]
+    bosmax_stealth_command_centre_rows = [
+        [
+            row["copywriting_id"],
+            row["display_name"],
+            row["product_name"],
+            row["family_name"],
+            row["lane"],
+            row["submode_formula"],
+            row["compliance"],
+            row["status"],
+            row["safe_usage_notes"],
+        ]
+        for row in registry["notion_command_centre_bosmax_stealth_copy_id_view"]
+    ]
+    mwcb_direct_command_centre_rows = [
+        [
+            row["copywriting_id"],
+            row["display_name"],
+            row["product_name"],
+            row["family_name"],
+            row["lane"],
+            row["submode_formula"],
+            row["compliance"],
+            row["status"],
+            row["safe_usage_notes"],
+        ]
+        for row in registry["notion_command_centre_mwcb_direct_copy_id_view"]
     ]
 
     notion_rows = [
@@ -536,7 +646,10 @@ def write_workbook(registry: dict[str, Any]) -> None:
 
     populate_sheet(workbook.create_sheet("COPY_PACK_REGISTRY"), REGISTRY_HEADERS, registry_rows)
     populate_sheet(workbook.create_sheet("COPY_ID_ALIAS_MAP"), ALIAS_HEADERS, alias_rows)
+    populate_sheet(workbook.create_sheet("VIEW_ALIASES"), VIEW_ALIAS_HEADERS, alias_view_rows)
     populate_sheet(workbook.create_sheet(COMMAND_CENTRE_SHEET_ALIAS), COMMAND_CENTRE_HEADERS, command_centre_rows)
+    populate_sheet(workbook.create_sheet(BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS), COMMAND_CENTRE_HEADERS, bosmax_stealth_command_centre_rows)
+    populate_sheet(workbook.create_sheet(MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS), COMMAND_CENTRE_HEADERS, mwcb_direct_command_centre_rows)
     populate_sheet(workbook.create_sheet("NOTION_EXPORT_VIEW"), SAFE_NOTION_HEADERS, notion_rows)
     populate_sheet(workbook.create_sheet("VALIDATION_RULES"), VALIDATION_RULE_HEADERS, rule_rows)
     populate_sheet(workbook.create_sheet("CHANGELOG"), CHANGELOG_HEADERS, changelog_rows)

@@ -14,6 +14,12 @@ from resolver_runtime import (
     resolve_copywriting_id,
 )
 from build_copywriting_id_resolver import COMMAND_CENTRE_SHEET_ALIAS
+from build_copywriting_id_resolver import (
+    BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS,
+    BOSMAX_STEALTH_COMMAND_CENTRE_VIEW_ID,
+    MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS,
+    MWCB_DIRECT_COMMAND_CENTRE_VIEW_ID,
+)
 
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -26,7 +32,10 @@ REGISTRY_PATH = ROOT / "registries" / "copywriting_id_resolver.yaml"
 REQUIRED_SHEETS = {
     "COPY_PACK_REGISTRY",
     "COPY_ID_ALIAS_MAP",
+    "VIEW_ALIASES",
     COMMAND_CENTRE_SHEET_ALIAS,
+    BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS,
+    MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS,
     "NOTION_EXPORT_VIEW",
     "VALIDATION_RULES",
     "CHANGELOG",
@@ -112,6 +121,11 @@ FORBIDDEN_COMMAND_CENTRE_HEADERS = {
     "Source_Variant_Solution_Node",
     "Source_Variant_CTA_Node",
 }
+EXPECTED_VIEW_ALIASES = {
+    "NOTION_COMMAND_CENTRE_COPY_ID_VIEW": COMMAND_CENTRE_SHEET_ALIAS,
+    BOSMAX_STEALTH_COMMAND_CENTRE_VIEW_ID: BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS,
+    MWCB_DIRECT_COMMAND_CENTRE_VIEW_ID: MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS,
+}
 
 
 def normalize(value: object) -> str:
@@ -156,6 +170,20 @@ def validate_workbook_shape() -> None:
         not FORBIDDEN_COMMAND_CENTRE_HEADERS.intersection(set(command_centre_headers)),
         f"{COMMAND_CENTRE_SHEET_ALIAS} exposes forbidden fields",
     )
+
+    for sheet_name in (BOSMAX_STEALTH_COMMAND_CENTRE_SHEET_ALIAS, MWCB_DIRECT_COMMAND_CENTRE_SHEET_ALIAS):
+        view_sheet = workbook[sheet_name]
+        view_headers = [normalize(cell.value) for cell in next(view_sheet.iter_rows(max_row=1))]
+        expect(view_headers == EXPECTED_COMMAND_CENTRE_HEADERS, f"{sheet_name} headers drift detected")
+        expect(
+            not FORBIDDEN_COMMAND_CENTRE_HEADERS.intersection(set(view_headers)),
+            f"{sheet_name} exposes forbidden fields",
+        )
+
+    alias_sheet = workbook["VIEW_ALIASES"]
+    alias_rows = list(alias_sheet.iter_rows(min_row=2, values_only=True))
+    alias_map = {normalize(row[0]): normalize(row[1]) for row in alias_rows if normalize(row[0])}
+    expect(alias_map == EXPECTED_VIEW_ALIASES, "VIEW_ALIASES sheet drift detected")
     print("workbook shape ok")
 
 
@@ -165,11 +193,35 @@ def validate_registry_shape(registry: dict[str, Any]) -> None:
     expect(bool(registry.get("copy_packs")), "copy_packs cannot be empty")
     expect(bool(registry.get("alias_map")), "alias_map cannot be empty")
     expect(bool(registry.get("notion_command_centre_copy_id_view")), "notion_command_centre_copy_id_view cannot be empty")
+    expect(bool(registry.get("notion_command_centre_bosmax_stealth_copy_id_view")), "notion_command_centre_bosmax_stealth_copy_id_view cannot be empty")
+    expect(bool(registry.get("notion_command_centre_mwcb_direct_copy_id_view")), "notion_command_centre_mwcb_direct_copy_id_view cannot be empty")
     expect(registry.get("samples", {}).get("sample_copywriting_id") == "BOSMAX_SERUM_CP_0001", "sample_copywriting_id drift detected")
     expect(registry.get("runtime_contract", {}).get("default_notion_flow") == "COMMAND_CENTRE_PLUG_AND_PLAY", "default_notion_flow drift detected")
     legacy = registry.get("legacy_expert_mode", {})
     expect(legacy.get("label") == "LEGACY_EXPERT_MODE", "legacy expert label drift detected")
     expect(legacy.get("manual_override_posture") == "MANUAL_OVERRIDE_REVIEW_ONLY", "manual override posture drift detected")
+    alias_map = {
+        normalize(row.get("public_view_id")): normalize(row.get("workbook_sheet_alias"))
+        for row in registry.get("workbook_sheet_aliases", [])
+    }
+    expect(alias_map == EXPECTED_VIEW_ALIASES, "workbook_sheet_aliases registry drift detected")
+    workflows = registry.get("command_centre_product_workflows", {})
+    expect(
+        workflows.get("BOSMAX_SERUM_STEALTH_REGISTERED_PRODUCT", {}).get("copywriting_view_id") == BOSMAX_STEALTH_COMMAND_CENTRE_VIEW_ID,
+        "BOSMAX Serum product workflow view drift detected",
+    )
+    expect(
+        workflows.get("MINYAK_WARISAN_CAP_BURUNG_DIRECT_REGISTERED_PRODUCT", {}).get("copywriting_view_id") == MWCB_DIRECT_COMMAND_CENTRE_VIEW_ID,
+        "MWCB product workflow view drift detected",
+    )
+    expect(
+        workflows.get("ON_THE_FLY_SESSION_ONLY_TEMPLATE", {}).get("copywriting_mode") == "SESSION_ONLY_GENERATE",
+        "ON_THE_FLY session-only copywriting mode drift detected",
+    )
+    expect(
+        workflows.get("ON_THE_FLY_SESSION_ONLY_TEMPLATE", {}).get("registry_writeback") == "FORBIDDEN",
+        "ON_THE_FLY registry_writeback drift detected",
+    )
     print("registry shape ok")
 
 
@@ -209,6 +261,16 @@ def validate_runtime_records(registry: dict[str, Any]) -> None:
             all("STAGING_ONLY" in normalize(row.get("safe_usage_notes")) for row in staging_rows),
             "SEED_READY Command Centre rows must be clearly marked as staging",
         )
+
+    bosmax_rows = registry.get("notion_command_centre_bosmax_stealth_copy_id_view", [])
+    expect(all(normalize(row.get("product_name")) == "BOSMAX Serum" for row in bosmax_rows), "BOSMAX Command Centre view contains non-BOSMAX row")
+    expect(all(normalize(row.get("lane")) == "STEALTH" for row in bosmax_rows), "BOSMAX Command Centre view contains non-STEALTH row")
+    expect(any(normalize(row.get("copywriting_id")) == "BOSMAX_SERUM_CP_0001" for row in bosmax_rows), "BOSMAX view missing BOSMAX_SERUM_CP_0001")
+
+    mwcb_rows = registry.get("notion_command_centre_mwcb_direct_copy_id_view", [])
+    expect(all(normalize(row.get("product_name")) == "Minyak Warisan Cap Burung" for row in mwcb_rows), "MWCB Command Centre view contains non-MWCB row")
+    expect(all(normalize(row.get("lane")) == "DIRECT" for row in mwcb_rows), "MWCB Command Centre view contains non-DIRECT row")
+    expect(any(normalize(row.get("copywriting_id")) == "CAP_BURUNG_MINYAK_CP_0031" for row in mwcb_rows), "MWCB view missing approved Phase 1 row CAP_BURUNG_MINYAK_CP_0031")
     print("runtime record invariants ok")
 
 

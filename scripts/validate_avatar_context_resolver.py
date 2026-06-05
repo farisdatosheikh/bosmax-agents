@@ -29,6 +29,7 @@ REGISTRY_PATH = ROOT / "registries" / "avatar_context_rotation.yaml"
 REQUIRED_SHEETS = {
     "AVATAR_CONTEXT_PACKS",
     "AVATAR_PERSONA_INDEX",
+    "VIEW_ALIASES",
     "MANNEQUIN_POSE_LIBRARY",
     "SCENE_CONTEXT_LIBRARY",
     "ROTATION_POOLS",
@@ -37,6 +38,10 @@ REQUIRED_SHEETS = {
     "NOTION_EXPORT_VIEW",
     "VALIDATION_RULES",
     "CHANGELOG",
+}
+EXPECTED_VIEW_ALIASES = {
+    "NOTION_COMMAND_CENTRE_AVATAR_ID_VIEW": COMMAND_CENTRE_AVATAR_SHEET_ALIAS,
+    "NOTION_COMMAND_CENTRE_AVATAR_POOL_VIEW": COMMAND_CENTRE_POOL_SHEET_ALIAS,
 }
 FORBIDDEN_NOTION_HEADERS = {
     "Prompt_Fragment_Source",
@@ -132,6 +137,11 @@ def validate_workbook_shape() -> None:
     command_pool_headers = [normalize(cell.value) for cell in next(command_pool_sheet.iter_rows(max_row=1))]
     expect(command_pool_headers == EXPECTED_COMMAND_CENTRE_POOL_HEADERS, f"{COMMAND_CENTRE_POOL_SHEET_ALIAS} headers drift detected")
     expect(not FORBIDDEN_COMMAND_CENTRE_HEADERS.intersection(set(command_pool_headers)), f"{COMMAND_CENTRE_POOL_SHEET_ALIAS} exposes forbidden fields")
+
+    alias_sheet = workbook["VIEW_ALIASES"]
+    alias_rows = list(alias_sheet.iter_rows(min_row=2, values_only=True))
+    alias_map = {normalize(row[0]): normalize(row[1]) for row in alias_rows if normalize(row[0])}
+    expect(alias_map == EXPECTED_VIEW_ALIASES, "VIEW_ALIASES sheet drift detected")
     print("workbook shape ok")
 
 
@@ -144,10 +154,17 @@ def validate_registry_shape(registry: dict[str, Any]) -> None:
     expect(bool(registry.get("notion_command_centre_avatar_pool_view")), "notion_command_centre_avatar_pool_view cannot be empty")
     expect(registry.get("samples", {}).get("sample_avatar_context_id") == "BOSMAX_AVP_0001", "sample_avatar_context_id drift detected")
     expect(registry.get("samples", {}).get("sample_avatar_pool_id") == "BOSMAX_MALE_STEALTH_POOL_001", "sample_avatar_pool_id drift detected")
+    expect(registry.get("samples", {}).get("sample_mwcb_avatar_context_id") == "MWCB_DIRECT_AVP_0001", "sample_mwcb_avatar_context_id drift detected")
+    expect(registry.get("samples", {}).get("sample_mwcb_avatar_pool_id") == "MWCB_TRAD_REMEDY_POOL_001", "sample_mwcb_avatar_pool_id drift detected")
     expect(registry.get("runtime_contract", {}).get("default_notion_flow") == "COMMAND_CENTRE_PLUG_AND_PLAY", "default_notion_flow drift detected")
     legacy = registry.get("legacy_expert_mode", {})
     expect(legacy.get("label") == "LEGACY_EXPERT_MODE", "legacy expert label drift detected")
     expect(legacy.get("manual_override_posture") == "MANUAL_OVERRIDE_REVIEW_ONLY", "manual override posture drift detected")
+    alias_map = {
+        normalize(row.get("public_view_id")): normalize(row.get("workbook_sheet_alias"))
+        for row in registry.get("workbook_sheet_aliases", [])
+    }
+    expect(alias_map == EXPECTED_VIEW_ALIASES, "workbook_sheet_aliases registry drift detected")
     print("registry shape ok")
 
 
@@ -155,21 +172,38 @@ def validate_runtime_records(registry: dict[str, Any]) -> None:
     packs = registry.get("avatar_context_packs", [])
     pool_index = {normalize(pool.get("pool_id")): pool for pool in registry.get("rotation_pools", [])}
     expect("BOSMAX_MALE_STEALTH_POOL_001" in pool_index, "BOSMAX_MALE_STEALTH_POOL_001 missing")
+    expect("MWCB_TRAD_REMEDY_POOL_001" in pool_index, "MWCB_TRAD_REMEDY_POOL_001 missing")
 
     for pack in packs:
         assert_avatar_context_pack_runtime(
             pack,
-            expected_template_silo="STEALTH",
-            expected_product_family="FAMILY_MALE_EXT_SENSITIVE_OIL",
-            expected_camera_style="UGC_IPHONE_RAW",
-            physics_class="CLASS_A",
+            expected_template_silo=(pack.get("silo_allowed") or [""])[0],
+            expected_product_family=(pack.get("product_family_allowed") or [""])[0],
+            expected_camera_style=(pack.get("camera_style_allowed") or [""])[0],
+            physics_class=(pack.get("compatible_physics_classes") or ["CLASS_A"])[0],
         )
 
     pool = pool_index["BOSMAX_MALE_STEALTH_POOL_001"]
     allowed_ids = pool.get("allowed_avatar_context_ids", [])
-    expect(len(allowed_ids) == len(packs), "Stealth pool should include every generated avatar context pack")
-    expect(pool.get("no_repeat_window") == max(1, len(packs) - 1), "No-repeat window drift detected")
-    expect(pool.get("minimum_approved_count") == len(packs), "Minimum approved count should match generated pack count")
+    stealth_ids = [
+        normalize(pack.get("avatar_context_id"))
+        for pack in packs
+        if "STEALTH" in [normalize(item) for item in pack.get("silo_allowed", [])]
+    ]
+    expect(sorted(allowed_ids) == sorted(stealth_ids), "Stealth pool should include every STEALTH avatar context pack")
+    expect(pool.get("no_repeat_window") == max(1, len(stealth_ids) - 1), "Stealth no-repeat window drift detected")
+    expect(pool.get("minimum_approved_count") == len(stealth_ids), "Stealth minimum approved count drift detected")
+
+    mwcb_pool = pool_index["MWCB_TRAD_REMEDY_POOL_001"]
+    mwcb_allowed_ids = mwcb_pool.get("allowed_avatar_context_ids", [])
+    direct_ids = [
+        normalize(pack.get("avatar_context_id"))
+        for pack in packs
+        if "DIRECT" in [normalize(item) for item in pack.get("silo_allowed", [])]
+    ]
+    expect(sorted(mwcb_allowed_ids) == sorted(direct_ids), "MWCB pool should include every DIRECT avatar context pack")
+    expect(mwcb_pool.get("no_repeat_window") == 1, "MWCB pool no-repeat window drift detected")
+    expect(mwcb_pool.get("minimum_approved_count") == len(direct_ids), "MWCB minimum approved count drift detected")
 
     command_avatar_rows = registry.get("notion_command_centre_avatar_id_view", [])
     command_avatar_headers = set(command_avatar_rows[0].keys())
@@ -197,6 +231,15 @@ def validate_negative_paths(registry: dict[str, Any]) -> None:
         physics_class="CLASS_A",
     )
     expect(sample["avatar_context_id"] == "BOSMAX_AVP_0001", "Sample avatar context resolution failed")
+
+    direct_sample = resolve_avatar_context_id(
+        "MWCB_DIRECT_AVP_0001",
+        expected_template_silo="DIRECT",
+        expected_product_family="FAMILY_TRADITIONAL_REMEDY_OIL",
+        expected_camera_style="UGC_IPHONE_RAW",
+        physics_class="CLASS_A",
+    )
+    expect(direct_sample["avatar_context_id"] == "MWCB_DIRECT_AVP_0001", "MWCB direct avatar context resolution failed")
 
     try:
         resolve_avatar_context_id("BOSMAX_AVP_9999", expected_template_silo="STEALTH")
@@ -257,6 +300,19 @@ def validate_negative_paths(registry: dict[str, Any]) -> None:
     else:
         fail("Physics mismatch must fail closed")
 
+    try:
+        resolve_avatar_context_id(
+            "MWCB_DIRECT_AVP_0001",
+            expected_template_silo="STEALTH",
+            expected_product_family="FAMILY_TRADITIONAL_REMEDY_OIL",
+            expected_camera_style="UGC_IPHONE_RAW",
+            physics_class="CLASS_A",
+        )
+    except ResolverError:
+        pass
+    else:
+        fail("DIRECT avatar context must fail closed on STEALTH mismatch")
+
     invalid_status_pack = dict(sample)
     invalid_status_pack["status"] = "DRAFT"
     try:
@@ -284,6 +340,19 @@ def validate_negative_paths(registry: dict[str, Any]) -> None:
         )
     except ResolverError as exc:
         fail(f"Pool rotation positive sample failed unexpectedly: {exc}")
+
+    try:
+        resolve_avatar_pool(
+            "MWCB_TRAD_REMEDY_POOL_001",
+            batch_count=4,
+            rotation_rule="ROUND_ROBIN_NO_REPEAT",
+            expected_template_silo="DIRECT",
+            expected_product_family="FAMILY_TRADITIONAL_REMEDY_OIL",
+            expected_camera_style="UGC_IPHONE_RAW",
+            physics_class="CLASS_A",
+        )
+    except ResolverError as exc:
+        fail(f"MWCB direct pool rotation positive sample failed unexpectedly: {exc}")
 
     try:
         resolve_avatar_pool(

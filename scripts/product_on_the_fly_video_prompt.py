@@ -367,6 +367,9 @@ def build_on_the_fly_output(payload: dict[str, Any], route_result: dict[str, Any
         f"prompt_module_status: {prompt_module_status}",
         f"session_scope: {template['session_scope']}",
         f"authority_tier: {template['authority_tier']}",
+        "copywriting_id: none",
+        f"copywriting_mode: {template['copywriting_mode']}",
+        f"registry_writeback: {template['registry_writeback']}",
         f"minimum_intake_missing: {format_list(route_result.get('minimum_intake_missing', []))}",
     ]
     append_shared_context(lines, payload, route_result)

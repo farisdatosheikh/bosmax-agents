@@ -25,18 +25,19 @@ Notion remains downstream UI only.
 `BOSMAX Command Centre`
 
 1. `Plug & Play Video Prompt Template`
-2. `Copywriting ID Mini Database`
-3. `Avatar Context ID Mini Database`
-4. `Avatar Pool ID Mini Database`
-5. `Batch Production Template`
-6. `Legacy Expert Mode / Manual Override Notice`
-7. `Operator Rules`
+2. `Product Workflows`
+3. `Copywriting ID Mini Database`
+4. `Avatar Context ID Mini Database`
+5. `Avatar Pool ID Mini Database`
+6. `Batch Production Template`
+7. `Legacy Expert Mode / Manual Override Notice`
+8. `Operator Rules`
 
 ---
 
 ## 1. Plug & Play Video Prompt Template
 
-This is the default single prompt template:
+This is the default single prompt template for beginner operators:
 
 ```yaml
 Platform: TikTok
@@ -63,10 +64,65 @@ Command Centre default rule:
 
 ---
 
-## 2. Copywriting ID Mini Database
+## 2. Product Workflows
+
+Registered-product and session-only workflows must remain explicit:
+
+### BOSMAX Serum / STEALTH Registered Product
+
+```yaml
+Workflow: BOSMAX Serum / STEALTH Registered Product
+Copywriting View: NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW
+Workbook Alias: CC_BSMX_ST_COPY
+Copywriting ID: BOSMAX_SERUM_CP_0001
+Copywriting Mode: AUTO_RESOLVE
+Avatar Context ID: BOSMAX_AVP_0001
+Avatar Mode: AUTO_RESOLVE
+Registry Writeback: ALLOWED_REGISTERED_PRODUCT_ONLY
+```
+
+### Minyak Warisan Cap Burung / DIRECT Registered Product
+
+```yaml
+Workflow: Minyak Warisan Cap Burung / DIRECT Registered Product
+Copywriting View: NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW
+Workbook Alias: CC_MWCB_DIR_COPY
+Copywriting ID: CAP_BURUNG_MINYAK_CP_0031
+Copywriting Mode: AUTO_RESOLVE
+Avatar Context ID: MWCB_DIRECT_AVP_0001
+Avatar Mode: AUTO_RESOLVE
+Registry Writeback: ALLOWED_REGISTERED_PRODUCT_ONLY
+```
+
+### ON_THE_FLY Product / SESSION_ONLY
+
+```yaml
+Workflow: ON_THE_FLY Product / SESSION_ONLY
+Copywriting ID: none
+Copywriting Mode: SESSION_ONLY_GENERATE
+Registry Writeback: FORBIDDEN
+Risky or Review-Only Product: BLOCK_GENERATION
+```
+
+Hard rule:
+- risky or review-only product posture must fail closed into manual review
+- ON_THE_FLY output must never be promoted into workbook or approved registry from Notion
+
+---
+
+## 3. Copywriting ID Mini Database
 
 Default source:
 - `NOTION_COMMAND_CENTRE_COPY_ID_VIEW`
+
+Product-specific Command Centre sources:
+- `NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW`
+- `NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW`
+
+Workbook aliases:
+- `NOTION_COMMAND_CENTRE_COPY_ID_VIEW` -> `CC_COPY_ID_VIEW`
+- `NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW` -> `CC_BSMX_ST_COPY`
+- `NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW` -> `CC_MWCB_DIR_COPY`
 
 Allowed fields:
 - `Copywriting_ID`
@@ -91,7 +147,7 @@ Forbidden in this beginner view:
 
 ---
 
-## 3. Avatar Context ID Mini Database
+## 4. Avatar Context ID Mini Database
 
 Default source:
 - `NOTION_COMMAND_CENTRE_AVATAR_ID_VIEW`
@@ -110,9 +166,13 @@ Allowed fields:
 - `Status`
 - `Safe_Usage_Notes`
 
+Registered MWCB direct avatar support:
+- `MWCB_DIRECT_AVP_0001`
+- `MWCB_DIRECT_AVP_0002`
+
 ---
 
-## 4. Avatar Pool ID Mini Database
+## 5. Avatar Pool ID Mini Database
 
 Default source:
 - `NOTION_COMMAND_CENTRE_AVATAR_POOL_VIEW`
@@ -129,9 +189,12 @@ Allowed fields:
 - `Status`
 - `Safe_Usage_Notes`
 
+Registered MWCB direct batch pool:
+- `MWCB_TRAD_REMEDY_POOL_001`
+
 ---
 
-## 5. Batch Production Template
+## 6. Batch Production Template
 
 This is the default batch template:
 
@@ -158,7 +221,7 @@ Rotation Rule: ROUND_ROBIN_NO_REPEAT
 
 ---
 
-## 6. Legacy Expert Mode / Manual Override Notice
+## 7. Legacy Expert Mode / Manual Override Notice
 
 The old workflow remains available only as:
 - `LEGACY_EXPERT_MODE`
@@ -182,11 +245,14 @@ This workflow is not the default Command Centre flow.
 
 ---
 
-## 7. Operator Rules
+## 8. Operator Rules
 
 - Use the Command Centre Plug & Play template by default.
+- Use the product workflow that matches the route result exactly: STEALTH registered, DIRECT registered, or ON_THE_FLY session-only.
 - Select approved IDs from mini databases only.
 - Do not treat Notion as source truth.
 - Do not expose backend/provenance/private compliance data in beginner mini databases.
+- Do not create or edit reusable registry truth from ON_THE_FLY output.
+- Do not bypass risky/review-only blocking by forcing `SESSION_ONLY_GENERATE`.
 - Use `LEGACY_EXPERT_MODE` only for trusted operators and review-only exceptions.
 - Manual override without `Needs Compliance Review` is invalid.

@@ -108,6 +108,7 @@ COMMAND_CENTRE_POOL_HEADERS = [
 ]
 COMMAND_CENTRE_AVATAR_SHEET_ALIAS = "CC_AVATAR_ID_VIEW"
 COMMAND_CENTRE_POOL_SHEET_ALIAS = "CC_AVATAR_POOL_VIEW"
+VIEW_ALIAS_HEADERS = ["Public_View_ID", "Workbook_Sheet_Alias", "Description"]
 NOTION_HEADERS = [
     "Avatar_Context_ID",
     "Display_Name",
@@ -136,6 +137,20 @@ VALIDATION_RULES = [
     ("AVATAR_POOL_REPEAT_WINDOW", "Fail closed if AUTO_ROTATE cannot satisfy the configured no-repeat window."),
     ("UNSAFE_MANUAL_OVERRIDE", "Fail closed if manual override is present without Needs Compliance Review."),
     ("COMMAND_CENTRE_AVATAR_VIEW_ONLY", "Command Centre avatar and pool views must remain frontend-safe selector surfaces only."),
+    ("COMMAND_CENTRE_PRODUCT_WORKFLOW_SUPPORT", "Registered Command Centre workflows must expose separate STEALTH and DIRECT avatar support without leaking prompt internals."),
+]
+
+VIEW_ALIASES = [
+    {
+        "public_view_id": "NOTION_COMMAND_CENTRE_AVATAR_ID_VIEW",
+        "workbook_sheet_alias": COMMAND_CENTRE_AVATAR_SHEET_ALIAS,
+        "description": "Generic beginner avatar selector view across approved runtime packs.",
+    },
+    {
+        "public_view_id": "NOTION_COMMAND_CENTRE_AVATAR_POOL_VIEW",
+        "workbook_sheet_alias": COMMAND_CENTRE_POOL_SHEET_ALIAS,
+        "description": "Generic beginner avatar pool selector view across approved runtime pools.",
+    },
 ]
 
 SCENE_LIBRARY = {
@@ -144,18 +159,40 @@ SCENE_LIBRARY = {
         "scene_label": "Quiet Home Reset Corner",
         "environment_summary": "Warm indoor private corner with low-noise everyday props and product-neutral framing.",
         "safe_usage_notes": "Private indoor stealth lane. Keep framing conversational and product-neutral.",
+        "silo_allowed": ["STEALTH"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
     },
     "outdoor_street": {
         "scene_context_id": "CTX_STREET_MORNING_RESET_001",
         "scene_label": "Morning Street Confidence Walk",
         "environment_summary": "Soft daylight outdoor walkway with authentic motion and subtle background depth.",
         "safe_usage_notes": "Outdoor stealth lane. Keep gestures natural and avoid fitness-bro exaggeration.",
+        "silo_allowed": ["STEALTH"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
     },
     "office_interior": {
         "scene_context_id": "CTX_OFFICE_CONFIDENCE_CORNER_001",
         "scene_label": "Office Confidence Corner",
         "environment_summary": "Smart indoor office nook with grounded professional texture and light desk cues.",
         "safe_usage_notes": "Professional stealth lane. Keep the setting calm and non-clinical.",
+        "silo_allowed": ["STEALTH"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
+    },
+    "mwcb_home_relief": {
+        "scene_context_id": "CTX_HOME_TRAD_REMEDY_001",
+        "scene_label": "Household Relief Shelf Reset",
+        "environment_summary": "Warm rumah setting with small household storage cues, everyday reachability, and practical family utility framing.",
+        "safe_usage_notes": "DIRECT traditional-remedy lane. Keep the bottle within normal household use context and avoid clinical implication.",
+        "silo_allowed": ["DIRECT"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
+    },
+    "mwcb_bag_ready": {
+        "scene_context_id": "CTX_TRAVEL_TRAD_REMEDY_001",
+        "scene_label": "On-The-Go Remedy Grab",
+        "environment_summary": "Natural grab-from-bag or dashboard-side readiness moment showing compact everyday carry practicality.",
+        "safe_usage_notes": "DIRECT traditional-remedy lane. Keep usage practical, pocketable, and non-medical.",
+        "silo_allowed": ["DIRECT"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
     },
 }
 
@@ -164,16 +201,36 @@ MANNEQUIN_LIBRARY = {
         "mannequin_id": "MAN_STEALTH_CLOSE_HOLD_001",
         "mannequin_label": "Close Hold Reset",
         "pose_summary": "Standing or seated medium-close talk with one natural hand accent and no static mannequin freeze.",
+        "compatible_physics_classes": ["CLASS_A"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
     },
     "outdoor_street": {
         "mannequin_id": "MAN_STEALTH_WALK_AND_TALK_001",
         "mannequin_label": "Walk And Talk",
         "pose_summary": "Slow forward or side-walk delivery with light arm swing and relaxed shoulder posture.",
+        "compatible_physics_classes": ["CLASS_A"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
     },
     "office_interior": {
         "mannequin_id": "MAN_STEALTH_DESK_REVEAL_001",
         "mannequin_label": "Desk Reveal Confidence",
         "pose_summary": "Controlled standing or leaning office posture with measured hand reveal and grounded eye line.",
+        "compatible_physics_classes": ["CLASS_A"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
+    },
+    "mwcb_home_relief": {
+        "mannequin_id": "MAN_DIRECT_BOTTLE_PICKUP_001",
+        "mannequin_label": "Bottle Pickup Utility",
+        "pose_summary": "Natural household reach, bottle pickup, or side-table explanation gesture with grounded family-man practicality.",
+        "compatible_physics_classes": ["CLASS_A"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
+    },
+    "mwcb_bag_ready": {
+        "mannequin_id": "MAN_DIRECT_BAG_REACH_001",
+        "mannequin_label": "Bag Reach Practicality",
+        "pose_summary": "Simple bag, drawer, or car-pocket reach motion showing compact everyday-carry readiness without exaggerated acting.",
+        "compatible_physics_classes": ["CLASS_A"],
+        "camera_style_allowed": ["UGC_IPHONE_RAW"],
     },
 }
 
@@ -214,10 +271,63 @@ def derive_headwear_style(outfit: str) -> str:
     return "NONE"
 
 
+def build_context_pack(
+    *,
+    context_id: str,
+    persona: dict[str, Any],
+    wardrobe_id: str,
+    scene_key: str,
+    product_family: str,
+    usage_note_prefix: str,
+) -> dict[str, Any] | None:
+    wardrobe_catalogue = persona.get("wardrobe_catalogue", []) or []
+    wardrobe = next((item for item in wardrobe_catalogue if normalize(item.get("wardrobe_id")) == wardrobe_id), None)
+    if not wardrobe:
+        return None
+
+    scene_entry = SCENE_LIBRARY[scene_key]
+    mannequin_entry = MANNEQUIN_LIBRARY[scene_key]
+    outfit = normalize(wardrobe.get("outfit"))
+    persona_id = normalize(persona.get("persona_id"))
+    persona_name = normalize(persona.get("persona_name")) or persona_id
+    return {
+        "avatar_context_id": context_id,
+        "display_name": f"{persona_id} | {wardrobe_id} | {scene_entry['scene_label']}",
+        "persona_id": persona_id,
+        "persona_label": persona_name,
+        "base_archetype": normalize(persona.get("base_archetype")),
+        "gender": normalize(persona.get("gender")) or "Male",
+        "age_range": normalize(persona.get("age_range")),
+        "silo_allowed": scene_entry["silo_allowed"],
+        "product_family_allowed": [product_family],
+        "scene_context_id": scene_entry["scene_context_id"],
+        "scene_label": scene_entry["scene_label"],
+        "mannequin_id": mannequin_entry["mannequin_id"],
+        "mannequin_label": mannequin_entry["mannequin_label"],
+        "wardrobe_id": wardrobe_id,
+        "headwear_style": derive_headwear_style(outfit),
+        "camera_style_allowed": scene_entry["camera_style_allowed"],
+        "compatible_physics_classes": mannequin_entry["compatible_physics_classes"],
+        "prompt_fragment_source": f"avatars/{persona['_path'].name}::prompt_fragment",
+        "status": "APPROVED",
+        "runtime_allowed": True,
+        "rotation_weight": 1,
+        "safe_usage_notes": (
+            f"{usage_note_prefix} Persona {persona_id} with {wardrobe_id}. "
+            "Manual override requires Needs Compliance Review."
+        ),
+        "internal_notes": (
+            f"Wardrobe sourced from {persona['_path'].name}::{wardrobe_id}; "
+            f"scene keyed from {scene_key}; mannequin pose resolved in avatar context builder."
+        ),
+    }
+
+
 def build_context_packs() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     personas = load_named_personas()
     context_packs: list[dict[str, Any]] = []
     persona_index: list[dict[str, Any]] = []
+    persona_lookup = {normalize(persona.get("persona_id")): persona for persona in personas}
 
     for persona in personas:
         persona_id = normalize(persona.get("persona_id"))
@@ -237,60 +347,58 @@ def build_context_packs() -> tuple[list[dict[str, Any]], list[dict[str, Any]], l
             }
         )
 
+    for persona in personas:
+        persona_id = normalize(persona.get("persona_id"))
+        assigned_products = [normalize(item) for item in persona.get("assigned_products", [])]
+        compatible_silos = [normalize(item).upper() for item in persona.get("compatible_silos", [])]
         if "BOSMAX_SERUM" not in assigned_products or "STEALTH" not in compatible_silos:
             continue
 
-        for wardrobe in wardrobe_catalogue:
+        for wardrobe in persona.get("wardrobe_catalogue", []) or []:
             scene_key = normalize(wardrobe.get("scene_context"))
-            if scene_key not in SCENE_LIBRARY or scene_key not in MANNEQUIN_LIBRARY:
+            wardrobe_id = normalize(wardrobe.get("wardrobe_id"))
+            if scene_key not in {"home_indoor", "outdoor_street", "office_interior"}:
+                continue
+            if scene_key == "home_indoor" and "RAYA" not in wardrobe_id.upper() and "CASUAL" not in wardrobe_id.upper():
+                continue
+            if scene_key == "outdoor_street" and "ACTIVE" not in wardrobe_id.upper():
+                continue
+            if scene_key == "office_interior" and "SMART" not in wardrobe_id.upper():
                 continue
 
-            if scene_key == "home_indoor" and "RAYA" not in normalize(wardrobe.get("wardrobe_id")).upper() and "CASUAL" not in normalize(wardrobe.get("wardrobe_id")).upper():
-                continue
-            if scene_key == "outdoor_street" and "ACTIVE" not in normalize(wardrobe.get("wardrobe_id")).upper():
-                continue
-            if scene_key == "office_interior" and "SMART" not in normalize(wardrobe.get("wardrobe_id")).upper():
-                continue
-
-            context_id = f"BOSMAX_AVP_{len(context_packs) + 1:04d}"
-            scene_entry = SCENE_LIBRARY[scene_key]
-            mannequin_entry = MANNEQUIN_LIBRARY[scene_key]
-            outfit = normalize(wardrobe.get("outfit"))
-            usage_note = (
-                f"STEALTH resolver pack for BOSMAX Serum family. Persona {persona_id} with {normalize(wardrobe.get('wardrobe_id'))}. "
-                "Manual override requires Needs Compliance Review."
+            pack = build_context_pack(
+                context_id=f"BOSMAX_AVP_{len(context_packs) + 1:04d}",
+                persona=persona,
+                wardrobe_id=wardrobe_id,
+                scene_key=scene_key,
+                product_family="FAMILY_MALE_EXT_SENSITIVE_OIL",
+                usage_note_prefix="STEALTH resolver pack for BOSMAX Serum family.",
             )
+            if pack:
+                context_packs.append(pack)
 
-            context_packs.append(
-                {
-                    "avatar_context_id": context_id,
-                    "display_name": f"{persona_id} | {normalize(wardrobe.get('wardrobe_id'))} | {scene_entry['scene_label']}",
-                    "persona_id": persona_id,
-                    "persona_label": normalize(persona.get("persona_name")) or persona_id,
-                    "base_archetype": normalize(persona.get("base_archetype")),
-                    "gender": normalize(persona.get("gender")) or "Male",
-                    "age_range": normalize(persona.get("age_range")),
-                    "silo_allowed": ["STEALTH"],
-                    "product_family_allowed": ["FAMILY_MALE_EXT_SENSITIVE_OIL"],
-                    "scene_context_id": scene_entry["scene_context_id"],
-                    "scene_label": scene_entry["scene_label"],
-                    "mannequin_id": mannequin_entry["mannequin_id"],
-                    "mannequin_label": mannequin_entry["mannequin_label"],
-                    "wardrobe_id": normalize(wardrobe.get("wardrobe_id")),
-                    "headwear_style": derive_headwear_style(outfit),
-                    "camera_style_allowed": ["UGC_IPHONE_RAW"],
-                    "compatible_physics_classes": ["CLASS_A"],
-                    "prompt_fragment_source": f"avatars/{persona['_path'].name}::prompt_fragment",
-                    "status": "APPROVED",
-                    "runtime_allowed": True,
-                    "rotation_weight": 1,
-                    "safe_usage_notes": usage_note,
-                    "internal_notes": (
-                        f"Wardrobe sourced from {persona['_path'].name}::{normalize(wardrobe.get('wardrobe_id'))}; "
-                        f"scene keyed from {scene_key}; mannequin pose resolved in avatar context builder."
-                    ),
-                }
-            )
+    direct_specs = [
+        ("MWCB_DIRECT_AVP_0001", "RIZAL", "RIZAL_CASUAL_01", "mwcb_home_relief"),
+        ("MWCB_DIRECT_AVP_0002", "AZMAN", "AZMAN_CASUAL_01", "mwcb_bag_ready"),
+    ]
+    for context_id, persona_id, wardrobe_id, scene_key in direct_specs:
+        persona = persona_lookup.get(persona_id)
+        if not persona:
+            continue
+        compatible_silos = [normalize(item).upper() for item in persona.get("compatible_silos", [])]
+        assigned_products = [normalize(item) for item in persona.get("assigned_products", [])]
+        if "DIRECT" not in compatible_silos or "CAP_BURUNG_MINYAK" not in assigned_products:
+            continue
+        pack = build_context_pack(
+            context_id=context_id,
+            persona=persona,
+            wardrobe_id=wardrobe_id,
+            scene_key=scene_key,
+            product_family="FAMILY_TRADITIONAL_REMEDY_OIL",
+            usage_note_prefix="DIRECT resolver pack for Minyak Warisan Cap Burung family.",
+        )
+        if pack:
+            context_packs.append(pack)
 
     context_packs.sort(key=lambda item: item["avatar_context_id"])
 
@@ -302,8 +410,8 @@ def build_context_packs() -> tuple[list[dict[str, Any]], list[dict[str, Any]], l
                 "scene_label": scene_entry["scene_label"],
                 "base_scene_key": scene_key,
                 "environment_summary": scene_entry["environment_summary"],
-                "silo_allowed": ["STEALTH"],
-                "camera_style_allowed": ["UGC_IPHONE_RAW"],
+                "silo_allowed": scene_entry["silo_allowed"],
+                "camera_style_allowed": scene_entry["camera_style_allowed"],
                 "safe_usage_notes": scene_entry["safe_usage_notes"],
             }
         )
@@ -315,31 +423,61 @@ def build_context_packs() -> tuple[list[dict[str, Any]], list[dict[str, Any]], l
                 "mannequin_id": mannequin_entry["mannequin_id"],
                 "mannequin_label": mannequin_entry["mannequin_label"],
                 "pose_summary": mannequin_entry["pose_summary"],
-                "compatible_physics_classes": ["CLASS_A"],
-                "camera_style_allowed": ["UGC_IPHONE_RAW"],
+                "compatible_physics_classes": mannequin_entry["compatible_physics_classes"],
+                "camera_style_allowed": mannequin_entry["camera_style_allowed"],
                 "scene_context_ids": [SCENE_LIBRARY[scene_key]["scene_context_id"]],
             }
         )
 
-    pool = {
+    stealth_context_ids = [
+        row["avatar_context_id"]
+        for row in context_packs
+        if "STEALTH" in row["silo_allowed"]
+    ]
+    direct_context_ids = [
+        row["avatar_context_id"]
+        for row in context_packs
+        if "DIRECT" in row["silo_allowed"]
+    ]
+
+    pools = [{
         "pool_id": "BOSMAX_MALE_STEALTH_POOL_001",
         "display_name": "BOSMAX Male Stealth Pool | BOSMAX Serum Family",
         "product_id": "BOSMAX_SERUM",
         "product_family": "FAMILY_MALE_EXT_SENSITIVE_OIL",
         "silo": "STEALTH",
-        "allowed_avatar_context_ids": [row["avatar_context_id"] for row in context_packs],
+        "allowed_avatar_context_ids": stealth_context_ids,
         "rotation_mode": "ROUND_ROBIN_NO_REPEAT",
-        "no_repeat_window": max(1, len(context_packs) - 1),
-        "minimum_approved_count": len(context_packs),
+        "no_repeat_window": max(1, len(stealth_context_ids) - 1),
+        "minimum_approved_count": len(stealth_context_ids),
         "status": "APPROVED",
         "runtime_allowed": True,
         "safe_usage_notes": (
             "Repo-owned AUTO_ROTATE pool for BOSMAX Serum stealth batch runs. "
             "Notion may display IDs only; manual override requires Needs Compliance Review."
         ),
-    }
+    }]
+    pools.append(
+        {
+            "pool_id": "MWCB_TRAD_REMEDY_POOL_001",
+            "display_name": "MWCB Direct Remedy Pool | Minyak Warisan Cap Burung",
+            "product_id": "CAP_BURUNG_MINYAK",
+            "product_family": "FAMILY_TRADITIONAL_REMEDY_OIL",
+            "silo": "DIRECT",
+            "allowed_avatar_context_ids": direct_context_ids,
+            "rotation_mode": "ROUND_ROBIN_NO_REPEAT",
+            "no_repeat_window": 1,
+            "minimum_approved_count": len(direct_context_ids),
+            "status": "APPROVED",
+            "runtime_allowed": True,
+            "safe_usage_notes": (
+                "Repo-owned AUTO_ROTATE pool for Minyak Warisan Cap Burung DIRECT batch runs. "
+                "Notion may display IDs only; manual override requires Needs Compliance Review."
+            ),
+        }
+    )
 
-    return context_packs, persona_index, mannequin_rows, scene_rows, [pool]
+    return context_packs, persona_index, mannequin_rows, scene_rows, pools
 
 
 def build_registry(
@@ -420,6 +558,7 @@ def build_registry(
                 "compatible_physics_classes",
             ],
         },
+        "workbook_sheet_aliases": VIEW_ALIASES,
         "validation_rules": [
             {"rule_id": rule_id, "description": description}
             for rule_id, description in VALIDATION_RULES
@@ -438,6 +577,20 @@ def build_registry(
             "manual_override_posture": "MANUAL_OVERRIDE_REVIEW_ONLY",
             "required_review_status": "Needs Compliance Review",
             "notes": "Manual Avatar/Mannequin/Wardrobe/Scene edits remain expert-only and review-gated.",
+        },
+        "command_centre_product_workflows": {
+            "BOSMAX_SERUM_STEALTH_REGISTERED_PRODUCT": {
+                "avatar_context_id": "BOSMAX_AVP_0001",
+                "avatar_pool_id": "BOSMAX_MALE_STEALTH_POOL_001",
+                "avatar_mode_single": "AUTO_RESOLVE",
+                "avatar_mode_batch": "AUTO_ROTATE",
+            },
+            "MINYAK_WARISAN_CAP_BURUNG_DIRECT_REGISTERED_PRODUCT": {
+                "avatar_context_id": "MWCB_DIRECT_AVP_0001",
+                "avatar_pool_id": "MWCB_TRAD_REMEDY_POOL_001",
+                "avatar_mode_single": "AUTO_RESOLVE",
+                "avatar_mode_batch": "AUTO_ROTATE",
+            },
         },
         "default_command_centre_batch_template": {
             "platform": "TikTok",
@@ -462,6 +615,8 @@ def build_registry(
         "samples": {
             "sample_avatar_context_id": "BOSMAX_AVP_0001",
             "sample_avatar_pool_id": "BOSMAX_MALE_STEALTH_POOL_001",
+            "sample_mwcb_avatar_context_id": "MWCB_DIRECT_AVP_0001",
+            "sample_mwcb_avatar_pool_id": "MWCB_TRAD_REMEDY_POOL_001",
         },
         "counts": {
             "avatar_context_packs": len(context_packs),
@@ -472,7 +627,7 @@ def build_registry(
         "changelog": [
             {
                 "timestamp_utc": generated_at,
-                "change_note": "Generated first-pass avatar context resolver and rotation pool for stealth male batch prompting with Command Centre beginner selector views.",
+                "change_note": "Generated avatar context resolver and rotation pools for BOSMAX STEALTH and MWCB DIRECT Command Centre workflows with workbook aliases and beginner selector views.",
             }
         ],
     }
@@ -546,6 +701,14 @@ def write_workbook(registry: dict[str, Any]) -> None:
             row["prompt_fragment_source"],
         ]
         for row in registry["persona_index"]
+    ]
+    alias_view_rows = [
+        [
+            row["public_view_id"],
+            row["workbook_sheet_alias"],
+            row["description"],
+        ]
+        for row in registry["workbook_sheet_aliases"]
     ]
 
     mannequin_rows = [
@@ -648,6 +811,7 @@ def write_workbook(registry: dict[str, Any]) -> None:
 
     populate_sheet(workbook.create_sheet("AVATAR_CONTEXT_PACKS"), CONTEXT_HEADERS, context_rows)
     populate_sheet(workbook.create_sheet("AVATAR_PERSONA_INDEX"), PERSONA_HEADERS, persona_rows)
+    populate_sheet(workbook.create_sheet("VIEW_ALIASES"), VIEW_ALIAS_HEADERS, alias_view_rows)
     populate_sheet(workbook.create_sheet("MANNEQUIN_POSE_LIBRARY"), MANNEQUIN_HEADERS, mannequin_rows)
     populate_sheet(workbook.create_sheet("SCENE_CONTEXT_LIBRARY"), SCENE_HEADERS, scene_rows)
     populate_sheet(workbook.create_sheet("ROTATION_POOLS"), POOL_HEADERS, pool_rows)
