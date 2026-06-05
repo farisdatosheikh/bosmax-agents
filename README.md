@@ -44,6 +44,7 @@ BOSMAX/
 ├── BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md ← Copy-paste Block 2 opener templates to reduce Grok extension lag and lipsync seam mismatch
 ├── BOSMAX_BM_UGC_SELL_THROUGH_COPY_ARCHITECTURE_v1.md ← Hard sell-through dialogue architecture for BM commercial UGC video
 ├── BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md ← Downstream Notion sync rules for Copy Pack Registry and dialogue-budget import
+├── docs/notion_resolver_database_handoff_v1.md ← Sanitized Notion database contract for Copywriting ID, Avatar Context ID, and Avatar Pool ID
 ├── BOSMAX_UGC_PGC_VIDEO_RESEARCH_RECONCILIATION_v1.md ← Reconciles ChatGPT and Gemini research into BOSMAX-safe authority
 ├── BOSMAX_UGC_PGC_ROUTE_DECISION_v1.md ← Chooses UGC, PGC, or HYBRID route per category and risk
 ├── BOSMAX_SHOT_LADDER_ARCHITECTURE_v1.md ← Practical multi-beat shot ladders by duration and route
@@ -192,10 +193,31 @@ soft commentary yang lemah. Ia mewajibkan:
 
 **Notion copy pack handoff:** rujuk `BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md`.
 Fail ini mengunci rule downstream supaya Notion hanya menjadi UI/assembler untuk:
-- `Copy Pack ID` relation
+- `Copywriting ID` relation
 - pull field `Pain_or_Friction`
 - lane-aware `STEALTH | DIRECT` filtering
 - import status untuk dialogue budget corridor
+
+**Notion resolver database handoff:** rujuk `docs/notion_resolver_database_handoff_v1.md`.
+Fail ini mengunci resolver surface untuk:
+- `Copywriting ID`
+- `Avatar Context ID`
+- `Avatar Pool ID`
+- repo → Notion sync only
+- manual override = `Needs Compliance Review`
+
+**BOSMAX Command Centre Notion template:** rujuk `docs/notion_bosmax_command_centre_template_v1.md`.
+Fail ini menetapkan default beginner flow sebagai:
+- `Command Centre Plug & Play`
+- single template guna `Copywriting ID` + `Avatar Context ID`
+- batch template guna `Copywriting ID` + `Avatar Pool ID`
+- manual Hook / USP / CTA / Avatar edits = `LEGACY_EXPERT_MODE`
+
+**Resolver build + validation commands:**
+- `python scripts/build_copywriting_id_resolver.py`
+- `python scripts/validate_copywriting_id_resolver.py`
+- `python scripts/build_avatar_context_resolver.py`
+- `python scripts/validate_avatar_context_resolver.py`
 
 **Dialogue budget corridor registry:** rujuk `registries/dialogue_budget_corridor.yaml`.
 Fail ini menjadi source-of-truth untuk:

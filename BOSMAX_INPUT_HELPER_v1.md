@@ -73,6 +73,13 @@ If the product is not in BOSMAX registry yet:
 - `duration_target`
 - `reference_mode`: `NONE` | `IMAGE_REFERENCE` | `VIDEO_REFERENCE` | `BOSMAX_IMAGE_HANDOFF`
 - `product_info_simple`
+- `copywriting_id` when using repo-approved copy
+- `copywriting_mode`: `AUTO_RESOLVE`
+- `avatar_context_id` for fixed avatar package runs
+- `avatar_pool_id` for batch avatar rotation runs
+- `avatar_mode`: `AUTO_RESOLVE` | `AUTO_ROTATE`
+- `batch_count` for rotation runs
+- `rotation_rule`: `ROUND_ROBIN_NO_REPEAT`
 
 ### Optional
 - `scene_preference`
@@ -218,6 +225,54 @@ Hard rule:
 ---
 
 ## Minimal Fill Checklists
+
+### Registered resolver single-avatar run
+
+- `product_name`
+- `variant`
+- `platform`
+- `language`
+- `video_engine`
+- `duration_target`
+- `copywriting_id`
+- `copywriting_mode = AUTO_RESOLVE`
+- `avatar_context_id`
+- `avatar_mode = AUTO_RESOLVE`
+- `camera_style`
+- `physics_class`
+
+This is now the default beginner flow:
+- `COMMAND_CENTRE_PLUG_AND_PLAY`
+
+### Registered resolver batch run
+
+- `product_name`
+- `variant`
+- `platform`
+- `language`
+- `video_engine`
+- `duration_target`
+- `copywriting_id`
+- `copywriting_mode = AUTO_RESOLVE`
+- `avatar_pool_id`
+- `avatar_mode = AUTO_ROTATE`
+- `batch_count`
+- `rotation_rule = ROUND_ROBIN_NO_REPEAT`
+- `camera_style`
+- `physics_class`
+
+### Legacy manual run
+
+Only use for:
+- trusted expert operator
+- review-only exception
+
+Label:
+- `LEGACY_EXPERT_MODE`
+- `MANUAL_OVERRIDE_REVIEW_ONLY`
+
+If manual Hook / USP / CTA / Avatar / Mannequin / Wardrobe / Scene fields are edited:
+- mark `Needs Compliance Review`
 
 ### IMAGE checklist
 - product name

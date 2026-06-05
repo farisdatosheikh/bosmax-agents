@@ -66,6 +66,13 @@
       `STEALTH`
     - Item 2:
       `DIRECT`
+  - **copywriting_id** (string): `{{INSERT_COPYWRITING_ID_HERE}}`
+  - **copywriting_mode** (string): `AUTO_RESOLVE`
+  - **avatar_context_id** (string): `{{INSERT_AVATAR_CONTEXT_ID_HERE}}`
+  - **avatar_pool_id** (string): `{{INSERT_AVATAR_POOL_ID_HERE}}`
+  - **avatar_mode** (string): `AUTO_RESOLVE | AUTO_ROTATE`
+  - **batch_count** (integer): `{{INSERT_BATCH_COUNT_HERE}}`
+  - **rotation_rule** (string): `ROUND_ROBIN_NO_REPEAT`
   - **physics_class** (string): `{{INSERT_PHYSICS_CLASS_HERE}}`
   - **scene_context** (string): `{{INSERT_SCENE_CONTEXT_HERE}}`
   - **source_image_handoff** (object):

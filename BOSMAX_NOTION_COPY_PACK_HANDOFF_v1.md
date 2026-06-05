@@ -14,18 +14,22 @@ This file exists so Claude Cowork can update Notion later without changing BOSMA
 Notion is **not** allowed to invent copywriting or become the source of truth.
 All template READY claims must pass BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md before being marked production-ready.
 
-## Copy Pack Source
+## Resolver Source
 
-The Notion Copywriting Pack Registry must import or sync from the BOSMAX ecosystem source, especially:
+The Notion Copywriting and Avatar resolver databases must import or sync from the BOSMAX ecosystem source, especially:
 
 - `BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx`
+- `BOSMAX_COPYWRITING_ID_RESOLVER_v1.xlsx`
+- `registries/copywriting_id_resolver.yaml`
+- `BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx`
+- `registries/avatar_context_rotation.yaml`
 - `SCRIPT_REGISTRY_UNIFIED.md`
 - `SCRIPT_VARIANT_LIBRARY.md`
 - `registries/dialogue_budget_corridor.yaml`
 
-## Required Copy Pack Fields
+## Required Copywriting Resolver Fields
 
-When Notion relates to a `Copy Pack ID`, the downstream relation or rollup must pull:
+When Notion relates to a `Copywriting ID`, the downstream relation or rollup must pull:
 
 - `Angle`
 - `Hook`
@@ -41,13 +45,64 @@ When Notion relates to a `Copy Pack ID`, the downstream relation or rollup must 
 
 `Lane` must follow the ecosystem truth (`DIRECT` or `STEALTH`). Do not let operators free-type a new lane in Notion.
 
+## Required Avatar Resolver Fields
+
+When Notion relates to an `Avatar Context ID`, the downstream relation or rollup must pull only:
+
+- `Avatar_Context_ID`
+- `Display_Name`
+- `Persona_Label`
+- `Gender`
+- `Age_Range`
+- `Silo_Allowed`
+- `Product_Family_Allowed`
+- `Scene_Label`
+- `Mannequin_Label`
+- `Camera_Style_Allowed`
+- `Status`
+- `Safe_Usage_Notes`
+
+When Notion relates to an `Avatar Pool ID`, the downstream relation or rollup must pull only:
+
+- `Pool_ID`
+- `Display_Name`
+- `Product_Family`
+- `Silo`
+- `Allowed_Avatar_Context_IDs`
+- `Rotation_Mode`
+- `No_Repeat_Window`
+- `Minimum_Approved_Count`
+- `Status`
+- `Runtime_Allowed`
+- `Safe_Usage_Notes`
+
 ## Downstream Rules
 
 - Notion is downstream UI only.
-- Copy Pack ID relation must resolve ecosystem-approved fields, not freeform Notion copy.
+- Default beginner flow = `COMMAND_CENTRE_PLUG_AND_PLAY`.
+- Manual copy / avatar edits = `LEGACY_EXPERT_MODE`.
+- Manual override posture = `MANUAL_OVERRIDE_REVIEW_ONLY`.
+- Copywriting ID relation must resolve ecosystem-approved fields, not freeform Notion copy.
+- Avatar Context ID relation must resolve ecosystem-approved persona + wardrobe + mannequin + scene context, not ad hoc operator assembly.
+- Avatar Pool ID relation must remain repo-owned rotation logic only.
 - Manual override must mark the run as `Needs Compliance Review`.
 - STEALTH products must only expose approved `STEALTH` packs unless an operator intentionally sends the run to review.
 - DIRECT products must only expose approved `DIRECT` packs unless an operator intentionally sends the run to review.
+- Notion must not expose prompt fragment sources, biometric DNA, raw prompt fragments, private source paths, or P&C ecosystem logic.
+
+## Command Centre Beginner View
+
+The default Command Centre beginner copy selector must use:
+- `NOTION_COMMAND_CENTRE_COPY_ID_VIEW`
+
+It must not expose:
+- `Hook`
+- `USP_1`
+- `USP_2`
+- `USP_3`
+- `CTA`
+
+Full copy lines remain trusted-operator / legacy-expert surfaces only.
 
 ## Hard Rules For BOSMAX Serum / BOSMAX Herbs STEALTH
 
@@ -66,7 +121,7 @@ When Notion relates to a `Copy Pack ID`, the downstream relation or rollup must 
 - Do not accept generic convenience copy such as `saiz lip balm`, `botol hitam premium`, `senang simpan`, `travel-friendly`, or equivalent wording for BOSMAX Serum STEALTH packs.
 - Do not accept formal direct pronouns (`saya`, `anda`, `awak`, `kamu`) in BOSMAX Serum STEALTH copy packs.
 - Do not accept medical claims in downstream STEALTH copy packs.
-- Manual output blocks such as `AI-Ready Request Manual Output` must paste the exact repo-approved copy pack fields only. Notion operators are not allowed to freestyle replacement lines for this lane.
+- Manual output blocks such as `AI-Ready Request Manual Output` must paste the exact repo-approved copywriting resolver payload only. Notion operators are not allowed to freestyle replacement lines for this lane.
 
 ## Dialogue Budget Corridor
 

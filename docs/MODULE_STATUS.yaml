@@ -1,0 +1,53 @@
+modules:
+  resolver_runtime:
+    status: IN_PROGRESS
+    owner: CODEX
+    issue: 15
+    scope:
+      - BOSMAX_COPYWRITING_ID_RESOLVER_v1.xlsx
+      - BOSMAX_AVATAR_CONTEXT_RESOLVER_v1.xlsx
+      - registries/copywriting_id_resolver.yaml
+      - registries/avatar_context_rotation.yaml
+      - registries/product_on_the_fly_video_prompt_contract.yaml
+      - scripts/resolver_runtime.py
+      - scripts/build_copywriting_id_resolver.py
+      - scripts/validate_copywriting_id_resolver.py
+      - scripts/build_avatar_context_resolver.py
+      - scripts/validate_avatar_context_resolver.py
+      - scripts/product_on_the_fly_video_prompt.py
+      - scripts/validate_product_on_the_fly_video_prompt.py
+      - docs/notion_resolver_database_handoff_v1.md
+      - docs/notion_bosmax_command_centre_template_v1.md
+      - README.md
+      - BOSMAX_INPUT_HELPER_v1.md
+      - BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md
+      - BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
+      - MASTER_IGNITION_TEMPLATE.md
+    notes: >
+      Resolver-runtime lane for Issue #15. Repo truth remains upstream; Notion
+      remains downstream UI only.
+  video_engine_contract_runtime:
+    status: IN_PROGRESS
+    owner: CODEX
+    issue: 15
+    scope:
+      - BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
+      - BOSMAX_NOTION_MULTI_BLOCK_VIDEO_HANDOFF_v1.md
+      - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+      - registries/video_engine_duration_contracts.yaml
+      - registries/dialogue_budget_corridor.yaml
+      - registries/notion_sample_readiness.yaml
+      - registries/flow_extend_proof.yaml
+      - scripts/video_block_plan.py
+      - scripts/validate_video_block_contracts.py
+      - scripts/validate_wps_per_block.py
+      - scripts/validate_notion_sample_readiness.py
+      - scripts/validate_flow_extend_proof.py
+      - scripts/validate_execution_kernel_contract.py
+      - docs/notion_bosmax_command_centre_template_v1.md
+      - docs/google_flow_parity_audit_v1.md
+    notes: >
+      Google Flow / Flow Extend parity-hardening lane for BOSMAX multi-block
+      execution. Copywriting and avatar resolver behavior remains shared across
+      engines; engine-specific changes are limited to duration math, seam law,
+      WPS budgeting, proof manifests, and downstream Notion execution docs.

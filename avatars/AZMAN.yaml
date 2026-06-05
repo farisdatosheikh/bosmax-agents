@@ -73,6 +73,7 @@ wardrobe_catalogue:
 # ASSIGNED PRODUCTS
 assigned_products:
   - "BOSMAX_SERUM"
+  - "CAP_BURUNG_MINYAK"
   - "MAVERIX_MAXOIL"
 
 # VISUAL DNA PROMPT FRAGMENT

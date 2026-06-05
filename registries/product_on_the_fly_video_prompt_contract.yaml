@@ -3,8 +3,14 @@ schema_version: "1.0"
 authority:
   repo_truth: true
   notion_downstream_only: true
+  default_notion_flow: COMMAND_CENTRE_PLUG_AND_PLAY
+  legacy_manual_flow: LEGACY_EXPERT_MODE
+  legacy_manual_override_posture: MANUAL_OVERRIDE_REVIEW_ONLY
   router_contract: registries/product_copy_router.yaml
   workbook_source: BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx
+  copywriting_resolver_registry: registries/copywriting_id_resolver.yaml
+  avatar_context_resolver_registry: registries/avatar_context_rotation.yaml
+  notion_command_centre_spec: docs/notion_bosmax_command_centre_template_v1.md
   downstream_output_field_candidates:
     - AI-Ready Request Manual Output
     - Router AI-Ready Manual Output
@@ -68,11 +74,16 @@ route_templates:
     prompt_module_status_hold: HOLD_MISSING_INPUT
     session_scope: AD_HOC_GENERATED_THIS_SESSION_ONLY
     authority_tier: CURRENT_INTAKE_ONLY
+    copywriting_mode: SESSION_ONLY_GENERATE
+    registry_writeback: FORBIDDEN
     required_output_keys:
       - route_mode
       - router_output_status
       - prompt_module_status
       - session_scope
+      - copywriting_id
+      - copywriting_mode
+      - registry_writeback
       - product_name
       - category
       - target_user
@@ -89,6 +100,7 @@ route_templates:
       - Generate from current intake only.
       - Keep the output session-only.
       - Do not write the ad-hoc output back into workbook or approved registry.
+      - Risky or review-only product posture must block generation instead of downgrading into session-only.
 
   REVIEW_ONLY_PRODUCT:
     router_output_status: REVIEW_ONLY
@@ -107,6 +119,28 @@ route_templates:
       - Escalate to manual compliance review.
       - Review-only products must never receive final AI-ready video prompts.
 
+command_centre_product_workflows:
+  BOSMAX_SERUM_STEALTH_REGISTERED_PRODUCT:
+    workflow_label: BOSMAX Serum / STEALTH Registered Product
+    copywriting_view_id: NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW
+    copywriting_mode: AUTO_RESOLVE
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_mode: AUTO_RESOLVE
+  MINYAK_WARISAN_CAP_BURUNG_DIRECT_REGISTERED_PRODUCT:
+    workflow_label: Minyak Warisan Cap Burung / DIRECT Registered Product
+    copywriting_view_id: NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW
+    copywriting_mode: AUTO_RESOLVE
+    copywriting_id: CAP_BURUNG_MINYAK_CP_0031
+    avatar_context_id: MWCB_DIRECT_AVP_0001
+    avatar_mode: AUTO_RESOLVE
+  ON_THE_FLY_SESSION_ONLY_TEMPLATE:
+    workflow_label: ON_THE_FLY Product / SESSION_ONLY
+    copywriting_id: null
+    copywriting_mode: SESSION_ONLY_GENERATE
+    registry_writeback: FORBIDDEN
+    risky_or_review_only_product: BLOCK_GENERATION
+
 sample_payloads:
   registered_cap_burung:
     product_id: CAP_BURUNG_MINYAK
@@ -116,6 +150,68 @@ sample_payloads:
     platform: TikTok
     language: BM
     visual_reference_status: USER_PROVIDED
+
+  registered_bosmax_resolver_single:
+    product_id: BOSMAX_SERUM
+    product_name: BOSMAX Serum
+    category: Health & Wellness
+    sub_category: Men's Health / Vitaliti Lelaki
+    compliance_class: STEALTH_METAPHOR_REQUIRED
+    platform: TikTok
+    language: Malay
+    visual_reference_status: USER_PROVIDED
+    template_lane: STEALTH
+    silo: STEALTH
+    silo_key: male_health_stealth_01
+    product_family: FAMILY_MALE_EXT_SENSITIVE_OIL
+    camera_style: UGC_IPHONE_RAW
+    physics_class: CLASS_A
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    copywriting_mode: AUTO_RESOLVE
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_mode: AUTO_RESOLVE
+
+  registered_bosmax_resolver_batch:
+    product_id: BOSMAX_SERUM
+    product_name: BOSMAX Serum
+    category: Health & Wellness
+    sub_category: Men's Health / Vitaliti Lelaki
+    compliance_class: STEALTH_METAPHOR_REQUIRED
+    platform: TikTok
+    language: Malay
+    visual_reference_status: USER_PROVIDED
+    template_lane: STEALTH
+    silo: STEALTH
+    silo_key: male_health_stealth_01
+    product_family: FAMILY_MALE_EXT_SENSITIVE_OIL
+    camera_style: UGC_IPHONE_RAW
+    physics_class: CLASS_A
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    copywriting_mode: AUTO_RESOLVE
+    avatar_pool_id: BOSMAX_MALE_STEALTH_POOL_001
+    avatar_mode: AUTO_ROTATE
+    batch_count: 20
+    rotation_rule: ROUND_ROBIN_NO_REPEAT
+
+  registered_mwcb_direct_resolver_single:
+    product_id: CAP_BURUNG_MINYAK
+    product_name: Minyak Warisan Cap Burung
+    category: traditional remedy oil
+    sub_category: Traditional Remedy / Minyak Urut
+    compliance_class: GREEN
+    platform: TikTok
+    language: BM
+    visual_reference_status: USER_PROVIDED
+    template_lane: DIRECT
+    silo: DIRECT
+    silo_key: traditional_remedy_direct
+    product_family: FAMILY_TRADITIONAL_REMEDY_OIL
+    camera_style: UGC_IPHONE_RAW
+    physics_class: CLASS_A
+    copywriting_id: CAP_BURUNG_MINYAK_CP_0031
+    copywriting_mode: AUTO_RESOLVE
+    avatar_context_id: MWCB_DIRECT_AVP_0001
+    avatar_mode: AUTO_RESOLVE
 
   family_traditional_remedy:
     product_name: Minyak Herba Tradisional
@@ -142,6 +238,8 @@ sample_payloads:
     language: BM
     compliance_class: GREEN
     visual_reference_status: USER_PROVIDED
+    copywriting_mode: SESSION_ONLY_GENERATE
+    registry_writeback: FORBIDDEN
 
   review_only_baby_supplement:
     product_name: Baby Supplement
