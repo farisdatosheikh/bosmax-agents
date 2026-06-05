@@ -20,6 +20,7 @@ from stealth_copy_authority import (
 ROOT = Path(__file__).resolve().parents[1]
 WORKBOOK_PATH = ROOT / "BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx"
 REGISTRY_PATH = ROOT / "registries" / "dialogue_budget_corridor.yaml"
+MWCB_TAXONOMY_PATH = ROOT / "registries" / "mwcb_copywriting_angle_taxonomy.yaml"
 PAIN_HEADER = "Pain_or_Friction"
 REQUIRED_PRIORITY_SHEETS = [
     "PRODUCT_BOSMAX_SERUM",
@@ -30,6 +31,36 @@ REQUIRED_PRIORITY_SHEETS = [
 VALID_FORMULAS = {"AIDA", "PAS", "HSO", "HPAS", "SAVAGE_HPAS"}
 VALID_LANES = {"DIRECT", "STEALTH"}
 PLACEHOLDER_TOKENS = ("tbd", "placeholder", "hook 1", "usp 1", "cta 1", "lorem ipsum")
+
+# MWCB taxonomy constants
+VALID_MCA_IDS = {
+    "MWCB-MCA01", "MWCB-MCA02", "MWCB-MCA03", "MWCB-MCA04",
+    "MWCB-MCA05", "MWCB-MCA06", "MWCB-MCA07", "REVIEW_ONLY", "UNASSIGNED",
+}
+VALID_COMPLIANCE_RISKS = {"GREEN", "YELLOW", "HIGH", "REVIEW_ONLY", "UNASSIGNED"}
+MWCB_SHEETS = {"PRODUCT_MW_CAP_BURUNG", "FAMILY_TRAD_REMEDY_OIL"}
+APPROVED_STATUSES = {"APPROVED", "LOCKED"}
+MWCB_FORBIDDEN_COPY_TERMS = (
+    "roll-on",
+    "roll on",
+    "roller",
+    "rollerball",
+    "pump",
+    "spray",
+    "dropper",
+    "ubat",
+    "sembuh",
+    "merawat",
+    "penawar",
+    "antiseptik",
+    "antibakteria",
+    "selamat untuk bayi",
+    "selamat untuk kanak-kanak",
+    "buka saluran hidung",
+    "longgarkan kahak",
+    "mengecutkan rahim",
+    "mengempiskan perut",
+)
 
 
 def normalize(value: object) -> str:
@@ -193,15 +224,120 @@ def validate_stealth_authority_map() -> None:
         fail("Stealth authority map workbook_source_metadata drift detected")
 
 
+def validate_mwcb_taxonomy() -> None:
+    """Validate MWCB MCA taxonomy registry and workbook column compliance."""
+    if not MWCB_TAXONOMY_PATH.exists():
+        fail(f"MWCB taxonomy registry missing: {MWCB_TAXONOMY_PATH}")
+
+    with MWCB_TAXONOMY_PATH.open("r", encoding="utf-8") as fh:
+        taxonomy = yaml.safe_load(fh)
+
+    # 1. All 7 MCA IDs must exist
+    mca_list = taxonomy.get("mca_list", [])
+    mca_ids_in_registry = {entry["mca_id"] for entry in mca_list}
+    required_mca_ids = {
+        "MWCB-MCA01", "MWCB-MCA02", "MWCB-MCA03", "MWCB-MCA04",
+        "MWCB-MCA05", "MWCB-MCA06", "MWCB-MCA07",
+    }
+    missing_mca = required_mca_ids - mca_ids_in_registry
+    if missing_mca:
+        fail(f"MWCB taxonomy missing MCA IDs: {', '.join(sorted(missing_mca))}")
+
+    # 2. Phase 1 MCAs must be exactly MWCB-MCA01, MWCB-MCA03, MWCB-MCA07
+    phase_1_in_registry = set(taxonomy.get("phase_1_ready_mcas", []))
+    expected_phase_1 = {"MWCB-MCA01", "MWCB-MCA03", "MWCB-MCA07"}
+    if phase_1_in_registry != expected_phase_1:
+        fail(
+            f"MWCB taxonomy phase_1_ready_mcas mismatch. "
+            f"Expected: {sorted(expected_phase_1)}, got: {sorted(phase_1_in_registry)}"
+        )
+
+    # 3. REVIEW_ONLY use cases must be present and quarantined
+    review_use_cases = taxonomy.get("review_only_use_cases", [])
+    if not review_use_cases:
+        fail("MWCB taxonomy missing review_only_use_cases — quarantine not defined")
+    review_uc_ids = {uc["use_case_id"] for uc in review_use_cases}
+    required_review_ucs = {
+        "RO-UC-01", "RO-UC-02", "RO-UC-03", "RO-UC-04",
+        "RO-UC-05", "RO-UC-06", "RO-UC-07",
+    }
+    missing_ucs = required_review_ucs - review_uc_ids
+    if missing_ucs:
+        fail(f"MWCB taxonomy missing review-only use cases: {', '.join(sorted(missing_ucs))}")
+
+    # 4 + 5. Workbook sheets must have MCA_ID and Compliance_Risk columns
+    if not WORKBOOK_PATH.exists():
+        fail(f"Workbook missing: {WORKBOOK_PATH}")
+    wb = load_workbook(WORKBOOK_PATH, data_only=True)
+
+    for sheet_name in MWCB_SHEETS:
+        if sheet_name not in wb.sheetnames:
+            fail(f"Required MWCB sheet missing from workbook: {sheet_name}")
+        ws = wb[sheet_name]
+        headers = [normalize(cell.value) for cell in ws[1]]
+        if "MCA_ID" not in headers:
+            fail(f"{sheet_name}: missing required column MCA_ID")
+        if "Compliance_Risk" not in headers:
+            fail(f"{sheet_name}: missing required column Compliance_Risk")
+
+        header_index = {h: i for i, h in enumerate(headers)}
+        mca_col = header_index["MCA_ID"]
+        risk_col = header_index["Compliance_Risk"]
+        status_col = header_index.get("Status")
+
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            mca_id = normalize(row[mca_col])
+            compliance_risk = normalize(row[risk_col])
+            status = normalize(row[status_col]) if status_col is not None else ""
+
+            # 6. Non-empty MCA_ID must be a recognised value
+            if mca_id and mca_id not in VALID_MCA_IDS:
+                fail(
+                    f"{sheet_name}: invalid MCA_ID '{mca_id}' — "
+                    f"must be one of {sorted(VALID_MCA_IDS)}"
+                )
+
+            # 7. Non-empty Compliance_Risk must be a recognised value
+            if compliance_risk and compliance_risk not in VALID_COMPLIANCE_RISKS:
+                fail(
+                    f"{sheet_name}: invalid Compliance_Risk '{compliance_risk}' — "
+                    f"must be one of {sorted(VALID_COMPLIANCE_RISKS)}"
+                )
+
+            # 8. REVIEW_ONLY Compliance_Risk rows must not be APPROVED or LOCKED
+            if compliance_risk == "REVIEW_ONLY" and status in APPROVED_STATUSES:
+                fail(
+                    f"{sheet_name}: row with Compliance_Risk=REVIEW_ONLY "
+                    f"must not have Status={status}"
+                )
+
+            # 9. Reject forbidden MWCB copy terms in any approved row
+            if status in APPROVED_STATUSES and sheet_name in MWCB_SHEETS:
+                copy_fields = []
+                for col_name in ("Hook", "Pain_or_Friction", "USP_1", "USP_2", "USP_3", "CTA"):
+                    col_idx = header_index.get(col_name)
+                    if col_idx is not None:
+                        copy_fields.append(normalize(row[col_idx]))
+                blob = " | ".join(copy_fields).lower()
+                for term in MWCB_FORBIDDEN_COPY_TERMS:
+                    if term.lower() in blob:
+                        fail(
+                            f"{sheet_name}: approved row contains forbidden MWCB "
+                            f"copy term '{term}'"
+                        )
+
+
 def main() -> None:
     row_counts = validate_workbook()
     validate_registry()
     validate_stealth_authority_map()
+    validate_mwcb_taxonomy()
 
     print("VALIDATION PASSED")
     print(f"Workbook: {WORKBOOK_PATH}")
     print(f"Registry: {REGISTRY_PATH}")
     print(f"Stealth Authority Map: {AUTHORITY_MAP_PATH}")
+    print(f"MWCB Taxonomy: {MWCB_TAXONOMY_PATH}")
     for sheet_name in sorted(row_counts):
         if row_counts[sheet_name]:
             print(f"{sheet_name}: {row_counts[sheet_name]} populated rows validated")
