@@ -10,6 +10,10 @@ Precondition: Every video template, Notion sample, Codex patch, Claude Code gene
               before being marked READY or DONE.
 ```
 
+**Router overlay:** `registries/product_copy_router.yaml` and `scripts/validate_product_copy_router.py`
+govern unresolved product requests. On-the-fly products remain session-only, high-risk inputs must
+fail closed into `REVIEW_ONLY_PRODUCT`, and Notion may not become routing authority.
+
 ---
 
 ## 1. Purpose
@@ -307,6 +311,8 @@ override requires `Needs Compliance Review` status.
 between image and text inputs.
 
 **Canonical product truth source:** `products/*.yaml` (TIER 1). FASTMOSS workbook (TIER 2).
+Routing authority for unresolved products lives in `registries/product_copy_router.yaml`.
+FASTMOSS remains a source signal, not a permission gate.
 
 **Required fields per product/variant:**
 - product_id, product_name
@@ -317,6 +323,8 @@ between image and text inputs.
 
 **Pass condition:**
 - product truth resolved from TIER 1 or TIER 2 before any prompt is generated
+- unresolved products are labeled as `FAMILY_MATCHED_PRODUCT`, `ON_THE_FLY_PRODUCT`, or
+  `REVIEW_ONLY_PRODUCT` before copy generation begins
 - scale_anchor_descriptor present for TikTok platform
 - product identity, label, packaging, and scale anchor match across every block
 - visual uploaded image takes priority over text input and session memory (Priority Rule: Visual > Text > Memory)
@@ -326,14 +334,18 @@ between image and text inputs.
 - product identity from session memory overriding uploaded visual → ABORT
 - product substitution (different product appearing in Block 2) → ABORT
 - scale drift detected in Block 2 compared to Block 1 → ABORT
+- on-the-fly product treated as approved library truth or auto-written back into workbook → BLOCK
+- high-risk intake routed into `ON_THE_FLY_PRODUCT` instead of `REVIEW_ONLY_PRODUCT` → BLOCK
 
 **Validator coverage:** NO — no standalone product truth drift validator exists yet.
 Currently enforced via CLAUDE.md VISUAL INTAKE GATE and BOSMAX_RUNTIME_STATE_MACHINE_v1.md
 STATE_ASSET_ANALYSIS (documentation enforcement only).
 Registry-layer validator: `validate_product_truth_drift.py` — created in PR #5.
+Routing-layer validator: `validate_product_copy_router.py` — created in PR #13.
 
 **Notion impact:** Product truth fields in Notion (packaging, scale anchor) must originate from
 `products/*.yaml` entries, not free-typed by operators.
+Notion may mirror route status later, but it may not become routing authority.
 
 ---
 
@@ -629,6 +641,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 - `validate_execution_kernel_contract.py` — G-09 — created in PR #3
 - VEO_3_1_LITE registry + validator — G-01, G-02 — VEO_3_1_LITE parity closed in PR #4
 - `validate_product_truth_drift.py` — G-05 — registry-layer validator created in PR #5
+- `validate_product_copy_router.py` — G-05 routing contract — created in PR #13
 - `validate_avatar_registry_coverage.py` — G-06 — registry-layer validator created in PR #7
 - `validate_notion_sample_readiness.py` — G-08, G-10 — manifest-layer validator created in PR #8
 - `validate_wps_per_block.py` — G-03 — per-block WPS validator created in PR #9

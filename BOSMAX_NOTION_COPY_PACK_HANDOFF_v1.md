@@ -103,6 +103,8 @@ The Notion downstream view should show:
 - Do not let Notion infer STEALTH vs DIRECT from operator memory.
 - Do not leave `Pain_or_Friction` only in Notion.
 - Do not leave dialogue budget logic only in Notion.
+- Do not let Notion become product-routing authority for registered, family-matched, on-the-fly, or review-only states.
+- Do not sync `AD_HOC_GENERATED` on-the-fly rows into approved registry views unless a separate repo promotion happens first.
 
 ## MWCB Copy Pack Taxonomy Rules
 
@@ -118,6 +120,8 @@ The Notion downstream view should show:
 - REVIEW_ONLY MWCB use cases remain blocked even after Phase 1 generation.
 - Notion sync remains deferred until after Phase 1 workbook validation for this PR.
 - Copy packs derived from REVIEW_ONLY MCAs (MWCB-MCA06) or REVIEW_ONLY use cases must never reach `APPROVED` or `LOCKED` status without independent compliance sign-off.
+- Universal on-the-fly routing now lives in `registries/product_copy_router.yaml`, but this PR does not
+  push any router fields, on-the-fly requests, or promotion flags into Notion.
 
 ## Flow Extend Proof Authority
 

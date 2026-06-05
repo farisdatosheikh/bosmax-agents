@@ -107,6 +107,8 @@ For `PRODUCT_MW_CAP_BURUNG` and `FAMILY_TRAD_REMEDY_OIL` sheets:
 - **Notion is downstream UI only** — do not surface REVIEW_ONLY rows to Notion until approved
   copy rows exist and operator override is confirmed.
 - **Notion sync remains deferred** until Phase 1 workbook validation is complete for this PR.
+- **On-the-fly product routing is upstream-only** â€” `registries/product_copy_router.yaml` may allow
+  ad-hoc generation, but those rows must not be written back into this workbook automatically.
 
 ---
 
@@ -262,3 +264,4 @@ This handoff is successful when:
 - raw/mapping/master layers remain untouched
 - workbook remains family-based, not brand-listing-based
 - runtime authority remains outside the workbook
+- ad-hoc product generation remains session-only until a separate promotion action registers it
