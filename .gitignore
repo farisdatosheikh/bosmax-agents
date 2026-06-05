@@ -12,3 +12,6 @@ desktop.ini
 outputs/
 
 __pycache__/
+
+# Node tooling surface
+node_modules/

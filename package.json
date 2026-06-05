@@ -1,0 +1,18 @@
+{
+	"name": "bosmax-agents",
+	"version": "1.0.0",
+	"private": true,
+	"description": "BOSMAX Command Centre — repo-local Node tooling surface for dependency graph audit, TS validation, and linting.",
+	"scripts": {
+		"mandor:check": "tsx scripts/mandor-check.ts",
+		"lint:biome": "biome check .",
+		"lint:biome:write": "biome check --write .",
+		"depcruise:scripts": "dependency-cruiser scripts/mandor-check.ts --no-config --output-type err --include-only \"^scripts\"",
+		"depcruise:repo": "dependency-cruiser . --no-config --output-type err"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"dependency-cruiser": "^17.4.3",
+		"tsx": "^4.19.4"
+	}
+}
