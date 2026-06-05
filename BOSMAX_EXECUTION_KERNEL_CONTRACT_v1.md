@@ -156,19 +156,23 @@ Forbidden: `8s blocks`, `12s base + extension invented math`, monolithic 12/16/2
 32s → [8, 8, 8, 8]
 40s → [8, 8, 8, 8, 8]
 48s → [8, 8, 8, 8, 8, 8]
-56s → [8, 8, 8, 8, 8, 8, 7]
+56s → [8, 8, 8, 8, 8, 8, 8]
 ```
-Note: Dialog budget uses 7s per block (actual render), not 8s API value.
+Note: Dialog budget uses 8s per block.
 Authority: `BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md`.
 Not a claim that Google documents these totals as one native monolithic clip.
 
-**VEO_3_1_LITE** — LIVE GAP (see Section 15):
+**VEO_3_1_LITE.CLIP_CHAIN** (PARTIAL_VERIFIED — BOSMAX READY_CLIP_MODE):
 ```
-Defined in .claude/CLAUDE.md ENGINE CONSTRAINT TABLE: max 8s per block.
-Absent from registries/video_engine_duration_contracts.yaml.
-Status: UNDOCUMENTED_IN_REGISTRY — see Section 15 for treatment.
-Dialog budget per block: use 7s (actual render), not 8s (API value).
+8s  → [8]
+16s → [8, 8]
+24s → [8, 8, 8]
+32s → [8, 8, 8, 8]
+40s → [8, 8, 8, 8, 8]
+48s → [8, 8, 8, 8, 8, 8]
+56s → [8, 8, 8, 8, 8, 8, 8]
 ```
+Note: API window stays 8s, but dialog budget per block uses 7s actual-render corridor.
 
 **KLING_3_0** (VERIFIED / READY):
 ```
@@ -182,14 +186,33 @@ Valid block durations: [5, 10, 15]
 Single block only — supports_multi_block: false
 ```
 
-**GOOGLE_FLOW.FLOW_EXTEND** (PARTIAL_VERIFIED / MANUAL_REVIEW_ONLY):
+**GOOGLE_FLOW.FLOW_EXTEND_UI** (PARTIAL_VERIFIED / READY_REVIEWED_FLOW_EXTEND):
 ```
-This is NOT ordinary clip-chain math.
-Flow Extend = previous-final-second continuation workflow.
-Status: NEEDS_REVIEW — manual-review template only, not production-ready deterministic contract.
-Required: Previous Clip Final Second State, Continuity Goal, Identity Reanchor,
-          Product Reanchor, Audio Continuity Notes, Frame Bridge Notes.
+8s  → [8]
+16s → [8, 8]
+24s → [8, 8, 8]
+32s → [8, 8, 8, 8]
+40s → [8, 8, 8, 8, 8]
+48s → [8, 8, 8, 8, 8, 8]
+56s → [8, 8, 8, 8, 8, 8, 8]
 ```
+Rule: this is Flow-specific continuation math, not GROK math. Continuation blocks require
+Previous Clip Final Second State, Continuity Goal, Identity Reanchor, Product Reanchor,
+Scene Continuity Notes, Audio Continuity Notes, Frame Bridge Notes, Bridge-In, Bridge-Out,
+and validator proof.
+
+**GOOGLE_FLOW.FLOW_EXTEND_VERTEX** (PARTIAL_VERIFIED / NEEDS_REVIEW):
+```
+7s  → [7]
+14s → [7, 7]
+21s → [7, 7, 7]
+28s → [7, 7, 7, 7]
+35s → [7, 7, 7, 7, 7]
+42s → [7, 7, 7, 7, 7, 7]
+49s → [7, 7, 7, 7, 7, 7, 7]
+56s → [7, 7, 7, 7, 7, 7, 7, 7]
+```
+Rule: documented from Vertex, but not promoted beyond NEEDS_REVIEW until a dedicated proof lane exists.
 
 ---
 
@@ -199,19 +222,20 @@ Required: Previous Clip Final Second State, Continuity Goal, Identity Reanchor,
 
 **Canonical execution modes:**
 
-| Mode                | Engine        | Multi-block | Frame bridge | Prev clip state | Identity/product re-anchor |
-|---------------------|---------------|-------------|--------------|-----------------|----------------------------|
-| SINGLE_BLOCK        | KLING/SEEDANCE| No          | No           | No              | No                         |
-| GROK_EXTENSION      | GROK          | Yes         | No           | No              | Yes (bridge-in / bridge-out)|
-| VEO31_CLIP_CHAIN    | VEO_3_1       | Yes         | Yes (24-frame bridge) | No | Yes (every block)          |
-| FLOW_EXTEND         | GOOGLE_FLOW   | Yes         | Yes          | Yes (required)  | Yes                        |
-| MANUAL_REVIEW_ONLY  | GOOGLE_FLOW   | Review only | Review only  | Review only     | Review only                |
+| Mode               | Engine        | Multi-block | Frame bridge | Prev clip state | Identity/product re-anchor |
+|--------------------|---------------|-------------|--------------|-----------------|----------------------------|
+| SINGLE_BLOCK       | KLING/SEEDANCE| No          | No           | No              | No                         |
+| GROK_EXTENSION     | GROK          | Yes         | No           | No              | Yes (bridge-in / bridge-out) |
+| VEO31_CLIP_CHAIN   | VEO_3_1       | Yes         | Yes (24-frame bridge) | No | Yes (every block) |
+| VEO31_LITE_CLIP_CHAIN | VEO_3_1_LITE | Yes      | Yes (24-frame bridge) | No | Yes (every block) |
+| FLOW_EXTEND_UI     | GOOGLE_FLOW   | Yes         | Yes          | Yes (continuation blocks) | Yes (every block) |
+| FLOW_EXTEND_VERTEX | GOOGLE_FLOW   | Yes         | Yes          | Yes (continuation blocks) | Yes (every block) |
 
 **Pass condition:** execution_mode declared and fields match mode requirements above.
 
 **Fail condition:** execution_mode absent → ABORT. Fields missing for declared mode → ABORT.
 
-**Validator coverage:** YES (via validate_video_block_contracts.py for GROK and VEO_3_1).
+**Validator coverage:** YES (via `validate_video_block_contracts.py` for GROK, VEO, and GOOGLE_FLOW execution modes).
 
 **Notion impact:** `Multi-Block Execution Mode` field in `🎬 BOSMAX Video Runs` must match.
 
@@ -253,9 +277,9 @@ blocks create rushed speech / lip sync seam mismatch.
 
 **Validator coverage:** READY (registry/planner/sample-manifest layer) — PARTIAL (runtime speech timing)
 - `validate_video_block_contracts.py` — corridor coverage and monotonicity for all BM/BRISK_UGC durations
-- `validate_wps_per_block.py` (PR #9) — per-block WPS for all GROK, VEO_3_1, VEO_3_1_LITE engine plans;
-  VEO_3_1_LITE 7s actual-render budget assertion; total-vs-block budget gap assertion; sample manifest
-  WPS audit requirements; Flow Extend MANUAL_REVIEW_ONLY posture.
+- `validate_wps_per_block.py` (PR #9) — per-block WPS for GROK, VEO_3_1, VEO_3_1_LITE, and
+  GOOGLE_FLOW.FLOW_EXTEND_UI engine plans; VEO_3_1_LITE 7s actual-render budget assertion; total-vs-block
+  budget gap assertion; sample manifest WPS audit requirements; Flow UI shared resolver payload checks.
 - Per-block budget injected by `video_block_plan.py`.
 - Runtime speech timing of actual generated video remains PARTIAL (future: `validate_runtime_speech_timing.py`).
 
@@ -415,14 +439,21 @@ product scale drift, and dialogue disconnection.
 - Previous clip first/last frame continuity required
 - No fresh setup or silent beauty moment in non-first clips
 
-**For GOOGLE_FLOW.FLOW_EXTEND (MANUAL_REVIEW_ONLY):**
-- Previous Clip Final Second State required (exact description of ending frame/motion/audio)
+**For GOOGLE_FLOW.FLOW_EXTEND_UI:**
+- Previous Clip Final Second State required on every continuation block
 - Continuation goal required
-- Identity re-anchor required
-- Product re-anchor required
+- Identity re-anchor required every block
+- Product re-anchor required every block
+- Scene continuity notes required
 - Audio continuity notes required
 - Frame bridge notes required
-- Status remains NEEDS_REVIEW — no production-ready deterministic math
+- Non-first blocks require bridge-in
+- Non-final blocks require bridge-out
+- Status may use `READY_REVIEWED_FLOW_EXTEND` only when validator proof exists
+
+**For GOOGLE_FLOW.FLOW_EXTEND_VERTEX:**
+- Same seam fields required as Flow UI
+- Status remains `NEEDS_REVIEW` until dedicated Vertex proof exists
 
 **Dialogue metaphor rule:** A spoken metaphor (e.g., "vintage car analogy") must not become
 a visual object. Metaphors are audio-layer constructs only.
@@ -439,10 +470,11 @@ a visual object. Metaphors are audio-layer constructs only.
 **Validator coverage:**
 - GROK: YES (`validate_video_block_contracts.py` — bridge-out, bridge-in, speech resume window)
 - VEO_3_1.CLIP_CHAIN: YES (`validate_video_block_contracts.py` — frame bridge, identity/product reanchor)
-- GOOGLE_FLOW.FLOW_EXTEND: READY proof-manifest layer; PARTIAL live Flow execution
-  - `validate_flow_extend_proof.py` (PR #10) — enforces MANUAL_REVIEW_ONLY posture, proof field
-    completeness for READY status, rejects formulaResult / omitted rollups, cross-references
-    decision record, engine contract, product/avatar refs, and Notion sample readiness.
+- GOOGLE_FLOW.FLOW_EXTEND_UI: READY proof-manifest layer; PARTIAL live Flow execution
+  - `validate_flow_extend_proof.py` (PR #10) — enforces child-block proof, reviewed Flow UI posture,
+    per-block WPS alignment, previous-final-second continuity, resolver payload continuity, and
+    Notion sample readiness cross-checks.
+- GOOGLE_FLOW.FLOW_EXTEND_VERTEX: structural contract only, remains NEEDS_REVIEW
   - `registries/flow_extend_proof.yaml` — repo-backed proof manifest.
   - Live Flow execution proof (actual generated-video continuity) remains PARTIAL.
 
@@ -475,15 +507,16 @@ or replaces repo authority.
 
 **Notion READY posture rules:**
 - `READY` → validator command + output captured + all gates passed
-- `NEEDS_REVIEW` → manual override, unverified Flow/VEO long-form, or missing validator run
+- `READY_REVIEWED_FLOW_EXTEND` → reviewed Flow UI child-block proof exists
+- `NEEDS_REVIEW` → manual override, unsupported Vertex Flow, or missing proof
 - `PARTIAL` → some blocks ready, others still being validated
 
 **Pass condition:** Notion surface reflects registry/repo truth. No invented fields.
 
 **Fail condition:** Any READY status in Notion without a corresponding validator proof trace → BLOCK.
 
-**Validator coverage:** NO — currently documentation-enforced only.
-Future validator needed: `validate_notion_sample_readiness.py` or a Notion audit checklist.
+**Validator coverage:** READY at manifest layer via `validate_notion_sample_readiness.py`.
+Live Notion rendering and connector rollup fidelity remain PARTIAL runtime concerns.
 
 ---
 
@@ -619,7 +652,7 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 | G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY + copywriting_id_resolver.yaml | validate_copywriting_ecosystem.py + validate_copywriting_id_resolver.py | Copywriting ID relation              | READY for resolver-backed BOSMAX Serum and registered lanes; PARTIAL globally |
 | G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | validate_product_truth_drift.py      | Product fields in Video Runs          | PARTIAL (registry layer validated; prompt-level drift remains docs-only) |
 | G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md + avatar_context_rotation.yaml | validate_avatar_registry_coverage.py + validate_avatar_context_resolver.py | Avatar Mode, Avatar Context ID, Avatar Pool ID | READY for registry/resolver layer; PARTIAL for USER_UPLOAD runtime mirror |
-| G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py + validate_flow_extend_proof.py | Bridge-Out, Bridge-In, Seam Template | READY (GROK + VEO + Flow proof-manifest layer); PARTIAL live Flow execution |
+| G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py + validate_flow_extend_proof.py | Bridge-Out, Bridge-In, Seam Template | READY for GROK, VEO, and Flow UI proof-manifest layer; PARTIAL live Flow execution |
 | G-08    | NOTION_DOWNSTREAM_ONLY | NOTION_COPY_PACK_HANDOFF + NOTION_MULTI_BLOCK_HANDOFF   | validate_notion_sample_readiness.py  | Block Status, READY posture fields    | PARTIAL (manifest-layer validated; live Notion/MCP rendering remains docs-only) |
 | G-09    | VALIDATOR_PROOF        | This contract + validate_*.py                           | validate_execution_kernel_contract.py | QA Notes, proof block sections       | PARTIAL         |
 | G-10    | SAMPLE_OUTPUT          | NOTION_MULTI_BLOCK_HANDOFF + notion_sample_readiness.yaml | validate_notion_sample_readiness.py | Block Status, page proof sections    | PARTIAL (manifest-layer validated; live Notion proof requires operator fill + rerun) |

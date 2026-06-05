@@ -1,56 +1,301 @@
-version: 1
+version: 2
 description: >
-  Repo-backed proof manifest for BOSMAX GOOGLE_FLOW.FLOW_EXTEND.
-  Flow Extend is a previous-final-second continuation workflow, not deterministic
-  clip-chain math. It is not the same as VEO_3_1 raw clip-chain planning.
-  All runs in this manifest are MANUAL_REVIEW_ONLY until complete proof is supplied.
+  Repo-backed proof manifest for BOSMAX GOOGLE_FLOW Flow Extend. Flow UI 8s
+  continuation is now a reviewed deterministic multi-block surface when child
+  block rows, per-block WPS, previous-final-second continuity, and validator
+  proof are present. Vertex 7s continuation remains documented but review-only.
 governance:
   authority: BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
   decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
   engine_contract: registries/video_engine_duration_contracts.yaml
   validator: scripts/validate_flow_extend_proof.py
-  default_status: MANUAL_REVIEW_ONLY
+  default_ready_status: READY_REVIEWED_FLOW_EXTEND
+  unsupported_mode_status: NEEDS_REVIEW
   fail_closed_rules:
-    - FLOW_EXTEND must not be treated as ordinary clip-chain math.
-    - FLOW_EXTEND must not be promoted to READY without complete proof fields.
-    - FLOW_EXTEND is a continuation workflow using previous clip final-second state.
-    - Previous Clip Final Second State is mandatory for READY status.
-    - Continuation Goal is mandatory for READY status.
-    - Identity Reanchor is mandatory for READY status.
-    - Product Reanchor is mandatory for READY status.
-    - Audio Continuity Notes are mandatory for READY status.
-    - Frame Bridge Notes are mandatory for READY status.
-    - Output Test Report is mandatory for READY status.
-    - Validator proof capture is mandatory for READY status.
+    - GOOGLE_FLOW long duration must create child block rows. Monolithic prompt posture is forbidden.
+    - FLOW_EXTEND_UI ready posture requires per-block WPS, seam proof, and previous-final-second continuity on every continuation block.
+    - FLOW_EXTEND_VERTEX remains NEEDS_REVIEW until a dedicated Vertex proof lane exists.
+    - Shared copywriting/avatar resolver payload must match the GROK/VEO pattern.
     - formulaResult handles and omitted rollups are not accepted as proof.
-    - deterministic_clip_chain_allowed must always remain false.
-    - block_plan must be empty for all FLOW_EXTEND runs.
 flow_extend_runs:
-  - run_id: SAMPLE-FLOW-EXTEND-16S-RIZAL
-    notion_url: "https://app.notion.com/p/3754775af48a81aea3d3eb46be65571e"
+  - run_id: SAMPLE-FLOW-16S-RIZAL
+    notion_url: ""
     engine: GOOGLE_FLOW
-    execution_mode: FLOW_EXTEND
-    execution_status: MANUAL_REVIEW_ONLY
+    execution_mode: FLOW_EXTEND_UI
+    execution_status: READY_REVIEWED_FLOW_EXTEND
     product_id: BOSMAX_SERUM
-    avatar_id: RIZAL
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_pool_id: null
     total_duration_seconds: 16
-    block_plan: []
-    deterministic_clip_chain_allowed: false
-    previous_clip_final_second_state: ""
-    continuation_goal: ""
-    identity_reanchor: ""
-    product_reanchor: ""
-    audio_continuity_notes: ""
-    frame_bridge_notes: ""
-    output_test_report: ""
-    validator_proof_capture: ""
-    allowed_reason_if_manual_review: >
-      GOOGLE_FLOW.FLOW_EXTEND remains MANUAL_REVIEW_ONLY until complete
-      previous-final-second continuation proof is supplied. Flow Extend is a
-      continuation workflow, not deterministic clip-chain math. Promote to READY
-      only after all required proof fields are filled and validator captures
-      VALIDATION PASSED.
-    notes: >
-      Decision record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md Section 3B.
-      FLOW_EXTEND requires previous clip final-second state and continuity notes.
-      Do not treat this run as ordinary 8+8 clip-chain math.
+    block_plan: [8, 8]
+    shared_copywriting_avatar_resolver_payload: true
+    child_blocks_required: true
+    child_block_count_expected: 2
+    output_test_report: >
+      Flow UI reviewed run. Parent run exists, child rows exist, block split
+      is 8s + 8s, and continuity is carried by previous-final-second state on
+      the continuation block.
+    validator_proof_capture: "VALIDATION PASSED :: SAMPLE-FLOW-16S-RIZAL :: Flow UI child-block seam proof."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 8
+        block_role: HOOK_PAIN_FRICTION
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the BOSMAX Serum hook and lock the ending hand position for the extension seam.
+        identity_reanchor: Rizal stays the same Malay male persona in RIZAL_CASUAL_01 with the same close-hold delivery style.
+        product_reanchor: BOSMAX Serum 5ML remains the only hero product, held close to chest height with lip-balm scale truth.
+        scene_continuity_notes: Quiet home reset corner stays unchanged, with the same sofa edge, warm lamp spill, and tight handheld framing.
+        audio_continuity_notes: Spoken delivery stays brisk, close-mic, and conversational with no music reset.
+        frame_bridge_notes: End on a stable chest-up frame with the serum lifted beside the sternum and eyes still locked to camera.
+        bridge_out: End the block with the bottle still raised and the hand grip unchanged for the extension pickup.
+        bridge_in: ""
+        final_block_dialogue: "Kalau badan rasa lemau lepas kerja, serum ni masuk mudah, simpan senyap dalam poket, dan terus bantu keyakinan nampak stabil."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_16S_RIZAL_BLOCK_1
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-16S-RIZAL :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 8
+        block_role: RELIEF_CTA
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block one still facing camera, serum raised near chest, right wrist steady, and speech carries through the final beat.
+        continuity_goal: Continue the same spoken thread without reset and close on relief plus CTA.
+        identity_reanchor: Rizal stays identical in face, wardrobe, posture, and handheld UGC energy.
+        product_reanchor: BOSMAX Serum remains visible in the same right-hand grip with the same size and label truth.
+        scene_continuity_notes: Same lamp spill, same sofa edge, same camera distance, and no location swap.
+        audio_continuity_notes: Continue the same sentence rhythm with no silence gap or fresh greeting.
+        frame_bridge_notes: Open on the same chest-up frame and preserve the final bottle position before the wrist relaxes slightly.
+        bridge_out: ""
+        bridge_in: Continue from the exact final second hand position and keep the bottle near chest level before the next phrase begins.
+        final_block_dialogue: "Sambung terus, pakai malam ni, rasa lebih kemas bila pasangan dekat, botol kecil tak serabut, dan rutin pun jadi konsisten."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_16S_RIZAL_BLOCK_2
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-16S-RIZAL :: block 2 seam + WPS checked."
+
+  - run_id: SAMPLE-FLOW-24S-RIZAL
+    notion_url: ""
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND_UI
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    product_id: BOSMAX_SERUM
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_pool_id: null
+    total_duration_seconds: 24
+    block_plan: [8, 8, 8]
+    shared_copywriting_avatar_resolver_payload: true
+    child_blocks_required: true
+    child_block_count_expected: 3
+    output_test_report: >
+      Flow UI reviewed run. Parent run exists, three child rows exist, per-block
+      WPS stays on the 8s corridor, and continuation proof is filled on blocks
+      two and three.
+    validator_proof_capture: "VALIDATION PASSED :: SAMPLE-FLOW-24S-RIZAL :: Flow UI child-block seam proof."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 8
+        block_role: HOOK_PAIN
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the BOSMAX Serum hook and end with a locked bottle pose for the extension seam.
+        identity_reanchor: Rizal remains the same Malay male persona in RIZAL_CASUAL_01 with close-hold delivery.
+        product_reanchor: BOSMAX Serum 5ML stays visible in hand with the same lip-balm scale truth.
+        scene_continuity_notes: Quiet home reset corner remains unchanged with the same couch edge and lamp spill.
+        audio_continuity_notes: Brisk single-speaker cadence with no silence padding.
+        frame_bridge_notes: End on a front-facing chest-up frame with the serum close to the sternum and elbow tucked.
+        bridge_out: Hold the bottle at chest height and keep the gaze locked for the continuation block.
+        bridge_in: ""
+        final_block_dialogue: "Kalau badan rasa lemau lepas kerja, serum ni masuk mudah, simpan senyap dalam poket, dan terus bantu keyakinan nampak stabil."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_24S_RIZAL_BLOCK_1
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-24S-RIZAL :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 8
+        block_role: FRICTION_PROOF
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block one still facing camera, serum raised near chest, and the final word lands without dropping the bottle.
+        continuity_goal: Continue the friction beat and add a proof-style everyday convenience line without resetting the motion.
+        identity_reanchor: Rizal face, wardrobe, voice energy, and camera distance stay unchanged.
+        product_reanchor: BOSMAX Serum stays in the same hand with the label angle still readable and scale unchanged.
+        scene_continuity_notes: Same room corner, same warm spill, same handheld framing, no camera jump.
+        audio_continuity_notes: Speech resumes immediately after the prior clause with no dead air.
+        frame_bridge_notes: Start from the same raised-bottle frame, then allow only a small wrist adjustment as speech continues.
+        bridge_out: Finish with the bottle still visible and the torso angle unchanged for the next continuation.
+        bridge_in: Resume from the same raised-bottle pose before the wrist relaxes and the next phrase starts.
+        final_block_dialogue: "Sambung beat kedua, bila mood dah jatuh, serum ni kekal ringkas, cepat serap, dan tak ganggu flow malam berdua langsung."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_24S_RIZAL_BLOCK_2
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-24S-RIZAL :: block 2 seam + WPS checked."
+      - block_index: 3
+        block_duration_seconds: 8
+        block_role: RELIEF_CTA
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block two with the serum still in frame, chin angle steady, and speech continuing through the final syllable.
+        continuity_goal: Continue the same speech thread and close on relief plus CTA.
+        identity_reanchor: Rizal identity, wardrobe, and close-hold posture remain unchanged.
+        product_reanchor: BOSMAX Serum remains the hero item in the same right-hand close-hold.
+        scene_continuity_notes: Same sofa edge, same lamp spill, same tight handheld crop, no environment drift.
+        audio_continuity_notes: Speech resumes immediately with the same brisk tone and no restart greeting.
+        frame_bridge_notes: Match the final chest-up frame from block two before any micro wrist movement appears.
+        bridge_out: ""
+        bridge_in: Continue from the same serum-up frame and carry the sentence forward without a pose reset.
+        final_block_dialogue: "Lepas tu teruskan rutin, keyakinan nampak lebih tersusun, pasangan pun rasa dekat, dan langkah seterusnya jadi lagi natural malam ini."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_24S_RIZAL_BLOCK_3
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-24S-RIZAL :: block 3 seam + WPS checked."
+
+  - run_id: SAMPLE-FLOW-32S-RIZAL
+    notion_url: ""
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND_UI
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    product_id: BOSMAX_SERUM
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
+    avatar_pool_id: null
+    total_duration_seconds: 32
+    block_plan: [8, 8, 8, 8]
+    shared_copywriting_avatar_resolver_payload: true
+    child_blocks_required: true
+    child_block_count_expected: 4
+    output_test_report: >
+      Flow UI reviewed run. Parent run exists, four child rows exist, each block
+      stays on the 8s WPS corridor, and every continuation block carries
+      previous-final-second proof plus bridge-in text.
+    validator_proof_capture: "VALIDATION PASSED :: SAMPLE-FLOW-32S-RIZAL :: Flow UI child-block seam proof."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 8
+        block_role: HOOK_PAIN
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the BOSMAX Serum hook and end with a stable bottle pose for the extension seam.
+        identity_reanchor: Rizal remains the same Malay male persona in RIZAL_CASUAL_01 with the same close-hold delivery.
+        product_reanchor: BOSMAX Serum 5ML stays visible in the right hand with consistent lip-balm scale truth.
+        scene_continuity_notes: Quiet home reset corner remains unchanged with the same handheld crop and warm spill.
+        audio_continuity_notes: Brisk single-speaker cadence with no silence padding.
+        frame_bridge_notes: End on a chest-up frame with the serum still raised and eyes locked to lens.
+        bridge_out: Keep the bottle raised near chest height and maintain the eye line for the next continuation.
+        bridge_in: ""
+        final_block_dialogue: "Kalau badan rasa lemau lepas kerja, serum ni masuk mudah, simpan senyap dalam poket, dan terus bantu keyakinan nampak stabil."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_32S_RIZAL_BLOCK_1
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-32S-RIZAL :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 8
+        block_role: FRICTION_PROOF
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block one still facing camera, serum raised near chest, and the last phrase lands before any body reset happens.
+        continuity_goal: Continue the spoken line immediately and deepen the friction plus convenience proof.
+        identity_reanchor: Rizal identity, wardrobe, facial framing, and handheld energy stay identical.
+        product_reanchor: BOSMAX Serum remains the same hero bottle in the same right-hand grip with consistent label truth.
+        scene_continuity_notes: Same room corner, same lamp spill, same chest-up framing, and no environment swap.
+        audio_continuity_notes: Speech resumes immediately with no fresh greeting and no pacing drop.
+        frame_bridge_notes: Match the closing chest-up frame from block one before allowing a minimal wrist release.
+        bridge_out: Finish with the bottle still visible and shoulders steady for the next extension seam.
+        bridge_in: Continue from the exact same raised-bottle frame before the wrist softens and the next clause begins.
+        final_block_dialogue: "Sambung beat kedua, bila mood dah jatuh, serum ni kekal ringkas, cepat serap, dan tak ganggu flow malam berdua langsung."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_32S_RIZAL_BLOCK_2
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-32S-RIZAL :: block 2 seam + WPS checked."
+      - block_index: 3
+        block_duration_seconds: 8
+        block_role: RELIEF_PROOF_DEVELOPMENT
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block two with the serum still near chest level, bottle readable, and speech still in the same sentence chain.
+        continuity_goal: Extend the relief development beat without breaking the same action line or tone.
+        identity_reanchor: Rizal face, wardrobe, posture, and UGC camera distance remain unchanged.
+        product_reanchor: BOSMAX Serum remains visible in the same right hand with the same size, bottle angle, and label truth.
+        scene_continuity_notes: Same sofa edge, same lamp spill, same warm interior, and no location reset.
+        audio_continuity_notes: Carry the same brisk rhythm forward with no dead air.
+        frame_bridge_notes: Reopen on the same serum-up chest frame, then allow only a micro wrist adjustment.
+        bridge_out: End with the same hero hold so the CTA block opens on the same visual thread.
+        bridge_in: Resume from the same chest-up bottle pose and keep the speech thread moving before any new gesture appears.
+        final_block_dialogue: "Bila dah selesa, serum ni tak berat, senang pegang, dan fokus kekal pada momen tanpa gangguan rasa janggal masa dekat."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_32S_RIZAL_BLOCK_3
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-32S-RIZAL :: block 3 seam + WPS checked."
+      - block_index: 4
+        block_duration_seconds: 8
+        block_role: CTA_CLOSE
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block three with the serum still in hand, posture unchanged, and the final proof phrase still rolling forward.
+        continuity_goal: Continue the same speech chain and close on CTA without restarting the camera pose.
+        identity_reanchor: Rizal identity, outfit, expression, and close-hold stance remain locked.
+        product_reanchor: BOSMAX Serum stays visible in the same right-hand close-hold with scale truth unchanged.
+        scene_continuity_notes: Same handheld framing, same room corner, same lighting, and no scene swap.
+        audio_continuity_notes: Speech resumes immediately with the same close conversational tone and no reset.
+        frame_bridge_notes: Match the final serum-up frame from block three before the CTA line lands.
+        bridge_out: ""
+        bridge_in: Continue from the same serum-up end frame and close the CTA before any new intro gesture appears.
+        final_block_dialogue: "Akhir sekali, terus konsisten malam ni, rasa lebih yakin, lebih kemas, dan hubungan pun jalan tanpa perlu cakap banyak lagi."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_32S_RIZAL_BLOCK_4
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-32S-RIZAL :: block 4 seam + WPS checked."
+
+  - run_id: SAMPLE-FLOW-MWCB-16S-DIRECT
+    notion_url: ""
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND_UI
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    product_id: CAP_BURUNG_MINYAK
+    copywriting_id: CAP_BURUNG_MINYAK_CP_0031
+    avatar_context_id: MWCB_DIRECT_AVP_0001
+    avatar_pool_id: null
+    total_duration_seconds: 16
+    block_plan: [8, 8]
+    shared_copywriting_avatar_resolver_payload: true
+    child_blocks_required: true
+    child_block_count_expected: 2
+    output_test_report: >
+      Flow UI reviewed direct-lane run. Parent run exists, child rows exist,
+      per-block WPS is attached, and the continuation block carries
+      previous-final-second state plus reanchors.
+    validator_proof_capture: "VALIDATION PASSED :: SAMPLE-FLOW-MWCB-16S-DIRECT :: Flow UI child-block seam proof."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 8
+        block_role: HOOK_PAIN_FRICTION
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the MWCB pain hook and end with the bottle still in hand for the extension seam.
+        identity_reanchor: Rizal remains the same household-relief persona in RIZAL_CASUAL_01 with the same direct handheld delivery.
+        product_reanchor: Minyak Warisan Cap Burung remains the only hero bottle, label facing camera, and household remedy context unchanged.
+        scene_continuity_notes: Household relief shelf reset scene remains fixed with the same warm indoor framing and no angle jump.
+        audio_continuity_notes: Direct spoken cadence stays brisk, close, and practical with no silence padding.
+        frame_bridge_notes: End on a tight chest-up frame with the oil bottle lifted beside the cheek and wrist steady.
+        bridge_out: Hold the oil bottle beside the cheek and keep the same torso angle for the continuation block.
+        bridge_in: ""
+        final_block_dialogue: "Kalau kepala dah berat dan tengkuk rasa tegang, minyak ni sapu cepat, bau tradisi masuk lembut, dan badan terus rasa lega."
+        block_dialogue_word_count: 21
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_MWCB_16S_BLOCK_1
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-MWCB-16S-DIRECT :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 8
+        block_role: RELIEF_CTA
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block one still holding the MWCB bottle near the cheek, shoulders square to camera, and the final phrase lands without motion reset.
+        continuity_goal: Continue the same pain-relief sentence chain and close on relief plus CTA.
+        identity_reanchor: Rizal identity, wardrobe, tone, and direct handheld framing remain unchanged.
+        product_reanchor: MWCB bottle remains the same hero item in the same right-hand grip with label truth preserved.
+        scene_continuity_notes: Same relief shelf background, same warm spill, same chest-up framing, and no room swap.
+        audio_continuity_notes: Speech resumes immediately with the same practical tone and no fresh intro.
+        frame_bridge_notes: Reopen on the same bottle-near-cheek frame before the wrist lowers slightly into the CTA close.
+        bridge_out: ""
+        bridge_in: Continue from the same cheek-side bottle pose and keep the sentence moving before the CTA lands.
+        final_block_dialogue: "Sambung sikit, gosok nipis dekat bahu dan pelipis, rasa hangat dia bantu reda, senang bergerak semula tanpa drama panjang hari."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_FLOW_UI_SAMPLE_MWCB_16S_BLOCK_2
+        block_status: READY_REVIEWED_FLOW_EXTEND
+        validator_proof: "VALIDATION PASSED :: SAMPLE-FLOW-MWCB-16S-DIRECT :: block 2 seam + WPS checked."

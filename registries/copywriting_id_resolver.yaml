@@ -1,6 +1,6 @@
 schema_version: '1.0'
 registry_id: BOSMAX_COPYWRITING_ID_RESOLVER_V1
-generated_at_utc: '2026-06-05T15:02:33+00:00'
+generated_at_utc: '2026-06-05T16:01:39+00:00'
 source_authority:
   workbook: BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx
   support_files:
@@ -9989,7 +9989,7 @@ counts:
   bosmax_stealth_command_centre_rows: 30
   mwcb_direct_command_centre_rows: 66
 changelog:
-- timestamp_utc: '2026-06-05T15:02:33+00:00'
+- timestamp_utc: '2026-06-05T16:01:39+00:00'
   change_note: Generated resolver workbook and YAML registry from approved product
     workbook rows with generic and product-specific Command Centre copy ID selector
     views, workbook aliases, and session-only workflow metadata.

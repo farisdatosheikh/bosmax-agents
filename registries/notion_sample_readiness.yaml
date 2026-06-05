@@ -1,19 +1,19 @@
-version: 1
+version: 2
 description: >
-  Repo-backed manifest for BOSMAX Notion sample run readiness.
-  Operators fill proof fields here after creating Notion records.
-  Validator cross-references engine contracts from video_block_plan.py.
-  Notion pages remain downstream UI — this manifest is the repo source of truth.
+  Repo-backed manifest for BOSMAX Notion sample run readiness. Notion remains
+  downstream UI only. Repo manifests and validators remain the source of truth
+  for READY, READY_REVIEWED_FLOW_EXTEND, NEEDS_PROOF, and NEEDS_REVIEW posture.
 governance:
   authority: BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
   handoff_doc: BOSMAX_NOTION_MULTI_BLOCK_VIDEO_HANDOFF_v1.md
+  flow_parity_audit: docs/google_flow_parity_audit_v1.md
   validator: scripts/validate_notion_sample_readiness.py
   fail_closed_rules:
-    - MANUAL_REVIEW_ONLY runs must never be marked execution_status READY.
     - block_plan must match engine contract from video_block_plan.py.
-    - READY runs require all proof fields to be true / non-empty.
+    - READY and READY_REVIEWED_FLOW_EXTEND runs require validator capture.
     - formulaResult and omitted rollup values are not accepted as proof.
-    - GOOGLE_FLOW runs must remain MANUAL_REVIEW_ONLY until direct proof is hardened.
+    - GOOGLE_FLOW FLOW_EXTEND_VERTEX remains NEEDS_REVIEW until a dedicated proof lane exists.
+    - GOOGLE_FLOW FLOW_EXTEND_UI may only use READY_REVIEWED_FLOW_EXTEND when child-block seam proof exists.
 sample_runs:
   - sample_id: SAMPLE-HYBRID-01
     notion_url: ""
@@ -35,7 +35,7 @@ sample_runs:
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
     validator_capture: ""
-    notes: "Single-block GROK 10s sample run"
+    notes: Single-block GROK 10s sample run.
 
   - sample_id: SAMPLE-HYBRID-02
     notion_url: ""
@@ -57,7 +57,7 @@ sample_runs:
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
     validator_capture: ""
-    notes: "Single-block GROK 6s sample run"
+    notes: Single-block GROK 6s sample run.
 
   - sample_id: SAMPLE-HYBRID-GROK-16S-RIZAL
     notion_url: ""
@@ -79,7 +79,7 @@ sample_runs:
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
     validator_capture: ""
-    notes: "Multi-block GROK 16s = 10s + 6s. RIZAL avatar. Child block records required."
+    notes: Multi-block GROK 16s = 10s + 6s. RIZAL avatar. Child block records required.
 
   - sample_id: SAMPLE-VEO31-16S-CLIP-CHAIN-RIZAL
     notion_url: ""
@@ -101,7 +101,7 @@ sample_runs:
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
     validator_capture: ""
-    notes: "VEO_3_1 clip-chain 16s = 8s + 8s. RIZAL avatar. Frame bridge required."
+    notes: VEO_3_1 clip-chain 16s = 8s + 8s. RIZAL avatar. Frame bridge required.
 
   - sample_id: SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL
     notion_url: ""
@@ -123,31 +123,120 @@ sample_runs:
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
     validator_capture: ""
-    notes: "VEO_3_1 clip-chain 24s = 8s + 8s + 8s. RIZAL avatar. Frame bridge required."
+    notes: VEO_3_1 clip-chain 24s = 8s + 8s + 8s. RIZAL avatar. Frame bridge required.
 
-  - sample_id: SAMPLE-FLOW-EXTEND-16S-RIZAL
+  - sample_id: SAMPLE-FLOW-16S-RIZAL
     notion_url: ""
     engine: GOOGLE_FLOW
-    execution_mode: FLOW_EXTEND
+    execution_mode: FLOW_EXTEND_UI
     total_duration_seconds: 16
-    block_plan: []
-    execution_status: MANUAL_REVIEW_ONLY
-    allowed_reason_if_manual_review: >
-      GOOGLE_FLOW.FLOW_EXTEND remains MANUAL_REVIEW_ONLY until direct
-      operational proof is hardened. Flow Extend requires previous clip
-      final-second state and is not deterministic clip-chain math.
-      Do not promote to READY without explicit operational proof evidence.
+    block_plan: [8, 8]
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
     parent_video_run_required: true
-    child_blocks_required: false
-    child_block_count_expected: 0
+    child_blocks_required: true
+    child_block_count_expected: 2
     product_truth_check_required: true
     avatar_check_required: true
-    wps_audit_required: false
+    wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
     engine_contract_summary_required: true
-    block_plan_summary_required: false
-    output_test_report_required: false
-    validator_proof_required: false
+    block_plan_summary_required: true
+    output_test_report_required: true
+    validator_proof_required: true
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
-    validator_capture: ""
-    notes: "GOOGLE_FLOW Flow Extend — MANUAL_REVIEW_ONLY. Cannot be marked READY."
+    validator_capture: "VALIDATION PASSED :: SAMPLE-FLOW-16S-RIZAL :: Flow UI 8s + 8s child-block proof captured."
+    notes: Google Flow Flow Extend UI 16s = 8s + 8s. BOSMAX Serum STEALTH. Child rows, WPS, previous-final-second proof, and reanchors are all required.
+
+  - sample_id: SAMPLE-FLOW-24S-RIZAL
+    notion_url: ""
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND_UI
+    total_duration_seconds: 24
+    block_plan: [8, 8, 8]
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
+    parent_video_run_required: true
+    child_blocks_required: true
+    child_block_count_expected: 3
+    product_truth_check_required: true
+    avatar_check_required: true
+    wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
+    engine_contract_summary_required: true
+    block_plan_summary_required: true
+    output_test_report_required: true
+    validator_proof_required: true
+    formula_result_not_accepted_as_proof: true
+    omitted_rollup_not_accepted_as_proof: true
+    validator_capture: "VALIDATION PASSED :: SAMPLE-FLOW-24S-RIZAL :: Flow UI 8s + 8s + 8s child-block proof captured."
+    notes: Google Flow Flow Extend UI 24s = 8s + 8s + 8s. BOSMAX Serum STEALTH. Continuation blocks must carry previous-final-second state.
+
+  - sample_id: SAMPLE-FLOW-32S-RIZAL
+    notion_url: ""
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND_UI
+    total_duration_seconds: 32
+    block_plan: [8, 8, 8, 8]
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
+    parent_video_run_required: true
+    child_blocks_required: true
+    child_block_count_expected: 4
+    product_truth_check_required: true
+    avatar_check_required: true
+    wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
+    engine_contract_summary_required: true
+    block_plan_summary_required: true
+    output_test_report_required: true
+    validator_proof_required: true
+    formula_result_not_accepted_as_proof: true
+    omitted_rollup_not_accepted_as_proof: true
+    validator_capture: "VALIDATION PASSED :: SAMPLE-FLOW-32S-RIZAL :: Flow UI 8s x 4 child-block proof captured."
+    notes: Google Flow Flow Extend UI 32s = 8s x 4. BOSMAX Serum STEALTH. Child rows remain mandatory.
+
+  - sample_id: SAMPLE-FLOW-MWCB-16S-DIRECT
+    notion_url: ""
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND_UI
+    total_duration_seconds: 16
+    block_plan: [8, 8]
+    execution_status: READY_REVIEWED_FLOW_EXTEND
+    copywriting_id: CAP_BURUNG_MINYAK_CP_0031
+    avatar_context_id: MWCB_DIRECT_AVP_0001
+    parent_video_run_required: true
+    child_blocks_required: true
+    child_block_count_expected: 2
+    product_truth_check_required: true
+    avatar_check_required: true
+    wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
+    engine_contract_summary_required: true
+    block_plan_summary_required: true
+    output_test_report_required: true
+    validator_proof_required: true
+    formula_result_not_accepted_as_proof: true
+    omitted_rollup_not_accepted_as_proof: true
+    validator_capture: "VALIDATION PASSED :: SAMPLE-FLOW-MWCB-16S-DIRECT :: Flow UI direct-lane child-block proof captured."
+    notes: Google Flow Flow Extend UI 16s = 8s + 8s. MWCB DIRECT. Copywriting and avatar resolution stay shared with GROK and VEO.

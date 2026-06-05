@@ -2,20 +2,9 @@
 
 ## Purpose
 
-This document defines the **default BOSMAX Command Centre Plug & Play Notion page**.
+This document defines the default BOSMAX Command Centre Plug & Play Notion page.
 
-Default audience:
-- beginner operator
-- newbie operator
-- high-speed operator
-
-These users should not need to understand:
-- internal copywriting architecture
-- avatar resolver internals
-- mannequin / wardrobe / scene context composition
-- backend compliance and runtime logic
-
-Repo/backend remains source truth.
+Repo remains source truth.
 Notion remains downstream UI only.
 
 ---
@@ -30,14 +19,13 @@ Notion remains downstream UI only.
 4. `Avatar Context ID Mini Database`
 5. `Avatar Pool ID Mini Database`
 6. `Batch Production Template`
-7. `Legacy Expert Mode / Manual Override Notice`
-8. `Operator Rules`
+7. `GOOGLE FLOW — Flow Extend Multi-Block`
+8. `Legacy Expert Mode / Manual Override Notice`
+9. `Operator Rules`
 
 ---
 
 ## 1. Plug & Play Video Prompt Template
-
-This is the default single prompt template for beginner operators:
 
 ```yaml
 Platform: TikTok
@@ -58,15 +46,13 @@ Copywriting Mode: AUTO_RESOLVE
 Compliance: STEALTH_METAPHOR_REQUIRED
 ```
 
-Command Centre default rule:
-- user selects approved IDs only
-- user does not manually type Hook / USP / CTA / Avatar / Mannequin / Wardrobe / Scene
+Default rule:
+- use approved IDs only
+- do not manually type Hook, USP, CTA, Avatar, Mannequin, Wardrobe, or Scene
 
 ---
 
 ## 2. Product Workflows
-
-Registered-product and session-only workflows must remain explicit:
 
 ### BOSMAX Serum / STEALTH Registered Product
 
@@ -105,7 +91,7 @@ Risky or Review-Only Product: BLOCK_GENERATION
 ```
 
 Hard rule:
-- risky or review-only product posture must fail closed into manual review
+- risky or review-only product posture must fail closed
 - ON_THE_FLY output must never be promoted into workbook or approved registry from Notion
 
 ---
@@ -115,14 +101,14 @@ Hard rule:
 Default source:
 - `NOTION_COMMAND_CENTRE_COPY_ID_VIEW`
 
-Product-specific Command Centre sources:
+Product-specific sources:
 - `NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW`
 - `NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW`
 
 Workbook aliases:
-- `NOTION_COMMAND_CENTRE_COPY_ID_VIEW` -> `CC_COPY_ID_VIEW`
-- `NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW` -> `CC_BSMX_ST_COPY`
-- `NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW` -> `CC_MWCB_DIR_COPY`
+- `NOTION_COMMAND_CENTRE_COPY_ID_VIEW -> CC_COPY_ID_VIEW`
+- `NOTION_COMMAND_CENTRE_BOSMAX_STEALTH_COPY_ID_VIEW -> CC_BSMX_ST_COPY`
+- `NOTION_COMMAND_CENTRE_MWCB_DIRECT_COPY_ID_VIEW -> CC_MWCB_DIR_COPY`
 
 Allowed fields:
 - `Copywriting_ID`
@@ -135,12 +121,8 @@ Allowed fields:
 - `Status`
 - `Safe_Usage_Notes`
 
-Forbidden in this beginner view:
-- `Hook`
-- `USP_1`
-- `USP_2`
-- `USP_3`
-- `CTA`
+Forbidden in beginner view:
+- raw Hook/USP/CTA authoring
 - provenance nodes
 - source paths
 - compliance internals
@@ -196,8 +178,6 @@ Registered MWCB direct batch pool:
 
 ## 6. Batch Production Template
 
-This is the default batch template:
-
 ```yaml
 Platform: TikTok
 Mode: B
@@ -221,13 +201,116 @@ Rotation Rule: ROUND_ROBIN_NO_REPEAT
 
 ---
 
-## 7. Legacy Expert Mode / Manual Override Notice
+## 7. GOOGLE FLOW — Flow Extend Multi-Block
+
+Operator-facing rule:
+- Google Flow long duration must create child block rows just like GROK
+- it must not be one monolithic prompt
+- it must not share GROK duration math
+
+### Flow UI block table
+
+```yaml
+FLOW_EXTEND_UI:
+  8s:  [8]
+  16s: [8, 8]
+  24s: [8, 8, 8]
+  32s: [8, 8, 8, 8]
+  40s: [8, 8, 8, 8, 8]
+  48s: [8, 8, 8, 8, 8, 8]
+  56s: [8, 8, 8, 8, 8, 8, 8]
+```
+
+### Optional Vertex table
+
+```yaml
+FLOW_EXTEND_VERTEX:
+  7s:  [7]
+  14s: [7, 7]
+  21s: [7, 7, 7]
+  28s: [7, 7, 7, 7]
+  35s: [7, 7, 7, 7, 7]
+  42s: [7, 7, 7, 7, 7, 7]
+  49s: [7, 7, 7, 7, 7, 7, 7]
+  56s: [7, 7, 7, 7, 7, 7, 7, 7]
+Status: NEEDS_REVIEW
+```
+
+### Required child block fields
+
+- `Parent Video Run`
+- `Engine = GOOGLE_FLOW`
+- `Execution Mode = FLOW_EXTEND_UI or FLOW_EXTEND_VERTEX`
+- `Block Index`
+- `Block Duration Seconds`
+- `Block Role`
+- `Copywriting ID`
+- `Avatar Context ID or Avatar Pool ID`
+- `Dialogue Budget`
+- `Final Block Dialogue`
+- `Block Dialogue Word Count`
+- `Previous Clip Final Second State`
+- `Continuity Goal`
+- `Identity Reanchor`
+- `Product Reanchor`
+- `Scene Continuity Notes`
+- `Audio Continuity Notes`
+- `Frame Bridge Notes`
+- `Bridge-Out`
+- `Bridge-In`
+- `Block Prompt Manual Output`
+- `Block Status`
+- `Validator Proof`
+
+### WPS per block
+
+- `FLOW_EXTEND_UI` uses the `8s` WPS corridor per block
+- `FLOW_EXTEND_VERTEX` uses the `7s` WPS corridor per block if/when enabled
+
+### Copywriting / avatar ID usage
+
+- Flow uses the same approved `Copywriting ID` contract as GROK and VEO
+- Flow uses the same approved `Avatar Context ID` or `Avatar Pool ID` contract as GROK and VEO
+
+### Example template — BOSMAX Serum
+
+```yaml
+Engine: GOOGLE_FLOW
+Execution Mode: FLOW_EXTEND_UI
+Duration: 16s
+Copywriting ID: BOSMAX_SERUM_CP_0001
+Copywriting Mode: AUTO_RESOLVE
+Avatar Context ID: BOSMAX_AVP_0001
+Avatar Mode: AUTO_RESOLVE
+Block Plan: [8, 8]
+```
+
+### Example template — Minyak Warisan Cap Burung
+
+```yaml
+Engine: GOOGLE_FLOW
+Execution Mode: FLOW_EXTEND_UI
+Duration: 16s
+Copywriting ID: CAP_BURUNG_MINYAK_CP_0031
+Copywriting Mode: AUTO_RESOLVE
+Avatar Context ID: MWCB_DIRECT_AVP_0001
+Avatar Mode: AUTO_RESOLVE
+Block Plan: [8, 8]
+```
+
+Warning:
+- not GROK duration math
+- continuation blocks must carry previous-final-second proof
+
+---
+
+## 8. Legacy Expert Mode / Manual Override Notice
 
 The old workflow remains available only as:
 - `LEGACY_EXPERT_MODE`
 - `MANUAL_OVERRIDE_REVIEW_ONLY`
 
-This includes manual editing of:
+Manual override fields:
 - `Hook`
 - `USP_1`
 - `USP_2`
@@ -241,18 +324,15 @@ This includes manual editing of:
 Hard rule:
 - any manual override must be marked `Needs Compliance Review`
 
-This workflow is not the default Command Centre flow.
-
 ---
 
-## 8. Operator Rules
+## 9. Operator Rules
 
-- Use the Command Centre Plug & Play template by default.
-- Use the product workflow that matches the route result exactly: STEALTH registered, DIRECT registered, or ON_THE_FLY session-only.
+- Use the Plug & Play template by default.
+- Use the product workflow that matches the route exactly.
 - Select approved IDs from mini databases only.
 - Do not treat Notion as source truth.
-- Do not expose backend/provenance/private compliance data in beginner mini databases.
-- Do not create or edit reusable registry truth from ON_THE_FLY output.
+- Do not expose backend, provenance, or private compliance data.
+- Do not create reusable registry truth from ON_THE_FLY output.
 - Do not bypass risky/review-only blocking by forcing `SESSION_ONLY_GENERATE`.
 - Use `LEGACY_EXPERT_MODE` only for trusted operators and review-only exceptions.
-- Manual override without `Needs Compliance Review` is invalid.

@@ -1,6 +1,6 @@
 schema_version: '1.0'
 registry_id: BOSMAX_AVATAR_CONTEXT_ROTATION_V1
-generated_at_utc: '2026-06-05T15:02:33+00:00'
+generated_at_utc: '2026-06-05T16:01:39+00:00'
 source_authority:
   avatar_schema: avatars/_SCHEMA.yaml
   avatar_registry: avatars/*.yaml
@@ -863,7 +863,7 @@ counts:
   command_centre_avatar_rows: 10
   command_centre_pool_rows: 2
 changelog:
-- timestamp_utc: '2026-06-05T15:02:33+00:00'
+- timestamp_utc: '2026-06-05T16:01:39+00:00'
   change_note: Generated avatar context resolver and rotation pools for BOSMAX STEALTH
     and MWCB DIRECT Command Centre workflows with workbook aliases and beginner selector
     views.

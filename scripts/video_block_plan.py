@@ -29,6 +29,11 @@ def normalize_execution_mode(value: str | None) -> str | None:
     return value.strip().upper()
 
 
+def is_ready_mode_status(value: str) -> bool:
+    normalized = value.strip().upper()
+    return normalized in {"READY", "READY_REVIEWED_FLOW_EXTEND"}
+
+
 def load_registry_bundle() -> RegistryBundle:
     contracts = yaml.safe_load(CONTRACT_PATH.read_text(encoding="utf-8")) or {}
     budget_data = yaml.safe_load(DIALOGUE_BUDGET_PATH.read_text(encoding="utf-8")) or {}
@@ -70,19 +75,25 @@ def build_blocks(
         role_meta = next((item for item in role_rows if int(item["block_index"]) == index), {})
         budget_lookup_duration = budget_duration_override if budget_duration_override is not None else block_duration
         block_budget = get_budget(bundle, language, pace_class, budget_lookup_duration)
+        is_non_first = index > 1
+        is_non_final = index < len(block_durations)
+        require_previous_clip_final_second = bool(seam_contract.get("require_previous_clip_final_second", False) and is_non_first)
         blocks.append(
             {
                 "block_index": index,
                 "block_duration_seconds": block_duration,
                 "block_role": role_meta.get("role", "GENERAL"),
-                "requires_seam": index > 1 or index < len(block_durations),
-                "bridge_out_required": bool(role_meta.get("bridge_out_required", index < len(block_durations))),
-                "bridge_in_required": bool(role_meta.get("bridge_in_required", index > 1)),
-                "speech_resume_window_seconds": seam_contract.get("speech_resume_window_seconds") if index > 1 else None,
+                "requires_seam": is_non_first or is_non_final,
+                "bridge_out_required": bool(role_meta.get("bridge_out_required", seam_contract.get("require_bridge_out_on_non_final_blocks", is_non_final) and is_non_final)),
+                "bridge_in_required": bool(role_meta.get("bridge_in_required", seam_contract.get("require_bridge_in_on_non_first_blocks", is_non_first) and is_non_first)),
+                "speech_resume_window_seconds": seam_contract.get("speech_resume_window_seconds") if is_non_first else None,
                 "dialogue_budget": block_budget,
-                "requires_frame_bridge": bool(seam_contract.get("require_frame_bridge", index > 1)),
+                "dialogue_budget_duration_seconds": int(block_budget["duration_seconds"]),
+                "requires_frame_bridge": bool(seam_contract.get("require_frame_bridge", is_non_first) and is_non_first),
+                "requires_previous_clip_final_second": require_previous_clip_final_second,
                 "requires_identity_reanchor": bool(seam_contract.get("require_identity_reanchor_every_block", False)),
                 "requires_product_reanchor": bool(seam_contract.get("require_product_reanchor_every_block", False)),
+                "continuity_goal_required": bool(seam_contract.get("continuity_goal")) and is_non_first,
             }
         )
     return blocks
@@ -131,6 +142,7 @@ def build_legacy_verified_plan(
         "block_durations_seconds": block_durations,
         "prompt_count": len(block_durations),
         "requires_frame_bridge": bool(seam_contract.get("require_frame_bridge", len(block_durations) > 1)),
+        "wps_budget_mode": "PER_BLOCK" if len(block_durations) > 1 else "SINGLE_BLOCK",
         "requires_identity_reanchor": bool(seam_contract.get("require_identity_reanchor_every_block", False)),
         "requires_product_reanchor": bool(seam_contract.get("require_product_reanchor_every_block", False)),
         "requires_previous_clip_final_second": bool(seam_contract.get("require_previous_clip_final_second", False)),
@@ -164,7 +176,7 @@ def build_mode_plan(
         single_clip_durations = {int(item) for item in mode_contract.get("single_clip_durations_seconds", [])}
         if total_duration_seconds in single_clip_durations:
             block_durations = [total_duration_seconds]
-        elif mode_status == "READY":
+        elif is_ready_mode_status(mode_status):
             raise ValueError(f"{engine_id}.{mode_name} is missing deterministic block math for {total_duration_seconds}s")
         else:
             block_durations = []
@@ -187,15 +199,12 @@ def build_mode_plan(
         budget_duration_override=budget_duration_override,
     ) if block_durations else []
 
-    status = "READY" if mode_status == "READY" else "NEEDS_REVIEW"
+    status = "READY" if is_ready_mode_status(mode_status) else "NEEDS_REVIEW"
     reason = mode_contract.get("reason")
-    if mode_name == "FLOW_EXTEND" and not previous_clip_final_second_state:
-        status = "NEEDS_REVIEW"
-        reason = (
-            "FLOW_EXTEND requires previous_clip_final_second_state and remains manual-review only "
-            "until direct Flow long-form execution proof is hardened."
-        )
-    elif status != "READY" and not reason:
+    requires_previous_clip_state = bool(
+        seam_contract.get("require_previous_clip_final_second", mode_contract.get("requires_previous_clip_final_second", False))
+    )
+    if status != "READY" and not reason:
         reason = engine_contract.get("review_reason", "Mode is not production-ready.")
 
     total_budget = bundle.budgets.get((language.upper(), pace_class.upper(), total_duration_seconds))
@@ -212,17 +221,22 @@ def build_mode_plan(
         "block_durations_seconds": block_durations,
         "prompt_count": len(block_durations),
         "requires_frame_bridge": bool(seam_contract.get("require_frame_bridge", mode_name == "FLOW_EXTEND" or len(block_durations) > 1)),
+        "wps_budget_mode": "PER_BLOCK" if len(block_durations) > 1 else "SINGLE_BLOCK",
         "requires_identity_reanchor": bool(seam_contract.get("require_identity_reanchor_every_block", mode_name == "FLOW_EXTEND")),
         "requires_product_reanchor": bool(seam_contract.get("require_product_reanchor_every_block", mode_name == "FLOW_EXTEND")),
-        "requires_previous_clip_final_second": bool(
-            seam_contract.get("require_previous_clip_final_second", mode_contract.get("requires_previous_clip_final_second", False))
-        ),
+        "requires_previous_clip_final_second": requires_previous_clip_state,
         "status": status,
         "reason": reason,
         "total_dialogue_budget": total_budget,
         "decision_record": engine_contract.get("decision_record"),
         "required_fields": mode_contract.get("required_fields", []),
+        "shared_copywriting_avatar_resolver_payload": bool(
+            mode_contract.get("shared_copywriting_avatar_resolver_payload", engine_contract.get("shared_copywriting_avatar_resolver_payload", False))
+        ),
         "previous_clip_final_second_state": previous_clip_final_second_state,
+        "runtime_proof_fields_pending": [
+            "previous_clip_final_second_state"
+        ] if requires_previous_clip_state and len(block_durations) > 1 and not previous_clip_final_second_state else [],
         "seam_contract": seam_contract,
         "blocks": blocks,
     }
@@ -244,6 +258,11 @@ def build_plan(
     engine_contract = contracts[engine_id]
     if "execution_modes" in engine_contract:
         mode_name = normalize_execution_mode(execution_mode) or str(engine_contract.get("default_execution_mode", "")).upper()
+        aliases = {
+            str(alias).upper(): str(target).upper()
+            for alias, target in (engine_contract.get("execution_mode_aliases") or {}).items()
+        }
+        mode_name = aliases.get(mode_name, mode_name)
         if not mode_name:
             raise ValueError(f"{engine_id} is missing default_execution_mode")
         execution_modes = engine_contract.get("execution_modes") or {}
