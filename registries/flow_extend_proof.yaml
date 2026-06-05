@@ -1,0 +1,56 @@
+version: 1
+description: >
+  Repo-backed proof manifest for BOSMAX GOOGLE_FLOW.FLOW_EXTEND.
+  Flow Extend is a previous-final-second continuation workflow, not deterministic
+  clip-chain math. It is not the same as VEO_3_1 raw clip-chain planning.
+  All runs in this manifest are MANUAL_REVIEW_ONLY until complete proof is supplied.
+governance:
+  authority: BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
+  decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+  engine_contract: registries/video_engine_duration_contracts.yaml
+  validator: scripts/validate_flow_extend_proof.py
+  default_status: MANUAL_REVIEW_ONLY
+  fail_closed_rules:
+    - FLOW_EXTEND must not be treated as ordinary clip-chain math.
+    - FLOW_EXTEND must not be promoted to READY without complete proof fields.
+    - FLOW_EXTEND is a continuation workflow using previous clip final-second state.
+    - Previous Clip Final Second State is mandatory for READY status.
+    - Continuation Goal is mandatory for READY status.
+    - Identity Reanchor is mandatory for READY status.
+    - Product Reanchor is mandatory for READY status.
+    - Audio Continuity Notes are mandatory for READY status.
+    - Frame Bridge Notes are mandatory for READY status.
+    - Output Test Report is mandatory for READY status.
+    - Validator proof capture is mandatory for READY status.
+    - formulaResult handles and omitted rollups are not accepted as proof.
+    - deterministic_clip_chain_allowed must always remain false.
+    - block_plan must be empty for all FLOW_EXTEND runs.
+flow_extend_runs:
+  - run_id: SAMPLE-FLOW-EXTEND-16S-RIZAL
+    notion_url: "https://app.notion.com/p/3754775af48a81aea3d3eb46be65571e"
+    engine: GOOGLE_FLOW
+    execution_mode: FLOW_EXTEND
+    execution_status: MANUAL_REVIEW_ONLY
+    product_id: BOSMAX_SERUM
+    avatar_id: RIZAL
+    total_duration_seconds: 16
+    block_plan: []
+    deterministic_clip_chain_allowed: false
+    previous_clip_final_second_state: ""
+    continuation_goal: ""
+    identity_reanchor: ""
+    product_reanchor: ""
+    audio_continuity_notes: ""
+    frame_bridge_notes: ""
+    output_test_report: ""
+    validator_proof_capture: ""
+    allowed_reason_if_manual_review: >
+      GOOGLE_FLOW.FLOW_EXTEND remains MANUAL_REVIEW_ONLY until complete
+      previous-final-second continuation proof is supplied. Flow Extend is a
+      continuation workflow, not deterministic clip-chain math. Promote to READY
+      only after all required proof fields are filled and validator captures
+      VALIDATION PASSED.
+    notes: >
+      Decision record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md Section 3B.
+      FLOW_EXTEND requires previous clip final-second state and continuity notes.
+      Do not treat this run as ordinary 8+8 clip-chain math.
