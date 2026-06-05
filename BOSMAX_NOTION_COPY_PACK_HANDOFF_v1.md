@@ -104,6 +104,15 @@ The Notion downstream view should show:
 - Do not leave `Pain_or_Friction` only in Notion.
 - Do not leave dialogue budget logic only in Notion.
 
+## Flow Extend Proof Authority
+
+Flow Extend proof is governed by `scripts/validate_flow_extend_proof.py` and `registries/flow_extend_proof.yaml`.
+
+Rules:
+- Flow Extend requires previous-final-second continuation proof. It is not ordinary 8+8 clip-chain math.
+- FLOW_EXTEND remains MANUAL_REVIEW_ONLY until proof fields are complete.
+- Formula result handles and omitted rollups are not proof.
+
 ## Per-Block WPS Authority
 
 Per-block WPS is validated by `scripts/validate_wps_per_block.py`.

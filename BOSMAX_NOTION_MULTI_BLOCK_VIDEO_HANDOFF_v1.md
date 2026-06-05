@@ -223,6 +223,20 @@ For BOSMAX Serum and other STEALTH lanes:
 
 ---
 
+## 12. BOSMAX Flow Extend Proof Validator
+
+Repo authority now includes `scripts/validate_flow_extend_proof.py` and `registries/flow_extend_proof.yaml`.
+
+Rules:
+- GOOGLE_FLOW.FLOW_EXTEND is a previous-final-second continuation workflow. It is not ordinary VEO_3_1 8+8 clip-chain math.
+- READY requires: previous clip final-second state, continuation goal, identity re-anchor, product re-anchor, audio continuity notes, frame bridge notes, output test report, and validator proof.
+- `formulaResult://...` and `<omitted />` rollups are not accepted as proof.
+- FLOW_EXTEND remains MANUAL_REVIEW_ONLY until all proof fields are complete.
+
+Validator: `python scripts\validate_flow_extend_proof.py`
+
+---
+
 ## 11. BOSMAX Per-Block WPS Validator
 
 Repo authority now includes `scripts/validate_wps_per_block.py`.

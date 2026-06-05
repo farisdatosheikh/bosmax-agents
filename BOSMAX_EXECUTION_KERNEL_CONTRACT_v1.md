@@ -421,10 +421,14 @@ a visual object. Metaphors are audio-layer constructs only.
 - Dialogue restarts from zero in Block 2 → ABORT
 
 **Validator coverage:**
-- GROK: YES (validate_video_block_contracts.py checks bridge-out, bridge-in, speech resume window)
-- VEO_3_1.CLIP_CHAIN: YES (validator checks frame bridge, identity/product reanchor per block)
-- GOOGLE_FLOW.FLOW_EXTEND: PARTIAL (validator confirms NEEDS_REVIEW status and requires
-  previous_clip_final_second_state field, but cannot validate content quality)
+- GROK: YES (`validate_video_block_contracts.py` — bridge-out, bridge-in, speech resume window)
+- VEO_3_1.CLIP_CHAIN: YES (`validate_video_block_contracts.py` — frame bridge, identity/product reanchor)
+- GOOGLE_FLOW.FLOW_EXTEND: READY proof-manifest layer; PARTIAL live Flow execution
+  - `validate_flow_extend_proof.py` (PR #10) — enforces MANUAL_REVIEW_ONLY posture, proof field
+    completeness for READY status, rejects formulaResult / omitted rollups, cross-references
+    decision record, engine contract, product/avatar refs, and Notion sample readiness.
+  - `registries/flow_extend_proof.yaml` — repo-backed proof manifest.
+  - Live Flow execution proof (actual generated-video continuity) remains PARTIAL.
 
 **Notion impact:** `Bridge-Out`, `Bridge-In`, `Previous Clip End State`, `Speech Resume Window`,
 `Seam Template` fields in `🎞️ BOSMAX Video Run Blocks` are mandatory for non-trivial blocks.
@@ -599,7 +603,7 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 | G-04    | COPY_AUTHORITY         | stealth_copy_authority_map.yaml + SCRIPT_REGISTRY       | validate_copywriting_ecosystem.py    | Copy Pack ID relation                 | READY for BOSMAX Serum STEALTH; PARTIAL globally |
 | G-05    | PRODUCT_TRUTH          | products/*.yaml + VISUAL INTAKE GATE in CLAUDE.md       | validate_product_truth_drift.py      | Product fields in Video Runs          | PARTIAL (registry layer validated; prompt-level drift remains docs-only) |
 | G-06    | AVATAR_SOURCE          | CLAUDE.md + RUNTIME_STATE_MACHINE_v1.md                 | validate_avatar_registry_coverage.py | Avatar Mode, Avatar Source fields     | PARTIAL (registry layer validated; USER_UPLOAD runtime + Notion mirror remain docs-only) |
-| G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py    | Bridge-Out, Bridge-In, Seam Template  | READY (GROK); PARTIAL (VEO); MANUAL_REVIEW (Flow) |
+| G-07    | MULTI_BLOCK_SEAM       | video_engine_duration_contracts.yaml + SEAM_TEMPLATES   | validate_video_block_contracts.py + validate_flow_extend_proof.py | Bridge-Out, Bridge-In, Seam Template | READY (GROK + VEO + Flow proof-manifest layer); PARTIAL live Flow execution |
 | G-08    | NOTION_DOWNSTREAM_ONLY | NOTION_COPY_PACK_HANDOFF + NOTION_MULTI_BLOCK_HANDOFF   | validate_notion_sample_readiness.py  | Block Status, READY posture fields    | PARTIAL (manifest-layer validated; live Notion/MCP rendering remains docs-only) |
 | G-09    | VALIDATOR_PROOF        | This contract + validate_*.py                           | validate_execution_kernel_contract.py | QA Notes, proof block sections       | PARTIAL         |
 | G-10    | SAMPLE_OUTPUT          | NOTION_MULTI_BLOCK_HANDOFF + notion_sample_readiness.yaml | validate_notion_sample_readiness.py | Block Status, page proof sections    | PARTIAL (manifest-layer validated; live Notion proof requires operator fill + rerun) |
@@ -618,7 +622,8 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 | ~~`validate_notion_sample_readiness.py`~~ | G-08, G-10 | CLOSED — PR #8 |
 | ~~`validate_wps_per_block.py`~~         | G-03         | CLOSED — PR #9 |
 | `validate_runtime_speech_timing.py`     | G-03         | LOW — runtime speech timing of generated video |
-| `validate_flow_extend_proof.py`         | G-07         | LOW (manual review only posture retained) |
+| ~~`validate_flow_extend_proof.py`~~     | G-07         | CLOSED — PR #10 |
+| `validate_live_flow_extend_execution.py` | G-07        | LOW — live Flow generated-video continuity proof |
 
 **Closed (no longer required):**
 - `validate_execution_kernel_contract.py` — G-09 — created in PR #3
@@ -627,6 +632,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 - `validate_avatar_registry_coverage.py` — G-06 — registry-layer validator created in PR #7
 - `validate_notion_sample_readiness.py` — G-08, G-10 — manifest-layer validator created in PR #8
 - `validate_wps_per_block.py` — G-03 — per-block WPS validator created in PR #9
+- `validate_flow_extend_proof.py` — G-07 — Flow Extend proof-manifest validator created in PR #10
 
 ---
 
