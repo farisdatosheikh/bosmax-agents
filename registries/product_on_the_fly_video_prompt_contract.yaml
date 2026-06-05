@@ -1,0 +1,157 @@
+schema_version: "1.0"
+
+authority:
+  repo_truth: true
+  notion_downstream_only: true
+  router_contract: registries/product_copy_router.yaml
+  workbook_source: BOSMAX_PRODUCT_COPYWRITING_LIBRARY_FAMILY_v2.xlsx
+  downstream_output_field_candidates:
+    - AI-Ready Request Manual Output
+    - Router AI-Ready Manual Output
+  disallowed_actions:
+    - do_not_make_notion_routing_authority
+    - do_not_write_ad_hoc_output_back_to_workbook
+    - do_not_generate_review_only_prompts
+
+route_templates:
+  REGISTERED_PRODUCT:
+    router_output_status: REGISTERED
+    prompt_module_status_ready: READY_REGISTERED_LIBRARY
+    session_scope: REUSABLE_REGISTERED_LANE
+    authority_tier: APPROVED_PRODUCT_LIBRARY
+    required_output_keys:
+      - route_mode
+      - router_output_status
+      - prompt_module_status
+      - session_scope
+      - repo_authority
+      - copy_pack_row_id
+      - copy_formula
+      - copy_hook
+      - copy_pain_or_friction
+      - copy_usp_1
+      - copy_usp_2
+      - copy_usp_3
+      - copy_cta
+      - operator_request
+    operator_rules:
+      - Use registered product truth only.
+      - Use approved copy pack lines only.
+      - Do not replace approved fields with ad-hoc rewrites.
+
+  FAMILY_MATCHED_PRODUCT:
+    router_output_status: FAMILY_MATCHED
+    prompt_module_status_ready: READY_FAMILY_LANE
+    prompt_module_status_hold: HOLD_FAMILY_INPUT
+    session_scope: FAMILY_LIBRARY_ONLY
+    authority_tier: FAMILY_WORKBOOK_ONLY
+    required_output_keys:
+      - route_mode
+      - router_output_status
+      - prompt_module_status
+      - session_scope
+      - family_sheet
+      - family_code
+      - target_user
+      - main_problem_solved
+      - main_benefit
+      - visual_reference_status
+      - operator_request
+    operator_rules:
+      - Use family-level problem-benefit framing only.
+      - Do not pretend exact product-specific truth exists.
+      - If exact packaging or scale proof is needed, wait for image or registry proof first.
+
+  ON_THE_FLY_PRODUCT:
+    router_output_status: AD_HOC_GENERATED
+    prompt_module_status_ready: READY_SESSION_ONLY
+    prompt_module_status_hold: HOLD_MISSING_INPUT
+    session_scope: AD_HOC_GENERATED_THIS_SESSION_ONLY
+    authority_tier: CURRENT_INTAKE_ONLY
+    required_output_keys:
+      - route_mode
+      - router_output_status
+      - prompt_module_status
+      - session_scope
+      - product_name
+      - category
+      - target_user
+      - main_problem_solved
+      - main_benefit
+      - product_format
+      - product_size_or_scale
+      - platform
+      - language
+      - compliance_class
+      - visual_reference_status
+      - operator_request
+    operator_rules:
+      - Generate from current intake only.
+      - Keep the output session-only.
+      - Do not write the ad-hoc output back into workbook or approved registry.
+
+  REVIEW_ONLY_PRODUCT:
+    router_output_status: REVIEW_ONLY
+    prompt_module_status_blocked: BLOCKED_REVIEW_ONLY
+    session_scope: BLOCKED_PENDING_REVIEW
+    authority_tier: REVIEW_ONLY_FALLBACK
+    required_output_keys:
+      - route_mode
+      - router_output_status
+      - prompt_module_status
+      - session_scope
+      - block_reason
+      - review_action
+    operator_rules:
+      - Stop generation immediately.
+      - Escalate to manual compliance review.
+      - Review-only products must never receive final AI-ready video prompts.
+
+sample_payloads:
+  registered_cap_burung:
+    product_id: CAP_BURUNG_MINYAK
+    product_name: Minyak Warisan Cap Burung
+    category: traditional remedy oil
+    compliance_class: GREEN
+    platform: TikTok
+    language: BM
+    visual_reference_status: USER_PROVIDED
+
+  family_traditional_remedy:
+    product_name: Minyak Herba Tradisional
+    category: traditional remedy oil
+    target_user: keluarga / pengguna rumah
+    main_problem_solved: situasi harian ringan yang perlukan sapuan minyak tradisional
+    main_benefit: rasa lebih selesa dengan sapuan herba tradisional
+    product_format: minyak herba botol kecil
+    product_size_or_scale: user must provide or upload image for exact product truth
+    platform: TikTok
+    language: BM
+    compliance_class: GREEN
+    visual_reference_status: REQUIRED
+
+  on_the_fly_portable_blender:
+    product_name: Portable Blender
+    category: kitchen gadget
+    target_user: busy home user
+    main_problem_solved: susah siapkan minuman cepat bila keluar rumah
+    main_benefit: blend cepat dan mudah bawa
+    product_format: portable blender
+    product_size_or_scale: one small portable blender bottle
+    platform: TikTok
+    language: BM
+    compliance_class: GREEN
+    visual_reference_status: USER_PROVIDED
+
+  review_only_baby_supplement:
+    product_name: Baby Supplement
+    category: baby supplement
+    target_user: parents
+    main_problem_solved: baby health/support claim
+    main_benefit: high-risk claim, blocked pending review
+    product_format: powder supplement
+    product_size_or_scale: 30 sachets
+    platform: TikTok
+    language: BM
+    compliance_class: REVIEW_ONLY
+    visual_reference_status: USER_PROVIDED
