@@ -7,8 +7,8 @@ product_workflow: MWCB_DIRECT
 batch_count: 20
 
 # Video render settings
-engine: KLING_3_0
-duration: "15s"
+engine: VEO_3_1_LITE
+duration: "8s"
 platform: TikTok
 language: BM
 

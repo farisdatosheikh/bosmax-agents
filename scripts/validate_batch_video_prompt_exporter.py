@@ -540,7 +540,7 @@ def test_files_written_to_output_dir() -> None:
         "copywriting_id": "BOSMAX_SERUM_CP_0001",
         "avatar_pool_id": "BOSMAX_MALE_STEALTH_POOL_001",
         "avatar_mode": "AUTO_ROTATE",
-        "batch_count": 5,
+        "batch_count": 20,
         "rotation_rule": "ROUND_ROBIN_NO_REPEAT",
     }
     rows = run_batch(payload)
@@ -560,8 +560,8 @@ def test_files_written_to_output_dir() -> None:
         reader = csv_mod.DictReader(fh)
         csv_rows = list(reader)
     expect(
-        len(csv_rows) == 5,
-        f"CSV row count mismatch: expected 5, got {len(csv_rows)}",
+        len(csv_rows) == 20,
+        f"CSV row count mismatch: expected 20, got {len(csv_rows)}",
     )
 
     # Verify JSONL has one JSON object per line.
@@ -569,8 +569,8 @@ def test_files_written_to_output_dir() -> None:
     with paths["jsonl"].open(encoding="utf-8") as fh:
         jsonl_rows = [json_mod.loads(line) for line in fh if line.strip()]
     expect(
-        len(jsonl_rows) == 5,
-        f"JSONL row count mismatch: expected 5, got {len(jsonl_rows)}",
+        len(jsonl_rows) == 20,
+        f"JSONL row count mismatch: expected 20, got {len(jsonl_rows)}",
     )
 
     print("PASS: files_written_to_output_dir")
