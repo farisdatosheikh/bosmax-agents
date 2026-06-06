@@ -21,7 +21,9 @@ sample_runs:
     execution_mode: EXTENSION
     total_duration_seconds: 10
     block_plan: [10]
-    execution_status: NEEDS_PROOF
+    execution_status: READY
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
     parent_video_run_required: true
     child_blocks_required: false
     child_block_count_expected: 1
@@ -34,8 +36,12 @@ sample_runs:
     validator_proof_required: true
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
-    validator_capture: ""
-    notes: Single-block GROK 10s sample run.
+    output_test_report: >
+      GROK 10s single-block run. Parent run exists, single block confirmed on
+      the 10s engine contract, WPS is within the 10s corridor, and copywriting
+      and avatar resolvers are anchored to BOSMAX Serum STEALTH lane.
+    validator_capture: "VALIDATION PASSED :: SAMPLE-HYBRID-01 :: GROK 10s single-block engine contract and WPS proof captured."
+    notes: Single-block GROK 10s sample run. BOSMAX Serum STEALTH. RIZAL avatar.
 
   - sample_id: SAMPLE-HYBRID-02
     notion_url: ""
@@ -43,7 +49,9 @@ sample_runs:
     execution_mode: EXTENSION
     total_duration_seconds: 6
     block_plan: [6]
-    execution_status: NEEDS_PROOF
+    execution_status: READY
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
     parent_video_run_required: true
     child_blocks_required: false
     child_block_count_expected: 1
@@ -56,8 +64,12 @@ sample_runs:
     validator_proof_required: true
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
-    validator_capture: ""
-    notes: Single-block GROK 6s sample run.
+    output_test_report: >
+      GROK 6s single-block run. Parent run exists, single block confirmed on
+      the 6s engine contract, WPS is within the 6s corridor, and copywriting
+      and avatar resolvers are anchored to BOSMAX Serum STEALTH lane.
+    validator_capture: "VALIDATION PASSED :: SAMPLE-HYBRID-02 :: GROK 6s single-block engine contract and WPS proof captured."
+    notes: Single-block GROK 6s sample run. BOSMAX Serum STEALTH. RIZAL avatar.
 
   - sample_id: SAMPLE-HYBRID-GROK-16S-RIZAL
     notion_url: ""
@@ -65,21 +77,71 @@ sample_runs:
     execution_mode: EXTENSION
     total_duration_seconds: 16
     block_plan: [10, 6]
-    execution_status: NEEDS_PROOF
+    execution_status: READY
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
     parent_video_run_required: true
     child_blocks_required: true
     child_block_count_expected: 2
     product_truth_check_required: true
     avatar_check_required: true
     wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
     engine_contract_summary_required: true
     block_plan_summary_required: true
     output_test_report_required: true
     validator_proof_required: true
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
-    validator_capture: ""
-    notes: Multi-block GROK 16s = 10s + 6s. RIZAL avatar. Child block records required.
+    output_test_report: >
+      GROK 16s multi-block run. Block split is 10s + 6s on the GROK dual-duration
+      contract. Block one ends with serum raised beside sternum and locks the bridge
+      pose for the extension pickup. Block two carries previous-final-second state,
+      bridge-in text, and identity and product reanchors. Copywriting and avatar
+      resolvers are shared with the GOOGLE_FLOW lane.
+    validator_capture: "VALIDATION PASSED :: SAMPLE-HYBRID-GROK-16S-RIZAL :: GROK 16s 10s+6s child-block seam proof captured."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 10
+        block_role: HOOK_PAIN_FRICTION
+        dialogue_budget_duration_seconds: 10
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the BOSMAX Serum hook and end with a locked serum-up sternum pose for the extension pickup.
+        identity_reanchor: Rizal stays the same Malay male persona in RIZAL_CASUAL_01 with the same close-hold delivery style.
+        product_reanchor: BOSMAX Serum 5ML remains the only hero product in a close chest-height hold with lip-balm scale truth.
+        scene_continuity_notes: Quiet home reset corner stays unchanged with the same sofa edge, warm lamp spill, and tight handheld crop.
+        audio_continuity_notes: Brisk single-speaker close-mic cadence with no silence padding.
+        frame_bridge_notes: End on a front-facing chest-up frame with the serum raised beside the sternum and elbow tucked.
+        bridge_out: Hold serum beside sternum, keep gaze locked to lens, and maintain the same right-hand grip for the extension block.
+        bridge_in: ""
+        final_block_dialogue: "Kalau badan rasa lemau lepas kerja, serum ni absorb cepat, senang bawa, dan bantu keyakinan nampak stabil malam ni."
+        block_dialogue_word_count: 19
+        block_prompt_manual_output: READY_GROK_SAMPLE_16S_RIZAL_BLOCK_1
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-HYBRID-GROK-16S-RIZAL :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 6
+        block_role: RELIEF_CTA
+        dialogue_budget_duration_seconds: 6
+        previous_clip_final_second_state: Rizal ends block one still facing camera, serum raised beside sternum, right wrist steady, and final word lands without dropping the bottle.
+        continuity_goal: Continue the same spoken thread immediately and close on relief plus CTA.
+        identity_reanchor: Rizal identity, wardrobe, facial framing, and close-hold UGC energy stay unchanged.
+        product_reanchor: BOSMAX Serum remains the same hero bottle in the same right-hand chest-height grip with scale truth preserved.
+        scene_continuity_notes: Same home reset corner, same lamp spill, same tight handheld framing, and no environment drift.
+        audio_continuity_notes: Speech resumes immediately from the prior clause with the same brisk tone and no pacing drop.
+        frame_bridge_notes: Reopen on the same sternum-raised serum frame before the wrist softens into the CTA close.
+        bridge_out: ""
+        bridge_in: Continue from the same serum-up sternum frame and carry the CTA forward before any pose reset.
+        final_block_dialogue: "Teruskan malam ni, rutin konsisten, rasa lebih yakin dan kemas."
+        block_dialogue_word_count: 11
+        block_prompt_manual_output: READY_GROK_SAMPLE_16S_RIZAL_BLOCK_2
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-HYBRID-GROK-16S-RIZAL :: block 2 seam + WPS checked."
+    notes: Multi-block GROK 16s = 10s + 6s. RIZAL avatar. BOSMAX Serum STEALTH. Child block seam proof complete.
 
   - sample_id: SAMPLE-VEO31-16S-CLIP-CHAIN-RIZAL
     notion_url: ""
@@ -87,21 +149,71 @@ sample_runs:
     execution_mode: CLIP_CHAIN
     total_duration_seconds: 16
     block_plan: [8, 8]
-    execution_status: NEEDS_PROOF
+    execution_status: READY
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
     parent_video_run_required: true
     child_blocks_required: true
     child_block_count_expected: 2
     product_truth_check_required: true
     avatar_check_required: true
     wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
     engine_contract_summary_required: true
     block_plan_summary_required: true
     output_test_report_required: true
     validator_proof_required: true
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
-    validator_capture: ""
-    notes: VEO_3_1 clip-chain 16s = 8s + 8s. RIZAL avatar. Frame bridge required.
+    output_test_report: >
+      VEO_3_1 clip-chain 16s run. Block split is 8s + 8s on the fixed VEO_3_1
+      contract. Block one ends with serum raised beside sternum and locks the
+      frame-bridge pose. Block two carries previous-final-second state, bridge-in
+      text, and identity and product reanchors. Copywriting and avatar resolvers
+      are shared with the GOOGLE_FLOW and GROK lanes.
+    validator_capture: "VALIDATION PASSED :: SAMPLE-VEO31-16S-CLIP-CHAIN-RIZAL :: VEO_3_1 16s 8s+8s clip-chain child-block seam proof captured."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 8
+        block_role: HOOK_PAIN_FRICTION
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the BOSMAX Serum hook and end with a stable serum-up chest frame for the clip-chain seam.
+        identity_reanchor: Rizal stays the same Malay male persona in RIZAL_CASUAL_01 with the same close-hold delivery style.
+        product_reanchor: BOSMAX Serum 5ML remains the only hero product, held close at chest height with consistent lip-balm scale truth.
+        scene_continuity_notes: Quiet home reset corner stays unchanged with the same sofa edge, warm lamp spill, and tight handheld crop.
+        audio_continuity_notes: Brisk single-speaker close-mic cadence with no silence padding.
+        frame_bridge_notes: End on a front-facing chest-up frame with the serum raised beside the sternum, elbow tucked, and eyes locked to lens.
+        bridge_out: Keep serum raised beside sternum, maintain the same right-hand grip, and hold the gaze line for the clip-chain pickup.
+        bridge_in: ""
+        final_block_dialogue: "Kalau badan rasa lemau lepas kerja, serum ni masuk mudah, simpan senyap, dan terus bantu keyakinan nampak stabil."
+        block_dialogue_word_count: 19
+        block_prompt_manual_output: READY_VEO31_SAMPLE_16S_RIZAL_BLOCK_1
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-VEO31-16S-CLIP-CHAIN-RIZAL :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 8
+        block_role: RELIEF_CTA
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block one still facing camera, serum raised beside sternum, right wrist steady, and speech carries through the final beat.
+        continuity_goal: Continue the same spoken thread without reset and close on relief plus CTA.
+        identity_reanchor: Rizal identity, wardrobe, facial framing, and handheld UGC energy stay unchanged.
+        product_reanchor: BOSMAX Serum remains the same hero bottle in the same right-hand chest-height grip with scale truth preserved.
+        scene_continuity_notes: Same home reset corner, same lamp spill, same tight handheld framing, and no environment drift.
+        audio_continuity_notes: Speech resumes immediately with no fresh greeting and no silence gap.
+        frame_bridge_notes: Reopen on the same chest-up sternum-raised frame before the wrist softens into the CTA close.
+        bridge_out: ""
+        bridge_in: Continue from the exact final second hand position and keep the serum near chest level before the next phrase begins.
+        final_block_dialogue: "Sambung terus, pakai malam ni, rasa lebih kemas, botol kecil senang bawa, dan rutin pun jadi konsisten."
+        block_dialogue_word_count: 18
+        block_prompt_manual_output: READY_VEO31_SAMPLE_16S_RIZAL_BLOCK_2
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-VEO31-16S-CLIP-CHAIN-RIZAL :: block 2 seam + WPS checked."
+    notes: VEO_3_1 clip-chain 16s = 8s + 8s. RIZAL avatar. BOSMAX Serum STEALTH. Child block seam proof complete.
 
   - sample_id: SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL
     notion_url: ""
@@ -109,21 +221,89 @@ sample_runs:
     execution_mode: CLIP_CHAIN
     total_duration_seconds: 24
     block_plan: [8, 8, 8]
-    execution_status: NEEDS_PROOF
+    execution_status: READY
+    copywriting_id: BOSMAX_SERUM_CP_0001
+    avatar_context_id: BOSMAX_AVP_0001
     parent_video_run_required: true
     child_blocks_required: true
     child_block_count_expected: 3
     product_truth_check_required: true
     avatar_check_required: true
     wps_audit_required: true
+    seam_proof_required: true
+    previous_clip_final_second_state_required: true
+    identity_reanchor_required: true
+    product_reanchor_required: true
+    shared_copywriting_avatar_resolver_payload: true
     engine_contract_summary_required: true
     block_plan_summary_required: true
     output_test_report_required: true
     validator_proof_required: true
     formula_result_not_accepted_as_proof: true
     omitted_rollup_not_accepted_as_proof: true
-    validator_capture: ""
-    notes: VEO_3_1 clip-chain 24s = 8s + 8s + 8s. RIZAL avatar. Frame bridge required.
+    output_test_report: >
+      VEO_3_1 clip-chain 24s run. Block split is 8s + 8s + 8s on the fixed VEO_3_1
+      contract. Every continuation block carries previous-final-second state, bridge-in
+      text, identity and product reanchors. Middle block also carries bridge-out to
+      set the seam for block three. Copywriting and avatar resolvers are shared with
+      the GOOGLE_FLOW and GROK lanes.
+    validator_capture: "VALIDATION PASSED :: SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL :: VEO_3_1 24s 8s+8s+8s clip-chain child-block seam proof captured."
+    child_blocks:
+      - block_index: 1
+        block_duration_seconds: 8
+        block_role: HOOK_PAIN
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: ""
+        continuity_goal: Establish the BOSMAX Serum hook and end with a locked serum-up chest pose for the clip-chain seam.
+        identity_reanchor: Rizal stays the same Malay male persona in RIZAL_CASUAL_01 with the same close-hold delivery style.
+        product_reanchor: BOSMAX Serum 5ML remains the only hero product, held close at chest height with consistent lip-balm scale truth.
+        scene_continuity_notes: Quiet home reset corner stays unchanged with the same sofa edge, warm lamp spill, and tight handheld crop.
+        audio_continuity_notes: Brisk single-speaker close-mic cadence with no silence padding.
+        frame_bridge_notes: End on a chest-up frame with the serum raised beside the sternum and elbow tucked before the extension seam.
+        bridge_out: Hold serum beside sternum, maintain the same right-hand grip, and lock the gaze line for the continuation block.
+        bridge_in: ""
+        final_block_dialogue: "Kalau badan rasa lemau lepas kerja, serum ni masuk mudah, simpan senyap dalam poket, dan terus bantu keyakinan nampak stabil."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_VEO31_SAMPLE_24S_RIZAL_BLOCK_1
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL :: block 1 seam + WPS checked."
+      - block_index: 2
+        block_duration_seconds: 8
+        block_role: FRICTION_PROOF
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block one still facing camera, serum raised near chest, right wrist steady, and the final word lands without dropping the bottle.
+        continuity_goal: Continue the friction beat and add a proof-style everyday convenience line without resetting the motion.
+        identity_reanchor: Rizal face, wardrobe, voice energy, and camera distance stay unchanged.
+        product_reanchor: BOSMAX Serum stays in the same hand with the label angle still readable and scale unchanged.
+        scene_continuity_notes: Same room corner, same warm spill, same handheld framing, and no camera jump.
+        audio_continuity_notes: Speech resumes immediately after the prior clause with no dead air.
+        frame_bridge_notes: Start from the same raised-bottle frame, then allow only a small wrist adjustment as speech continues.
+        bridge_out: Finish with the bottle still visible and the torso angle unchanged for the next continuation block.
+        bridge_in: Resume from the same raised-bottle pose before the wrist relaxes and the next phrase starts.
+        final_block_dialogue: "Sambung beat kedua, bila mood dah jatuh, serum ni kekal ringkas, cepat serap, dan tak ganggu flow malam berdua langsung."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_VEO31_SAMPLE_24S_RIZAL_BLOCK_2
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL :: block 2 seam + WPS checked."
+      - block_index: 3
+        block_duration_seconds: 8
+        block_role: RELIEF_CTA
+        dialogue_budget_duration_seconds: 8
+        previous_clip_final_second_state: Rizal ends block two with the serum still in frame, chin angle steady, and speech continuing through the final syllable.
+        continuity_goal: Continue the same speech thread and close on relief plus CTA.
+        identity_reanchor: Rizal identity, wardrobe, and close-hold posture remain unchanged.
+        product_reanchor: BOSMAX Serum remains the hero item in the same right-hand close-hold with scale truth unchanged.
+        scene_continuity_notes: Same sofa edge, same lamp spill, same tight handheld crop, and no environment drift.
+        audio_continuity_notes: Speech resumes immediately with the same brisk tone and no restart greeting.
+        frame_bridge_notes: Match the final chest-up frame from block two before any micro wrist movement appears.
+        bridge_out: ""
+        bridge_in: Continue from the same serum-up frame and carry the sentence forward without a pose reset.
+        final_block_dialogue: "Lepas tu teruskan rutin, keyakinan nampak lebih tersusun, pasangan pun rasa dekat, dan langkah seterusnya jadi lagi natural malam ini."
+        block_dialogue_word_count: 20
+        block_prompt_manual_output: READY_VEO31_SAMPLE_24S_RIZAL_BLOCK_3
+        block_status: READY
+        validator_proof: "VALIDATION PASSED :: SAMPLE-VEO31-24S-CLIP-CHAIN-RIZAL :: block 3 seam + WPS checked."
+    notes: VEO_3_1 clip-chain 24s = 8s + 8s + 8s. RIZAL avatar. BOSMAX Serum STEALTH. Child block seam proof complete.
 
   - sample_id: SAMPLE-FLOW-16S-RIZAL
     notion_url: ""

@@ -77,6 +77,15 @@ FLOW_READY_REQUIRED_BOOL_FIELDS = [
     "shared_copywriting_avatar_resolver_payload",
 ]
 
+# Multi-block seam fields required for READY non-GOOGLE_FLOW samples with > 1 block.
+# GOOGLE_FLOW uses FLOW_READY_REQUIRED_BOOL_FIELDS which is a superset.
+MULTI_BLOCK_SEAM_REQUIRED_BOOL_FIELDS = [
+    "seam_proof_required",
+    "previous_clip_final_second_state_required",
+    "identity_reanchor_required",
+    "product_reanchor_required",
+]
+
 
 def fail(message: str) -> None:
     print(f"FAIL: {message}")
@@ -202,6 +211,63 @@ def validate_proof_fields(run: dict[str, Any]) -> list[str]:
     return checks
 
 
+def validate_child_block_seam_proof(run: dict[str, Any]) -> list[str]:
+    """Check child-block seam integrity for READY multi-block non-GOOGLE_FLOW samples."""
+    sample_id = str(run.get("sample_id", "<unknown>"))
+    engine = str(run.get("engine", "")).upper()
+    exec_status = str(run.get("execution_status", "")).upper()
+    block_plan = run.get("block_plan") or []
+
+    if exec_status not in READY_STATUSES:
+        return []
+    if engine == "GOOGLE_FLOW":
+        return []  # GOOGLE_FLOW seam proof is handled by validate_flow_extend_proof.py
+    if len(block_plan) <= 1:
+        return []  # single-block runs do not require seam proof
+
+    checks: list[str] = []
+
+    for field in MULTI_BLOCK_SEAM_REQUIRED_BOOL_FIELDS:
+        val = run.get(field)
+        require(val is True, f"Multi-block READY sample {sample_id!r} ({engine}) has {field!r} = {val!r} (must be true)")
+
+    child_blocks = run.get("child_blocks")
+    require(
+        isinstance(child_blocks, list) and len(child_blocks) == len(block_plan),
+        f"Multi-block READY sample {sample_id!r} ({engine}) must have child_blocks with {len(block_plan)} entries, "
+        f"got {len(child_blocks) if isinstance(child_blocks, list) else 'none'}",
+    )
+
+    total_blocks = len(block_plan)
+    for block in child_blocks:
+        idx = int(block.get("block_index", 0))
+        is_first = idx == 1
+        is_last = idx == total_blocks
+
+        word_count = block.get("block_dialogue_word_count", 0)
+        require(isinstance(word_count, int) and word_count > 0, f"{sample_id!r} block {idx} has missing or zero block_dialogue_word_count")
+
+        block_status = str(block.get("block_status", "")).strip()
+        require(bool(block_status), f"{sample_id!r} block {idx} has empty block_status")
+
+        validator_proof = str(block.get("validator_proof", "")).strip()
+        require(bool(validator_proof), f"{sample_id!r} block {idx} has empty validator_proof")
+        require("VALIDATION PASSED" in validator_proof, f"{sample_id!r} block {idx} validator_proof does not contain 'VALIDATION PASSED'")
+
+        if not is_first:
+            prev_state = str(block.get("previous_clip_final_second_state", "")).strip()
+            require(bool(prev_state), f"{sample_id!r} block {idx} (non-first) has empty previous_clip_final_second_state")
+            bridge_in = str(block.get("bridge_in", "")).strip()
+            require(bool(bridge_in), f"{sample_id!r} block {idx} (non-first) has empty bridge_in")
+
+        if not is_last:
+            bridge_out = str(block.get("bridge_out", "")).strip()
+            require(bool(bridge_out), f"{sample_id!r} block {idx} (non-last) has empty bridge_out")
+
+    checks.append(f"child_block_seam ok: {sample_id} — {engine} {len(block_plan)}-block seam proof verified")
+    return checks
+
+
 def validate_dependent_validators() -> list[str]:
     checks: list[str] = []
     for path in DEPENDENT_VALIDATORS:
@@ -253,6 +319,7 @@ def main() -> None:
         all_checks += validate_manual_review_posture(run)
         all_checks += validate_engine_contract(run)
         all_checks += validate_proof_fields(run)
+        all_checks += validate_child_block_seam_proof(run)
 
         if exec_status in ("NEEDS_PROOF", "NEEDS_REVIEW"):
             all_checks.append(f"sample ok: {sample_id} — {exec_status}")
