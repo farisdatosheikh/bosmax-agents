@@ -1,0 +1,56 @@
+# BOSMAX Batch Prompt Exporter — Sample Input
+# Workflow: ON_THE_FLY_SESSION_ONLY
+# registry_writeback MUST remain FORBIDDEN — hard contract, no exceptions.
+# product_intake is a list: each entry becomes one row.
+# Entries with compliance_class HIGH or review-only keywords → BLOCKED_REVIEW_ONLY.
+
+product_workflow: ON_THE_FLY_SESSION_ONLY
+batch_count: 5
+
+# Session-only settings
+copywriting_mode: SESSION_ONLY_GENERATE
+registry_writeback: FORBIDDEN
+
+# Video render settings
+engine: GROK
+duration: "10s"
+platform: TikTok
+language: BM
+
+# Product intake list — one dict per row.
+# Row 4 (Baby Formula) is HIGH compliance_class → will be BLOCKED_REVIEW_ONLY.
+product_intake:
+  - product_name: "Portable Blender MiniBlend X1"
+    category: "Kitchen Gadget"
+    target_user: "Busy professionals and home cooks"
+    main_problem_solved: "Inconvenient to blend on-the-go"
+    main_benefit: "USB-rechargeable, one-button blend in 30 seconds"
+    compliance_class: LOW
+
+  - product_name: "Cooling Neck Fan ProCool"
+    category: "Personal Cooling Device"
+    target_user: "Outdoor workers and commuters"
+    main_problem_solved: "Overheating without power outlet access"
+    main_benefit: "Bladeless 360° airflow, 8-hour battery"
+    compliance_class: LOW
+
+  - product_name: "Wireless Earbuds AirPods Lite Clone"
+    category: "Consumer Electronics"
+    target_user: "Budget-conscious students"
+    main_problem_solved: "Tangled wires during commute"
+    main_benefit: "True wireless, 24-hour case battery"
+    compliance_class: LOW
+
+  - product_name: "Baby Probiotic Formula Plus"
+    category: "Infant Supplement"
+    target_user: "Mothers with infants under 12 months"
+    main_problem_solved: "Digestive discomfort in babies"
+    main_benefit: "Clinically formulated probiotic blend"
+    compliance_class: HIGH
+
+  - product_name: "Foldable Laptop Stand ErgoPro"
+    category: "Office Accessories"
+    target_user: "Remote workers and students"
+    main_problem_solved: "Poor posture from flat desk setup"
+    main_benefit: "Adjustable 7-angle aluminium stand, fits all laptops"
+    compliance_class: LOW

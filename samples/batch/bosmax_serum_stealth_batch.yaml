@@ -1,0 +1,21 @@
+# BOSMAX Batch Prompt Exporter — Sample Input
+# Workflow: BOSMAX_SERUM_STEALTH (registered STEALTH product)
+# Copy mode: COPY_ROTATE via range (cycles through CP_0001 → CP_0003)
+# Avatar rotation: BOSMAX_MALE_STEALTH_POOL_001 (8 IDs, ROUND_ROBIN_NO_REPEAT)
+
+product_workflow: BOSMAX_SERUM_STEALTH
+batch_count: 20
+
+# Video render settings
+engine: GROK
+duration: "10s"
+platform: TikTok
+language: BM
+
+# Copywriting — COPY_ROTATE: cycles BOSMAX_SERUM_CP_0001, _0002, _0003
+copywriting_mode: AUTO_RESOLVE
+copywriting_id_range: "BOSMAX_SERUM_CP_0001..BOSMAX_SERUM_CP_0003"
+
+# Avatar pool — STEALTH silo, 8-ID ROUND_ROBIN_NO_REPEAT
+avatar_pool_id: BOSMAX_MALE_STEALTH_POOL_001
+rotation_rule: ROUND_ROBIN_NO_REPEAT

@@ -1,0 +1,21 @@
+# BOSMAX Batch Prompt Exporter — Sample Input
+# Workflow: MWCB_DIRECT (registered DIRECT product — Minyak Warisan Cap Burung)
+# Copy mode: COPY_FIXED (same copywriting ID for all rows)
+# Avatar rotation: MWCB_TRAD_REMEDY_POOL_001 (2 IDs, ROUND_ROBIN_NO_REPEAT)
+
+product_workflow: MWCB_DIRECT
+batch_count: 20
+
+# Video render settings
+engine: VEO_3_1_LITE
+duration: "8s"
+platform: TikTok
+language: BM
+
+# Copywriting — COPY_FIXED: same ID repeated for all rows
+copywriting_mode: AUTO_RESOLVE
+copywriting_id: CAP_BURUNG_MINYAK_CP_0031
+
+# Avatar pool — DIRECT silo, 2-ID ROUND_ROBIN_NO_REPEAT
+avatar_pool_id: MWCB_TRAD_REMEDY_POOL_001
+rotation_rule: ROUND_ROBIN_NO_REPEAT
