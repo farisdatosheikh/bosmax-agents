@@ -1,0 +1,193 @@
+# BOSMAX Batch Multi-Block Notion Templates
+# Surface: operator-facing batch multi-block template design
+# Status: CONTRACT_READY_NOT_IMPLEMENTED
+#
+# The build_batch_video_prompts.py exporter currently emits single-block rows.
+# Multi-block batch output requires a future exporter extension.
+# This file documents the authoritative design for that extension.
+#
+# Authority: docs/batch_multiblock_output_contract_v1.md
+#            docs/prompt_template_readiness_contract_v1.md
+#            registries/video_engine_duration_contracts.yaml
+
+implementation_status: CONTRACT_READY_NOT_IMPLEMENTED
+description: >
+  Multi-block batch templates define the parent/child row shape for future
+  exporter extension. Do not use these with build_batch_video_prompts.py v1
+  — the current exporter will ignore block_plan fields and produce
+  single-block output only.
+
+templates:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # BOSMAX_SERUM_STEALTH — GROK 20s [10,10] — Batch 20 videos = 40 child blocks
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        BSS_BATCH_MB_GROK20_001
+    label:              "BOSMAX Serum STEALTH — Batch 20 — GROK 20s — 2 blocks [10+10]"
+    product_workflow:   BOSMAX_SERUM_STEALTH
+    batch_count:        20
+    engine:             GROK
+    execution_mode:     EXTENSION
+    total_duration:     "20s"
+    block_plan:         [10, 10]
+    block_count:        2
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   AUTO_RESOLVE
+    copywriting_id_range: "BOSMAX_SERUM_CP_0001..BOSMAX_SERUM_CP_0003"
+    avatar_pool_id:     BOSMAX_MALE_STEALTH_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_parent_rows:     20
+    expected_child_block_rows: 40
+    expected_total_rows:       60
+    block_contracts:
+      - block_index:                  1
+        block_duration:               "10s"
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window:         not_applicable
+      - block_index:                  2
+        block_duration:               "10s"
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window_seconds:
+          min: 0.5
+          max: 1.0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # BOSMAX_SERUM_STEALTH — VEO_3_1_LITE 16s [8,8] — Batch 20 = 40 child blocks
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        BSS_BATCH_MB_VEO16_001
+    label:              "BOSMAX Serum STEALTH — Batch 20 — VEO_3_1_LITE 16s — 2 blocks [8+8]"
+    product_workflow:   BOSMAX_SERUM_STEALTH
+    batch_count:        20
+    engine:             VEO_3_1_LITE
+    execution_mode:     CLIP_CHAIN
+    total_duration:     "16s"
+    block_plan:         [8, 8]
+    block_count:        2
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   COPY_FIXED
+    copywriting_id:     BOSMAX_SERUM_CP_0001
+    avatar_pool_id:     BOSMAX_MALE_STEALTH_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_parent_rows:     20
+    expected_child_block_rows: 40
+    expected_total_rows:       60
+    block_contracts:
+      - block_index:                  1
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        false
+      - block_index:                  2
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # MWCB_DIRECT — VEO_3_1_LITE 24s [8,8,8] — Batch 20 = 60 child blocks
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        MWCB_BATCH_MB_VEO24_001
+    label:              "MWCB DIRECT — Batch 20 — VEO_3_1_LITE 24s — 3 blocks [8+8+8]"
+    product_workflow:   MWCB_DIRECT
+    batch_count:        20
+    engine:             VEO_3_1_LITE
+    execution_mode:     CLIP_CHAIN
+    total_duration:     "24s"
+    block_plan:         [8, 8, 8]
+    block_count:        3
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   COPY_FIXED
+    copywriting_id:     CAP_BURUNG_MINYAK_CP_0031
+    avatar_pool_id:     MWCB_TRAD_REMEDY_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_parent_rows:     20
+    expected_child_block_rows: 60
+    expected_total_rows:       80
+    block_contracts:
+      - block_index:                  1
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        false
+      - block_index:                  2
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   BODY
+        bridge_in_required:           true
+        bridge_out_required:          true
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        true
+      - block_index:                  3
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # MWCB_DIRECT — GROK 16s [10,6] — Batch 20 = 40 child blocks
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        MWCB_BATCH_MB_GROK16_001
+    label:              "MWCB DIRECT — Batch 20 — GROK 16s — 2 blocks [10+6]"
+    product_workflow:   MWCB_DIRECT
+    batch_count:        20
+    engine:             GROK
+    execution_mode:     EXTENSION
+    total_duration:     "16s"
+    block_plan:         [10, 6]
+    block_count:        2
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   AUTO_RESOLVE
+    copywriting_id_list: [CAP_BURUNG_MINYAK_CP_0031, CAP_BURUNG_MINYAK_CP_0032]
+    avatar_pool_id:     MWCB_TRAD_REMEDY_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_parent_rows:     20
+    expected_child_block_rows: 40
+    expected_total_rows:       60
+    block_contracts:
+      - block_index:                  1
+        block_duration:               "10s"
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window:         not_applicable
+      - block_index:                  2
+        block_duration:               "6s"
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window_seconds:
+          min: 0.5
+          max: 1.0

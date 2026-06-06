@@ -1,0 +1,223 @@
+# BOSMAX Video Multi-Block Notion Templates
+# Surface: operator-facing plug-and-play template inputs
+# Scope: multi-block plans (duration exceeds engine max_per_block)
+# Authority: docs/prompt_template_readiness_contract_v1.md
+#            registries/video_engine_duration_contracts.yaml
+#            scripts/video_block_plan.py
+#
+# Child prompt output rule (all multi-block templates):
+#   - Block 1: generated from zero, no bridge-in
+#   - Block 2+: [CONTINUES FROM BLOCK N-1] declared at top of prompt
+#   - Visual start of block N = visual end state of block N-1 (LOCKED)
+#   - Dialogue is continuous — no restart
+#   - Section 8: declares BLOCK [X] OF [N]
+#   - Section 9: NO_OVERLAY (hard rule, no exceptions)
+
+templates:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # VEO_3_1_LITE — 16s → [8, 8] — CLIP_CHAIN
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:          VEO_LITE_MB_16S
+    label:                "VEO_3_1_LITE — 16s — 2 blocks [8s + 8s] — CLIP_CHAIN"
+    execution_mode:       CLIP_CHAIN
+    engine:               VEO_3_1_LITE
+    total_duration:       "16s"
+    block_plan:           [8, 8]
+    block_count:          2
+    platform:             TikTok
+    language:             BM
+    notes: >
+      VEO_3_1_LITE API requests 8s but actual render = 7s.
+      Dialogue budget must use 7s corridor (not 8s).
+      Each block requires identity_reanchor and product_reanchor.
+    blocks:
+      - block_index:                  1
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        false
+        child_prompt_output_rule: >
+          Generate from zero. No [CONTINUES FROM] header.
+          Establish avatar identity and product clearly.
+          End with a visual state that Block 2 can continue from.
+
+      - block_index:                  2
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        true
+        previous_clip_final_second_state: not_applicable
+        child_prompt_output_rule: >
+          Declare [CONTINUES FROM BLOCK 1] at top.
+          Declare BLOCK 2 OF 2 in Section 8.
+          Re-anchor identity and product in Section 1.
+          Do NOT re-introduce avatar or restart greeting.
+          Continue semantic thread from Block 1 without dead air.
+          NO_OVERLAY in Section 9.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # VEO_3_1_LITE — 24s → [8, 8, 8] — CLIP_CHAIN
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:          VEO_LITE_MB_24S
+    label:                "VEO_3_1_LITE — 24s — 3 blocks [8s + 8s + 8s] — CLIP_CHAIN"
+    execution_mode:       CLIP_CHAIN
+    engine:               VEO_3_1_LITE
+    total_duration:       "24s"
+    block_plan:           [8, 8, 8]
+    block_count:          3
+    platform:             TikTok
+    language:             BM
+    notes: >
+      Same 7s dialogue budget rule as 16s. All three blocks require
+      identity_reanchor and product_reanchor.
+    blocks:
+      - block_index:                  1
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        false
+        child_prompt_output_rule: >
+          Generate from zero. Hook and introduce product.
+          End state must be passable to Block 2.
+
+      - block_index:                  2
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   BODY
+        bridge_in_required:           true
+        bridge_out_required:          true
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        true
+        child_prompt_output_rule: >
+          Declare [CONTINUES FROM BLOCK 1] at top.
+          Declare BLOCK 2 OF 3 in Section 8.
+          Continue dialogue — pain/friction/benefit arc.
+          End state must be passable to Block 3.
+
+      - block_index:                  3
+        block_duration:               "8s"
+        dialogue_budget_seconds:      7
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   true
+        product_reanchor_required:    true
+        requires_frame_bridge:        true
+        child_prompt_output_rule: >
+          Declare [CONTINUES FROM BLOCK 2] at top.
+          Declare BLOCK 3 OF 3 in Section 8.
+          Close with relief/CTA.
+          NO_OVERLAY in Section 9.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GROK — 16s → [10, 6] — EXTENSION (BOSMAX default)
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:          GROK_MB_16S
+    label:                "GROK — 16s — 2 blocks [10s + 6s] — EXTENSION"
+    execution_mode:       EXTENSION
+    engine:               GROK
+    total_duration:       "16s"
+    block_plan:           [10, 6]
+    block_count:          2
+    platform:             TikTok
+    language:             BM
+    notes: >
+      BOSMAX default distribution for GROK 16s.
+      Only one valid BOSMAX combination: [10, 6].
+      Speech must resume within 0.5s–1.0s of seam.
+      GROK does NOT require identity_reanchor or product_reanchor
+      (established in Block 1 and persisted by extension model).
+    blocks:
+      - block_index:                  1
+        block_duration:               "10s"
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window:         not_applicable
+        child_prompt_output_rule: >
+          Generate from zero.
+          Establish avatar, product, hook, and pain.
+          End with a semantic thread that can continue in Block 2.
+          Bridge-out wording: carry forward the thought to next beat.
+          NO internal block labels in operator-facing prompt text.
+
+      - block_index:                  2
+        block_duration:               "6s"
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window_seconds:
+          min: 0.5
+          max: 1.0
+        child_prompt_output_rule: >
+          Declare [CONTINUES FROM BLOCK 1] at top.
+          Declare BLOCK 2 OF 2 in Section 8.
+          Do NOT restart greeting or re-introduce avatar.
+          Speech must resume within 0.5s–1.0s of seam.
+          Continue semantic thread — relief/CTA arc.
+          NO_OVERLAY in Section 9.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GROK — 20s → [10, 10] — EXTENSION (BOSMAX default)
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:          GROK_MB_20S
+    label:                "GROK — 20s — 2 blocks [10s + 10s] — EXTENSION"
+    execution_mode:       EXTENSION
+    engine:               GROK
+    total_duration:       "20s"
+    block_plan:           [10, 10]
+    block_count:          2
+    platform:             TikTok
+    language:             BM
+    notes: >
+      BOSMAX default distribution for GROK 20s.
+      Only one valid BOSMAX combination: [10, 10].
+      Speech must resume within 0.5s–1.0s of seam.
+    blocks:
+      - block_index:                  1
+        block_duration:               "10s"
+        block_role:                   HOOK
+        bridge_in_required:           false
+        bridge_out_required:          true
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window:         not_applicable
+        child_prompt_output_rule: >
+          Generate from zero.
+          Hook → pain → friction arc.
+          End with bridge-out to Block 2.
+
+      - block_index:                  2
+        block_duration:               "10s"
+        block_role:                   CTA
+        bridge_in_required:           true
+        bridge_out_required:          false
+        identity_reanchor_required:   false
+        product_reanchor_required:    false
+        speech_resume_window_seconds:
+          min: 0.5
+          max: 1.0
+        child_prompt_output_rule: >
+          Declare [CONTINUES FROM BLOCK 1] at top.
+          Declare BLOCK 2 OF 2 in Section 8.
+          Relief → CTA arc.
+          Speech resumes within 0.5s–1.0s of seam.
+          NO_OVERLAY in Section 9.

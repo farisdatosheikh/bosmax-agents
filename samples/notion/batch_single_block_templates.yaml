@@ -1,0 +1,142 @@
+# BOSMAX Batch Single-Block Notion Templates
+# Surface: operator-facing plug-and-play batch inputs (single-block per row)
+# Authority: docs/prompt_template_readiness_contract_v1.md
+#            docs/batch_prompt_exporter_v1.md
+#            scripts/build_batch_video_prompts.py
+#
+# FORBIDDEN in these templates:
+#   - hook / USP 1-3 / CTA fields (resolved internally by resolver_runtime)
+#   - registry_writeback for registered product workflows
+#   - Pool cross-contamination (STEALTH ↔ DIRECT)
+#   - ON_THE_FLY registry_writeback any value other than FORBIDDEN
+#
+# Run with:
+#   python scripts/build_batch_video_prompts.py <this-file-path>
+#   python scripts/build_batch_video_prompts.py <this-file-path> --dry-run
+
+batch_templates:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # BOSMAX_SERUM_STEALTH — COPY_FIXED — 20 rows
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        BSS_BATCH_SB_FIXED_001
+    label:              "BOSMAX Serum STEALTH — Batch 20 — GROK 10s — COPY_FIXED"
+    product_workflow:   BOSMAX_SERUM_STEALTH
+    batch_count:        20
+    engine:             GROK
+    duration:           "10s"
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   COPY_FIXED
+    copywriting_id:     BOSMAX_SERUM_CP_0001
+    avatar_pool_id:     BOSMAX_MALE_STEALTH_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_route_status: REGISTERED_PRODUCT
+    expected_row_count: 20
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # BOSMAX_SERUM_STEALTH — COPY_ROTATE via range — 20 rows
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        BSS_BATCH_SB_ROTATE_001
+    label:              "BOSMAX Serum STEALTH — Batch 20 — GROK 10s — COPY_ROTATE range"
+    product_workflow:   BOSMAX_SERUM_STEALTH
+    batch_count:        20
+    engine:             GROK
+    duration:           "10s"
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   AUTO_RESOLVE
+    copywriting_id_range: "BOSMAX_SERUM_CP_0001..BOSMAX_SERUM_CP_0003"
+    avatar_pool_id:     BOSMAX_MALE_STEALTH_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_route_status: REGISTERED_PRODUCT
+    expected_row_count: 20
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # MWCB_DIRECT — COPY_FIXED — 20 rows
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        MWCB_BATCH_SB_FIXED_001
+    label:              "MWCB DIRECT — Batch 20 — VEO_3_1_LITE 8s — COPY_FIXED"
+    product_workflow:   MWCB_DIRECT
+    batch_count:        20
+    engine:             VEO_3_1_LITE
+    duration:           "8s"
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   AUTO_RESOLVE
+    copywriting_id:     CAP_BURUNG_MINYAK_CP_0031
+    avatar_pool_id:     MWCB_TRAD_REMEDY_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_route_status: REGISTERED_PRODUCT
+    expected_row_count: 20
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # MWCB_DIRECT — COPY_ROTATE via list — 20 rows
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        MWCB_BATCH_SB_ROTATE_001
+    label:              "MWCB DIRECT — Batch 20 — GROK 10s — COPY_ROTATE list"
+    product_workflow:   MWCB_DIRECT
+    batch_count:        20
+    engine:             GROK
+    duration:           "10s"
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   COPY_ROTATE
+    copywriting_id_list: [CAP_BURUNG_MINYAK_CP_0031, CAP_BURUNG_MINYAK_CP_0032]
+    avatar_pool_id:     MWCB_TRAD_REMEDY_POOL_001
+    rotation_rule:      ROUND_ROBIN_NO_REPEAT
+    expected_route_status: REGISTERED_PRODUCT
+    expected_row_count: 20
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # ON_THE_FLY_SESSION_ONLY — 5 rows (4 low compliance, 1 blocked)
+  # registry_writeback: FORBIDDEN — hard contract, no exceptions
+  # ─────────────────────────────────────────────────────────────────────────
+  - template_id:        OTF_BATCH_SB_001
+    label:              "ON_THE_FLY Session Only — Batch 5 — GROK 10s"
+    product_workflow:   ON_THE_FLY_SESSION_ONLY
+    batch_count:        5
+    engine:             GROK
+    duration:           "10s"
+    platform:           TikTok
+    language:           BM
+    copywriting_mode:   SESSION_ONLY_GENERATE
+    copywriting_id:     none
+    avatar_pool_id:     none
+    registry_writeback: FORBIDDEN
+    expected_row_count: 5
+    product_intake:
+      - product_name:         "Portable Mini Blender"
+        category:             "Kitchen Gadget"
+        target_user:          "Busy professionals"
+        main_problem_solved:  "Cannot blend on-the-go"
+        main_benefit:         "USB-rechargeable, 30-second blend"
+        compliance_class:     LOW
+
+      - product_name:         "Cooling Neck Fan ProCool"
+        category:             "Personal Cooling Device"
+        target_user:          "Outdoor workers and commuters"
+        main_problem_solved:  "Overheating without power outlet"
+        main_benefit:         "Bladeless 360° airflow, 8-hour battery"
+        compliance_class:     LOW
+
+      - product_name:         "Wireless Earbuds Budget Series"
+        category:             "Consumer Electronics"
+        target_user:          "Budget-conscious students"
+        main_problem_solved:  "Tangled wires during commute"
+        main_benefit:         "True wireless, 24-hour case battery"
+        compliance_class:     LOW
+
+      - product_name:         "Baby Probiotic Formula Plus"
+        category:             "Infant Supplement"
+        target_user:          "Mothers with infants under 12 months"
+        main_problem_solved:  "Digestive discomfort in babies"
+        main_benefit:         "Clinically formulated probiotic blend"
+        compliance_class:     HIGH
+
+      - product_name:         "Foldable Laptop Stand ErgoPro"
+        category:             "Office Accessories"
+        target_user:          "Remote workers and students"
+        main_problem_solved:  "Poor posture from flat desk setup"
+        main_benefit:         "Adjustable 7-angle aluminium stand"
+        compliance_class:     LOW
