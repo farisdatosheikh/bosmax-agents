@@ -170,6 +170,59 @@ Use language-specific WPS from script-generator authority:
 
 ---
 
+## MODE A POSTER QA AUDIT (SELLING_POSTER REQUESTS)
+
+*Aktif SAHAJA apabila `image_goal = SELLING_POSTER`. Jalankan SELEPAS MODE A AUDIT CHECKLIST.*
+*Authority: `docs/design/BOSMAX_POSTER_QA_RUBRIC_v1.md`*
+*Semua mesti PASS. Satu FAIL = ABORT (kecuali issue dalam AUTO-HEAL REGISTRY).*
+
+### SCORE GATE
+
+☐ Overall QA score ≥ 82 / 100 (minimum production pass gate)
+☐ No single dimension below 7
+☐ Product Truth dimension ≥ 9
+☐ Label Fidelity dimension ≥ 9
+☐ Compliance Safety dimension ≥ 9
+
+### HARD GATES (HG-01 to HG-12 — binary pass/fail, override total score)
+
+☐ HG-01: Product geometry correct — bottle shape, cap, body color match `product_truth_lock`
+☐ HG-02: Product label present and readable in composition
+☐ HG-03: BOSMAX HERBS label text (or product label text) not garbled, mutated, or missing
+☐ HG-04: Product not misidentified as wrong category (perfume / dropper / deodorant / cosmetic serum)
+☐ HG-05: No impossible hand anatomy — correct finger count, correct joint articulation
+☐ HG-06: No explicit sexual implication in composition or avatar pose
+☐ HG-07: No medical cure claim in overlay text
+☐ HG-08: No guaranteed result language in overlay text ("dijamin", "guaranteed", "100% works")
+☐ HG-09: No fake badge or certification icon (only certifications confirmed in `product_record` are permitted)
+☐ HG-10: TikTok safe zone (top 8%, bottom 20%) not blocked by primary product content
+☐ HG-11: No competitor product visible in frame
+☐ HG-12: CTA or overlay text does not cover the product label area
+
+A single HG FAIL = ABORT regardless of overall score.
+
+### CBTC CHECK (Commercially Boring But Technically Correct)
+
+☐ Output is NOT CBTC
+  CBTC definition: product geometry correct + label readable + compliance clean,
+  BUT composition is generic, no visual mechanic declared, no layout formula applied,
+  no scroll-stop tension, indistinguishable from a random stock product photo.
+  CBTC outputs typically score ~62/100 — FAILS production gate even if
+  Product Truth, Label Fidelity, and Compliance Safety each score 9.
+  CBTC is NOT auto-healable — requires brief rewrite upstream by bosmax-commercial-poster-director.
+  ABORT if CBTC detected.
+
+### POSTER REJECT CONDITIONS (additional to MODE A AUDIT CHECKLIST)
+
+☐ ABORT if: layout formula and visual mechanic not declared in prompt (poster lacks design structure authority)
+☐ ABORT if: prompt is a split-frame spec-sheet with no single coherent composition (unless user explicitly scoped multi-composition output)
+☐ ABORT if: catalogue-look grid layout (multiple products tiled without commercial hierarchy)
+☐ ABORT if: duplicate product view without operator approval
+☐ ABORT if: prompt reads as an ugly proof-board or prototype render style, not a commercial poster
+☐ ABORT if: poster passes product truth and compliance but fails commercial poster craft (score < 82 overall)
+
+---
+
 ## MODE B AUDIT CHECKLIST
 
 *Semua mesti PASS. Satu FAIL = ABORT.*
