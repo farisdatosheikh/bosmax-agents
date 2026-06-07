@@ -330,7 +330,6 @@ rejection_rule: >
 
 output_required:
   - full_master_image_prompt
-  - source_image_handoff
 
 qa_score_target: "overall: 82 | no_dimension_below: 7"
 ```

@@ -112,7 +112,10 @@ All of the following must be resolved before expansion begins.
 | `full_master_image_prompt` | 12-section English prompt, ready for image engine |
 | `prompt_variants` | Array of variant prompts (one per variation axis combination) |
 | `qa_checklist_result` | Per-dimension pass/fail scores |
-| `source_image_handoff` | JSON passport (required if `output_required` includes it) |
+
+> **Future Integration — Non-Scope:** Source image handoff / Mode C passport is a
+> future integration. It is not part of BOSMAX commercial poster design skill v1 and
+> must not be required by v1 template cards or prompt expansion outputs.
 
 ---
 

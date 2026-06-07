@@ -130,10 +130,13 @@ Required before this skill can execute:
 | `prompt_variants` | Array of variant strings | Batch / variation queue |
 | `qa_checklist_result` | Pass/Fail per dimension | `bosmax-compliance-gate` |
 
-> **Future integration note (out of scope for this document):** `source_image_handoff`
-> JSON generation (Mode C passport / VIDEO_SUPPORT goal) is the responsibility of
-> `bosmax-scene-engine`, not this design skill. This skill governs design intelligence
-> only. See `CLAUDE.md` Route C and Route A pipeline sequences for the handoff contract.
+## Future Integration — Non-Scope
+
+Source image handoff / Mode C passport is a future integration. It is not part of
+BOSMAX commercial poster design skill v1 and must not be required by v1 template
+cards or prompt expansion outputs. When needed, `source_image_handoff` JSON
+generation is the responsibility of `bosmax-scene-engine`. See `CLAUDE.md` Route A
+and Route C pipeline sequences for that contract.
 
 ---
 
