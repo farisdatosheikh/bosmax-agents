@@ -70,7 +70,50 @@ What stays different from GROK:
 
 ---
 
-## 4. Shared Resolver Payload
+## 4. Prompt Syntax Policy — BOSMAX vs. Official Google Behaviour
+
+**Added: 2026-06-07** — see `docs/engine_extension_prompt_syntax_policy_v1.md`
+and `docs/google_flow_extend_prompt_sop_v1.md` for full detail.
+
+BOSMAX makes an explicit distinction between official Google documented
+behaviour and BOSMAX-imposed internal policy:
+
+### Official documented behaviour (Google Flow Help, verified 2026-06-05):
+
+- Flow Extend uses the final second of the prior clip as its continuation basis
+- This is a documented feature of the Flow Extend engine
+- No official Google documentation bans specific continuity phrases from prompts
+
+### BOSMAX policy (repo-internal, not a Google hard ban):
+
+- BOSMAX policy-bans explicit meta-continuity phrases from final Flow Extend
+  prompt text (e.g. "continue from the last frame", "seamless continuation",
+  `[CONTINUES FROM BLOCK]`, `previous_clip_final_second_state`, etc.)
+- Rationale: these phrases are redundant given the engine's native continuation
+  mechanism, and may introduce semantic noise
+- Do NOT represent this as an official Google restriction when communicating
+  with operators
+
+### Internal metadata vs. prompt text:
+
+- `previous_clip_final_second_state`, `bridge_in_required`, `bridge_out_required`,
+  `[CONTINUES FROM BLOCK N]`, `BLOCK X OF N`, `identity_reanchor_required`,
+  `product_reanchor_required`, WPS budgets — all required at BOSMAX planning
+  and Notion schema layer
+- None of these fields should appear verbatim in the operator-facing prompt
+  text that enters the Google Flow UI
+
+### Identity reference (Flow-specific):
+
+- Use `@CharacterName` or `@IngredientName` when that named asset exists in
+  the current Flow project
+- Use a concrete noun otherwise (`the woman`, `the presenter`, `the bottle`)
+- Policy-banned generic tokens: `the character`, `the subject`, `the individual`,
+  `the person`
+
+---
+
+## 5. Shared Resolver Payload
 
 Copywriting and avatar resolver behavior remains shared across:
 - GROK
