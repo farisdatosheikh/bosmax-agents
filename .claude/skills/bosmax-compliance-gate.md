@@ -212,6 +212,39 @@ A single HG FAIL = ABORT regardless of overall score.
   CBTC is NOT auto-healable — requires brief rewrite upstream by bosmax-commercial-poster-director.
   ABORT if CBTC detected.
 
+---
+
+## Overlay Copy Conversion Gate
+
+For SELLING_POSTER outputs, audit overlay copy for:
+
+PASS requires:
+- clear visual hook OR headline
+- safe USP
+- CTA or offer path
+- Malay-first buyer-facing tone when target is TikTok Shop Malaysia
+- no unsupported claims
+- no fake promo
+- no medical/sexual/certification claim
+
+ABORT if:
+- output is technically correct but commercially boring
+- poster has product truth but no buyer-facing reason to click
+- CTA is weak/skema/corporate by default
+- copy reads like a brand deck instead of TikTok Shop sales copy
+- overlay has hook but no safe USP
+- overlay has USP but no CTA path
+- promo copy is used without operator-confirmed promo
+- any unsupported claim appears
+
+Explicit CBTC rule:
+If the poster can be summarized as "nice product photo with no clear reason to buy," ABORT and return:
+CBTC_ABORT — add buyer-facing hook + safe USP + CTA path before final output.
+
+Do not rewrite copy inside Compliance Gate.
+Compliance Gate must ABORT with reason and required fix.
+Commercial Poster Director must do the rewrite.
+
 ### POSTER REJECT CONDITIONS (additional to MODE A AUDIT CHECKLIST)
 
 ☐ ABORT if: layout formula and visual mechanic not declared in prompt (poster lacks design structure authority)
