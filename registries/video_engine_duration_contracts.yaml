@@ -23,9 +23,12 @@ engines:
   GROK:
     authority_status: VERIFIED
     notion_execution_status: READY
+    readiness_status: READY
     engine_family: SHORT_FORM_EXTENSION
     supports_multi_block: true
     execution_mode: EXTENSION
+    max_block_duration_seconds: 10
+    valid_block_durations_seconds: [6, 10]
     authority_refs:
       - .claude/CLAUDE.md
       - BOSMAX_HARD_ENGINE_CONTRACTS_v1.md
@@ -112,9 +115,12 @@ engines:
   KLING_3_0:
     authority_status: VERIFIED
     notion_execution_status: READY
+    readiness_status: READY
     engine_family: SINGLE_BLOCK
     supports_multi_block: false
     execution_mode: SINGLE_BLOCK_EXECUTION
+    max_block_duration_seconds: 15
+    valid_block_durations_seconds: [3, 5, 10, 15]
     authority_refs:
       - .claude/CLAUDE.md
       - MASTER_IGNITION_TEMPLATE.md
@@ -124,9 +130,12 @@ engines:
   SEEDANCE_2_0:
     authority_status: VERIFIED
     notion_execution_status: READY
+    readiness_status: READY
     engine_family: SINGLE_BLOCK
     supports_multi_block: false
     execution_mode: SINGLE_BLOCK_EXECUTION
+    max_block_duration_seconds: 15
+    valid_block_durations_seconds: [5, 10, 15]
     authority_refs:
       - .claude/CLAUDE.md
       - MASTER_IGNITION_TEMPLATE.md
@@ -136,9 +145,12 @@ engines:
   VEO_3_1:
     authority_status: PARTIAL_VERIFIED
     notion_execution_status: READY_CLIP_MODE
+    readiness_status: PARTIAL_VERIFIED
     engine_family: LONGFORM_CLIP_CHAIN
     supports_multi_block: true
     default_execution_mode: CLIP_CHAIN
+    max_block_duration_seconds: 8
+    valid_block_durations_seconds: [4, 6, 8]
     decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
     authority_refs:
       - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
@@ -290,9 +302,12 @@ engines:
   VEO_3_1_LITE:
     authority_status: PARTIAL_VERIFIED
     notion_execution_status: READY_CLIP_MODE
+    readiness_status: PARTIAL_VERIFIED
     engine_family: LONGFORM_CLIP_CHAIN
     supports_multi_block: true
     default_execution_mode: CLIP_CHAIN
+    max_block_duration_seconds: 8
+    valid_block_durations_seconds: [8]
     decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
     lite_note: >
       VEO_3_1_LITE API requests 8s per block but renders approximately 7s.
@@ -443,9 +458,12 @@ engines:
   GOOGLE_FLOW:
     authority_status: PARTIAL_VERIFIED
     notion_execution_status: READY_REVIEWED_FLOW_EXTEND
+    readiness_status: PARTIAL_VERIFIED
     engine_family: WORKFLOW_LAYER
     supports_multi_block: true
     default_execution_mode: FLOW_EXTEND_UI
+    max_block_duration_seconds: 8
+    valid_block_durations_seconds: [8]
     decision_record: BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
     shared_copywriting_avatar_resolver_payload: true
     execution_mode_aliases:
