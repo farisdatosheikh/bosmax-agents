@@ -104,7 +104,7 @@ and design skill rejection rules.
 |---|---|---|
 | Wrong bottle geometry (not cylindrical tube) | Product Truth | HG-01 |
 | Wrong cap (wrong color, wrong shape, missing) | Product Truth | HG-01 |
-| Wrong body color (not white / off-white) | Product Truth | HG-01 |
+| Wrong body color (does not match `product_truth_lock.body_color` — for BOSMAX Serum: not black cylindrical body) | Product Truth | HG-01 |
 | Label redesigned (different font, different background, repositioned) | Label Fidelity | HG-02 |
 | BOSMAX HERBS label unreadable or mutated in product-truth templates | Label Fidelity | HG-03 |
 | Bottle appears larger than lip balm scale unless intentional macro — and macro still lacks scale context | Scale Proof | HG-01 |

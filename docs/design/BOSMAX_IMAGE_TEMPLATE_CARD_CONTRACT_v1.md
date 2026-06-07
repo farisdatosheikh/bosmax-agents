@@ -131,16 +131,17 @@ JSON object with FROZEN attributes extracted from `product_record`.
 
 ```json
 {
-  "product_id": "BOSMAX_SERUM_5ML",
+  "product_id": "BOSMAX_SERUM",
   "product_name": "BOSMAX Serum",
   "variant": "5ml",
-  "bottle_geometry": "small cylindrical tube, approximately 5ml volume",
-  "cap_type": "twist-off cap, opaque white",
-  "body_color": "white or off-white tube body",
+  "bottle_geometry": "tiny slim black cylindrical roll-on bottle, lip-balm-sized, short body with straight vertical silhouette",
+  "cap_type": "tall smooth glossy black cap, clean rounded top, fully closed",
+  "body_color": "matte to satin black bottle body",
   "label_text": "BOSMAX HERBS",
-  "label_placement": "centered on tube body",
+  "label_layout": "minimal front label — leaf icon on top, BOSMAX HERBS wordmark centered, Herbal Oil Roll On text below",
+  "label_palette": "white typography on black body",
   "scale_anchor_descriptor": "EXACTLY lip balm size, fit into fingers naturally",
-  "compliance_class": "STEALTH"
+  "compliance_class": "STEALTH_METAPHOR_REQUIRED"
 }
 ```
 
@@ -241,19 +242,20 @@ template_set_id: BOSMAX_SERUM_SCALE_PROOF_001
 template_name: "BOSMAX Serum — Fingertip Scale Proof Master"
 template_role: MASTER_PROMPT_SEED
 prompt_expansion_mode: COMPOSE_FROM_SUBJECT_DNA
-product_id: BOSMAX_SERUM_5ML
+product_id: BOSMAX_SERUM
 
 product_truth_lock:
-  product_id: BOSMAX_SERUM_5ML
+  product_id: BOSMAX_SERUM
   product_name: "BOSMAX Serum"
   variant: "5ml"
-  bottle_geometry: "small cylindrical tube, approximately 5ml volume"
-  cap_type: "twist-off cap, opaque white"
-  body_color: "white or off-white tube body"
+  bottle_geometry: "tiny slim black cylindrical roll-on bottle, lip-balm-sized, short body with straight vertical silhouette"
+  cap_type: "tall smooth glossy black cap, clean rounded top, fully closed"
+  body_color: "matte to satin black bottle body"
   label_text: "BOSMAX HERBS"
-  label_placement: "centered on tube body"
+  label_layout: "minimal front label — leaf icon on top, BOSMAX HERBS wordmark centered, Herbal Oil Roll On text below"
+  label_palette: "white typography on black body"
   scale_anchor_descriptor: "EXACTLY lip balm size, fit into fingers naturally"
-  compliance_class: STEALTH
+  compliance_class: STEALTH_METAPHOR_REQUIRED
 
 creative_intensity: CONVERSION
 template_family: SCALE_PROOF
@@ -320,9 +322,11 @@ variation_axis:
   - overlay_copy_text
 
 rejection_rule: >
-  REJECT if: bottle appears larger than thumb width; OR cap missing; OR label
-  text garbled; OR product reads as cosmetic serum / perfume / dropper / deodorant;
-  OR impossible hand anatomy; OR TikTok safe zone blocked by product content.
+  REJECT if: bottle appears larger than thumb width; OR cap missing or wrong color;
+  OR bottle body not black cylindrical (wrong color, wrong shape, wrong category);
+  OR label text garbled or missing; OR product reads as cosmetic serum / perfume /
+  dropper / deodorant / white bottle; OR impossible hand anatomy;
+  OR TikTok safe zone blocked by product content.
 
 output_required:
   - full_master_image_prompt

@@ -94,7 +94,7 @@ These constraints are non-negotiable and override all other design choices.
 |---|---|
 | Product geometry lock | Bottle shape, cap, color, and label placement cannot be altered |
 | Label fidelity | BOSMAX HERBS label must be readable at 1× actual product size in the composition |
-| Scale anchor enforcement | BOSMAX Serum 5ml = lip balm size; 10ml = chapstick size. Visual must prove this |
+| Scale anchor enforcement | BOSMAX Serum 5ml = lip balm size; 10ml = chapstick size. Visual must prove this. Both variants: slim black cylindrical roll-on bottle. Do not render as white, pastel, or any other color. |
 | Stealth silo compliance | No explicit body part claims; no before/after skin lesion imagery |
 | No medical claims | No cure, no improvement guarantee, no diagnostic language |
 | No fake certification | No invented badges, no fake halal/ISO icons unless product_record confirms real cert |
@@ -129,7 +129,11 @@ Required before this skill can execute:
 | `full_master_image_prompt` | English string, structured sections | Image generation engine |
 | `prompt_variants` | Array of variant strings | Batch / variation queue |
 | `qa_checklist_result` | Pass/Fail per dimension | `bosmax-compliance-gate` |
-| `source_image_handoff` | JSON (if VIDEO_SUPPORT goal) | Mode C passport |
+
+> **Future integration note (out of scope for this document):** `source_image_handoff`
+> JSON generation (Mode C passport / VIDEO_SUPPORT goal) is the responsibility of
+> `bosmax-scene-engine`, not this design skill. This skill governs design intelligence
+> only. See `CLAUDE.md` Route C and Route A pipeline sequences for the handoff contract.
 
 ---
 
@@ -390,37 +394,59 @@ Use: sale/promo posts, avatar-commerce hybrid.
 These are compliance-safe overlay copy formulas for BOSMAX Serum (STEALTH silo).
 All examples are for BM + EN mix as default for TikTok Shop MY.
 
-**CO-01** — `Saiz poket. Selesa bawa.` / `Pocket size. Comfortable to carry.`
-**CO-02** — `Original Malaysia. Disahkan halal.` / `Authentic Malaysian. Halal verified.`
-**CO-03** — `Ramuan semulajadi. Formulasi tepat.` / `Natural ingredients. Precise formula.`
-**CO-04** — `Sebesar lip balm. Muat dalam poket.` / `Lip balm size. Fits in your pocket.`
-**CO-05** — `Sesuai untuk semua jenis kulit.` / `Suitable for all skin types.`
-**CO-06** — `Tanpa bahan berbahaya.` / `Free from harmful ingredients.`
-**CO-07** — `Mudah dibawa ke mana sahaja.` / `Easy to carry anywhere.`
-**CO-08** — `Herba pilihan. Diproses bersih.` / `Selected herbs. Clean processing.`
-**CO-09** — `Produk asal BOSMAX. Elak tiruan.` / `Original BOSMAX product. Avoid imitations.`
-**CO-10** — `Gunakan dengan konsisten. Rasai bezanya.` / `Use consistently. Feel the difference.`
-**CO-11** — `Dirumus di Malaysia.` / `Formulated in Malaysia.`
-**CO-12** — `Bersih. Ringkas. Berkesan.` / `Clean. Simple. Effective.`
-**CO-13** — `Kandungan aktif botanikal.` / `Botanical active content.`
-**CO-14** — `Tiada pewarna. Tiada pewangi tambahan.` / `No dye. No added fragrance.`
-**CO-15** — `Kuantiti terhad. Order sekarang.` / `Limited quantity. Order now.`
-**CO-16** — `Percubaan pertama? Dapatkan harga pengenalan.` / `First try? Get intro price.`
-**CO-17** — `Rutin harian. Kesan yang nyata.` / `Daily routine. Visible results.` *(note: "visible" not "guaranteed")*
-**CO-18** — `Set 2 botol. Jimat lebih.` / `2-bottle set. Save more.`
-**CO-19** — `Lebih 500 ulasan bintang 5.` / `Over 500 five-star reviews.` *(only if product_record confirms)*
-**CO-20** — `Percayakan kualiti BOSMAX.` / `Trust BOSMAX quality.`
-**CO-21** — `Harga rasmi RM [X]. Diskaun sehingga RM [Y].` / `Official price RM [X]. Discount up to RM [Y].`
-**CO-22** — `Terlaris minggu ini.` / `Bestseller this week.` *(only if data confirmed)*
-**CO-23** — `Muat dalam pouch. Sesuai untuk travel.` / `Fits in your pouch. Perfect for travel.`
+**Safe neutral examples (always permitted — no product_record verification required):**
 
-**Forbidden copy patterns (STEALTH compliance):**
+**CO-01** — `Saiz poket. Selesa bawa.` / `Pocket size. Comfortable to carry.`
+**CO-02** — `5ML roll-on. Sebesar lip balm.` / `5ML roll-on. Lip balm size.`
+**CO-03** — `Kecil macam lip balm. Muat dalam poket.` / `Small as lip balm. Fits in your pocket.`
+**CO-04** — `Label jelas. Botol kemas.` / `Clear label. Neat bottle.`
+**CO-05** — `Saiz kecil. Detail premium.` / `Small size. Premium detail.`
+**CO-06** — `Kecil. Kemas. Private.`
+**CO-07** — `Tap tengok detail.` / `Tap to see details.`
+**CO-08** — `Buka shop, check dulu.` / `Open shop, check first.`
+**CO-09** — `Mudah dibawa ke mana sahaja.` / `Easy to carry anywhere.`
+**CO-10** — `Percayakan kualiti BOSMAX.` / `Trust BOSMAX quality.`
+**CO-11** — `Kuantiti terhad. Order sekarang.` / `Limited quantity. Order now.`
+**CO-12** — `Percubaan pertama? Dapatkan harga pengenalan.` / `First try? Get intro price.`
+**CO-13** — `Set 2 botol. Jimat lebih.` / `2-bottle set. Save more.`
+**CO-14** — `Harga rasmi RM [X]. Diskaun sehingga RM [Y].` / `Official price RM [X]. Discount up to RM [Y].`
+**CO-15** — `Muat dalam pouch. Sesuai untuk travel.` / `Fits in your pouch. Perfect for travel.`
+**CO-16** — `Produk asal BOSMAX. Elak tiruan.` / `Original BOSMAX product. Avoid imitations.`
+
+**`PRODUCT_RECORD_REQUIRED` — use ONLY if verified in `product_record`:**
+
+**CO-PR-01** — `Disahkan halal.` / `Halal verified.`
+*(only if `product_record.certifications` confirms halal certification)*
+
+**CO-PR-02** — `Ramuan semulajadi. Formulasi tepat.` / `Natural ingredients. Precise formula.`
+*(only if `product_record` confirms natural/herbal formulation claim)*
+
+**CO-PR-03** — `Sesuai untuk semua jenis kulit.` / `Suitable for all skin types.`
+*(only if `product_record` confirms this claim — not for STEALTH_METAPHOR_REQUIRED class)*
+
+**CO-PR-04** — `Tanpa bahan berbahaya.` / `Free from harmful ingredients.`
+*(only if `product_record` or lab cert confirms — do not present generically)*
+
+**CO-PR-05** — `Original Malaysia. Dirumus di Malaysia.` / `Authentic Malaysian. Formulated in Malaysia.`
+*(only if `product_record` confirms Malaysian formulation)*
+
+**CO-PR-06** — `Lebih [N] ulasan bintang 5.` / `Over [N] five-star reviews.`
+*(only if `product_record.total_orders` or verified review count confirms)*
+
+**CO-PR-07** — `Terlaris minggu ini.` / `Bestseller this week.`
+*(only if Fastmoss data or TikTok Shop rank data is confirmed in `product_record`)*
+
+**CO-PR-08** — `Rutin harian. Kesan yang nyata.` / `Daily routine. Visible results.`
+*(use carefully — "visible results" is on the compliance edge; only if product_record or silo permits)*
+
+**Forbidden copy patterns (STEALTH_METAPHOR_REQUIRED compliance):**
 - `Hilangkan...` (eliminate/remove — implies cure)
 - `Sembuh...` (cures — medical claim)
 - `Kurangkan parut...` (reduce scars — before/after claim)
 - `Dijamin...` (guaranteed — result guarantee)
 - `Lebih cerah dalam X hari` (brighter in X days — timeline guarantee)
-- Any reference to specific skin conditions by name
+- Any reference to specific skin conditions or body parts by name
+- Any explicit male health / intimate benefit claim without STEALTH metaphor filter
 
 ---
 

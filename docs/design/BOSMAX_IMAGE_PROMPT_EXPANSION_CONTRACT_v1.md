@@ -387,7 +387,7 @@ Output Full Prompt (abbreviated):
 ```
 --- BOSMAX IMAGE PROMPT ---
 Template: BOSMAX_SERUM_SCALE_PROOF_001
-Product: BOSMAX_SERUM_5ML | BOSMAX Serum 5ml
+Product: BOSMAX_SERUM | BOSMAX Serum 5ml
 Platform: TikTok
 Intensity: CONVERSION
 Expansion mode: COMPOSE_FROM_SUBJECT_DNA
@@ -397,14 +397,18 @@ Section 1 — Output Spec
   High detail, shallow depth of field. No illustration, no flat design.
 
 Section 2 — Product Reference Lock
-  Small cylindrical tube, approximately 5ml volume. Twist-off cap, opaque white.
-  White or off-white tube body. Label text: BOSMAX HERBS, centered on tube body.
+  Tiny slim black cylindrical roll-on bottle, lip-balm-sized, short body with
+  straight vertical silhouette. Tall smooth glossy black cap, clean rounded top,
+  fully closed. Matte to satin black bottle body. Label: BOSMAX HERBS wordmark
+  centered, leaf icon above, Herbal Oil Roll On text below, white typography on
+  black body.
   EXACTLY lip balm size, fit into fingers naturally.
 
 Section 3 — Product Scale and Geometry
   Product held between index fingertip and thumb. Fingernail clearly visible.
-  Bottle does not exceed the width of one finger segment from tip to first knuckle.
-  Bottle is shorter than the distance from fingertip to second knuckle.
+  Black cylindrical bottle does not exceed the width of one finger segment from
+  tip to first knuckle. Bottle is shorter than the distance from fingertip to
+  second knuckle.
 
 Section 4 — Composition and Layout
   LF-01: Lower-third hero. Avatar face partial in upper 35% of frame.
@@ -417,30 +421,33 @@ Section 5 — Visual Mechanic
 
 Section 6 — Lighting and Surface
   Soft natural window light, source left. Even fill on hand and product.
-  No harsh shadows. No specular glare on label.
-  Surface: clean off-white minimal background.
+  No harsh shadows. No specular glare on black body or white label.
+  Surface: clean dark or neutral minimal background.
 
 Section 7 — Background
-  Soft off-white or warm neutral. No props. No texture patterns.
-  Background blurred to near-white by depth of field.
+  Dark neutral or warm muted tone. No props. No texture patterns.
+  Background blurred by depth of field. Complements black product body.
 
 Section 8 — Overlay Direction
   No text in generated image. Text will be applied post-composite.
 
 Section 9 — Compliance Boundaries
-  STEALTH: No body part targeting. No before/after imagery. No skin condition reference.
-  No medical or improvement claims. No guaranteed result language.
+  STEALTH_METAPHOR_REQUIRED: No body part targeting. No before/after imagery.
+  No skin or health condition reference. No medical or improvement claims.
+  No guaranteed result language. No intimate anatomical context.
 
 Section 10 — Negative Constraints
-  No wrong bottle shape. No perfume or dropper bottle geometry. No deodorant form.
-  No redesigned label. No garbled label text. No missing cap. No oversized bottle.
+  No white bottle. No transparent glass perfume bottle. No square bottle.
+  No pastel or feminine packaging. No oversized cap. No pump top. No dropper.
+  No spray nozzle. No exposed anatomy props. No feminized cosmetic packaging.
+  No redesigned label. No garbled label text. No label drift from BOSMAX HERBS identity.
   Anatomically correct hand: correct finger count, no melted or fused fingers,
   natural joint articulation.
   No TikTok safe-zone collision — top 8% and bottom 20% of frame must be clear.
 
 Section 11 — Final Commercial Tone
-  Confident and precise. Product truth presented without hype. Scale proof is
-  quietly compelling — the viewer understands without being told.
+  Confident and precise. Discreet masculine product truth presented without hype.
+  Scale proof is quietly compelling — the viewer understands without being told.
 
 Section 12 — QA Checklist Reference
   Score against BOSMAX_POSTER_QA_RUBRIC_v1.
