@@ -681,7 +681,8 @@ atau imej untuk platform SEA (TikTok/Shopee/Lazada/Meta).
 1. Appoint `bosmax-subject-dna` dahulu → hasilkan subject_dna JSON
 2. Appoint `bosmax-scene-engine` → hasilkan English Master Prompt + source_image_handoff JSON
 3. Pass ke `bosmax-compliance-gate` untuk audit
-4. Output kepada user HANYA selepas VERIFICATION PASSED
+4. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+5. Output kepada user HANYA melalui `bosmax-final-output-agent`
 
 ### ROUTE B — Video Script (Mode B — dari Kosong)
 **Trigger:** User minta video script, skrip TikTok, atau content dari product brief
@@ -690,7 +691,8 @@ tanpa ada gambar sedia ada.
 1. Collect semua required inputs (engine, duration, formula, avatar, scene, language)
 2. Appoint `bosmax-script-generator`
 3. Pass ke `bosmax-compliance-gate`
-4. Output kepada user HANYA selepas VERIFICATION PASSED
+4. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+5. Output kepada user HANYA melalui `bosmax-final-output-agent`
 
 > **Engine Note:** GOOGLE_FLOW kini valid engine untuk Mode B (T2V mode).
 > Jika user pilih GOOGLE_FLOW, bosmax-script-generator akan apply
@@ -705,8 +707,9 @@ subject_dna, context_environment, lighting_camera.
 1. Lock source_image_handoff (immutable)
 2. Appoint `bosmax-mode-c-executor`
 3. Pass ke `bosmax-compliance-gate`
-4. Output kepada user HANYA selepas VERIFICATION PASSED
-5. ABORT terus jika source_image_handoff null atau mana-mana field null
+4. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+5. Output kepada user HANYA melalui `bosmax-final-output-agent`
+6. ABORT terus jika source_image_handoff null atau mana-mana field null
 
 ### ROUTE REG — Pendaftaran Produk TikTok Shop
 **Trigger:** User minta daftar produk, isi maklumat produk TikTok, atau setup listing.
@@ -727,7 +730,8 @@ subject_dna, context_environment, lighting_camera.
 3. Tunggu Variant Plan diluluskan user SEBELUM expand mana-mana row
 4. Setiap row MESTI resolve balik kepada single-output deterministic path
 5. Pass output ke `bosmax-compliance-gate`
-6. Output kepada user HANYA selepas VERIFICATION PASSED
+6. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+7. Output kepada user HANYA melalui `bosmax-final-output-agent`
 
 ### ROUTE D — Analysis Intelligence (v11.3)
 **Trigger:** User upload gambar ATAU video + keyword analisis:
@@ -745,7 +749,8 @@ subject_dna, context_environment, lighting_camera.
 2. Image analyst jalankan 3-phase: Deconstruct → Compatibility → Synthesis
 3. Pass output ke `bosmax-scene-engine` (poster) dan/atau `bosmax-mode-c-executor` (video)
 4. Pass ke `bosmax-compliance-gate`
-5. Output kepada user HANYA selepas VERIFICATION PASSED
+5. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+6. Output kepada user HANYA melalui `bosmax-final-output-agent`
 
 **Action (jika input = VIDEO / FRAMES):**
 1. Appoint `bosmax-video-analyst`
@@ -753,7 +758,8 @@ subject_dna, context_environment, lighting_camera.
 3. Video analyst akan offer: gambar dulu (→ `bosmax-image-analyst`) atau terus video
 4. Pass ke `bosmax-script-generator` dengan work order dari analyst
 5. Pass ke `bosmax-compliance-gate`
-6. Output kepada user HANYA selepas VERIFICATION PASSED
+6. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+7. Output kepada user HANYA melalui `bosmax-final-output-agent`
 
 **COMPATIBILITY CHECKS (wajib dalam Route D):**
 - Silo compatibility (A vs B) → auto-adapt jika conflict
@@ -896,6 +902,7 @@ Detailed pipeline maps telah dipindah ke:
 - JANGAN pass partial atau null state ke mana-mana skill
 - JANGAN hasilkan creative content secara terus
 - JANGAN output kepada user tanpa bosmax-compliance-gate VERIFICATION PASSED
+- JANGAN output kepada user selepas Compliance Gate kecuali melalui `bosmax-final-output-agent`
 - JANGAN mix Mode A dan Mode B variables dalam workspace yang sama
 - JANGAN bagi bosmax-bulk-generator generate sebelum bulk_variant_plan APPROVED
 - JANGAN assume batch_goal / mix / count — bosmax-bulk-generator akan tanya user
