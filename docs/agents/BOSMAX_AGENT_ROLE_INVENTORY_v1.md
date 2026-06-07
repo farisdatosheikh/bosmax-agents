@@ -81,7 +81,7 @@ and NOT background services. They execute within a human-initiated Claude Code s
 | **Upstream** | BOSMAX Orchestrator (Route A) |
 | **Downstream** | `bosmax-compliance-gate` |
 | **Status** | Prompt-level Claude Code persona — NOT autonomous runtime |
-| **Pending wiring** | PR #27 design contracts (`BOSMAX_COMMERCIAL_POSTER_DESIGN_SKILL_v1.md`, `BOSMAX_IMAGE_PROMPT_EXPANSION_CONTRACT_v1.md`) — NOT YET REFERENCED. Planned for PR 29. |
+| **Design contracts** | `docs/design/BOSMAX_COMMERCIAL_POSTER_DESIGN_SKILL_v1.md` (20+ poster mechanics, 15 layout formulas LF-01–LF-15, copy overlay library, product truth lock rules, rejection rules) + `docs/design/BOSMAX_IMAGE_PROMPT_EXPANSION_CONTRACT_v1.md` (12-section full prompt format, expansion rules, Universal Variation Controller) — WIRED in PR 29. |
 
 ---
 
@@ -99,7 +99,7 @@ and NOT background services. They execute within a human-initiated Claude Code s
 | **Downstream** | `bosmax-compliance-gate`; `source_image_handoff` then enables Route C for video generation |
 | **Status** | Prompt-level Claude Code persona — NOT autonomous runtime |
 | **Hard rule** | ABORT if `subject_dna` is null or incomplete |
-| **Pending wiring** | PR #27 template card schema (`BOSMAX_IMAGE_TEMPLATE_CARD_CONTRACT_v1.md`) — NOT YET REFERENCED. Planned for PR 29. |
+| **Template card schema** | `docs/design/BOSMAX_IMAGE_TEMPLATE_CARD_CONTRACT_v1.md` (28-field schema authority for Mode A image prompt assembly and source_image_handoff outputs, frozen controls, variation axes, product_truth_lock format) — WIRED in PR 29. |
 
 ---
 
@@ -206,7 +206,7 @@ and NOT background services. They execute within a human-initiated Claude Code s
 | **Status** | Prompt-level Claude Code persona — NOT autonomous runtime |
 | **Auto-heal registry** | 20+ auto-healable issues: gate resolves minor issues internally without aborting |
 | **Hard blocks** | Missing mandatory inputs, failed auto-heal attempts — these always trigger ABORT |
-| **Pending wiring** | PR #27 poster QA rubric (`BOSMAX_POSTER_QA_RUBRIC_v1.md`) — NOT YET REFERENCED in Mode A audit section. Planned for PR 29. |
+| **Poster QA rubric** | `docs/design/BOSMAX_POSTER_QA_RUBRIC_v1.md` (10 scoring dimensions, 82/100 overall pass gate, 12 hard gates HG-01–HG-12, 15 auto-reject conditions, CBTC definition and detection) — WIRED into Mode A Poster QA Audit section in PR 29. |
 | **Key rule** | NEVER output to user without VERIFICATION PASSED. NEVER ABORT for issues in the auto-heal registry. |
 
 ---

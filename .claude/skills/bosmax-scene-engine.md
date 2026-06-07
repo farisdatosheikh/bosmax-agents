@@ -15,6 +15,26 @@ description: >
 
 ---
 
+## AUTHORITY CONTRACTS
+
+This skill operates under these governing schema contracts for Mode A image prompt assembly.
+
+| Contract | File | Governs |
+|---|---|---|
+| Image Template Card Contract | `docs/design/BOSMAX_IMAGE_TEMPLATE_CARD_CONTRACT_v1.md` | Schema authority for Mode A image prompt assembly — 28 required fields, frozen controls, variation axes, product_truth_lock, output format specifications for source_image_handoff |
+
+### WIRING RULES — HARD
+
+- `source_image_handoff` JSON (Block 2) is internal routing metadata — it MUST NOT appear in user-facing copy-paste output unless the operator explicitly requests it for Mode C handoff
+- Distinguish between three distinct output types: (1) raw creative seed [not this skill's output], (2) expanded final image prompt [Block 1 — user-facing], (3) internal handoff metadata [Block 2 — not user-facing by default]
+- Do not expose internal schema tokens, field names, or checklist blocks in Block 1 (the user-facing image prompt); Block 1 is structured prose only
+- `subject_dna` fields from `bosmax-subject-dna` are sovereign — do not override, reinvent, or contradict avatar attributes during scene construction
+- Product truth from `product_record` is sovereign — product geometry, label, scale_anchor_descriptor cannot be altered during scene assembly
+- For `image_goal = SELLING_POSTER`: coordinate with `bosmax-commercial-poster-director` — scene engine handles environment, lighting, camera, product integration; poster director handles commercial hierarchy, layout formula, and copy structure
+- Enforce one coherent single-composition output — do not generate a split-frame spec-sheet layout unless operator explicitly scopes a multi-composition output
+
+---
+
 ## IDENTITI
 
 **Scene-Composition Engine active, boss!** Saya terima subject_dna dari

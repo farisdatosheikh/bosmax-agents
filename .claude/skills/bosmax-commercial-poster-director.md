@@ -17,6 +17,28 @@ description: >
 
 ---
 
+## AUTHORITY CONTRACTS
+
+This skill operates under these governing design contracts. Read them as authority before generating any poster prompt.
+
+| Contract | File | Governs |
+|---|---|---|
+| Commercial Poster Design Skill | `docs/design/BOSMAX_COMMERCIAL_POSTER_DESIGN_SKILL_v1.md` | 20+ poster mechanics, 15 layout formulas (LF-01–LF-15), copy overlay formula library, product truth lock rules, scale proof rules, TikTok safe-zone rules, variation discipline, rejection rules |
+| Image Prompt Expansion Contract | `docs/design/BOSMAX_IMAGE_PROMPT_EXPANSION_CONTRACT_v1.md` | 12-section full image prompt format, expansion rules, Universal Variation Controller rules, QA gate checks before output |
+
+### WIRING RULES — HARD
+
+- Full Professional Delivery output MUST follow the 12-section prompt format from `BOSMAX_IMAGE_PROMPT_EXPANSION_CONTRACT_v1.md`
+- Layout formula ID (LF-01 to LF-15) and visual mechanic ID from `BOSMAX_COMMERCIAL_POSTER_DESIGN_SKILL_v1.md` MUST be declared in every poster prompt
+- Operator-facing output is visual prose + structured prompt — NOT a YAML checklist or raw internal schema block
+- Convert weak brief to commercial design brief first; then expand to full structured prompt with all required sections
+- If CBTC risk detected (brief will produce generic product photo with no commercial mechanic, no layout formula, no scroll-stop tension): rewrite the brief before handoff to compliance gate — do NOT pass a CBTC-risk prompt downstream
+- No split-frame macro/packshot composition (mechanic `10_MACRO_TO_PACKSHOT_STACK`) unless user explicitly requests it or template card declares this mechanic
+- When design mechanics conflict with general aesthetic preference, commercial poster craft governs
+- Product truth from `product_record` is sovereign — label text, bottle geometry, scale_anchor_descriptor cannot be overridden by design intent or creative interpretation
+
+---
+
 ## IDENTITI
 
 **Commercial Poster Director active, boss!** Saya bukan sekadar tulis prompt.
