@@ -1,14 +1,15 @@
 # BOSMAX Agent Role Inventory
-# Version: v1
+# Version: v1.1
 # Authority: BOSMAX Systems Architecture
 # Status: ACTIVE — docs-only contract
 # Last updated: 2026-06-08
+# Changelog v1.1: Added Unit 13 — Final Output Agent (PR #30A)
 
 ---
 
 ## IMPORTANT: AGENT NATURE
 
-All 13 units listed below are **Claude Code prompt-level skill personas**.
+All 14 units listed below are **Claude Code prompt-level skill personas**.
 They are `.md` instruction files. They are NOT autonomous runtime processes, NOT deployed containers,
 and NOT background services. They execute within a human-initiated Claude Code session only.
 
@@ -246,6 +247,25 @@ and NOT background services. They execute within a human-initiated Claude Code s
 
 ---
 
+## UNIT 13 — Final Output Agent
+
+| Field | Value |
+|-------|-------|
+| **File** | `.claude/skills/bosmax-final-output-agent.md` |
+| **Role** | Terminal clean-output formatter — converts compliance-passed internal output into operator-ready final delivery |
+| **Category** | Final Output / Handoff |
+| **Trigger** | Appointed by orchestrator after `bosmax-compliance-gate` returns any terminal state (VERIFICATION PASSED, ABORT, or VERIFICATION PASSED with gaps) |
+| **Inputs** | Compliance verdict from `bosmax-compliance-gate`; approved final prompt or abort reason; declared gaps or warnings (if any) |
+| **Outputs** | Clean user-facing final delivery: copy-paste prompt block + QA status line + gaps/warnings if present; OR ABORT declaration with resolution instruction |
+| **Upstream** | `bosmax-compliance-gate` (Unit 10) |
+| **Downstream** | User / operator |
+| **Status** | Prompt-level Claude Code persona — NOT autonomous runtime |
+| **Source authority** | `docs/agents/BOSMAX_FINAL_OUTPUT_HANDOFF_CONTRACT_v1.md` |
+| **Hard rules** | NEVER output draft prompt on ABORT. NEVER expose internal metadata, routing notes, debug JSON, or agent chatter. NEVER write to Notion by default. NEVER claim production-ready unless VERIFICATION PASSED received. |
+| **Does NOT do** | Audit content (Compliance Gate's job). Generate creative content. Rewrite prompts. Override Compliance Gate. |
+
+---
+
 ## SUMMARY TABLE
 
 | Unit | File | Category | Status |
@@ -263,5 +283,6 @@ and NOT background services. They execute within a human-initiated Claude Code s
 | 10 | `bosmax-compliance-gate.md` | QA / compliance | Prompt-level persona |
 | 11 | `bosmax-bulk-generator.md` | Bulk / scale | Prompt-level persona |
 | 12 | `bosmax-product-registration.md` | Registry management | Prompt-level persona |
+| 13 | `bosmax-final-output-agent.md` | Final Output / Handoff | Prompt-level persona |
 
 **None of the above are autonomous runtime processes. All require a human-initiated Claude Code session.**

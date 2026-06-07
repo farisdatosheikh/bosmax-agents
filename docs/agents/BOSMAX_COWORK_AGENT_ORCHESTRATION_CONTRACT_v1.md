@@ -106,7 +106,9 @@ BOSMAX Orchestrator (.claude/CLAUDE.md)
      bosmax-compliance-gate
      (VERIFICATION PASSED or ABORT)
              ↓
-     [Final Output Handoff — contract defined, skill file pending PR 30]
+     bosmax-final-output-agent
+     (.claude/skills/bosmax-final-output-agent.md — prompt-level persona, NOT autonomous runtime)
+     (formats clean final delivery; suppresses internal metadata; handles ABORT surface)
              ↓
      USER (operator receives final copy-paste prompt)
              ↓

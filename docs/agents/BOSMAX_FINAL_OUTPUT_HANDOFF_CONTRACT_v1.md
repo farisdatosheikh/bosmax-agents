@@ -1,20 +1,21 @@
 # BOSMAX Final Output Handoff Contract
-# Version: v1
+# Version: v1.1
 # Authority: BOSMAX Systems Architecture
-# Status: CONTRACT ONLY — no dedicated skill file yet
+# Status: ACTIVE — wired via prompt-level skill file in PR #30A
 # Last updated: 2026-06-08
+# Changelog v1.1: Skill file created + orchestrator wired (PR #30A)
 
 ---
 
 ## 1. CURRENT STATUS
 
-The Final Output Handoff role is **defined by this contract** but does **not yet have a dedicated skill file**.
+The Final Output Handoff role is **defined by this contract** and **active via a dedicated skill file** as of PR #30A.
 
-- **Skill file:** Not created. Planned for PR 30.
-- **Orchestrator wiring:** Not yet updated. Planned for PR 30.
-- **Current behaviour:** After bosmax-compliance-gate returns VERIFICATION PASSED, the orchestrator delivers output in whatever format the last skill used. This is functional but not governed.
+- **Skill file:** `.claude/skills/bosmax-final-output-agent.md` — created in PR #30A.
+- **Orchestrator wiring:** `.claude/CLAUDE.md` updated in PR #30A — `bosmax-final-output-agent` is now a named step in all 6 route sequences (A, B, C, D, REG image/video paths, BULK) after Compliance Gate returns any terminal state.
+- **Current behaviour:** After bosmax-compliance-gate returns any terminal state, `bosmax-final-output-agent` is appointed to format and deliver the clean final output to the operator.
 
-Until PR 30 lands, operators should be aware that internal metadata, routing notes, or scaffolding headers may appear in the session output. The final prompt is present and correct; its presentation format is not yet formally enforced.
+**IMPORTANT — agent nature:** `bosmax-final-output-agent` is a **Claude Code prompt-level skill persona**. It is NOT an autonomous runtime process, NOT a background service, and NOT a self-triggering agent. It executes within a human-initiated Claude Code session only.
 
 ---
 
@@ -136,15 +137,15 @@ ABORT FORMAT:
 
 ---
 
-## 8. IMPLEMENTATION PLAN (FUTURE PR 30)
+## 8. IMPLEMENTATION — COMPLETED PR #30A
 
-When PR 30 is ready, the following changes will be made:
+The following changes landed in PR #30A:
 
-| Item | Action |
+| Item | Status |
 |------|--------|
-| `.claude/skills/bosmax-final-output-agent.md` | Create: lightweight skill file that reads this contract and formats final delivery |
-| `.claude/CLAUDE.md` | Update: insert final output agent as explicit named step after compliance gate VERIFICATION PASSED, before "Output kepada user" |
-| `docs/agents/BOSMAX_AGENT_ROLE_INVENTORY_v1.md` | Update: add Unit 13 — Final Output Agent |
-| `docs/agents/BOSMAX_COWORK_AGENT_ORCHESTRATION_CONTRACT_v1.md` | Update: add final output agent to architecture diagram |
+| `.claude/skills/bosmax-final-output-agent.md` | CREATED — prompt-level skill persona; reads this contract as authority |
+| `.claude/CLAUDE.md` | UPDATED — `bosmax-final-output-agent` inserted as named step in all 6 route sequences after Compliance Gate returns any terminal state |
+| `docs/agents/BOSMAX_AGENT_ROLE_INVENTORY_v1.md` | UPDATED — Unit 13 added; inventory count updated to 14 units |
+| `docs/agents/BOSMAX_COWORK_AGENT_ORCHESTRATION_CONTRACT_v1.md` | UPDATED — placeholder replaced with named skill reference |
 
-Until PR 30 lands, operators should read this contract to understand the intended final delivery format and manually apply it when reviewing session output.
+**Remaining note:** This is a prompt-level skill persona implementation. It does not constitute full production-scale activation or autonomous agent deployment.
