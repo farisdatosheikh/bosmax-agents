@@ -28,7 +28,6 @@ engines:
     supports_multi_block: true
     execution_mode: EXTENSION
     max_block_duration_seconds: 10
-    valid_block_durations_seconds: [6, 10]
     authority_refs:
       - .claude/CLAUDE.md
       - BOSMAX_HARD_ENGINE_CONTRACTS_v1.md

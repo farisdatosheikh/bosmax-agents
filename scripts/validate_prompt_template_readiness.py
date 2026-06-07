@@ -1,5 +1,5 @@
 """
-BOSMAX Prompt Template Readiness Validator v1.1.
+BOSMAX Prompt Template Readiness Validator v1.2.
 
 Checks that all required sample files exist and contain the correct coverage
 for the readiness closure layer:
@@ -10,6 +10,22 @@ for the readiness closure layer:
   E. Field alias map (CopyPack ID -> copywriting_id)
   F. Forbidden fields absent from beginner-facing templates
   G. (CHECK 15) Duration values in templates are within engine allowed durations
+  H. (CHECK 16) sum(block_plan) == total_duration for multi-block templates
+
+Changelog v1.2:
+  - CHECK 15 multi-block path: replaced raw int(block_dur) with _parse_seconds()
+    so string-format durations ("8s") produce a clean fail() instead of ValueError.
+  - CHECK 16 added: cross-validates sum(block_plan) against total_duration to
+    catch block-plan math mismatches that CHECK 15 alone cannot detect.
+  - registries/video_engine_duration_contracts.yaml: removed duplicate
+    valid_block_durations_seconds key from GROK section (normalisation only,
+    no functional change — duplicate value was identical).
+
+Scope decisions recorded (not patched):
+  - KLING_3_0: registry status READY but no sample templates exist.
+    Decision point: add KLING_3_0 single-block templates in a dedicated future PR.
+  - GOOGLE_FLOW: registry status PARTIAL_VERIFIED, no templates. Correct —
+    do not add until Vertex proof lane is confirmed.
 
 Exit code 0 = all checks passed.
 """
@@ -482,11 +498,68 @@ def check_template_durations_vs_engine() -> None:
                 print(f"SKIP: {path.name} template {tid}: no allowed durations in registry for {engine_id}")
                 continue
             for block_dur in block_plan:
-                dur_s = int(block_dur)
+                dur_s = _parse_seconds(block_dur)
+                if dur_s is None:
+                    fail(
+                        f"{path.name} template {tid}: cannot parse block_plan"
+                        f" duration '{block_dur}' — expected int or 'Ns' string"
+                    )
+                    continue
                 check(
                     dur_s in allowed,
                     f"{path.name} template {tid}: block_plan duration {dur_s}s in engine {engine_id} allowed list {allowed}",
                 )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CHECK 16 — sum(block_plan) == total_duration for multi-block templates
+# ─────────────────────────────────────────────────────────────────────────────
+
+def check_block_plan_sum_matches_total_duration() -> None:
+    """CHECK 16: For every multi-block template, sum(block_plan) must equal
+    the parsed total_duration value.  This catches math mismatches that
+    CHECK 15 cannot detect (e.g. total_duration='20s' but block_plan=[8,8])."""
+    for path, key in [
+        (MULTI_BLOCK_FILE, "templates"),
+        (BATCH_MULTI_FILE, "templates"),
+    ]:
+        if not path.exists():
+            continue
+        data = load_yaml(path)
+        templates = data.get(key) or []
+        for t in templates:
+            tid = t.get("template_id", "?")
+            total_raw = t.get("total_duration")
+            block_plan = t.get("block_plan") or []
+            if not block_plan or total_raw is None:
+                continue
+            total_s = _parse_seconds(total_raw)
+            if total_s is None:
+                fail(
+                    f"{path.name} template {tid}: cannot parse total_duration"
+                    f" '{total_raw}' — expected int or 'Ns' string"
+                )
+                continue
+            parsed_blocks: list[int] = []
+            parse_ok = True
+            for b in block_plan:
+                bs = _parse_seconds(b)
+                if bs is None:
+                    fail(
+                        f"{path.name} template {tid}: cannot parse block_plan"
+                        f" value '{b}' during sum check"
+                    )
+                    parse_ok = False
+                    break
+                parsed_blocks.append(bs)
+            if not parse_ok:
+                continue
+            plan_sum = sum(parsed_blocks)
+            check(
+                plan_sum == total_s,
+                f"{path.name} template {tid}: sum(block_plan)={plan_sum}s"
+                f" == total_duration={total_s}s",
+            )
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -495,7 +568,7 @@ def check_template_durations_vs_engine() -> None:
 
 def main() -> None:
     print("=" * 70)
-    print("BOSMAX Prompt Template Readiness Validator v1.1")
+    print("BOSMAX Prompt Template Readiness Validator v1.2")
     print("=" * 70)
 
     print("\n[CHECK 1] Required sample files exist")
@@ -542,6 +615,9 @@ def main() -> None:
 
     print("\n[CHECK 15] Template duration values within engine allowed durations")
     check_template_durations_vs_engine()
+
+    print("\n[CHECK 16] sum(block_plan) == total_duration for multi-block templates")
+    check_block_plan_sum_matches_total_duration()
 
     print("\n" + "=" * 70)
     if _failures:
