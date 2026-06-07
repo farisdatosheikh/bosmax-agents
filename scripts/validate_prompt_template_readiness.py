@@ -1,5 +1,5 @@
 """
-BOSMAX Prompt Template Readiness Validator v1.
+BOSMAX Prompt Template Readiness Validator v1.1.
 
 Checks that all required sample files exist and contain the correct coverage
 for the readiness closure layer:
@@ -9,6 +9,7 @@ for the readiness closure layer:
   D. Batch multi-block (declares child block output shape)
   E. Field alias map (CopyPack ID -> copywriting_id)
   F. Forbidden fields absent from beginner-facing templates
+  G. (CHECK 15) Duration values in templates are within engine allowed durations
 
 Exit code 0 = all checks passed.
 """
@@ -27,6 +28,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 SAMPLES_NOTION = ROOT / "samples" / "notion"
 DOCS = ROOT / "docs"
+REGISTRIES = ROOT / "registries"
+ENGINE_REGISTRY = REGISTRIES / "video_engine_duration_contracts.yaml"
 
 SINGLE_BLOCK_FILE = SAMPLES_NOTION / "video_single_block_templates.yaml"
 MULTI_BLOCK_FILE = SAMPLES_NOTION / "video_multi_block_templates.yaml"
@@ -384,12 +387,115 @@ def check_multi_block_reanchor_fields() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# CHECK 15 — Template duration values are within engine allowed durations
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _parse_seconds(value: Any) -> int | None:
+    """Parse a duration value like '10s' or 10 into an integer seconds."""
+    if value is None:
+        return None
+    s = str(value).strip().lower().rstrip("s")
+    try:
+        return int(s)
+    except ValueError:
+        return None
+
+
+def _engine_allowed_durations(engine_data: dict) -> list[int]:
+    """Extract top-level valid_block_durations_seconds; fall back to nested CLIP_CHAIN."""
+    top_level = engine_data.get("valid_block_durations_seconds")
+    if top_level:
+        return [int(x) for x in top_level]
+    # Fallback: try execution_modes → first mode → single_clip_durations_seconds
+    modes = engine_data.get("execution_modes", {})
+    for mode_data in modes.values():
+        single = mode_data.get("single_clip_durations_seconds")
+        if single:
+            return [int(x) for x in single]
+    return []
+
+
+def check_template_durations_vs_engine() -> None:
+    """CHECK 15: Every duration declared in single-block and multi-block templates
+    must appear in the engine's valid_block_durations_seconds list."""
+    if not ENGINE_REGISTRY.exists():
+        fail(f"CHECK 15: engine registry not found: {ENGINE_REGISTRY.relative_to(ROOT)}")
+        return
+
+    engine_reg = load_yaml(ENGINE_REGISTRY)
+    engines = engine_reg.get("engines", {})
+
+    # Single-block templates: check `duration` field
+    for path, key in [
+        (SINGLE_BLOCK_FILE, "templates"),
+        (BATCH_SINGLE_FILE, "batch_templates"),
+    ]:
+        if not path.exists():
+            continue
+        data = load_yaml(path)
+        templates = data.get(key) or []
+        for t in templates:
+            tid = t.get("template_id", "?")
+            engine_id = str(t.get("engine", "")).upper()
+            raw_dur = t.get("duration")
+            if not engine_id or raw_dur is None:
+                continue
+            dur_s = _parse_seconds(raw_dur)
+            if dur_s is None:
+                fail(f"{path.name} template {tid}: cannot parse duration '{raw_dur}'")
+                continue
+            engine_data = engines.get(engine_id)
+            if engine_data is None:
+                fail(f"{path.name} template {tid}: engine '{engine_id}' not found in registry")
+                continue
+            allowed = _engine_allowed_durations(engine_data)
+            if not allowed:
+                # Registry has no duration list for this engine — skip (not a template defect)
+                print(f"SKIP: {path.name} template {tid}: no allowed durations in registry for {engine_id}")
+                continue
+            check(
+                dur_s in allowed,
+                f"{path.name} template {tid}: duration {dur_s}s in engine {engine_id} allowed list {allowed}",
+            )
+
+    # Multi-block templates: check each value in `block_plan`
+    for path, key in [
+        (MULTI_BLOCK_FILE, "templates"),
+        (BATCH_MULTI_FILE, "templates"),
+    ]:
+        if not path.exists():
+            continue
+        data = load_yaml(path)
+        templates = data.get(key) or []
+        for t in templates:
+            tid = t.get("template_id", "?")
+            engine_id = str(t.get("engine", "")).upper()
+            block_plan = t.get("block_plan") or []
+            if not engine_id or not block_plan:
+                continue
+            engine_data = engines.get(engine_id)
+            if engine_data is None:
+                fail(f"{path.name} template {tid}: engine '{engine_id}' not found in registry")
+                continue
+            allowed = _engine_allowed_durations(engine_data)
+            if not allowed:
+                print(f"SKIP: {path.name} template {tid}: no allowed durations in registry for {engine_id}")
+                continue
+            for block_dur in block_plan:
+                dur_s = int(block_dur)
+                check(
+                    dur_s in allowed,
+                    f"{path.name} template {tid}: block_plan duration {dur_s}s in engine {engine_id} allowed list {allowed}",
+                )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     print("=" * 70)
-    print("BOSMAX Prompt Template Readiness Validator v1")
+    print("BOSMAX Prompt Template Readiness Validator v1.1")
     print("=" * 70)
 
     print("\n[CHECK 1] Required sample files exist")
@@ -433,6 +539,9 @@ def main() -> None:
 
     print("\n[CHECK 14] Multi-block examples include identity/product reanchor fields")
     check_multi_block_reanchor_fields()
+
+    print("\n[CHECK 15] Template duration values within engine allowed durations")
+    check_template_durations_vs_engine()
 
     print("\n" + "=" * 70)
     if _failures:
