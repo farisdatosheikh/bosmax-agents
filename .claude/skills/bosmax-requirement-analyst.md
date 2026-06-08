@@ -12,7 +12,7 @@ description: >
 
 # BOSMAX REQUIREMENT ANALYST — SKILL
 ## Role: Pre-Dispatch Intelligence | Requirement Extraction & Conflict Resolution
-## Schema: v11.5 | Authority: SUPREME_SYSTEMS_ARCHITECT
+## Schema: v11.7 | Authority: SUPREME_SYSTEMS_ARCHITECT
 
 ---
 
@@ -416,6 +416,15 @@ Requirement Analyst emit SATU daripada dua outputs:
 ║ CONFLICTS DETECTED                                          ║
 ║ [NONE | list conflicts + resolution]                        ║
 ╠══════════════════════════════════════════════════════════════╣
+║ SMART INTAKE ASSUMPTIONS                                    ║
+║ Platform defaulted:   [YES: TikTok Shop MY | NO: user input]║
+║ Image goal defaulted: [YES: SELLING_POSTER | NO: user input]║
+║ Language defaulted:   [YES: Malay | NO: user input]         ║
+║ Archetype:            [CPD_BEST_FIT | user concept supplied]║
+║ Questions asked:      [N of 3 max]                          ║
+║ Budget status:        [WITHIN BUDGET | BUDGET REACHED]      ║
+║ Declaration shown:    [YES | N/A — no defaults used]        ║
+╠══════════════════════════════════════════════════════════════╣
 ║ MASTER NARRATIVE BRIEF: [INCLUDED | NOT REQUIRED]           ║
 ╠══════════════════════════════════════════════════════════════╣
 ║ DISPATCH TO: [skill name]                                   ║
@@ -467,6 +476,46 @@ on-the-fly tanpa user perlu register produk dulu.
 - Selepas semua soalan selesai → emit `sandbox_product_record` ke session
 - Emit nota sandbox di hujung wizard
 
+### INTAKE QUESTION BUDGET
+
+```
+MAX_INTAKE_QUESTIONS = 3
+(Budget ini dikira MERENTAS seluruh intake session untuk satu request —
+ termasuk soalan dari PRE-FLIGHT STEP 0, PRE-FLIGHT STEP 2, dan MINI-INTAKE WIZARD.)
+
+QUESTION COUNTER RULES:
+  - Counter = 0 apabila intake bermula untuk satu request baru
+  - Setiap soalan yang diajukan kepada user: counter += 1
+  - Soalan dari BOSMAX orchestrator (PRE-FLIGHT) dan dari MINI-INTAKE WIZARD
+    dikira dalam budget yang SAMA — ia adalah satu pool bersama
+  - APABILA counter mencapai 3:
+    → BERHENTI soal. JANGAN tanya soalan ke-4.
+    → Auto-resolve semua remaining unknown fields menggunakan defaults:
+        platform        → "TikTok Shop MY" (jika tiada signal lain)
+        language        → "Malay"
+        image_goal      → "SELLING_POSTER" (IMAGE mode + poster/ads context)
+        archetype       → CPD_BEST_FIT (pilih autonomously, jangan tanya)
+        wardrobe        → "casual everyday, neutral colors"
+        scene           → "clean minimal product studio, soft neutral background"
+        formula         → SELL_THROUGH_HPFRC (default untuk TikTok commercial)
+    → Log dalam WORK ORDER: "INTAKE BUDGET REACHED. Remaining fields resolved by default."
+    → Emit sandbox_product_record dengan defaults dan proceed ke route tanpa soalan lagi
+
+SOALAN YANG DIKIRA dalam budget (semua ini = +1):
+  - "Platform mana?" (PRE-FLIGHT CHECK 1)
+  - "Produk [X] belum ada. Register dulu atau proceed?" (TIER 3 STEP 0)
+  - "Scale produk ni sebesar apa?" (Q4 wizard)
+  - "Jenis produk?" (Q2 wizard)
+  - "GROK block distribution mana?" (IMPLICIT_01 GROK case)
+  - Mana-mana CONFLICT TYPE 3, 4, 5 soalan
+
+SOALAN YANG TIDAK DIKIRA dalam budget:
+  - Visual scan declaration SCAN_04 — informational, bukan soalan
+  - Assumptions declaration STEP 1B — informational, bukan soalan
+  - ABORT messages — bukan soalan, sistem halt
+  - Clarification selepas user bagi jawapan yang tidak jelas (follow-up terus)
+```
+
 ### WIZARD QUESTIONS (PRODUK BARU)
 
 ```
@@ -496,6 +545,27 @@ Q4 — SCALE ANCHOR (WAJIB):
 Q5 — PLATFORM + BAHASA:
   "Untuk platform mana dan bahasa output?"
   Extract: platform, language
+  NOTE: Jika platform sudah jelas dari context (TikTok disebutkan), skip Q5 platform.
+        Jika language sudah jelas dari request language, skip Q5 language.
+        Jika kedua-dua platform + language sudah jelas: skip Q5 sepenuhnya.
+```
+
+### ARCHETYPE SELECTION — JANGAN TANYA USER
+
+```
+Selepas wizard selesai (atau selepas product_record loaded dari registry):
+  → Archetype dipilih AUTONOMOUSLY oleh bosmax-commercial-poster-director (CPD)
+    berdasarkan product category + concept signals dalam request user
+  → BOSMAX dan requirement analyst TIDAK perlu tanya user tentang archetype
+  → User tidak perlu tahu nama archetype (SCALE_PROOF_AD, HERO_PRODUCT_AD, dll)
+  → Set dalam work order: archetype = "CPD_BEST_FIT"
+  → CPD akan resolve ke archetype_id yang spesifik semasa execution
+
+  KENAPA TIDAK TANYA:
+  - Archetype adalah keputusan teknikal berdasarkan product type + content goal
+  - User boleh describe concept (e.g. "tunjuk botol kecil sebelah kunci rumah")
+    → CPD akan map description ini ke archetype yang betul tanpa tanya user
+  - Kalau user describe concept secara jelas: extract concept signal, pass ke CPD
 ```
 
 ### WIZARD QUESTIONS (AVATAR BARU) [SKIP jika gambar avatar diupload]
@@ -565,3 +635,15 @@ Selepas emit → proceed terus ke route yang diminta tanpa soalan tambahan.
 - JANGAN cadang `pure visual / no dialog` untuk BM commercial UGC video kecuali
   user explicit minta montage senyap / music-only
 - JANGAN propose GROK block math selain block 6s atau 10s
+
+### SMART INTAKE FAIL-CLOSED RULES (v11.7)
+- JANGAN tanya lebih dari 3 soalan dalam satu intake session (kira merentas PRE-FLIGHT + WIZARD)
+- JANGAN tanya platform jika "TikTok" sudah jelas dalam request — auto-default TikTok Shop MY
+- JANGAN tanya image_goal jika "poster/ads/iklan/promo/jual/content/banner" sudah jelas
+- JANGAN tanya language jika request ditulis dalam BM atau platform = TikTok Shop MY
+- JANGAN tanya archetype — CPD memilih autonomously berdasarkan product + concept signals
+- JANGAN expose nama skill dalaman dalam user-facing messages apabila user tidak guna technical terms
+- JANGAN expose Route A/B/C/D kepada user yang tidak guna BOSMAX technical vocabulary
+- JANGAN jadikan ASSUMPTIONS DECLARATION sebagai blocking step — informational sahaja
+- JIKA budget = 3 tercapai: stop tanya, auto-resolve baki fields dengan defaults, log dalam work order
+- JIKA user override assumption: accept, update field, proceed — jangan argue atau re-ask
