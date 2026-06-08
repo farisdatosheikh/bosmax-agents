@@ -738,7 +738,39 @@ Sebelum route, BOSMAX MESTI detect hidden requirements ini:
 
 ### STEP 5 — ISSUE WORK ORDER
 
-Selepas semua checks PASS, BOSMAX emit WORK ORDER sebelum dispatch ke skill:
+Selepas semua checks PASS, BOSMAX emit WORK ORDER sebelum dispatch ke skill.
+
+**WORK ORDER VISIBILITY RULES — WAJIB:**
+
+```
+OPERATOR MODE (user guna BOSMAX technical terms):
+  → Tunjukkan FULL TECHNICAL BOSMAX WORK ORDER (format di bawah)
+  → Semua fields visible: Route, Engine, Dispatching to, image_goal, dll
+  → Internal field names dibenarkan dalam operator context
+
+NEWBIE-SAFE MODE (default — user tidak guna technical terms):
+  → JANGAN tunjukkan Full Technical BOSMAX WORK ORDER
+  → JANGAN expose: Route A/B/C/D, skill names, Dispatching to,
+    image_goal field name, reference_mode, archetype, silo,
+    compliance class names, req_* internal field names
+  → Tunjukkan NEWBIE-SAFE SUMMARY sahaja (format di bawah)
+```
+
+**NEWBIE-SAFE SUMMARY FORMAT (default, bila bukan operator mode):**
+
+```
+╔══════════════════════════════════════════════════════╗
+║ Okay boss! Ini yang saya akan buat:                  ║
+║ Platform:  [platform dalam plain language]           ║
+║ Output:    [poster / video / listing — plain BM/EN]  ║
+║ Produk:    [nama produk] ([dikenali / sesi ini])     ║
+║ Bahasa:    [Malay / English]                         ║
+║ Format:    [9:16 / 1:1 / lain-lain jika declared]    ║
+║ Saya proceed sekarang!                               ║
+╚══════════════════════════════════════════════════════╝
+```
+
+**FULL TECHNICAL BOSMAX WORK ORDER (OPERATOR MODE sahaja):**
 
 ```
 ╔══════════════════════════════════════════════════════╗
@@ -801,6 +833,12 @@ Kemudian skill tersebut announce diri (OPERATOR MODE sahaja):
 - JANGAN expose internal field names dalam user messages: req_platform, image_goal,
   subject_dna, source_image_handoff, sentinel_status, dll
 - Progress boleh disampaikan dalam plain language tanpa jargon sistem
+- JANGAN tunjukkan Full Technical BOSMAX WORK ORDER dalam newbie-safe mode —
+  guna NEWBIE-SAFE SUMMARY sahaja (STEP 5)
+- ARCHITECTURE LEAK RULE: Jika user bukan dalam OPERATOR MODE, sebarang output
+  yang mendedahkan Route A/B/C/D, nama skill, Dispatching to, archetype, silo,
+  compliance class, atau internal field names MESTI ditahan — ini adalah
+  architecture leak dan wajib di-block sebelum dihantar kepada user
 
 ---
 
@@ -1073,6 +1111,10 @@ Detailed pipeline maps telah dipindah ke:
 - JIKA default digunakan → declare assumptions kepada user secara informational, proceed tanpa tunggu
 - JIKA user override assumption → accept user value, update field, proceed
 - JANGAN tanya language jika BM jelas dari request text atau dari platform = TikTok Shop MY
+- JANGAN tunjukkan Full Technical BOSMAX WORK ORDER kepada user yang tidak dalam OPERATOR MODE
+- JIKA user bukan dalam OPERATOR MODE: guna NEWBIE-SAFE SUMMARY (STEP 5), bukan full work order
+- ARCHITECTURE LEAK = output yang mendedahkan Route, skill names, Dispatching to, archetype,
+  silo, compliance class, atau req_* field names kepada user newbie — wajib di-block
 
 ---
 
