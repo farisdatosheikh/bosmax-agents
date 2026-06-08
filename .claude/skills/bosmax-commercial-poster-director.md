@@ -23,6 +23,7 @@ This skill operates under these governing design contracts. Read them as authori
 
 | Contract | File | Governs |
 |---|---|---|
+| **Visual Ads Layout Kernel** | `docs/design/BOSMAX_VISUAL_ADS_LAYOUT_KERNEL_v1.md` | **PRIMARY** — 5 BOSMAX-safe ad archetypes, module stacks, product dominance rule, typography restraint rule, compliance-safe copy pool, reject conditions |
 | Commercial Poster Design Skill | `docs/design/BOSMAX_COMMERCIAL_POSTER_DESIGN_SKILL_v1.md` | 20+ poster mechanics, 15 layout formulas (LF-01–LF-15), copy overlay formula library, product truth lock rules, scale proof rules, TikTok safe-zone rules, variation discipline, rejection rules |
 | Image Prompt Expansion Contract | `docs/design/BOSMAX_IMAGE_PROMPT_EXPANSION_CONTRACT_v1.md` | 12-section full image prompt format, expansion rules, Universal Variation Controller rules, QA gate checks before output |
 
@@ -354,6 +355,79 @@ Output:
 
 ---
 
+## VISUAL ADS ARCHETYPE SELECTOR — WAJIB UNTUK SELLING_POSTER
+
+**Authority: `docs/design/BOSMAX_VISUAL_ADS_LAYOUT_KERNEL_v1.md`**
+
+Untuk setiap `image_goal = SELLING_POSTER`, MESTI select satu archetype dan
+output `selected_module_stack` sebelum pass ke bosmax-scene-engine.
+
+### ARCHETYPE SELECTION TABLE
+
+| Archetype | Trigger | Primary Anchor |
+|---|---|---|
+| `SCALE_PROOF_AD` | Product size proof needed; key/hand/pocket comparison | Hand + key + product scale |
+| `PRIVATE_CARRY_AD` | Private/stealth/discreet angle | Pocket/pouch reveal |
+| `PREMIUM_TRUST_AD` | Trust-first, factual, clean premium | Label + factual chips |
+| `PROMO_AD` | Active promo confirmed by operator | Offer badge + product |
+| `UGC_SCALE_AD` | TikTok-organic, hand-held, natural context | Hand hold + natural env |
+
+### MODULE STACK SELECTOR — OUTPUT FORMAT
+
+Selepas archetype dipilih, output `selected_module_stack` dalam format ini
+dan pass ke bosmax-scene-engine sebagai handoff:
+
+```
+selected_visual_ads_archetype: [ARCHETYPE_ID]
+
+module_stack:
+  hook:             [text from copy pool, max 5 words]
+  product_hero:     [product placement instruction]
+  chip_stack:       [list of 2–3 chips from compliance-safe pool]
+  cta_button:       [CTA text from copy pool]
+  scale_object:     [present / absent — if present: specify key/hand/coin]
+  promo_badge:      [present only if promo_confirmed = true / absent]
+
+product_dominance_rule:
+  Product must be first-read element.
+  No text block taller than product.
+  No chip stack wider than product zone.
+  Highest contrast and sharpest focus belong to product.
+
+typography_restraint_rule:
+  Hook: bold, max 5–6 words, top zone only.
+  Chips: small pill shape, factual text only.
+  CTA: button shape, restrained, bottom zone.
+  No headline larger than product visual weight.
+
+compliance_safe_copy_pool_used:
+  hook_family: [HOOK_FAMILY_SCALE / HOOK_FAMILY_PRIVATE / HOOK_FAMILY_PREMIUM]
+  chips_selected: [list]
+  cta_selected: [text]
+```
+
+### SELECTION RULES
+
+```
+DEFAULT untuk BOSMAX Serum tanpa promo:
+  → SCALE_PROOF_AD (bila user tak specify archetype)
+
+PROMO_AD:
+  → HANYA jika operator confirm active promo dalam product_record
+  → JANGAN assume promo
+
+UGC_SCALE_AD:
+  → Sesuai untuk TikTok organic feel
+  → Limit 2 chips sahaja
+  → "Berkesan" dan semua efficacy chips FORBIDDEN
+
+Kalau user bagi brief lemah tanpa archetype hint:
+  → Infer dari platform + product + selling angle
+  → Default = SCALE_PROOF_AD untuk BOSMAX Serum TikTok
+```
+
+---
+
 ## DESIGN DIAGNOSIS FRAMEWORK
 
 Sebelum tulis prompt, resolve:
@@ -365,12 +439,12 @@ OFFER_CLASS:
 BUY_TRIGGER:
   pain relief / convenience / prestige / nostalgia / family safety / savings
 
-POSTER_ARCHETYPE:
-  hero shot
-  trust poster
-  premium listing poster
-  infographic-lite
-  lifestyle conversion poster
+VISUAL_ADS_ARCHETYPE:
+  SCALE_PROOF_AD
+  PRIVATE_CARRY_AD
+  PREMIUM_TRUST_AD
+  PROMO_AD
+  UGC_SCALE_AD
 
 COPY_DENSITY:
   low / medium / high
@@ -385,17 +459,25 @@ VISUAL_DENSITY:
 
 Setiap final prompt mesti ada blok ini:
 
+### BLOCK 0 — MODULE STACK DECLARATION (SELLING_POSTER only)
+Declare `selected_module_stack` output sebelum proceed ke blok lain.
+Pass ini ke bosmax-scene-engine sebagai handoff authority.
+ABORT jika module stack null.
+
 ### BLOCK 1 — REFERENCE / TRUTH LOCK
 Lock semua asset truth.
 
 ### BLOCK 2 — COMMERCIAL DESIGN GOAL
 Declare poster ini mesti rasa seperti kerja senior designer.
+State selected archetype dan commercial function.
 
 ### BLOCK 3 — COMPOSITION
 State hero placement, hierarchy, breathing room, focal dominance.
+Enforce: product is first-read element. No element taller than product.
 
 ### BLOCK 4 — SELLING MESSAGE
-State 1 main hook + 1 support line + optional badges.
+State hook dari copy pool. State 3 chips dari allowed pool. State CTA.
+FORBIDDEN: chips dengan efficacy/medical language.
 
 ### BLOCK 5 — PLATFORM OPTIMIZATION
 State aspect ratio, mobile readability, commerce context.
