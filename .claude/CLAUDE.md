@@ -23,6 +23,13 @@
 #                  budget, newbie-safe routing language, image_goal smart
 #                  default (SELLING_POSTER), CPD best-fit archetype fallback,
 #                  and internal architecture leak prevention rules.
+# Changelog v11.7.1: Added SCOPE BOUNDARY to WORK ORDER VISIBILITY RULES —
+#                    newbie-safe / architecture leak rules apply to routing
+#                    messages only; generated prompt deliverables from
+#                    bosmax-final-output-agent must pass through verbatim.
+#                    Flat-key, product-first, label, CTA, benefit chips,
+#                    and all render-control constraints are preserved in
+#                    newbie-safe mode.
 
 ---
 
@@ -754,6 +761,24 @@ NEWBIE-SAFE MODE (default — user tidak guna technical terms):
     image_goal field name, reference_mode, archetype, silo,
     compliance class names, req_* internal field names
   → Tunjukkan NEWBIE-SAFE SUMMARY sahaja (format di bawah)
+
+SCOPE BOUNDARY — WAJIB FAHAM SEBELUM APPLY:
+  WORK ORDER VISIBILITY RULES ini terpakai HANYA kepada:
+    · pre-dispatch WORK ORDER announcement (sebelum skill diappoint)
+    · routing/conversational messages dari BOSMAX kepada user
+    · progress updates dan skill appointment announcements
+
+  WORK ORDER VISIBILITY RULES ini TIDAK terpakai kepada:
+    · generated prompt deliverable (image generator prompt)
+    · generated video generation prompt
+    · generated script prompt
+    · final analysis output
+    · compliance-passed deliverables dari bosmax-final-output-agent
+
+  Generated prompt deliverables MESTI dihantar kepada user dalam
+  keadaan penuh dan tidak ditapis — walaupun dalam NEWBIE-SAFE MODE.
+  bosmax-final-output-agent MESTI deliver compliance-passed final
+  prompt in full, content unchanged, regardless of operator mode.
 ```
 
 **NEWBIE-SAFE SUMMARY FORMAT (default, bila bukan operator mode):**
@@ -839,6 +864,27 @@ Kemudian skill tersebut announce diri (OPERATOR MODE sahaja):
   yang mendedahkan Route A/B/C/D, nama skill, Dispatching to, archetype, silo,
   compliance class, atau internal field names MESTI ditahan — ini adalah
   architecture leak dan wajib di-block sebelum dihantar kepada user
+- ARCHITECTURE LEAK RULE — SCOPE: Rule ini terpakai HANYA kepada output routing
+  dan conversational messages dari BOSMAX. Rule ini TIDAK terpakai kepada:
+    · final image generator prompt (generated prompt deliverable)
+    · final video generation prompt
+    · final script prompt
+    · final analysis output
+    · mana-mana compliance-passed deliverable dari bosmax-final-output-agent
+  Generated prompt deliverables BUKAN routing messages. Walaupun prompt
+  mengandungi archetype names, compliance class references, atau render-control
+  directives yang disuntik oleh scene-engine — ini adalah kandungan deliverable
+  yang sah dan MESTI dikekalkan sepenuhnya dalam output kepada user.
+- GENERATED PROMPT DELIVERABLE RULE: Architecture leak rule applies only to
+  conversational routing output, pre-dispatch summaries, progress updates, and
+  skill appointment announcements. It does NOT apply to final image generator
+  prompts, final video prompts, final script prompts, or final analysis reports.
+  bosmax-final-output-agent must deliver the compliance-passed final prompt in
+  full — do not remove render-control constraints in newbie-safe mode.
+  Specifically, do not strip: flat-key directive, product-first directive,
+  label protection directive, CTA restraint directive, benefit chips / module
+  stack, hard negatives, compliance-safe wording, or any constraint injected
+  by bosmax-scene-engine into the image generator prompt.
 
 ---
 
@@ -1115,6 +1161,14 @@ Detailed pipeline maps telah dipindah ke:
 - JIKA user bukan dalam OPERATOR MODE: guna NEWBIE-SAFE SUMMARY (STEP 5), bukan full work order
 - ARCHITECTURE LEAK = output yang mendedahkan Route, skill names, Dispatching to, archetype,
   silo, compliance class, atau req_* field names kepada user newbie — wajib di-block
+- ARCHITECTURE LEAK scope adalah TERHAD kepada routing/conversational output sahaja —
+  BUKAN kepada generated prompt deliverables dari bosmax-final-output-agent
+- JANGAN strip atau tapis render-control constraints dari generated prompt deliverable
+  dalam newbie-safe mode — flat-key directive, product-first directive, label protection,
+  CTA restraint, benefit chips, module stack, hard negatives, dan compliance-safe wording
+  MESTI kekal dalam final image/video prompt walaupun user bukan operator
+- Generated prompt deliverable yang telah lulus Compliance Gate MESTI dihantar verbatim
+  kepada user — bosmax-final-output-agent delivers content unchanged regardless of mode
 
 ---
 
