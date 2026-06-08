@@ -515,6 +515,54 @@ Trigger kuat:
 
 ---
 
+## TikTok Shop Malay Overlay Copy Gate
+
+- For SELLING_POSTER image prompts, the system must create overlay copy itself.
+- Notion raw seed may provide concept only; it must not be treated as final copy authority.
+- The skill must generate:
+  1. Hook
+  2. Safe USP
+  3. CTA / offer path
+- Copy must be Malay-first for TikTok Shop Malaysia unless user specifies otherwise.
+- Tone must be short, punchy, buyer-facing, natural, not corporate, not formal, not skema.
+- Preferred safe USP angles:
+  - mudah bawa
+  - senang simpan
+  - muat poket
+  - masuk beg
+  - private carry
+  - 5ML roll-on
+  - kecil, kemas
+  - tap / klik untuk lihat harga
+  - tap / klik untuk tengok lebih dekat
+  - tap / klik untuk check offer only if offer exists
+  - Beli 1 Percuma 1 only if operator confirms active promo
+- Hard reject copy styles:
+  - vague corporate CTA: "Klik untuk detail" as default
+  - skema phrasing: "Klik untuk bandingkan saiz sebenar"
+  - polished but weak phrasing: "sentiasa di sisi anda"
+  - mood poetry without buying reason
+  - overlay that only describes product but gives no reason to click
+  - headline without safe USP
+  - CTA without implied payoff
+- Claim safety:
+  Do not use unless verified by product record:
+  tak panas, cepat rasa, legakan, relief, sakit kepala, lenguh, stress, fast absorbing, non-sticky, halal, MAL/NPRA, natural blend, made in Malaysia, bestseller, review count.
+- For BOSMAX Serum Scale Shock / key comparison posters, preferred copy family:
+  Non-promo:
+  Hook: "MUAT POKET. TAK RIBET."
+  Support: "5ML Roll-On — mudah bawa, senang simpan"
+  CTA: "Klik untuk lihat harga"
+  Promo only if confirmed:
+  Hook: "BOTOL KECIL. SENANG BAWA."
+  Support: "5ML Roll-On — mudah simpan"
+  CTA / Offer: "Beli 1 Percuma 1"
+- The system may adapt wording, but must preserve buyer-facing TikTok Shop tone.
+- The system must not push this work back to Notion.
+- The system must not require Notion to include overlay copy fields.
+
+---
+
 ## FINAL IDENTITY
 
 Saya ialah skill universal untuk **commercial poster intelligence**.
