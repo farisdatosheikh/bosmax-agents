@@ -253,6 +253,79 @@ A single HG FAIL = ABORT regardless of overall score.
   ABORT reason: "CBTC_MODULE_ABORT — poster has no benefit chips and no module stack beyond
   basic three elements. This is product-photo-only. CPD must rebuild with full module stack."
 
+### RENDER-CONTROL AUDIT — SELLING_POSTER (PR #34)
+
+*Aktif SAHAJA apabila `image_goal = SELLING_POSTER`. Jalankan SELEPAS MCA checks, SEBELUM CBTC CHECK.*
+*Semua mesti PASS. Satu FAIL = ABORT dengan exact reason.*
+*Compliance Gate must remain audit-only: do not rewrite prompt, do not generate replacement copy.*
+*Return ABORT reason + required fix. Rewrite belongs upstream to Scene Engine / CPD.*
+
+☐ RCA-01: PRODUCT FIRST-READ
+  Verify final prompt explicitly requires the product as the first-read hero object.
+  Check that Block 1 prompt contains a directive statement prioritising product
+  visual dominance before all other elements.
+  ABORT reason if fail: "RENDER_ABORT — RCA-01: prompt does not explicitly require
+  product as first-read hero. Scene engine must inject CONSTRAINT 1 from
+  SELLING_POSTER HARD RENDER CONSTRAINTS."
+
+☐ RCA-02: HEADLINE DOMINANCE
+  Verify final prompt does not allow headline/text to become the primary
+  visual object or first-read element in the composition.
+  Check prompt does not instruct model to render headline above product
+  in visual weight, size, or contrast.
+  ABORT reason if fail: "RENDER_ABORT — RCA-02: prompt allows headline/text to become the primary visual object.
+  Headline must be explicitly subordinate to product.
+  Scene engine must apply CONSTRAINT 2 typography restraint."
+
+☐ RCA-03: SCALE OBJECT SECONDARY
+  For SCALE_PROOF_AD and UGC_SCALE_AD: verify final prompt does not allow
+  scale object to read as a second hero, second product, or co-dominant element.
+  Prompt must explicitly state scale object is secondary/supporting evidence.
+  ABORT reason if fail: "RENDER_ABORT — RCA-03: scale object can read as second hero.
+  Prompt must explicitly declare scale object as secondary supporting evidence,
+  not a co-hero. Apply CONSTRAINT 4."
+
+☐ RCA-04: FLAT SCALE OBJECT RULE
+  For SCALE_PROOF_AD where scale_object_type = key / coin / card / flat object:
+  Verify final prompt explicitly requires the scale object to lie flat on the surface.
+  Verify final prompt explicitly forbids the key standing upright or being propped vertically.
+  Check that prompt contains: "Do not make the key stand upright" or equivalent.
+  ABORT reason if fail: "RENDER_ABORT — RCA-04: prompt does not enforce flat key rule.
+  Missing: explicit instruction that key/coin lies flat on surface.
+  Missing: explicit prohibition of upright key. Scene engine must inject CONSTRAINT 5."
+
+☐ RCA-05: LABEL VISIBILITY
+  Verify final prompt explicitly protects product label from:
+  cropping, covering, overlap, warping, or blocking by any element
+  (chip, badge, key, hand, overlay, CTA).
+  ABORT reason if fail: "RENDER_ABORT — RCA-05: prompt does not protect product label.
+  Label must be explicitly declared readable and uncovered. Apply CONSTRAINT 3."
+
+☐ RCA-06: CTA RESTRAINT
+  Verify CTA instruction does not allow CTA to become oversized, giant,
+  app-button dominant, or visually heavier than the product.
+  ABORT reason if fail: "RENDER_ABORT — RCA-06: CTA can become oversized or
+  app-button dominant. CTA must be explicitly restrained in size.
+  Apply CONSTRAINT 2 typography restraint."
+
+☐ RCA-07: TEXT-FIRST / CANVA FAILURE
+  Verify final prompt cannot be interpreted as a text-first, Canva-style,
+  or typography-dominant poster layout.
+  Check that anti-pattern failsafe instruction is present or equivalent is injected.
+  ABORT reason if fail: "RENDER_ABORT — RCA-07: prompt can be interpreted as
+  text-first or Canva-style layout. Scene engine must inject ANTI-PATTERN FAILSAFE
+  from SELLING_POSTER HARD RENDER CONSTRAINTS."
+
+☐ RCA-08: PRODUCT-PHOTO-ONLY FAILSAFE
+  Verify output is not a plain product photography shot masquerading as a commercial ad.
+  Minimum required: hook + product hero + benefit chips + CTA + at minimum one
+  commercial layout directive (zone placement, archetype instruction, or module stack).
+  ABORT reason if fail: "RENDER_ABORT — RCA-08: output is product-photo-only with
+  no commercial module hierarchy. CPD must rebuild with full module stack and
+  AD_ZONE_RENDER_BLOCK."
+
+---
+
 ### CBTC CHECK (Commercially Boring But Technically Correct)
 
 ☐ Output is NOT CBTC

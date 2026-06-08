@@ -163,7 +163,79 @@ If selected_module_stack.scale_object = present:
   The scale object must not overlap the product label. The product must
   remain the dominant element — the scale object is supporting evidence,
   not a co-hero."
+
+FLAT OBJECT RULE — SCALE_PROOF_AD (key / coin / card):
+  If scale_object_type = key OR coin OR card OR flat object:
+  Inject this additional constraint into Block 1:
+  "The [key / coin / card] lies flat on the surface beside the [product bottle].
+  Do not make the key stand upright. Do not prop the key vertically.
+  The key is angled slightly outward for visibility but remains flat on the surface.
+  The key must not appear taller than the product bottle.
+  The key is secondary scale proof, not a second product or second hero."
 ```
+
+## SELLING_POSTER HARD RENDER CONSTRAINTS
+
+**Authority: `docs/design/BOSMAX_VISUAL_ADS_LAYOUT_KERNEL_v1.md`**
+**Aktif SAHAJA apabila `image_goal = SELLING_POSTER`.**
+**These are directive constraints, not style suggestions.**
+**Final image prompt MUST phrase these as hard render requirements.**
+**Scene engine MESTI inject all applicable constraints into Block 1 prose.**
+
+```
+CONSTRAINT 1 — PRODUCT FIRST-READ (universal, all SELLING_POSTER archetypes):
+  The [product name] bottle is the first-read hero object in this composition.
+  The viewer's eye must land on the product before any text, prop, or graphic element.
+  Product receives the sharpest focus, highest contrast, cleanest rim light,
+  and most prominent placement in the frame.
+  No text element, chip, CTA, or scale object may compete with the product
+  for the viewer's first attention.
+  The headline is visually secondary to the product — always.
+
+CONSTRAINT 2 — TYPOGRAPHY RESTRAINT (universal):
+  The headline is bold but subordinate. It must not be taller, heavier,
+  or brighter than the product dominance zone.
+  Benefit chips are compact pill-shaped modules — small, restrained, factual.
+  The CTA is a clean, refined button shape — not a giant app-style button.
+  No text element dominates this composition.
+  This is a product-first commercial ad poster, not a Canva text layout.
+  FORBIDDEN: giant headline, text-first poster, headline that becomes the hero.
+
+CONSTRAINT 3 — PRODUCT LABEL VISIBILITY (universal):
+  The [product label / BOSMAX HERBS label] must face the camera clearly
+  at all times. The label must remain fully readable at final output size.
+  No chip, badge, overlay, key, hand, prop, or CTA element may overlap
+  the product label area. No label warping, cropping, or blocking permitted.
+
+CONSTRAINT 4 — SCALE OBJECT SECONDARY (SCALE_PROOF_AD + UGC_SCALE_AD):
+  The scale object is supporting proof, not a hero.
+  The scale object must be adjacent, secondary, and non-overlapping.
+  The scale object must not appear as a second product or a co-hero.
+  The scale object must not compete with the product for visual dominance.
+  The product must be clearly larger in visual weight than the scale object.
+
+CONSTRAINT 5 — FLAT OBJECT ENFORCEMENT (SCALE_PROOF_AD: key / coin / card):
+  MANDATORY PROMPT WORDING — inject verbatim into Block 1:
+  "The BOSMAX bottle is the first-read hero object in this image."
+  "The house key lies flat on the surface beside the bottle."
+  "Do not make the key stand upright. Do not prop the key vertically."
+  "The key is angled slightly outward for scale comparison but remains flat."
+  "The key is secondary scale proof, not a second product."
+  "The headline is visually secondary to the product."
+  "No upright key, no giant headline, no text-first poster."
+
+ANTI-PATTERN FAILSAFE (universal):
+  FORBIDDEN rendering outputs:
+  - Upright key, upright coin, or any scale object standing vertically
+  - Giant headline that becomes the first-read element before the product
+  - Text-first or Canva-style layout where product is supporting element
+  - Scale object that reads as a second hero or second product
+  - Product label blocked, cropped, warped, or covered by any element
+  - CTA rendered as a large, dominant, app-style button
+  - Generic product photography shot with no commercial module hierarchy
+```
+
+---
 
 ### OUTPUT CONTRACT — TIDAK BERUBAH
 
