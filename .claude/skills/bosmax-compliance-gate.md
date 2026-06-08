@@ -201,6 +201,58 @@ Use language-specific WPS from script-generator authority:
 
 A single HG FAIL = ABORT regardless of overall score.
 
+### MODULE COMPLETENESS AUDIT — SELLING_POSTER (PR #32B)
+
+*Authority: `docs/design/BOSMAX_VISUAL_ADS_LAYOUT_KERNEL_v1.md`*
+*Aktif SAHAJA apabila `image_goal = SELLING_POSTER`. Jalankan SEBELUM CBTC CHECK.*
+*Semua mesti PASS. Satu FAIL = ABORT dengan exact reason.*
+
+☐ MCA-01: `selected_visual_ads_archetype` declared (tidak null)
+  ABORT reason if fail: "MODULE_ABORT — no archetype selected. CPD must select
+  archetype from kernel v1 before scene engine renders."
+
+☐ MCA-02: `module_stack` present with non-null hook, chip_stack, cta_button
+  ABORT reason if fail: "MODULE_ABORT — module_stack incomplete.
+  Missing: [list null fields]. CPD must complete module stack."
+
+☐ MCA-03: Benefit chips present in output when archetype requires chips
+  (SCALE_PROOF_AD, PRIVATE_CARRY_AD, PREMIUM_TRUST_AD, PROMO_AD require chips;
+  UGC_SCALE_AD requires minimum 2 chips)
+  ABORT reason if fail: "MODULE_ABORT — benefit chips missing.
+  Archetype [X] requires [N] chips. Add chips from compliance-safe pool."
+
+☐ MCA-04: CTA element present in output
+  ABORT reason if fail: "MODULE_ABORT — CTA missing.
+  All SELLING_POSTER archetypes require CTA."
+
+☐ MCA-05: No forbidden chip language
+  Check chip text against BENEFIT_CHIPS_FORBIDDEN list from kernel v1:
+  Berkesan / Relief / Tak Panas / Cepat Rasa / Legakan / Tahan Lama /
+  Fast Absorbing / Non-Sticky / any before-after / any body-effect
+  ABORT reason if fail: "COMPLIANCE_ABORT — forbidden chip language detected: [chip text].
+  Replace with factual chip from compliance-safe pool."
+
+☐ MCA-06: Product is declared first-read element in prompt instruction
+  Verify Block 1 prompt contains product dominance instruction from AD_ZONE_RENDER_BLOCK.
+  ABORT reason if fail: "RENDER_ABORT — product dominance instruction missing from prompt.
+  Scene engine must inject AD_ZONE_RENDER_BLOCK."
+
+☐ MCA-07: No text-first layout — headline must not dominate product
+  Check that prompt does not instruct model to render headline larger than product.
+  ABORT reason if fail: "RENDER_ABORT — text-first layout detected.
+  Headline instruction must be subordinate to product."
+
+☐ MCA-08: PROMO_AD archetype requires promo_confirmed = true
+  If archetype = PROMO_AD and promo_confirmed ≠ true in product_record:
+  ABORT reason: "PROMO_ABORT — PROMO_AD selected but promo not confirmed by operator.
+  Confirm active promo or switch archetype."
+
+☐ MCA-09: Poster is NOT product-photo-only
+  Output must have at minimum: hook + product + chips + CTA.
+  If output is product + headline + CTA only with no benefit chips:
+  ABORT reason: "CBTC_MODULE_ABORT — poster has no benefit chips and no module stack beyond
+  basic three elements. This is product-photo-only. CPD must rebuild with full module stack."
+
 ### CBTC CHECK (Commercially Boring But Technically Correct)
 
 ☐ Output is NOT CBTC

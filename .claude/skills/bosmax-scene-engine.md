@@ -84,18 +84,99 @@ subject_dna        → resolved by bosmax-subject-dna
 - Selling composition dibenarkan, tetapi product truth dan scale truth tetap sovereign
 - Caption hierarchy dan hook pattern dimasukkan dalam Block 1 prompt prose
 - Jangan emit block tambahan di luar standard Mode A contract
+- **WAJIB**: Ingest `selected_module_stack` dari bosmax-commercial-poster-director
+  sebelum build Block 1 prompt. ABORT jika module stack null.
+
+### AD_ZONE_RENDER_BLOCK — WAJIB UNTUK SELLING_POSTER
+
+**Authority: `docs/design/BOSMAX_VISUAL_ADS_LAYOUT_KERNEL_v1.md`**
+
+Apabila `image_goal = SELLING_POSTER`, scene engine MESTI inject AD_ZONE_RENDER_BLOCK
+ke dalam Block 1 prompt. Ini translate `selected_module_stack` kepada explicit
+render instructions untuk image model.
+
+```
+AD_ZONE_RENDER_BLOCK — inject into Block 1 prompt prose:
+
+PRODUCT DOMINANCE:
+  "The [product name] bottle is the absolute hero and first-read element of this
+  composition. It occupies the optical centre with the sharpest focus, highest
+  contrast, and cleanest lighting in the frame. No text element may be taller
+  than the product. No graphic element may compete with the product for the
+  viewer's first attention."
+
+ZONE LAYOUT (9:16):
+  TOP ZONE (top 10–15%):
+    Hook text rendered as bold, high-contrast headline.
+    Font size: large enough to read on mobile but must not exceed
+    40% of product height in frame.
+    Placement: top of frame, above product.
+
+  CENTRE ZONE (mid 50–60%):
+    Product hero. Product occupies this zone as dominant element.
+    [If archetype = SCALE_PROOF_AD or UGC_SCALE_AD]:
+      Scale comparison object (key / hand / coin) placed directly
+      adjacent to product. Both product and scale object sharp and clear.
+      Scale object must not overlap product label.
+    [If archetype = PRIVATE_CARRY_AD]:
+      Product partially revealed from pocket or pouch.
+      Product label must be identifiable even if partially concealed.
+
+  LOWER ZONE (lower 20–25%):
+    Benefit chips rendered as small pill-shaped badges.
+    Each chip: compact, restrained text, factual language only.
+    Maximum 3 chips. Chips arranged horizontally or in compact cluster.
+    Chip stack total width must not exceed product width.
+
+  BOTTOM ZONE (bottom 10–15%):
+    CTA button rendered as a clean, restrained button shape.
+    CTA must not be larger than product in visual weight.
+    CTA text from compliance-safe copy pool.
+
+TYPOGRAPHY CONSTRAINTS:
+  "Typography in this composition is subordinate to the product.
+  Headline is bold but restrained — it supports the product, it does not
+  compete with it. Benefit chips are small pill modules with short factual text.
+  CTA is a clean button shape. No text element dominates the composition.
+  This is a commercial ad poster, not a Canva text layout."
+
+PRODUCT LABEL:
+  "The [product label / BOSMAX HERBS label] must remain clearly readable
+  at final output size. No badge, chip, or text element may overlap the
+  product label area."
+
+ANTI-PATTERN INSTRUCTION:
+  "Do not render a generic product photography shot. This is a commercial
+  ad poster with defined zones. Do not render a text-heavy layout where
+  product is a supporting element. Do not render Canva-style giant headline
+  with small product. Do not render clutter with too many competing elements."
+```
+
+### SCALE OBJECT RENDER INSTRUCTION (SCALE_PROOF_AD + UGC_SCALE_AD)
+
+```
+If selected_module_stack.scale_object = present:
+  Inject this into Block 1:
+  "A [key / hand / coin — match archetype scale object] is placed directly
+  adjacent to the [product]. Both are sharp and in focus. The scale object
+  proves the product is [scale_anchor_descriptor from product_record].
+  The scale object must not overlap the product label. The product must
+  remain the dominant element — the scale object is supporting evidence,
+  not a co-hero."
+```
 
 ### OUTPUT CONTRACT — TIDAK BERUBAH
 
 Mode ini mesti kekal deterministic dan compatibility-safe:
 
 ```
-Block 1 → English Master Image Prompt
+Block 1 → English Master Image Prompt (includes AD_ZONE_RENDER_BLOCK if SELLING_POSTER)
 Block 2 → source_image_handoff JSON
 ```
 
 **FORBIDDEN:** Block 3, detached copy sheet, atau metadata artifact tambahan.
-Jika `image_goal = SELLING_POSTER`, poster hierarchy mesti di-embed dalam Block 1 prompt sahaja.
+Jika `image_goal = SELLING_POSTER`, poster hierarchy + AD_ZONE_RENDER_BLOCK mesti
+di-embed dalam Block 1 prompt sahaja.
 
 ---
 
