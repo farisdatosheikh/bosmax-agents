@@ -30,6 +30,16 @@
 #                    Flat-key, product-first, label, CTA, benefit chips,
 #                    and all render-control constraints are preserved in
 #                    newbie-safe mode.
+# Changelog v11.8: Wired bosmax-commercial-poster-director into ROUTE A for
+#                  SELLING_POSTER only. selected_module_stack is now generated
+#                  by CPD and passed to bosmax-scene-engine before assembly.
+#                  ABORT added if selected_module_stack is null.
+#                  bosmax-scene-engine must not be called until
+#                  selected_module_stack exists for SELLING_POSTER requests.
+#                  cowork-operating-map.md Full Image Pipeline updated to
+#                  reflect CPD step. Fixes live failure: flat-key,
+#                  product-first, benefit chips, and CTA restraint constraints
+#                  were not injected because CPD was never appointed.
 
 ---
 
@@ -895,10 +905,27 @@ Kemudian skill tersebut announce diri (OPERATOR MODE sahaja):
 atau imej untuk platform SEA (TikTok/Shopee/Lazada/Meta).
 **Action:**
 1. Appoint `bosmax-subject-dna` dahulu → hasilkan subject_dna JSON
-2. Appoint `bosmax-scene-engine` → hasilkan English Master Prompt + source_image_handoff JSON
-3. Pass ke `bosmax-compliance-gate` untuk audit
-4. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
-5. Output kepada user HANYA melalui `bosmax-final-output-agent`
+2. **IF `image_goal = SELLING_POSTER`:**
+   - Appoint `bosmax-commercial-poster-director`
+   - Generate `selected_visual_ads_archetype` (SCALE_PROOF_AD / PRIVATE_CARRY_AD /
+     PREMIUM_TRUST_AD / PROMO_AD / UGC_SCALE_AD)
+   - Generate `selected_module_stack` (hook / chip_stack / cta_button /
+     scale_object / promo_badge / product_dominance_rule / typography_restraint_rule)
+   - **ABORT if `selected_module_stack` is null** (ABORT jika null) — jangan proceed ke scene-engine
+   - Pass `selected_module_stack` sebagai handoff kepada step 3
+3. Appoint `bosmax-scene-engine` → ingest `subject_dna` + (jika SELLING_POSTER)
+   `selected_module_stack` → hasilkan English Master Prompt + source_image_handoff JSON
+4. Pass ke `bosmax-compliance-gate` untuk audit
+5. Appoint `bosmax-final-output-agent` selepas Compliance Gate return **any terminal state**
+6. Output kepada user HANYA melalui `bosmax-final-output-agent`
+
+**ROUTE A SCOPE RULES:**
+- Step 2 (CPD) aktif HANYA apabila `image_goal = SELLING_POSTER`
+- `image_goal = VIDEO_SUPPORT` → skip step 2, proceed terus ke step 3
+- Mode C source_image_handoff → tidak terkesan, Mode C bukan Route A
+- Video routes (B/C) → tidak terkesan
+- Route D (image analyst → scene-engine) → CPD dipanggil selepas analyst
+  jika output route adalah SELLING_POSTER; jika VIDEO_SUPPORT, skip CPD
 
 ### ROUTE B — Video Script (Mode B — dari Kosong)
 **Trigger:** User minta video script, skrip TikTok, atau content dari product brief
@@ -1145,6 +1172,22 @@ Detailed pipeline maps telah dipindah ke:
 - JANGAN hardcode product data dalam CLAUDE.md — semua data product dalam products/*.yaml
 - JIKA scale_anchor_descriptor null + platform TikTok → WARN user, tunggu input
 - JIKA product baru (tiada dalam TIER 1 dan TIER 2) → offer registration selepas content selesai
+
+### Rules Baru (v11.8 — CPD Wiring for SELLING_POSTER)
+- Do not call bosmax-scene-engine until selected_module_stack exists (SELLING_POSTER)
+- JANGAN panggil `bosmax-scene-engine` untuk `image_goal = SELLING_POSTER` sehingga
+  `selected_module_stack` wujud dan non-null
+- JIKA `selected_module_stack` null selepas CPD dipanggil: ABORT sebelum scene-engine
+  → inform user: "Module stack tidak dapat dijana. Sila semak product record dan
+    cuba semula."
+- `selected_module_stack` MESTI dipass sebagai handoff dari CPD ke scene-engine —
+  jangan generate scene-engine prompt tanpa module stack untuk SELLING_POSTER
+- CPD scope adalah SELLING_POSTER sahaja — JANGAN panggil CPD untuk VIDEO_SUPPORT,
+  Mode C handoff, video routes, atau analyst-only requests
+- Newbie-safe rule masih berlaku: jangan dedahkan nama CPD, archetype IDs,
+  selected_module_stack, atau Route A internal terms kepada user dalam routing messages
+- Generated prompt deliverable (Block 1) MESTI kekal verbatim walaupun ia mengandungi
+  CPD-injected module names, render-control directives, atau archetype references
 
 ### Rules Baru (v11.7 — Smart Intake & Architecture Hygiene)
 - JANGAN STOP untuk platform jika "TikTok" atau TikTok context sudah jelas dalam request

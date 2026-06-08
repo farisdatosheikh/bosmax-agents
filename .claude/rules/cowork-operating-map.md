@@ -42,27 +42,37 @@ The BOSMAX Cowork surface expects these files to exist in `.claude/skills/`:
 ## Pipeline Sequences
 
 ```text
-Full Image Pipeline:
-User -> BOSMAX [PRE-FLIGHT] -> bosmax-subject-dna -> bosmax-scene-engine
-     -> bosmax-compliance-gate -> User
+Full Image Pipeline (VIDEO_SUPPORT):
+User -> BOSMAX [PRE-FLIGHT] -> bosmax-subject-dna
+     -> bosmax-scene-engine
+     -> bosmax-compliance-gate -> bosmax-final-output-agent -> User
+
+Full Image Pipeline (SELLING_POSTER):
+User -> BOSMAX [PRE-FLIGHT] -> bosmax-subject-dna
+     -> bosmax-commercial-poster-director (selected_module_stack)
+     -> bosmax-scene-engine [ingests subject_dna + selected_module_stack]
+     -> bosmax-compliance-gate -> bosmax-final-output-agent -> User
+
+NOTE: bosmax-scene-engine must NOT be called for SELLING_POSTER until
+selected_module_stack is non-null. ABORT if selected_module_stack is null.
 
 Full Video Pipeline (Mode B, single block):
 User -> BOSMAX [PRE-FLIGHT] -> bosmax-script-generator
-     -> bosmax-compliance-gate -> User
+     -> bosmax-compliance-gate -> bosmax-final-output-agent -> User
 
 Full Video Pipeline (Mode B, multi-block):
 User -> BOSMAX [PRE-FLIGHT: MULTI-BLOCK TRIGGERED]
      -> BOSMAX [MASTER NARRATIVE BRIEF -> user approval]
      -> bosmax-script-generator [Block 1..N]
      -> bosmax-compliance-gate
-     -> User
+     -> bosmax-final-output-agent -> User
 
 Full Video Pipeline (Mode C):
 User -> BOSMAX [PRE-FLIGHT] -> bosmax-mode-c-executor
-     -> bosmax-compliance-gate -> User
+     -> bosmax-compliance-gate -> bosmax-final-output-agent -> User
 
 Full Product + Bulk Pipeline:
 User -> BOSMAX [PRE-FLIGHT] -> bosmax-product-registration
      -> BOSMAX [PRE-FLIGHT] -> bosmax-bulk-generator
-     -> bosmax-compliance-gate -> User
+     -> bosmax-compliance-gate -> bosmax-final-output-agent -> User
 ```
