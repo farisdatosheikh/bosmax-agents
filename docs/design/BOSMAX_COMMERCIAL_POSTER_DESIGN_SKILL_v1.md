@@ -640,7 +640,7 @@ This document is v1. Future versions will add:
 4. ⬜ `BOSMAX_POSTER_QA_RUBRIC_v1.md` — scoring and rejection gates
 5. ⬜ Pilot: 5 template families × 5 variants = 25 output pilot test
 6. ⬜ 01A rewrite PR — upgrade existing Notion templates to v1 schema
-7. ⬜ `bosmax-commercial-poster-director` skill implementation
+7. ✅ `bosmax-commercial-poster-director` skill — active at `.claude/skills/bosmax-commercial-poster-director.md`; wired through PR #29 / PR #31 / PR #32; now consumes Visual Ads Layout Kernel v1 for SELLING_POSTER archetype + module stack logic; prompt-level skill only (not autonomous runtime)
 8. ⬜ Notion mirror of skill contract
 
 ---
