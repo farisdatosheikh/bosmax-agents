@@ -35,6 +35,7 @@ modules:
       - BOSMAX_NOTION_MULTI_BLOCK_VIDEO_HANDOFF_v1.md
       - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
       - docs/video_source_mode_contract_v1.md
+      - docs/video_motion_occlusion_guardrail_v1.md
       - registries/video_engine_duration_contracts.yaml
       - registries/dialogue_budget_corridor.yaml
       - registries/notion_sample_readiness.yaml
@@ -51,8 +52,9 @@ modules:
       Google Flow / Flow Extend parity-hardening lane for BOSMAX multi-block
       execution. Copywriting and avatar resolver behavior remains shared across
       engines; engine-specific changes are limited to duration math, seam law,
-      WPS budgeting, proof manifests, visual source-mode intake routing, and
-      downstream Notion execution docs.
+      WPS budgeting, proof manifests, visual source-mode intake routing,
+      rendered-output motion occlusion guardrails, and downstream Notion
+      execution docs.
   output:
     status: IN_PROGRESS
     owner: CODEX
