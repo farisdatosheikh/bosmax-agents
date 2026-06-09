@@ -66,3 +66,18 @@ modules:
       Newbie-safe final delivery shell lane for Mode A SELLING_POSTER.
       Covers operator-vs-newbie packaging, Block 2 JSON visibility, internal
       metadata suppression, and prompt prose sanitization for final delivery.
+  batch_lane_variation_protocol:
+    status: IN_PROGRESS
+    owner: CODEX
+    scope:
+      - docs/MODULE_STATUS.yaml
+      - BOSMAX_BATCH_LANE_v1.md
+      - BOSMAX_BATCH_TEMPLATE_SET_v1.md
+      - .claude/skills/bosmax-bulk-generator.md
+      - .claude/rules/batch-lane.md
+      - .claude/CLAUDE.md
+    notes: >
+      Batch planner lane for copy-variant, angle-rotation, visual-variation,
+      and matrix-mode authority. Covers raw batch prompt inference, Variant
+      Plan row fields, and semantic drift guards without changing engine rules,
+      product truth, or compliance contracts.
