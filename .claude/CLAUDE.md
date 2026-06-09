@@ -168,9 +168,6 @@ single-output deterministic flow.
 
 Detailed batch types, intake contract, dan hard rules telah dipindah ke:
 - `.claude/rules/batch-lane.md`
-- Raw batch prompts dengan satu angle jelas + multiple outputs default ke
-  `COPY_VARIANT_BATCH`. Preserve angle meaning, vary wording sahaja, build
-  Variant Plan dahulu, dan tunggu approval sebelum expansion.
 
 ---
 
@@ -186,7 +183,105 @@ upload sebarang gambar, video, atau frames.**
 ### TRIGGER
 Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
 
+### PICKER RINGKAS — USER-FACING INTAKE
+
+```
+Jika user perlukan pilihan paling mudah, offer:
+  A — gambar produk sahaja
+  B — gambar produk + avatar / background
+  C — satu gambar siap ada produk + orang / scene
+  D — produk baru belum register
+
+Map dalaman:
+  A → HYBRID_PRODUCT_ANCHOR_MODE
+  B → REFERENCE_SET_MODE
+  C → READY_FRAME_MODE
+  D → ON_THE_FLY_FULL_SCAN_MODE
+
+JANGAN expose label mode dalaman ini kepada user newbie kecuali operator/debug minta.
+```
+
+### SOURCE MODE LAW — INTERNAL
+
+```
+Sebelum storyboard atau prompt generation, BOSMAX MESTI declare:
+  · source_mode
+  · product_path
+  · asset_role_map (jika ada gambar diupload)
+
+PRODUCT PATH hanya ada dua:
+  1. REGISTERED_FAST_PATH
+  2. ON_THE_FLY_FULL_SCAN_PATH
+
+REGISTERED_FAST_PATH:
+  · guna bila user pilih/rujuk produk registered dan visual roughly match
+  · product truth source = registry / products YAML
+  · full product recognition = SKIP
+  · tetap wajib scan:
+    - role gambar
+    - mismatch
+    - packaging conflict
+    - crop / blur / label obstruction
+    - source mode decision
+  · JANGAN re-derive product claims dari gambar upload
+
+ON_THE_FLY_FULL_SCAN_PATH:
+  · guna bila produk unknown / unregistered / mismatch terlalu kuat
+  · full extraction wajib dari intake semasa:
+    - category
+    - visible brand
+    - label text
+    - packaging
+    - dominant color
+    - material
+    - claim-risk signals
+  · session-only
+  · registry writeback = FORBIDDEN
+
+ASSET ROLE LAW:
+  · PRODUCT_REFERENCE
+  · AVATAR_REFERENCE
+  · STYLE_SCENE_REFERENCE
+  · READY_FRAME_PRODUCT_AVATAR
+  · READY_FRAME_PRODUCT_ONLY
+  · UNKNOWN_OR_AMBIGUOUS
+
+HARD PRIORITIES:
+  · uploaded avatar > registry avatar
+  · style/background image TIDAK BOLEH override product truth
+  · registered product batch default later = HYBRID_PRODUCT_ANCHOR_MODE
+  · READY_FRAME_MODE bukan default 10-video batch route
+```
+
 ### SCAN SEQUENCE — WAJIB IKUT SUSUNAN. JANGAN SKIP.
+
+**SCAN_00 — SOURCE MODE + ASSET ROLE RESOLUTION:**
+```
+→ Classify setiap asset upload ikut role:
+   · PRODUCT_REFERENCE
+   · AVATAR_REFERENCE
+   · STYLE_SCENE_REFERENCE
+   · READY_FRAME_PRODUCT_AVATAR
+   · READY_FRAME_PRODUCT_ONLY
+   · UNKNOWN_OR_AMBIGUOUS
+
+→ Resolve source_mode:
+   · product sahaja / registered anchor → HYBRID_PRODUCT_ANCHOR_MODE
+   · product + avatar / style refs berasingan → REFERENCE_SET_MODE
+   · satu frame siap → READY_FRAME_MODE
+   · produk baru belum register → ON_THE_FLY_FULL_SCAN_MODE
+
+→ Resolve product_path:
+   · registered + rough visual match → REGISTERED_FAST_PATH
+   · unknown / unregistered / mismatch unresolved → ON_THE_FLY_FULL_SCAN_PATH
+
+→ Jika avatar image diupload:
+   · uploaded avatar override registry avatar
+
+→ Jika role mana-mana gambar ambiguous:
+   · HOLD
+   · surface satu soalan jelas
+```
 
 **SCAN_01 — DESCRIBE VISUAL (paksa diri huraikan dulu):**
 ```
@@ -236,6 +331,28 @@ Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
    · Jika tiada match → set: product_registry_status = "NOT_FOUND"
      → akan trigger TIER 3 dalam STEP 0
 
+→ Jika product_path = REGISTERED_FAST_PATH:
+   · product truth datang dari registry / products YAML
+   · JANGAN re-derive claims atau identity dari gambar
+   · WAJIB buat:
+     - rough match check
+     - packaging conflict check
+     - crop / blur / label obstruction check
+   · Jika mismatch kuat / packaging conflict berat:
+     → HOLD
+     → tanya user atau escalate review
+
+→ Jika product_path = ON_THE_FLY_FULL_SCAN_PATH:
+   · full extraction wajib dari gambar/current intake:
+     - category / product type
+     - visible brand
+     - visible label text
+     - packaging / color / material
+     - scale estimate
+     - claim-risk signals
+   · session-only
+   · registry writeback FORBIDDEN
+
 → BOSMAX_SERUM VISUAL VARIANT AUTO-RESOLVE:
    Jika product dikenali sebagai BOSMAX Serum dan packaging jelas visible:
    · Slim narrow roll-on (tinggi ≈ 3× lebar, packaging kecil) → default to 5ML
@@ -267,6 +384,8 @@ Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
   JANGAN expose "registry status", "NOT_FOUND", "TIER 1/2/3", atau
   mana-mana internal field names dalam user-facing declaration.
   Guna plain language mapping di atas.
+  JANGAN expose source_mode labels, product_path labels, atau internal picker mapping
+  kepada user newbie.
 
 → Jika produk JELAS (ada nama visible dalam gambar):
    → Proceed dengan declaration, tak perlu tunggu confirmation
@@ -312,7 +431,7 @@ Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
 
 ```
 HARD BLOCK (wajib STOP):
-- JANGAN proceed ke PRE-FLIGHT tanpa SCAN_01–SCAN_04 selesai
+- JANGAN proceed ke PRE-FLIGHT tanpa SCAN_00–SCAN_04 selesai
 - JANGAN assume produk dari session memory bila ada gambar
 - JANGAN load registry persona bila ada gambar avatar
 - JIKA produk dalam gambar tidak jelas: TANYA dahulu
@@ -323,6 +442,9 @@ HARD BLOCK (wajib STOP):
   registry miss
 - JANGAN tanya ukuran cm atau kategori generik jika gambar sudah cukup jelas
   untuk establish scale class + product class bagi prompt generation
+- JANGAN abaikan avatar upload dan pakai registry avatar
+- JANGAN biar style/background image override product truth
+- JANGAN treat ready frame sebagai default 10-video batch route tanpa review
 
 AUTO-PROCEED (boleh proceed tanpa tunggu):
 - Produk ada nama jelas visible dalam gambar → scan, declare, proceed
