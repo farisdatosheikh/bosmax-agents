@@ -29,35 +29,20 @@ modules:
   video_engine_contract_runtime:
     status: IN_PROGRESS
     owner: CODEX
-    issue: 15
+    issue: 45
     scope:
-      - BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
-      - BOSMAX_NOTION_MULTI_BLOCK_VIDEO_HANDOFF_v1.md
-      - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
-      - docs/video_source_mode_contract_v1.md
-      - docs/video_motion_occlusion_guardrail_v1.md
-      - docs/video_render_format_guardrail_v1.md
-      - docs/grok_scout_sync_protocol_v1.md
-      - registries/video_engine_duration_contracts.yaml
-      - registries/dialogue_budget_corridor.yaml
-      - registries/notion_sample_readiness.yaml
-      - registries/flow_extend_proof.yaml
-      - scripts/video_block_plan.py
-      - scripts/validate_video_block_contracts.py
-      - scripts/validate_wps_per_block.py
-      - scripts/validate_notion_sample_readiness.py
-      - scripts/validate_flow_extend_proof.py
-      - scripts/validate_execution_kernel_contract.py
-      - docs/notion_bosmax_command_centre_template_v1.md
-      - docs/google_flow_parity_audit_v1.md
+      - docs/MODULE_STATUS.yaml
+      - docs/agents/BOSMAX_RAW_SEED_TO_FINAL_PROMPT_FLOW_v1.md
+      - docs/video_dialogue_wps_auto_enforcement_v1.md
+      - .claude/skills/bosmax-script-generator.md
+      - .claude/skills/bosmax-dialogue-wps-enforcer.md
+      - scripts/validate_dialogue_wps_output_contract.py
     notes: >
-      Google Flow / Flow Extend parity-hardening lane for BOSMAX multi-block
-      execution. Copywriting and avatar resolver behavior remains shared across
-      engines; engine-specific changes are limited to duration math, seam law,
-      WPS budgeting, proof manifests, visual source-mode intake routing,
-      rendered-output motion occlusion guardrails, rendered-output format
-      guardrails, external Grok Scout sync governance, and downstream Notion
-      execution docs.
+      Universal dialogue WPS enforcement lane for all video engines. Covers
+      per-block corridor enforcement, script splitting by block duration,
+      final prompt underfill blocking, hard ceiling blocking, and default
+      AVATAR_PRODUCT_UGC routing for dialogue-driven multi-block TikTok Shop
+      MY UGC while leaving Notion and page 04/06 batch lanes untouched.
   output:
     status: IN_PROGRESS
     owner: CODEX
