@@ -46,8 +46,10 @@ modules:
       - scripts/validate_execution_kernel_contract.py
       - docs/notion_bosmax_command_centre_template_v1.md
       - docs/google_flow_parity_audit_v1.md
+      - docs/video_motion_occlusion_guardrail_v1.md
     notes: >
       Google Flow / Flow Extend parity-hardening lane for BOSMAX multi-block
       execution. Copywriting and avatar resolver behavior remains shared across
       engines; engine-specific changes are limited to duration math, seam law,
-      WPS budgeting, proof manifests, and downstream Notion execution docs.
+      WPS budgeting, proof manifests, downstream Notion execution docs, and
+      rendered-output motion occlusion guardrails for small-product video.
