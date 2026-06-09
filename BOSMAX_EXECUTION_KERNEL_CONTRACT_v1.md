@@ -14,6 +14,9 @@ Precondition: Every video template, Notion sample, Codex patch, Claude Code gene
 govern unresolved product requests. On-the-fly products remain session-only, high-risk inputs must
 fail closed into `REVIEW_ONLY_PRODUCT`, and Notion may not become routing authority.
 
+**Visual source-mode authority:** `docs/video_source_mode_contract_v1.md` declares how uploaded
+product, avatar, style, and ready-frame assets must be classified before storyboard or prompt generation.
+
 ---
 
 ## 1. Purpose
@@ -100,6 +103,7 @@ Gates:
 | G-09 VALIDATOR_PROOF        | Validator Proof        |
 | G-10 SAMPLE_OUTPUT          | Sample Output          |
 | G-11 MERGE_PROOF            | Merge Proof            |
+| G-12 VIDEO_SOURCE_MODE      | Video Source Mode      |
 
 ---
 
@@ -339,6 +343,7 @@ between image and text inputs.
 **Canonical product truth source:** `products/*.yaml` (TIER 1). FASTMOSS workbook (TIER 2).
 Routing authority for unresolved products lives in `registries/product_copy_router.yaml`.
 FASTMOSS remains a source signal, not a permission gate.
+Visual intake routing authority lives in `docs/video_source_mode_contract_v1.md`.
 
 **Required fields per product/variant:**
 - product_id, product_name
@@ -351,6 +356,8 @@ FASTMOSS remains a source signal, not a permission gate.
 - product truth resolved from TIER 1 or TIER 2 before any prompt is generated
 - unresolved products are labeled as `FAMILY_MATCHED_PRODUCT`, `ON_THE_FLY_PRODUCT`, or
   `REVIEW_ONLY_PRODUCT` before copy generation begins
+- if uploaded assets exist, product path resolves through `REGISTERED_FAST_PATH` or
+  `ON_THE_FLY_FULL_SCAN_PATH` before prompt generation
 - scale_anchor_descriptor present for TikTok platform
 - product identity, label, packaging, and scale anchor match across every block
 - visual uploaded image takes priority over text input and session memory (Priority Rule: Visual > Text > Memory)
@@ -360,6 +367,7 @@ FASTMOSS remains a source signal, not a permission gate.
 - product identity from session memory overriding uploaded visual → ABORT
 - product substitution (different product appearing in Block 2) → ABORT
 - scale drift detected in Block 2 compared to Block 1 → ABORT
+- registered product fast path bypassed and treated as full re-recognition without cause → ABORT
 - on-the-fly product treated as approved library truth or auto-written back into workbook → BLOCK
 - high-risk intake routed into `ON_THE_FLY_PRODUCT` instead of `REVIEW_ONLY_PRODUCT` → BLOCK
 
@@ -372,6 +380,7 @@ Routing-layer validator: `validate_product_copy_router.py` — created in PR #13
 **Notion impact:** Product truth fields in Notion (packaging, scale anchor) must originate from
 `products/*.yaml` entries, not free-typed by operators.
 Notion may mirror route status later, but it may not become routing authority.
+If source-mode or asset-role fields are mirrored in Notion later, they must reflect repo truth only.
 
 ---
 
@@ -593,6 +602,59 @@ prompt text quality or Notion page proof existence.
 
 ---
 
+## 14A. VIDEO_SOURCE_MODE_GATE (G-12)
+
+**Purpose:** Force an explicit source-mode decision whenever uploaded assets participate in
+video routing, so registered fast-path, on-the-fly full scan, reference-set binding, and
+ready-frame continuation do not collapse into one ambiguous intake lane.
+
+**Canonical authority:**
+- `docs/video_source_mode_contract_v1.md`
+- `.claude/CLAUDE.md` VISUAL INTAKE GATE
+- `BOSMAX_RUNTIME_STATE_MACHINE_v1.md` `STATE_ASSET_ANALYSIS`
+- `registries/product_on_the_fly_video_prompt_contract.yaml`
+
+**Canonical product paths:**
+- `REGISTERED_FAST_PATH`
+- `ON_THE_FLY_FULL_SCAN_PATH`
+
+**Canonical source modes:**
+- `REFERENCE_SET_MODE`
+- `HYBRID_PRODUCT_ANCHOR_MODE`
+- `READY_FRAME_MODE`
+- `ON_THE_FLY_FULL_SCAN_MODE`
+
+**Pass condition:**
+- whenever uploaded assets exist, `source_mode` is declared before storyboard or prompt generation
+- `product_path` is declared as `REGISTERED_FAST_PATH` or `ON_THE_FLY_FULL_SCAN_PATH`
+- `asset_role_map` exists when images are uploaded
+- registered products use registry truth plus fast visual intake, not full claim re-derivation
+- registered products record mismatch check, packaging conflict check, and crop/blur/label obstruction check
+- on-the-fly products carry full extraction from the current intake only
+- uploaded avatar overrides registry avatar when an avatar asset is present
+- style references may shape scene or mood, but may not override product truth
+- ready-frame inputs are treated as continuation/approved-frame lanes, not default 10-video batch posture
+
+**Fail condition:**
+- uploaded assets exist but `source_mode` absent → ABORT
+- uploaded assets exist but `asset_role_map` absent → ABORT
+- registered product image mismatch ignored → ABORT
+- on-the-fly product treated as registered truth → BLOCK
+- style image overrides product truth → ABORT
+- uploaded avatar ignored in favor of registry avatar → ABORT
+- ready frame treated as default 10-video batch source without review → BLOCK
+
+**Validator coverage:** PARTIAL.
+- Documentation enforcement: `docs/video_source_mode_contract_v1.md`, `.claude/CLAUDE.md`,
+  and `BOSMAX_RUNTIME_STATE_MACHINE_v1.md`
+- On-the-fly structural enforcement: `scripts/validate_product_on_the_fly_video_prompt.py`
+- No standalone repo validator for full source-mode declaration coverage yet
+
+**Notion impact:** Notion may mirror `source_mode`, `product_path`, and asset-role fields later,
+but it may not infer them independently or override repo truth.
+
+---
+
 ## 15. ENGINE ALIAS COMPLETENESS — VEO_3_1_LITE
 
 **Status: PARTIAL_VERIFIED / READY_CLIP_MODE** (previously LIVE GAP — resolved in PR #4)
@@ -657,6 +719,7 @@ validator proof (`VALIDATION PASSED`) is captured for the run.
 | G-09    | VALIDATOR_PROOF        | This contract + validate_*.py                           | validate_execution_kernel_contract.py | QA Notes, proof block sections       | PARTIAL         |
 | G-10    | SAMPLE_OUTPUT          | NOTION_MULTI_BLOCK_HANDOFF + notion_sample_readiness.yaml | validate_notion_sample_readiness.py | Block Status, page proof sections    | PARTIAL (manifest-layer validated; live Notion proof requires operator fill + rerun) |
 | G-11    | MERGE_PROOF            | This contract                                           | Process review                       | N/A                                   | PROCESS GATE    |
+| G-12    | VIDEO_SOURCE_MODE      | video_source_mode_contract_v1.md + CLAUDE.md + product_on_the_fly_video_prompt_contract.yaml | validate_product_on_the_fly_video_prompt.py | Source Mode, Product Path, Asset Role Map | PARTIAL (registered fast-path + ready-frame enforcement remain docs/runtime only) |
 
 ---
 
@@ -673,6 +736,7 @@ These validators do not yet exist. They must be created to close open PARTIAL st
 | `validate_runtime_speech_timing.py`     | G-03         | LOW — runtime speech timing of generated video |
 | ~~`validate_flow_extend_proof.py`~~     | G-07         | CLOSED — PR #10 |
 | `validate_live_flow_extend_execution.py` | G-07        | LOW — live Flow generated-video continuity proof |
+| `validate_video_source_mode_contract.py` | G-12        | LOW — source-mode declaration and asset-role coverage |
 
 **Closed (no longer required):**
 - `validate_execution_kernel_contract.py` — G-09 — created in PR #3
@@ -692,6 +756,7 @@ Applies to: Codex, Claude Code, ChatGPT, any AI operating on this repo.
 
 ```
 BEFORE generating any prompt, template, or output:
+  ☐ If uploaded assets exist: declare source_mode, product_path, and asset_role_map first
   ☐ Confirm engine_id is in registries/video_engine_duration_contracts.yaml
   ☐ Run scripts/video_block_plan.py for the target engine and duration
   ☐ Confirm block count and durations from planner output — do not invent
@@ -753,10 +818,18 @@ PRODUCT TRUTH:
   ☐ product substitution between blocks → ABORT
   ☐ scale drift detected between Block 1 and Block 2 → ABORT
   ☐ session memory product overriding uploaded visual product → ABORT
+  ☐ registered product fast-path ignored and full re-recognition forced without cause → ABORT
 
 AVATAR SOURCE:
   ☐ avatar image uploaded but registry persona substituted → ABORT
   ☐ avatar_record.source null → ABORT
+
+VIDEO SOURCE MODE:
+  ☐ uploaded assets exist but source_mode absent → ABORT
+  ☐ uploaded assets exist but asset_role_map absent → ABORT
+  ☐ style image overrides product truth → ABORT
+  ☐ uploaded avatar ignored in favor of registry avatar → ABORT
+  ☐ ready frame treated as default 10-video batch source without review → BLOCK
 
 MULTI-BLOCK SEAM:
   ☐ non-final block without bridge-out → ABORT
@@ -792,6 +865,7 @@ Existing authority files remain canonical for their domain.
 | Runtime state machine | BOSMAX_RUNTIME_STATE_MACHINE_v1.md                     |
 | GROK seam templates   | BOSMAX_GROK_EXTENSION_SEAM_TEMPLATES_v1.md             |
 | VEO/Flow decision     | BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md              |
+| Video source modes    | docs/video_source_mode_contract_v1.md                  |
 | Notion handoff rules  | BOSMAX_NOTION_MULTI_BLOCK_VIDEO_HANDOFF_v1.md          |
 | Copy pack rules       | BOSMAX_NOTION_COPY_PACK_HANDOFF_v1.md                  |
 | Compliance audit      | .claude/skills/bosmax-compliance-gate.md               |

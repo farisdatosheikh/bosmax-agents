@@ -34,6 +34,7 @@ modules:
       - BOSMAX_EXECUTION_KERNEL_CONTRACT_v1.md
       - BOSMAX_NOTION_MULTI_BLOCK_VIDEO_HANDOFF_v1.md
       - BOSMAX_VEO31_FLOW_CONTRACT_DECISION_v1.md
+      - docs/video_source_mode_contract_v1.md
       - registries/video_engine_duration_contracts.yaml
       - registries/dialogue_budget_corridor.yaml
       - registries/notion_sample_readiness.yaml
@@ -50,7 +51,8 @@ modules:
       Google Flow / Flow Extend parity-hardening lane for BOSMAX multi-block
       execution. Copywriting and avatar resolver behavior remains shared across
       engines; engine-specific changes are limited to duration math, seam law,
-      WPS budgeting, proof manifests, and downstream Notion execution docs.
+      WPS budgeting, proof manifests, visual source-mode intake routing, and
+      downstream Notion execution docs.
   output:
     status: IN_PROGRESS
     owner: CODEX
@@ -64,18 +66,3 @@ modules:
       Newbie-safe final delivery shell lane for Mode A SELLING_POSTER.
       Covers operator-vs-newbie packaging, Block 2 JSON visibility, internal
       metadata suppression, and prompt prose sanitization for final delivery.
-  batch_lane_variation_protocol:
-    status: IN_PROGRESS
-    owner: CODEX
-    scope:
-      - docs/MODULE_STATUS.yaml
-      - BOSMAX_BATCH_LANE_v1.md
-      - BOSMAX_BATCH_TEMPLATE_SET_v1.md
-      - .claude/skills/bosmax-bulk-generator.md
-      - .claude/rules/batch-lane.md
-      - .claude/CLAUDE.md
-    notes: >
-      Batch planner lane for copy-variant, angle-rotation, visual-variation,
-      and matrix-mode authority. Covers raw batch prompt inference, Variant
-      Plan row fields, and semantic drift guards without changing engine rules,
-      product truth, or compliance contracts.
