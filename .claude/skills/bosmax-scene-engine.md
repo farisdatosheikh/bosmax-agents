@@ -28,6 +28,7 @@ This skill operates under these governing schema contracts for Mode A image prom
 - `source_image_handoff` JSON (Block 2) is internal routing metadata — it MUST NOT appear in user-facing copy-paste output unless the operator explicitly requests it for Mode C handoff
 - Distinguish between three distinct output types: (1) raw creative seed [not this skill's output], (2) expanded final image prompt [Block 1 — user-facing], (3) internal handoff metadata [Block 2 — not user-facing by default]
 - Do not expose internal schema tokens, field names, or checklist blocks in Block 1 (the user-facing image prompt); Block 1 is structured prose only
+- Do not expose internal architecture labels in Block 1 prose. Silo IDs, compliance class names, route names, and handoff labels are internal metadata, not user-facing prompt language.
 - `subject_dna` fields from `bosmax-subject-dna` are sovereign — do not override, reinvent, or contradict avatar attributes during scene construction
 - Product truth from `product_record` is sovereign — product geometry, label, scale_anchor_descriptor cannot be altered during scene assembly
 - For `image_goal = SELLING_POSTER`: coordinate with `bosmax-commercial-poster-director` — scene engine handles environment, lighting, camera, product integration; poster director handles commercial hierarchy, layout formula, and copy structure
@@ -275,6 +276,18 @@ visible structured label in the image prompt delivered to the user.
 Translate all module stack directives into embedded prose instructions only.
 If CPD handoff begins with these headers, strip them before building Block 1.
 
+**INTERNAL PROSE SANITISATION (SELLING_POSTER):**
+Block 1 MUST NOT contain internal orchestration wording inside natural-language prose.
+Forbidden examples:
+  - `STEALTH silo`
+  - `DIRECT silo`
+  - compliance-class labels such as `STEALTH_METAPHOR_REQUIRED`
+Translate those ideas into buyer-facing prompt language instead.
+Example:
+  - `premium masculine feel consistent with STEALTH silo`
+  - becomes
+  - `premium masculine private-carry feel`
+
 ---
 
 ## SCENE REGISTRY — PILIH DARI SINI SAHAJA
@@ -332,7 +345,7 @@ If CPD handoff begins with these headers, strip them before building Block 1.
 | THREE_POINT_LIGHTING | 3-point studio setup, balanced fill/key/back | 4000–5500K | Product studio, lifestyle hero, skincare |
 | HDR_BALANCED | High dynamic range, balanced highlights/shadows | 5500–6500K | Real estate interior, architecture, property |
 | WARM_AMBIENT_INTERIOR | LED practical + window fill | 2700–4000K | Kitchen, home living, cafe — [EXTENDED — not in YAML sovereign list, use with caution] |
-| DRAMATIC_LOW_KEY | Single spot, directional, high contrast | 4000–5000K | STEALTH silo, luxury — [EXTENDED — not in YAML sovereign list, use with caution] |
+| DRAMATIC_LOW_KEY | Single spot, directional, high contrast | 4000–5000K | Private-carry, discreet premium, luxury — [EXTENDED — not in YAML sovereign list, use with caution] |
 | OUTDOOR_HARD_SUN | Direct midday sunlight, harsh shadows | 6000–7000K | Street, parking lot — [EXTENDED — not in YAML sovereign list, use with caution] |
 
 **FORBIDDEN:** Mixed color temperatures | Multiple conflicting light sources

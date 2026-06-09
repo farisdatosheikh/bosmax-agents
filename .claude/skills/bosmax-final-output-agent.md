@@ -29,11 +29,11 @@ This skill operates under these governing contracts. Read them as authority befo
 
 - This skill is appointed after `bosmax-compliance-gate` returns **any terminal state** — VERIFICATION PASSED, ABORT, or VERIFICATION PASSED with declared gaps
 - Do NOT format output for VERIFICATION PASSED only — ABORT states must also be handled here
-- Operator-facing output is clean final delivery only — NOT internal logs, NOT routing notes, NOT checklist blocks
-- If Compliance Gate passes: deliver clean final prompt + QA status line
+- Operator-facing output is clean final delivery by default. Internal audit/checklist surfaces are ONLY allowed when operator/debug/JSON/Mode C handoff is explicitly requested.
+- If Compliance Gate passes: deliver clean final prompt using the mode-specific shell below
 - If Compliance Gate ABORTs: suppress draft prompt entirely; surface exact ABORT reason + resolution instruction only
 - `source_image_handoff` JSON is internal routing metadata — MUST NOT appear in final user output unless the operator explicitly requests it for a Mode C handoff delivery
-- Do NOT rewrite or modify the compliance-passed prompt creatively — format only, content unchanged
+- Do NOT rewrite or modify the compliance-passed prompt creatively. Only these sanitisation actions are allowed: strip internal labels, suppress internal debug blocks, and translate internal architecture phrases into buyer-facing language without removing render-control instructions.
 
 ---
 
@@ -75,6 +75,35 @@ bosmax-compliance-gate
 
 ## TERMINAL STATE HANDLING
 
+### MODE DETECTION — HARD
+
+Treat output as `NEWBIE-SAFE` by default.
+
+Switch to `OPERATOR MODE` ONLY if at least one of these is true:
+- operator explicitly asks for debug / JSON / audit / routing breakdown / module stack
+- operator explicitly asks for `Mode C`, `source_image_handoff`, or handoff JSON
+- operator is already speaking in BOSMAX technical terms and clearly wants system detail
+- internal operator mode is explicitly active upstream
+
+If none of the above is true, stay in `NEWBIE-SAFE`.
+
+### OPERATOR DEBUG EXCEPTION — HARD
+
+If `OPERATOR MODE` is active because the operator explicitly requested
+debug / JSON / audit / routing breakdown / module stack / Mode C handoff,
+the final-output layer MAY show these extra surfaces in addition to the final prompt:
+
+- CPD report
+- module stack
+- JSON handoff
+- compliance audit
+- MCA / RCA / CBTC details
+- terminal verification detail
+
+This exception is forbidden in `NEWBIE-SAFE`.
+If the request is not explicitly operator/debug/JSON/Mode C scoped, suppress all
+surfaces above and fall back to the standard clean delivery shell.
+
 ### STATE 1 — VERIFICATION PASSED
 
 Bila Compliance Gate return `VERIFICATION PASSED`:
@@ -96,6 +125,32 @@ Rules:
 - No commentary or explanation embedded inside the prompt text itself
 - QA status line is one line only — tidak reproduce full audit log
 - Gaps and warnings sections omitted entirely if none exist
+
+### STATE 1A — VERIFICATION PASSED | NEWBIE-SAFE MODE A SELLING_POSTER
+
+Jika terminal output ialah `Mode A` + `SELLING_POSTER` dan user BUKAN dalam
+`OPERATOR MODE`, use shell ini SAHAJA:
+
+```
+[Assumption line]
+[Final Block 1 copy-paste prompt]
+[Optional usage note]
+```
+
+Rules:
+- Assumption line mesti satu ayat sahaja
+- Format assumption line:
+  `Saya teruskan sebagai [product name], product-only [platform] poster, angle [angle].`
+- Untuk BOSMAX Serum 5ML compact/private-carry default, gunakan exact line ini:
+  `Saya teruskan sebagai BOSMAX Serum 5ML, product-only TikTok Shop poster, angle compact/private carry.`
+- Deliver `Block 1` prompt sahaja
+- `Block 2` / `source_image_handoff` JSON disorok sepenuhnya secara default
+- QA line disorok secara default
+- Jika status ringkas diperlukan oleh shell policy semasa, reduce kepada exact sentence:
+  `QA passed.`
+- Optional usage note yang dibenarkan:
+  `Upload gambar produk sebagai reference image.`
+- Tiada line lain dibenarkan
 
 ### STATE 2 — ABORT
 
@@ -164,12 +219,14 @@ Saya hanya boleh output benda-benda ini kepada operator:
 
 ```
 ✅ Final copy-paste prompt block (complete, engine-formatted)
-✅ Short QA status line (one line: VERIFICATION PASSED / ABORT)
+✅ Short QA status line (one line: VERIFICATION PASSED / ABORT) — operator mode atau jika explicitly requested
 ✅ Unresolved gaps section (only if gaps exist)
 ✅ Warnings section (only if warnings exist)
 ✅ Multi-block separators dengan block labels
 ✅ ABORT reason + operator resolution instruction (bila ABORT)
 ✅ source_image_handoff JSON ONLY jika operator explicitly request untuk Mode C handoff delivery
+✅ Untuk newbie-safe Mode A SELLING_POSTER: satu assumption line + final Block 1 prompt + optional usage note
+✅ CPD report / module stack / JSON handoff / compliance audit / MCA / RCA / CBTC / terminal verification detail ONLY when operator/debug/JSON/Mode C handoff is explicitly requested
 ```
 
 ---
@@ -188,11 +245,26 @@ Benda-benda ini MESTI TIDAK pernah keluar dalam final output kepada operator:
 ❌ Storyboard working notes (approval step artefact — not delivery artefact)
 ❌ Master Narrative Brief (internal planning document)
 ❌ WORK ORDER text (internal dispatch instruction)
-❌ Full compliance audit checklist (summarise to QA status line only)
+❌ Full compliance audit checklist in newbie/default delivery
 ❌ source_image_handoff JSON by default (internal routing metadata)
 ❌ Notion edits atau Notion write actions unless explicitly operator-scoped dalam current session
 ❌ Production-ready claim unless Compliance Gate returned VERIFICATION PASSED
 ❌ Partial draft prompt bila ABORT received
+❌ `QA: VERIFICATION PASSED ...` line dalam newbie-safe Mode A SELLING_POSTER default shell
+❌ Registry match / `BOSMAX_SERUM` / product ID / product record dump / product lookup notes
+❌ Silo names / compliance class names / route labels / skill names
+❌ Commercial Poster Director report / module stack dump / selected_module_stack
+❌ `SOURCE IMAGE HANDOFF JSON` blocks by default
+❌ `COMPLIANCE GATE AUDIT` blocks, MCA/RCA/CBTC details, terminal verification logs
+❌ `BOSMAX COMMERCIAL POSTER DIRECTOR`
+❌ `STEALTH`
+❌ `STEALTH_METAPHOR_REQUIRED`
+❌ `subject_dna`
+❌ `physics_class`
+❌ `CTX_`
+❌ `CLASS_A`
+❌ `Route A`
+❌ `Mode A audit`
 ❌ Archetype header labels in Block 1 delivery:
    "ARCHETYPE: [X]" | "selected_visual_ads_archetype: [X]" | "module_stack:" header block
    These are CPD internal handoff labels — must not appear in copy-paste prompt output.
@@ -207,18 +279,46 @@ Benda-benda ini MESTI TIDAK pernah keluar dalam final output kepada operator:
 Before delivering Block 1 to operator, scan the opening lines:
 
 ```
-If Block 1 begins with or contains any of these as standalone structured label lines:
+If `NEWBIE-SAFE` Block 1 begins with or contains any of these as standalone
+structured label lines:
   - "ARCHETYPE: [X]"
   - "selected_visual_ads_archetype: [X]"
   - "module_stack:" (as YAML block header)
+  - "registry match" / "BOSMAX_SERUM" / "Product record" / "Silo:" / "Compliance class:"
+  - "SOURCE IMAGE HANDOFF JSON"
+  - "COMPLIANCE GATE AUDIT"
+  - "VERIFICATION PASSED" audit header / MCA / RCA / CBTC structured checklist sections
+  - "BOSMAX COMMERCIAL POSTER DIRECTOR"
+  - "STEALTH"
+  - "STEALTH_METAPHOR_REQUIRED"
+  - "subject_dna"
+  - "physics_class"
+  - "CTX_"
+  - "CLASS_A"
+  - "Route A"
+  - "Mode A audit"
 
 → Strip those lines before delivery (formatting action, not creative rewrite)
 → Block 1 must begin with scene/product prose, not internal label metadata
-→ Log: [PRE-DELIVERY STRIP: archetype/module header removed from Block 1]
+→ Log: [PRE-DELIVERY STRIP: internal delivery-shell metadata removed]
 → Deliver the stripped prompt in full — do NOT summarise or shorten the rest
 
-This rule applies in both OPERATOR MODE and NEWBIE-SAFE MODE.
-Stripping archetype labels is formatting, not content change.
+If `OPERATOR MODE` is explicitly debug / JSON / audit / Mode C scoped:
+→ You MAY show CPD report, module stack, JSON handoff, compliance audit,
+  MCA / RCA / CBTC, and terminal verification detail as separate operator sections
+→ But Block 1 prompt itself must still remain a usable prompt block, not a raw dump
+→ Keep architecture-heavy detail out of the prompt body unless explicitly requested as raw debug text
+
+If Block 1 prose itself contains internal architecture wording, sanitize the term
+without weakening the render instruction:
+  - "STEALTH silo" → "private-carry angle"
+  - "consistent with STEALTH silo" → "consistent with a premium masculine private-carry feel"
+  - compliance-class labels → remove label, keep only buyer-facing instruction if still meaningful
+
+Stripping newbie leak tokens is mandatory in `NEWBIE-SAFE`.
+For `OPERATOR MODE`, only keep the extra internal sections if the operator
+explicitly asked for them. Stripping archetype labels from the prompt block itself
+remains formatting, not content change.
 All render-control constraints, flat-key directives, product-first directives,
 benefit chips, CTA restraint, and compliance-safe wording must be preserved intact.
 ```
@@ -262,3 +362,6 @@ Ini terpakai walaupun Notion templates wujud atau previous sessions pernah buat 
 - JANGAN output `source_image_handoff` JSON dalam final delivery melainkan operator explicitly minta untuk Mode C
 - JANGAN claim "production ready" atau "approved for production" melainkan VERIFICATION PASSED received
 - JIKA operator tanya pasal internal routing atau gaps: boleh explain dalam prose, JANGAN expose raw JSON atau checklist blocks
+- JANGAN langgar newbie-safe Mode A SELLING_POSTER shell:
+  assumption line sahaja, final Block 1 prompt sahaja, optional usage note sahaja
+- JANGAN suppress operator-debug surfaces jika operator explicitly minta CPD / module stack / JSON / compliance audit / MCA / RCA / CBTC / terminal verification detail

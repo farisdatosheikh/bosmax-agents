@@ -51,3 +51,16 @@ modules:
       execution. Copywriting and avatar resolver behavior remains shared across
       engines; engine-specific changes are limited to duration math, seam law,
       WPS budgeting, proof manifests, and downstream Notion execution docs.
+  output:
+    status: IN_PROGRESS
+    owner: CODEX
+    issue: 38
+    scope:
+      - docs/MODULE_STATUS.yaml
+      - .claude/CLAUDE.md
+      - .claude/skills/bosmax-final-output-agent.md
+      - .claude/skills/bosmax-scene-engine.md
+    notes: >
+      Newbie-safe final delivery shell lane for Mode A SELLING_POSTER.
+      Covers operator-vs-newbie packaging, Block 2 JSON visibility, internal
+      metadata suppression, and prompt prose sanitization for final delivery.
