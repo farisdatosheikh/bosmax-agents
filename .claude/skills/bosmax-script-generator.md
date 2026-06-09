@@ -772,6 +772,44 @@ Arabic + 8s        → ceiling = 17 words (Safe Max 2.2 WPS)
 
 ---
 
+## DIALOGUE WPS AUTO-ENFORCEMENT — UNIVERSAL HARD GATE
+
+Untuk semua video route di mana `dialogue_required = YES`, script-generator
+MESTI invoke WPS enforcement sebelum final output. Ini ialah hard gate universal
+untuk semua video engines:
+
+- GROK
+- GOOGLE_FLOW / FLOW_EXTEND_UI
+- `VEO_3_1`
+- `VEO_3_1_LITE`
+- `KLING_3_0`
+- `SEEDANCE_2_0`
+- any future BOSMAX video engine dengan spoken dialogue
+
+Execution law:
+
+1. Resolve `engine_id` dan `duration_target`.
+2. Resolve block plan dari `registries/video_engine_duration_contracts.yaml`.
+3. Resolve per-block corridor dari `registries/dialogue_budget_corridor.yaml`.
+4. Resolve `presentation_route` sebelum dialogue drafting.
+5. Build storyboard beats by `block_duration`.
+6. Generate exact dialogue by block sebelum final output.
+7. Count words per block.
+8. Rewrite underfilled atau over-ceiling dialogue sebelum final output.
+9. Jangan output final clean prompts sehingga WPS audit lulus untuk semua blocks.
+
+TikTok Shop Malaysia UGC presentation route law:
+
+- Jika `dialogue_required = YES` dan total duration melebihi 10s, default performer route ialah `AVATAR_PRODUCT_UGC`.
+- Hand-only / product-only hanya dibenarkan jika user explicit minta product-only / no-avatar, template ialah 6s CTA close, `dialogue_required = NO`, atau source frame memang avatar-free untuk image-to-video continuation.
+
+Final clean prompt law:
+
+- Final prompt hanya boleh menerima exact approved dialogue line selepas per-block audit lulus.
+- Do not expose WPS metadata, validator proof, internal budget labels, atau tables dalam final clean prompt.
+
+---
+
 ## COMPLIANCE SCRUB — MANDATORY
 
 **Medical claims FORBIDDEN:**
@@ -905,16 +943,21 @@ Jika `uploaded_asset_count > 2`:
 ## DIALOG PRE-BUDGET — WAJIB KIRA SEBELUM TULIS SECTION 6
 
 **Ini MESTI dilakukan sebelum menulis satu patah pun dialog dalam Section 6.**
-Jika tidak dikira dahulu, dialog akan overflow dan tidak habis dalam video.
+Jika tidak dikira dahulu, dialog boleh jadi `UNDERFILLED`, overflow, atau tidak habis dalam video.
 
 ```
-STEP A — LOOKUP LANGUAGE + KIRA WORD BUDGET:
+STEP A — LOOKUP PER-BLOCK CORRIDOR:
   1. Identify target_language dari work order
-  2. Lookup wps_safe_max dari WPS GOVERNANCE table atas
-     BM=2.5 | EN=3.0 | ID=2.6 | ZH=2.6 | HI=2.4 | BN=2.4 | AR=2.2
-  3. dialog_budget_words = FLOOR(duration_target × wps_safe_max)
-  ← INI adalah ceiling mutlak. Tiada pengecualian.
-  ← Untuk durasi standard, rujuk word limit table terus (lebih cepat).
+  2. Identify `pace_class`
+  3. Resolve `block_duration` dari active block plan
+  4. Lookup row dalam `registries/dialogue_budget_corridor.yaml`
+  5. Extract:
+     minimum_words
+     target_min_words
+     target_max_words
+     safe_max_words
+     hard_ceiling_words
+  ← Total-duration budget TIDAK BOLEH menggantikan per-block corridor.
 
 STEP B — KIRA BEBAN SEMASA:
   hook_words    = [kira perkataan dalam hook]
@@ -922,7 +965,8 @@ STEP B — KIRA BEBAN SEMASA:
   fixed_words   = hook_words + cta_words
 
 STEP C — KIRA BAKI UNTUK USP:
-  usp_budget    = dialog_budget_words - fixed_words
+  drafting_budget = target_max_words
+  usp_budget      = drafting_budget - fixed_words
   ← Jika usp_budget ≤ 0: ONLY hook + CTA dibenarkan. Buang semua USP.
   ← Jika usp_budget > 0: PILIH USP satu per satu, kira perkataan, stop bila budget habis.
 
@@ -934,36 +978,45 @@ STEP D — PRIORITY ORDER (bila budget paksa pilih):
   5. USP_3      ← Ambil jika ada baki budget selepas USP_2
 
 STEP E — DECLARE SEBELUM TULIS:
-  "DIALOG PRE-BUDGET:
-   Duration: [X]s | Budget: [N] words
+  "PER-BLOCK DIALOG PRE-BUDGET:
+   Duration: [X]s | Minimum: [N]w | Target: [N]-[N]w | Safe Max: [N]w | Hard Ceiling: [N]w
    Hook: [N]w | CTA: [N]w | USP budget: [N]w remaining
    Selected: Hook + [USP_1/tiada] + CTA"
 
-STEP F — VALIDATE PER BLOCK:
+STEP F — WORD COUNT AUDIT PER BLOCK:
   Untuk multi-block:
-  - kira budget bagi SETIAP block ikut block_duration sebenar
+  - kira corridor bagi SETIAP block ikut block_duration sebenar
+  - JANGAN guna budget total sebagai satu blok tunggal
+  - status law:
+    `UNDERFILLED` = final_word_count < minimum_words
+    `TARGET_RANGE` = target_min_words ≤ final_word_count ≤ target_max_words
+    `OVER SAFE` = target_max_words < final_word_count ≤ hard_ceiling_words
+    `HARD FAIL` = final_word_count > hard_ceiling_words
   - GROK 16s mixed example:
-    Block 1 = 10s → BM safe max = 25 words
-    Block 2 = 6s  → BM safe max = 15 words
-  - JANGAN guna budget total 16s sebagai satu blok tunggal
+    Block 1 = 10s → target 26–28 words
+    Block 2 = 6s  → target 15–16 words
+  - jika Block 2 jatuh bawah minimum, rewrite internal wajib sebelum final output
+  - jika mana-mana block melepasi hard ceiling, rewrite internal wajib sebelum final output
 
 CONTOH (8s video, Bahasa Melayu):
-  target_language = BM | wps_safe_max = 2.5
-  dialog_budget = FLOOR(8 × 2.5) = 20 words ← (atau rujuk table: BM 8s = 20 words)
+  target_language = BM | pace_class = BRISK_UGC
+  corridor = 8s → minimum 19 | target 20–21 | safe max 22 | hard ceiling 24
   Hook: "Berapa lama lagi kau nak buat-buat okay?" = 8 words
   CTA: "Diam-diam order. Kau tahu kenapa." = 5 words
-  fixed = 13 words | usp_budget = 7 words remaining
+  fixed = 13 words | usp_budget = 8 words remaining
   USP terpendek: "Kecil macam lip balm, simpan private." = 6 words → muat ✅
-  Output S6: Hook + USP_1 + CTA = 19 words. Di bawah ceiling 20. ✅
+  Output S6: Hook + USP_1 + CTA = 19 words.
+  Status: TARGET_RANGE? belum. Tambah 1–2 words jika perlu untuk elak `UNDERFILLED` feel.
 
-CONTOH (8s video, English):
-  target_language = EN | wps_safe_max = 3.0
-  dialog_budget = FLOOR(8 × 3.0) = 24 words
-  Lebih banyak ruang untuk USP berbanding BM.
+CONTOH (GROK 16s, Bahasa Melayu):
+  Block 1 = 10s → target 26–28 words
+  Block 2 = 6s  → target 15–16 words
+  JANGAN gabung jadi satu 16s total budget.
+  Setiap block diaudit sendiri sebelum final prompt assembly.
 ```
 
-**INGAT: Dialog yang tidak habis diucap dalam video = video yang kelihatan terpotong.
-Lebih baik dialog pendek tetapi lengkap daripada dialog panjang yang terhenti separuh jalan.**
+**INGAT: Dialog yang terlalu pendek akan buka dead air dan filler action.
+Dialog yang terlalu panjang akan potong sebutan. Kedua-duanya perlu dibaiki sebelum final output.**
 
 ---
 
@@ -1090,10 +1143,9 @@ Engine: [engine_id]
 Duration: [Xs]
 Block math: [summary]
 Language: [target_language]
-WPS budget: [summary]
-Dialogue budget: [summary]
-pace_class: [pace_class]
-Output rule: clean copy-paste ready | no metadata leakage | storyboard before prompts | separate block prompts only
+Presentation route: [presentation_route]
+Pace: [pace_class]
+Output rule: clean copy-paste ready | no metadata leakage | no WPS tables | storyboard before prompts | separate block prompts only
 
 STORYBOARD
 [full approved storyboard first]
@@ -1125,7 +1177,6 @@ SECTION 5: Product Physics
 ---
 SECTION 6: Dialogue
 [content]
-WPS AUDIT: Hook [x.x] | Body [x.x] | CTA [x.x]
 
 ---
 SECTION 7: Audio Tone
@@ -1133,9 +1184,7 @@ SECTION 7: Audio Tone
 
 ---
 SECTION 8: Temporal Logic
-I=[x]s | scenes=[x] | lang=[BM/EN/ID/ZH/HI/BN/AR] | wps_optimum=[x] | wps_safe_max=[x] | wps_ceiling=[x]
-dialog_budget=[x]w (Safe Max) | target=[x]w/scene | max=[x]w/scene | kill=[x]w/scene
-pace_class=[x] | action_density=[x]
+[duration window, block continuity, pace, seam timing, and action density only]
 [content]
 
 ---
@@ -1166,6 +1215,10 @@ NO_OVERLAY — Clean video only. No burned-in text, captions, CTA labels, badges
 - ABORT jika `uploaded_asset_count > 2` tetapi `broll_support_class` null
 - ABORT jika `dialogue_required = YES` tetapi output cuba jadi `pure visual`, `no dialog`,
   atau WPS effectively 0
+- ABORT jika mana-mana block dengan `dialogue_required = YES` kekal `UNDERFILLED`
+  selepas rewrite loop
+- ABORT jika mana-mana block dengan `dialogue_required = YES` kekal melepasi
+  `hard ceiling` selepas rewrite loop
 - ABORT jika BM commercial / recommendation / household UGC tetapi `copy_formula` null
 - ABORT jika BM commercial / recommendation / household UGC tetapi Section 6 tiada hook
 - ABORT jika BM commercial / recommendation / household UGC tetapi Section 6 tiada pain/friction
@@ -1182,6 +1235,10 @@ NO_OVERLAY — Clean video only. No burned-in text, captions, CTA labels, badges
 ### AUTO-HEAL — Fix dan teruskan (jangan ABORT)
 - Section 6 ada visual noun → remove noun, rephrase dialogue, log, teruskan
 - Section 9 ada overlay text dijana → buang semua overlay content, output "NO_OVERLAY — Clean video only", log, teruskan
+- Mana-mana dialogue block `UNDERFILLED` → expand / rewrite ke sekurang-kurangnya
+  corridor minimum, kira semula, log, teruskan
+- Mana-mana dialogue block di atas `target_max_words` tetapi belum lepas
+  `hard_ceiling_words` → trim ke target range, kira semula, log, teruskan
 - WPS exceed wps_safe_max (bukan ceiling) → trim dialogue ke dalam Safe Max budget, recalculate, log, teruskan
   [BM: > 2.5 | EN: > 3.0 | ID: > 2.6 | ZH: > 2.6 | HI/BN: > 2.4 | AR: > 2.2]
 - WPS exceed wps_ceiling (hard ceiling) → rebuild Section 6 sepenuhnya ikut optimum WPS, log, teruskan

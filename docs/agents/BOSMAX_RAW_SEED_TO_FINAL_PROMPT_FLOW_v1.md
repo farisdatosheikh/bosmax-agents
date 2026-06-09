@@ -101,8 +101,13 @@ STEP 2: PRE-FLIGHT PROTOCOL
 STEP 3: STORYBOARD GATE (video requests only)
   → Engine selection confirmed
   → Block math resolved
-  → Dialog budget + pace_class declared
+  → per-block WPS budget resolved from registry
+  → presentation route resolved
+  → storyboard beats allocated by block duration
+  → exact dialogue draft written per block
+  → dialogue word count audited per block
   → Master storyboard built and presented to operator
+  → Only dispatch to script-generator after WPS passes
   → Operator approves before skill dispatch
 
 STEP 4: ROUTE → SPECIALIST SKILL CHAIN
@@ -163,10 +168,10 @@ INPUT: Raw seed / product brief + engine + duration + platform + language
   ↓
 PRE-FLIGHT (engine validation, duration vs max, multi-block check)
   ↓
-STORYBOARD GATE (engine confirmed, block math, WPS budget, storyboard approved)
+STORYBOARD GATE (engine confirmed, block math, per-block WPS, exact dialogue draft, word count audited, storyboard approved)
   ↓
 bosmax-script-generator
-  → Inputs:  approved storyboard, block distribution, WPS budget, product_record, avatar_record
+  → Inputs:  approved storyboard, block distribution, per-block WPS corridor, presentation route, exact dialogue draft, product_record, avatar_record
   → Outputs: N × full structured video prompt (9-section or Google Flow format)
   ↓
 bosmax-compliance-gate
@@ -181,6 +186,7 @@ USER receives final video prompt(s) → pastes into video generator → render
 - Engine not in ENGINE CONSTRAINT TABLE → ABORT
 - Duration not in engine's `allowed_durations` → ABORT
 - Storyboard not approved → skill dispatch blocked
+- Any dialogue block below corridor minimum or above hard ceiling → dispatch blocked until rewritten and word count audited
 - Block N dialogue restarts instead of continuing from Block N-1 → compliance ABORT
 
 ### Video Flow — Route C (image to video)
