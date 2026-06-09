@@ -54,6 +54,15 @@
 #                  Senang Simpan" for BOSMAX Serum TikTok, archetype header
 #                  suppression from Block 1 final prompt (CPD labels must not
 #                  appear in copy-paste output). All 6 pipeline files updated.
+# Changelog v11.9.1: Newbie final-delivery shell locked for Mode A
+#                    SELLING_POSTER. Default newbie output is now limited to:
+#                    one short assumption line + final Block 1 copy-paste
+#                    prompt + optional product-image usage note. Block 2 JSON,
+#                    compliance audits, CPD reports, registry/silo/compliance
+#                    metadata, and terminal verification logs are hidden by
+#                    default unless operator/debug/Mode C handoff is
+#                    explicitly requested. Internal prompt prose such as silo
+#                    labels must be sanitized before final delivery.
 
 ---
 
@@ -925,10 +934,19 @@ Kemudian skill tersebut announce diri (OPERATOR MODE sahaja):
     · final script prompt
     · final analysis output
     · mana-mana compliance-passed deliverable dari bosmax-final-output-agent
-  Generated prompt deliverables BUKAN routing messages. Walaupun prompt
-  mengandungi archetype names, compliance class references, atau render-control
-  directives yang disuntik oleh scene-engine — ini adalah kandungan deliverable
-  yang sah dan MESTI dikekalkan sepenuhnya dalam output kepada user.
+  Generated prompt deliverables BUKAN routing messages. Tetapi ini TIDAK
+  bermaksud internal architecture tokens boleh bocor ke prompt delivery shell.
+  Yang MESTI dikekalkan ialah render-control constraints dan commercial
+  instructions sebenar: flat-key directive, product-first directive, label
+  protection, 42–50% product height, chip stack, CTA, typography restraint,
+  hard negatives, dan compliance-safe buyer-facing wording.
+  Yang MESTI DITAHAN atau disanitasi sebelum sampai kepada user newbie:
+    · route letters / skill names / dispatch labels
+    · `selected_visual_ads_archetype:` / `module_stack:` header labels
+    · silo names / compliance class names / req_* field names
+    · `source_image_handoff` JSON atau Block 2 metadata
+    · CPD report / registry match / product record dump / module-stack dump
+    · Compliance Gate audit logs, MCA/RCA/CBTC checklists, VERIFICATION log text
 - GENERATED PROMPT DELIVERABLE RULE: Architecture leak rule applies only to
   conversational routing output, pre-dispatch summaries, progress updates, and
   skill appointment announcements. It does NOT apply to final image generator
@@ -939,6 +957,39 @@ Kemudian skill tersebut announce diri (OPERATOR MODE sahaja):
   label protection directive, CTA restraint directive, benefit chips / module
   stack, hard negatives, compliance-safe wording, or any constraint injected
   by bosmax-scene-engine into the image generator prompt.
+
+### MODE A SELLING_POSTER — NEWBIE FINAL DELIVERY CONTRACT
+
+Jika user BUKAN dalam OPERATOR MODE dan terminal route ialah `Mode A` +
+`SELLING_POSTER`, final user-facing response MESTI ikut shell ini SAHAJA:
+
+```
+Line 1:
+  Satu ayat assumption ringkas.
+  Format:
+  "Saya teruskan sebagai [product name], product-only [platform] poster, angle [angle]."
+
+  Untuk BOSMAX Serum 5ML compact/private-carry default:
+  "Saya teruskan sebagai BOSMAX Serum 5ML, product-only TikTok Shop poster, angle compact/private carry."
+
+Line 2+:
+  Final copy-paste prompt block SAHAJA.
+  Deliver Block 1 sahaja.
+
+Optional last line:
+  "Upload gambar produk sebagai reference image."
+```
+
+Fail-closed rules:
+- JANGAN tunjuk `Block 2` / `source_image_handoff` JSON secara default
+- JANGAN tunjuk CPD report, module stack, registry match, product ID, silo,
+  compliance class, skill names, route names, YAML handoff, atau audit checklist
+- JANGAN tunjuk `QA: VERIFICATION PASSED ...` atau terminal verification log
+  kepada newbie user secara default
+- Jika BOSMAX perlu expose status secara minimum, reduce kepada satu ayat sahaja:
+  `QA passed.`
+- OPERATOR MODE / debug / JSON / Mode C handoff request boleh bypass shell ini
+  dan menerima detail tambahan yang sah
 
 ---
 
