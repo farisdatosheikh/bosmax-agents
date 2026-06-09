@@ -324,6 +324,30 @@ A single HG FAIL = ABORT regardless of overall score.
   no commercial module hierarchy. CPD must rebuild with full module stack and
   AD_ZONE_RENDER_BLOCK."
 
+☐ RCA-09: PRODUCT HEIGHT — SELLING_POSTER TikTok 9:16
+  Verify Block 1 prompt includes instruction that product occupies approximately
+  42–50% of frame height (CONSTRAINT 6 language or equivalent directive).
+  Check that product is NOT described as small, prop-scale, or subservient to text.
+  ABORT reason if fail: "RENDER_ABORT — RCA-09: product height instruction missing.
+  Prompt must instruct product to occupy approx 42–50% of frame height for TikTok 9:16.
+  Scene engine must inject CONSTRAINT 6."
+
+☐ RCA-10: CTA LANGUAGE — TIKTOK SHOP MY
+  For platform = TikTok Shop MY: verify CTA copy uses mobile-native TikTok language.
+  Accepted: "Tap Tengok Harga" | "Tap untuk Order" | "Tap untuk Tengok"
+  Reject: "Klik untuk lihat harga" | "Klik untuk detail" | "Click here" | any "Klik" CTA
+  ABORT reason if fail: "RENDER_ABORT — RCA-10: CTA uses desktop-style 'Klik' for
+  TikTok Shop MY. Replace with 'Tap Tengok Harga' or 'Tap untuk Order'."
+
+☐ RCA-11: ARCHETYPE HEADER IN BLOCK 1
+  Verify Block 1 does NOT begin with or contain these internal header labels:
+    "ARCHETYPE: [X]" | "selected_visual_ads_archetype: [X]" | "module_stack:" header
+  These are CPD internal handoff labels — must NOT appear in Block 1 image prompt prose.
+  Archetype may appear as natural prose (e.g. "scale-proof commercial poster with key
+  comparison") but must NOT appear as a raw structured label header.
+  ABORT reason if fail: "METADATA_ABORT — RCA-11: archetype header leaked into Block 1.
+  Scene engine must strip CPD handoff headers before Block 1 assembly."
+
 ---
 
 ### CBTC CHECK (Commercially Boring But Technically Correct)
@@ -748,6 +772,8 @@ Commercial Poster Director must do the rewrite.
 ║ Flat BM sales copy           │ Rebuild with HPFRC or HSARC formula   ║
 ║ Block 2 starts new idea      │ Rewrite with bridge continuation      ║
 ║ Many-image authority drift   │ Re-assert asset hierarchy + B-roll role║
+║ CTA uses "Klik" (TikTok MY)  │ Replace with "Tap Tengok Harga"        ║
+║ Archetype header in Block 1  │ Strip header lines, re-audit Block 1   ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 

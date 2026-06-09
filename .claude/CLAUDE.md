@@ -40,6 +40,20 @@
 #                  reflect CPD step. Fixes live failure: flat-key,
 #                  product-first, benefit chips, and CTA restraint constraints
 #                  were not injected because CPD was never appointed.
+# Changelog v11.9: Cleaned newbie-safe intake: product-only subject_mode
+#                  auto-default (no avatar question when no avatar signal),
+#                  BOSMAX_SERUM 5ML confident visual match auto-default (no
+#                  variant question when slim 5ML packaging clear), user-safe
+#                  scan declaration (no registry status terms exposed to user),
+#                  user-safe product lookup failure message (no "BOSMAX registry"
+#                  in user-facing text). Commercial seniority gate: product
+#                  height 42–50% frame rule injected into scene-engine and
+#                  audited by compliance-gate (RCA-09), TikTok-native CTA
+#                  "Tap Tengok Harga" replaces desktop "Klik" (RCA-10),
+#                  preferred chips locked to "5ML Roll-On | Muat Poket |
+#                  Senang Simpan" for BOSMAX Serum TikTok, archetype header
+#                  suppression from Block 1 final prompt (CPD labels must not
+#                  appear in copy-paste output). All 6 pipeline files updated.
 
 ---
 
@@ -81,7 +95,9 @@ VIDEO reference_mode:
 
 ```
 Universal:
-  avatar_image
+  avatar_image     → OPTIONAL untuk SELLING_POSTER product-only requests.
+                     Jika tiada avatar signal dalam request, auto-default ke
+                     subject_mode = product_only (STEP 1A). Jangan tanya.
   product_image
   product_name
   platform
@@ -208,6 +224,13 @@ Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
    · Jika tiada match → set: product_registry_status = "NOT_FOUND"
      → akan trigger TIER 3 dalam STEP 0
 
+→ BOSMAX_SERUM VISUAL VARIANT AUTO-RESOLVE:
+   Jika product dikenali sebagai BOSMAX Serum dan packaging jelas visible:
+   · Slim narrow roll-on (tinggi ≈ 3× lebar, packaging kecil) → default to 5ML
+   · Packaging lebih besar/lebar → mungkin 10ML, tanya HANYA jika ambiguous
+   · Jika visual jelas slim 5ML → auto-default, JANGAN tanya 5ML vs 10ML
+   · Log: variant = "5ML" (visual auto-resolve)
+
 → HARD RULE — VISUAL WINS OVER TEXT:
    Jika nama produk dalam GAMBAR berbeza dari apa yang user tulis
    dalam teks atau dari apa yang ada dalam session memory:
@@ -222,9 +245,16 @@ Aktif apabila: request mengandungi gambar, video, atau frames yang diupload.
 
   FORMAT DECLARATION:
   "📷 Visual scan complete:
-   Avatar: [gender + ethnicity + wardrobe summary] — USER_UPLOAD locked
-   Produk: [nama dari gambar] — [registry status]
+   Avatar: [gender + ethnicity + wardrobe summary] — locked dari gambar
+   Produk: [nama dari gambar] — [guna plain language:
+     FOUND     → "Saya kenali produk ini."
+     PARTIAL   → "Saya kenali produk ini, akan sahkan varian."
+     NOT_FOUND → "Produk baru — akan proses ikut gambar ini."]
    Setting: [brief scene description]"
+
+  JANGAN expose "registry status", "NOT_FOUND", "TIER 1/2/3", atau
+  mana-mana internal field names dalam user-facing declaration.
+  Guna plain language mapping di atas.
 
 → Jika produk JELAS (ada nama visible dalam gambar):
    → Proceed dengan declaration, tak perlu tunggu confirmation
@@ -478,11 +508,11 @@ ON LOOKUP SUCCESS (TIER 1 atau TIER 2):
 ON LOOKUP FAIL (TIER 1 + TIER 2 kedua-dua miss):
   → Produk baru didetect
   → TANYA USER SATU SOALAN (jangan terus interview):
-    "Produk '[nama]' belum ada dalam BOSMAX registry.
+    "Produk '[nama]' belum saya kenali.
      Boss nak:
-     A) PROCEED SEKARANG — saya tanya 5 soalan ringkas, terus generate
-        (session sahaja — data tak disimpan)
-     B) REGISTER DULU — simpan dalam registry untuk guna balik lepas ni"
+     A) PROCEED SEKARANG — saya tanya beberapa soalan ringkas, terus generate
+        (untuk sesi ini sahaja)
+     B) SIMPAN PRODUK — simpan untuk guna balik pada masa akan datang"
   → TUNGGU jawapan
   → Pilihan A → SANDBOX MODE → bosmax-requirement-analyst MINI-INTAKE WIZARD
     → jika visual_product_stub already exists:
@@ -580,6 +610,18 @@ archetype (IMAGE mode — SELLING_POSTER):
       akan auto-select berdasarkan product category + concept signals
     → User tidak perlu tahu nama archetype atau visual ads layout system
 
+subject_mode (IMAGE mode — SELLING_POSTER):
+  Jika null DAN request TIDAK mengandungi mana-mana keyword ini:
+    "avatar" | "model" | "orang" | "manusia" | "tangan" | "hand" |
+    "UGC" | "lifestyle" | "pegang" | "hold" | "person" | "RIZAL" |
+    "AZMAN" | "NORA" | "SARA" | mana-mana persona name:
+    → set subject_mode = "product_only"
+    → mark: subject_mode_defaulted = true
+    → JANGAN tanya soalan avatar — skip terus ke product composition
+    → JANGAN tanya RIZAL/AZMAN/persona questions
+  Jika user mention avatar/model/person/lifestyle:
+    → REMAIN null → resolve dari upload atau intake question
+
 EXPLICIT USER OVERRIDE RULES (tidak boleh dilanggar):
   Jika user explicitly nyatakan platform / language / goal / format:
     → User value MENANG. Jangan override dengan default.
@@ -607,6 +649,8 @@ FORMAT DECLARATION (user-facing, plain language, newbie-safe):
    ✓ Bahasa copy: [Malay / English]   [tunjuk HANYA jika language_defaulted]
    ✓ Layout poster: sistem akan pilih rekabentuk terbaik ikut produk
                                        [tunjuk HANYA jika archetype_deferred_to_cpd]
+   ✓ Reka bentuk: produk sahaja (tanpa model/orang)
+                                       [tunjuk HANYA jika subject_mode_defaulted]
    Kalau ada yang boss nak ubah, bagitahu sekarang. Kalau ok, proceed!"
 
 DECLARATION RULES:
@@ -1212,6 +1256,18 @@ Detailed pipeline maps telah dipindah ke:
   MESTI kekal dalam final image/video prompt walaupun user bukan operator
 - Generated prompt deliverable yang telah lulus Compliance Gate MESTI dihantar verbatim
   kepada user — bosmax-final-output-agent delivers content unchanged regardless of mode
+
+### Rules Baru (v11.9 — Newbie Intake & Commercial Seniority Gate)
+- JANGAN tanya soalan avatar untuk SELLING_POSTER jika user tidak mention avatar/model/orang/UGC dalam request
+- JANGAN expose "registry status", "NOT_FOUND", "TIER 1/2/3" dalam user-facing scan declaration
+- JANGAN expose "BOSMAX registry" kepada user — guna "belum saya kenali" untuk produk baru
+- JANGAN tanya 5ML vs 10ML untuk BOSMAX_SERUM jika visual jelas menunjukkan slim 5ML packaging
+- JANGAN expose archetype header ("ARCHETYPE: SCALE_PROOF_AD") dalam final prompt kepada user
+- Final prompt MESTI bebas dari internal header labels: "selected_visual_ads_archetype:", "module_stack:"
+- Product height dalam SELLING_POSTER MESTI dinyatakan sebagai approx 42–50% frame height untuk TikTok 9:16
+- Default CTA untuk TikTok Shop MY (non-promo): "Tap Tengok Harga" — JANGAN guna "Klik untuk lihat harga"
+- Preferred chips untuk BOSMAX Serum TikTok: "5ML Roll-On | Muat Poket | Senang Simpan"
+- subject_mode auto-default (product_only) MESTI declare dalam STEP 1B assumptions apabila aktif
 
 ---
 

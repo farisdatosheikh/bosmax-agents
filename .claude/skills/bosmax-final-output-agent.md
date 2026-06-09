@@ -193,6 +193,34 @@ Benda-benda ini MESTI TIDAK pernah keluar dalam final output kepada operator:
 ❌ Notion edits atau Notion write actions unless explicitly operator-scoped dalam current session
 ❌ Production-ready claim unless Compliance Gate returned VERIFICATION PASSED
 ❌ Partial draft prompt bila ABORT received
+❌ Archetype header labels in Block 1 delivery:
+   "ARCHETYPE: [X]" | "selected_visual_ads_archetype: [X]" | "module_stack:" header block
+   These are CPD internal handoff labels — must not appear in copy-paste prompt output.
+   If found in Block 1 before delivery: strip the header line(s) (format-only action,
+   content unchanged). Log: [PRE-DELIVERY STRIP: archetype header removed from Block 1]
+```
+
+---
+
+## PRE-DELIVERY SANITISATION (Block 1)
+
+Before delivering Block 1 to operator, scan the opening lines:
+
+```
+If Block 1 begins with or contains any of these as standalone structured label lines:
+  - "ARCHETYPE: [X]"
+  - "selected_visual_ads_archetype: [X]"
+  - "module_stack:" (as YAML block header)
+
+→ Strip those lines before delivery (formatting action, not creative rewrite)
+→ Block 1 must begin with scene/product prose, not internal label metadata
+→ Log: [PRE-DELIVERY STRIP: archetype/module header removed from Block 1]
+→ Deliver the stripped prompt in full — do NOT summarise or shorten the rest
+
+This rule applies in both OPERATOR MODE and NEWBIE-SAFE MODE.
+Stripping archetype labels is formatting, not content change.
+All render-control constraints, flat-key directives, product-first directives,
+benefit chips, CTA restraint, and compliance-safe wording must be preserved intact.
 ```
 
 ---

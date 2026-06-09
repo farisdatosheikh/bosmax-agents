@@ -114,6 +114,12 @@ ZONE LAYOUT (9:16):
 
   CENTRE ZONE (mid 50–60%):
     Product hero. Product occupies this zone as dominant element.
+    For TikTok 9:16 SELLING_POSTER: the product bottle should occupy
+    approximately 42–50% of the total frame height. This ensures the product
+    reads large and clear on mobile, while leaving adequate breathing room
+    for the hook zone above and the chips + CTA zone below.
+    FORBIDDEN: product so small it appears as a supporting prop under text.
+    FORBIDDEN: product so large it leaves no room for commercial module zones.
     [If archetype = SCALE_PROOF_AD or UGC_SCALE_AD]:
       Scale comparison object (key / hand / coin) placed directly
       adjacent to product. Both product and scale object sharp and clear.
@@ -224,6 +230,13 @@ CONSTRAINT 5 — FLAT OBJECT ENFORCEMENT (SCALE_PROOF_AD: key / coin / card):
   "The headline is visually secondary to the product."
   "No upright key, no giant headline, no text-first poster."
 
+CONSTRAINT 6 — PRODUCT HEIGHT ENFORCEMENT (TikTok 9:16 SELLING_POSTER):
+  MANDATORY PROMPT WORDING — inject into Block 1:
+  "The [product name] bottle occupies approximately 42–50% of the total frame height.
+  The product is large enough to read clearly on mobile, while leaving breathing room
+  for the hook zone above and the chips and CTA zone below.
+  The product is not a small prop supporting a text block — it is the hero."
+
 ANTI-PATTERN FAILSAFE (universal):
   FORBIDDEN rendering outputs:
   - Upright key, upright coin, or any scale object standing vertically
@@ -233,6 +246,7 @@ ANTI-PATTERN FAILSAFE (universal):
   - Product label blocked, cropped, warped, or covered by any element
   - CTA rendered as a large, dominant, app-style button
   - Generic product photography shot with no commercial module hierarchy
+  - Product occupying less than 35% of frame height (too small for TikTok mobile)
 ```
 
 ---
@@ -249,6 +263,17 @@ Block 2 → source_image_handoff JSON
 **FORBIDDEN:** Block 3, detached copy sheet, atau metadata artifact tambahan.
 Jika `image_goal = SELLING_POSTER`, poster hierarchy + AD_ZONE_RENDER_BLOCK mesti
 di-embed dalam Block 1 prompt sahaja.
+
+**ARCHETYPE HEADER SUPPRESSION (SELLING_POSTER):**
+Block 1 MESTI be pure structured prose describing the scene and commercial layout.
+Block 1 MUST NOT begin with or contain any of these internal header labels:
+  - `selected_visual_ads_archetype: [X]` — internal CPD handoff label
+  - `ARCHETYPE: [X]` — internal ID label
+  - `module_stack:` — internal YAML block header
+The archetype governs composition logic internally — it must NOT appear as a
+visible structured label in the image prompt delivered to the user.
+Translate all module stack directives into embedded prose instructions only.
+If CPD handoff begins with these headers, strip them before building Block 1.
 
 ---
 

@@ -393,17 +393,29 @@ product_dominance_rule:
   No text block taller than product.
   No chip stack wider than product zone.
   Highest contrast and sharpest focus belong to product.
+  For TikTok 9:16 SELLING_POSTER: product should occupy approximately 42–50%
+  of total frame height — large enough for mobile readability, leaving room
+  for the hook zone above and chips/CTA zone below.
+  FORBIDDEN: product so small it reads as a prop under a text block.
 
 typography_restraint_rule:
   Hook: bold, max 5–6 words, top zone only.
   Chips: small pill shape, factual text only.
   CTA: button shape, restrained, bottom zone.
   No headline larger than product visual weight.
+  Headline must be visually secondary to product at all times.
 
 compliance_safe_copy_pool_used:
   hook_family: [HOOK_FAMILY_SCALE / HOOK_FAMILY_PRIVATE / HOOK_FAMILY_PREMIUM]
   chips_selected: [list]
   cta_selected: [text]
+
+archetype_header_rule:
+  The "selected_visual_ads_archetype:" label and "module_stack:" header above
+  are INTERNAL handoff metadata for bosmax-scene-engine ONLY.
+  These labels MUST NOT appear in Block 1 image prompt prose delivered to user.
+  bosmax-scene-engine must translate module stack into embedded prose directives,
+  not copy the YAML header labels into Block 1.
 ```
 
 ### SELECTION RULES
@@ -633,13 +645,19 @@ Trigger kuat:
 - For BOSMAX Serum Scale Shock / key comparison posters, preferred copy family:
   Non-promo:
   Hook: "MUAT POKET. TAK RIBET."
+  Chips (preferred): "5ML Roll-On" | "Muat Poket" | "Senang Simpan"
+  Chips (alt): "5ML Roll-On" | "Muat Poket" | "Simpan Private"
   Support: "5ML Roll-On — mudah bawa, senang simpan"
-  CTA: "Klik untuk lihat harga"
+  CTA (preferred): "Tap Tengok Harga"
+  CTA (alt): "Tap untuk Order"
+  [NOTE: "Tap" bukan "Klik" — TikTok Shop MY adalah mobile-first.
+   "Klik untuk lihat harga" adalah desktop-web language, tidak sesuai untuk TikTok.]
   Promo only if confirmed:
   Hook: "BOTOL KECIL. SENANG BAWA."
   Support: "5ML Roll-On — mudah simpan"
   CTA / Offer: "Beli 1 Percuma 1"
 - The system may adapt wording, but must preserve buyer-facing TikTok Shop tone.
+- TikTok Shop MY CTA MUST use "Tap" not "Klik" for all SELLING_POSTER output.
 - The system must not push this work back to Notion.
 - The system must not require Notion to include overlay copy fields.
 
