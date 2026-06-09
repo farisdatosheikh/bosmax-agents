@@ -168,6 +168,9 @@ single-output deterministic flow.
 
 Detailed batch types, intake contract, dan hard rules telah dipindah ke:
 - `.claude/rules/batch-lane.md`
+- Raw batch prompts dengan satu angle jelas + multiple outputs default ke
+  `COPY_VARIANT_BATCH`. Preserve angle meaning, vary wording sahaja, build
+  Variant Plan dahulu, dan tunggu approval sebelum expansion.
 
 ---
 

@@ -47,6 +47,12 @@ Language: [Malay / English]
 Produk: [PRODUCT NAME]
 Variant: [VARIANT]
 Scale anchor: [EXACT SCALE ANCHOR]
+Batch variation mode: [COPY_VARIANT_BATCH / ANGLE_ROTATION_BATCH / VISUAL_VARIANT_BATCH / MATRIX_BATCH]
+Angle lock: [ANGLE ID or NONE]
+Semantic intent: [same commercial meaning to preserve]
+Copy variant count: [N]
+Visual variation level: [LOW / MEDIUM / HIGH]
+Semantic drift guard: ON
 
 Image mix:
 - VIDEO_SUPPORT: 100%
@@ -96,6 +102,12 @@ Language: [Malay / English]
 Produk: [PRODUCT NAME]
 Variant: [VARIANT]
 Scale anchor: [EXACT SCALE ANCHOR]
+Batch variation mode: [COPY_VARIANT_BATCH / ANGLE_ROTATION_BATCH / VISUAL_VARIANT_BATCH / MATRIX_BATCH]
+Angle lock: [ANGLE ID or NONE]
+Semantic intent: [same commercial meaning to preserve]
+Copy variant count: [N]
+Visual variation level: [LOW / MEDIUM / HIGH]
+Semantic drift guard: ON
 
 Image mix:
 - VIDEO_SUPPORT: 0%
@@ -149,6 +161,12 @@ Language: [Malay / English]
 Produk: [PRODUCT NAME]
 Variant: [VARIANT]
 Scale anchor: [EXACT SCALE ANCHOR]
+Batch variation mode: [COPY_VARIANT_BATCH / ANGLE_ROTATION_BATCH / VISUAL_VARIANT_BATCH / MATRIX_BATCH]
+Angle lock: [ANGLE ID or NONE]
+Semantic intent: [same commercial meaning to preserve]
+Copy variant count: [N]
+Visual variation level: [LOW / MEDIUM / HIGH]
+Semantic drift guard: ON
 
 Video engine: [VEO_3_1_LITE / VEO_3_1 / KLING_3_0 / SEEDANCE_2_0 / GROK / GOOGLE_FLOW]
 Duration target: [VALID DURATION]
@@ -207,6 +225,12 @@ Language: [Malay / English]
 Produk: [PRODUCT NAME]
 Variant: [VARIANT]
 Scale anchor: [EXACT SCALE ANCHOR]
+Batch variation mode: [COPY_VARIANT_BATCH / ANGLE_ROTATION_BATCH / VISUAL_VARIANT_BATCH / MATRIX_BATCH]
+Angle lock: [ANGLE ID or NONE]
+Semantic intent: [same commercial meaning to preserve]
+Copy variant count: [N]
+Visual variation level: [LOW / MEDIUM / HIGH]
+Semantic drift guard: ON
 
 Image mix:
 - VIDEO_SUPPORT: [PERCENT]
@@ -282,6 +306,13 @@ Product list:
   Target count: [N]
   Scale anchor: [EXACT SCALE ANCHOR]
 
+Batch variation mode: [COPY_VARIANT_BATCH / ANGLE_ROTATION_BATCH / VISUAL_VARIANT_BATCH / MATRIX_BATCH]
+Angle lock: [ANGLE ID or NONE]
+Semantic intent: [same commercial meaning to preserve]
+Copy variant count: [N]
+Visual variation level: [LOW / MEDIUM / HIGH]
+Semantic drift guard: ON
+
 Image count: [X]
 Video count: [Y]
 
@@ -335,6 +366,33 @@ Image mix:
 - SELLING_POSTER: 100%
 Variation condition: 3
 Build Variant Plan first. Every row must resolve to IMAGE + SELLING_POSTER.
+```
+
+### Fast block — 10 copy variants from one selling angle
+
+```text
+Mode: BULK
+Batch type: BATCH_IMAGE_SELLING
+Batch goal: IMAGE_ONLY
+Batch variation mode: COPY_VARIANT_BATCH
+Product scope: SINGLE_PRODUCT
+Content quantity: 10
+Platform: TikTok
+Language: Malay
+Produk: [PRODUCT NAME]
+Product ID: [PRODUCT ID]
+Scale anchor: [EXACT SCALE ANCHOR]
+Angle lock: [ANGLE ID + angle name]
+Semantic intent: [same meaning to preserve]
+Copy variant count: 10
+Visual variation level: LOW
+Image mix:
+- SELLING_POSTER: 100%
+- VIDEO_SUPPORT: 0%
+Build Variant Plan first.
+Every row must keep the same angle meaning.
+Every row must vary copywriting wording.
+Do not rotate to a different angle unless user explicitly changes batch_variation_mode to ANGLE_ROTATION_BATCH.
 ```
 
 ### Fast block — 10 fresh videos

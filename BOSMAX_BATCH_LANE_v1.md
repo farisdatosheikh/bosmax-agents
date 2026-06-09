@@ -98,6 +98,66 @@ handoff pool already exists.
 - `cta_style_pool`
 - `max_variants_per_angle`
 
+## Batch Variation Mode Protocol
+
+`batch_type` still controls which deterministic route each row resolves to.
+`batch_variation_mode` controls **how variation is scaled inside that batch**.
+
+### `batch_variation_mode`
+- `COPY_VARIANT_BATCH`
+- `ANGLE_ROTATION_BATCH`
+- `VISUAL_VARIANT_BATCH`
+- `MATRIX_BATCH`
+
+### `COPY_VARIANT_BATCH`
+- one locked angle
+- one locked semantic intent
+- multiple copywriting variants
+- different wording only
+- same benefit direction
+- same compliance class
+- same product truth
+- same target user mental block
+- default when user provides one clear angle and asks for multiple outputs
+
+### `ANGLE_ROTATION_BATCH`
+- multiple commercial angles are intentionally rotated
+- allowed only when user provides multiple angles
+- allowed when user explicitly asks for angle exploration
+
+### `VISUAL_VARIANT_BATCH`
+- same angle and copy direction
+- visual composition varies
+
+### `MATRIX_BATCH`
+- controlled angle x copy x visual matrix
+- advanced / review-only unless user explicitly requests it
+
+### Hard default
+
+If the user provides one clear angle and asks for multiple image/poster
+outputs, default to `COPY_VARIANT_BATCH`, not `ANGLE_ROTATION_BATCH`.
+
+### COPY_VARIANT_BATCH drift guard
+
+Allowed variation:
+- headline wording
+- subline wording
+- CTA wording
+- Malay slang intensity
+- sentence rhythm
+- copy order
+- visual micro-composition if requested
+
+Forbidden variation:
+- angle meaning
+- product truth
+- benefit direction
+- compliance class
+- target user mental block
+- claim level
+- product category
+
 ---
 
 ## Batch Classification
@@ -163,6 +223,13 @@ Each row must contain:
 - `copy_angle_id`
 - `scale_anchor`
 - `compliance_class`
+- `batch_variation_mode`
+- `angle_lock`
+- `semantic_intent`
+- `copy_variant_id`
+- `copy_variant_strategy`
+- `visual_variation_level`
+- `semantic_drift_status`
 - `status`
 
 ### Step 5 — wait for approval

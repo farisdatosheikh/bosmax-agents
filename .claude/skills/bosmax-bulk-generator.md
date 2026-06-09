@@ -72,6 +72,11 @@ Inherits visual DNA absolutely. Motion sahaja ditambah.
 - product_scope: SINGLE_PRODUCT | MULTI_PRODUCT
 - platform_target: TikTok | Shopee | Lazada | Meta | YouTube Shorts (default: TikTok)
 - language
+- batch_variation_mode: COPY_VARIANT_BATCH | ANGLE_ROTATION_BATCH | VISUAL_VARIANT_BATCH | MATRIX_BATCH
+- angle_lock
+- semantic_intent
+- copy_variant_count
+- visual_variation_level
 
 **Product authority:**
 - SINGLE_PRODUCT → `product_record` WAJIB resolvable
@@ -100,6 +105,39 @@ Inherits visual DNA absolutely. Motion sahaja ditambah.
 - copy_angle_pool
 - cta_style_pool
 - source_image_handoff pool (hanya jika BOSMAX_IMAGE_HANDOFF atau INGREDIENTS benar-benar digunakan)
+
+## BATCH VARIATION MODE PROTOCOL
+
+`batch_type` decides the deterministic route family.
+`batch_variation_mode` decides which axis is allowed to move inside that batch.
+
+### Allowed values
+- `COPY_VARIANT_BATCH`
+- `ANGLE_ROTATION_BATCH`
+- `VISUAL_VARIANT_BATCH`
+- `MATRIX_BATCH`
+
+### Inference rule
+
+Jika `batch_variation_mode` tidak declared:
+- Jika user bagi satu angle yang jelas dan minta multiple outputs → infer `COPY_VARIANT_BATCH`
+- Jika user bagi multiple angles atau minta angle exploration → infer `ANGLE_ROTATION_BATCH`
+- Jika user minta angle sama tetapi design / composition berbeza → infer `VISUAL_VARIANT_BATCH`
+- Jika user minta kombinasi angle + copy + visual grid → infer `MATRIX_BATCH` dan mark `NEEDS_REVIEW` kecuali details sudah explicit
+
+Jika intent sudah jelas, **jangan tanya follow-up** hanya untuk dapatkan
+`batch_variation_mode`.
+
+### Copy Variant Law
+
+Untuk `COPY_VARIANT_BATCH`:
+- lock angle
+- lock semantic intent
+- lock compliance lane
+- vary copywriting wording per row
+- setiap row dapat `copy_variant_id`: `CV01`, `CV02`, `CV03` ...
+- setiap row mesti ada `semantic_drift_status: PASS`
+- jika mana-mana row ubah meaning atau benefit direction, mark `BLOCKED` dan regenerate row tersebut
 
 ---
 
@@ -356,6 +394,9 @@ Jika INGREDIENTS / GOOGLE_FLOW image-reference lane dipilih → confirm referenc
 Confirm content_quantity (default 10, max 50). Confirm platform_target.
 Confirm engine_id + duration_target jika ada video rows.
 Confirm image_mix / video_mix / image_count / video_count ikut batch_goal.
+Confirm `batch_variation_mode`, atau infer ikut Batch Variation Mode Protocol jika intent sudah clear.
+Untuk `COPY_VARIANT_BATCH`, confirm `angle_lock`, `semantic_intent`, `copy_variant_count`,
+dan `visual_variation_level`.
 **Confirm variation_condition (1/2/3) — WAJIB sebelum proceed.**
 
 **STEP 3.5 — BUILD ROW PLAN:**
@@ -373,6 +414,12 @@ Setiap row mesti ada fields ini sebelum Variant Plan dipresent:
 - copy angle
 - scale anchor
 - compliance class
+- batch_variation_mode
+- angle_lock
+- semantic_intent
+- copy_variant_id
+- visual_variation_level
+- semantic_drift_status
 - status
 
 **STEP 4 — BUILD VARIANT PLAN:**
@@ -407,6 +454,13 @@ Setiap row yang approved MESTI di-expand sebagai satu valid BOSMAX single-output
 - VIDEO + BOSMAX_IMAGE_HANDOFF
 
 Batch lane tidak boleh invent prompt grammar baru di luar paths ini.
+
+Sebelum expand prompts, confirm:
+- `COPY_VARIANT_BATCH` rows preserve the same angle
+- tiada angle drift
+- tiada compliance drift
+- headline tidak repeat verbatim kecuali user memang mahu fixed copy
+- CTA boleh vary tetapi action intent mesti sama
 
 **STEP 6 — GENERATE SET 1 (GOLD STANDARD where relevant):**
 
