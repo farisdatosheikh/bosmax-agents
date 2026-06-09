@@ -568,15 +568,56 @@ Selepas wizard selesai (atau selepas product_record loaded dari registry):
   - Kalau user describe concept secara jelas: extract concept signal, pass ke CPD
 ```
 
-### WIZARD QUESTIONS (AVATAR BARU) [SKIP jika gambar avatar diupload]
+### SUBJECT_MODE DEFAULT — PRODUCT-ONLY AUTO-DETECT
 
 ```
-Q6 — AVATAR IDENTITY [hanya jika tiada gambar avatar]:
+BERLAKU SEBELUM Q6-Q7. Semak dulu sebelum tanya apa-apa tentang avatar.
+
+PRODUCT-ONLY AUTO-DETECT:
+  Jika image_goal = SELLING_POSTER DAN request TIDAK mengandungi keyword ini:
+    "avatar" | "model" | "orang" | "manusia" | "tangan" | "hand" |
+    "UGC" | "lifestyle" | "pegang" | "hold" | "person" | "RIZAL" |
+    "AZMAN" | "NORA" | "SARA" | mana-mana persona name:
+    → set subject_mode = "product_only"
+    → SKIP Q6 dan Q7 sepenuhnya
+    → Log dalam work order: "subject_mode = product_only (auto-detect: no avatar signal)"
+    → PROCEED ke SANDBOX RECORD EMIT tanpa tanya soalan avatar
+
+  Jika user mention avatar/model/person/lifestyle ATAU upload gambar avatar:
+    → subject_mode = "with_avatar" → proceed ke Q6-Q7 seperti biasa
+
+KENAPA DEFAULT PRODUCT-ONLY:
+  TikTok Shop poster yang paling banyak convert adalah product-focused.
+  User yang upload gambar produk dan minta "poster TikTok" hampir selalu mahu
+  product-focused composition. Jangan tanya soalan yang tidak perlu.
+```
+
+### BOSMAX_SERUM VISUAL VARIANT AUTO-RESOLVE
+
+```
+BERLAKU SEMASA Q3 (PACKAGING) atau semasa visual scan — SEBELUM tanya variant.
+
+Jika product dikenali sebagai BOSMAX Serum (BOSMAX_SERUM dari registry atau visual):
+  → Semak visual packaging:
+    · Slim narrow roll-on (tinggi ≈ 3× lebar, packaging kecil/compact) → default 5ML
+    · Packaging lebih besar/lebar/taller → mungkin 10ML → tanya HANYA jika ambiguous
+  → Jika gambar jelas dan packaging slim: auto-default ke variant = "5ML"
+    → SKIP soalan 5ML vs 10ML
+    → Log: "BOSMAX_SERUM variant = 5ML (visual auto-resolve)"
+  → Jika gambar tidak jelas atau tiada gambar: tanya (dikira 1 soalan dari budget)
+    "Ini BOSMAX 5ML atau 10ML? (packaging besar atau kecil/slim?)"
+  → JANGAN tanya jika visual sudah clear
+```
+
+### WIZARD QUESTIONS (AVATAR BARU) [SKIP jika gambar avatar diupload ATAU subject_mode = product_only]
+
+```
+Q6 — AVATAR IDENTITY [hanya jika tiada gambar avatar DAN subject_mode ≠ product_only]:
   "Avatar yang nak guna: lelaki atau perempuan?
    Etnik apa? (Melayu / Cina / India / Indonesia / dll)"
   Extract: gender, ethnicity
 
-Q7 — WARDROBE CONTEXT [hanya jika tiada gambar avatar]:
+Q7 — WARDROBE CONTEXT [hanya jika tiada gambar avatar DAN subject_mode ≠ product_only]:
   "Pakaian macam mana yang sesuai? (casual / office / traditional / sporty)"
   Extract: wardrobe_occasion
 ```
@@ -647,3 +688,12 @@ Selepas emit → proceed terus ke route yang diminta tanpa soalan tambahan.
 - JANGAN jadikan ASSUMPTIONS DECLARATION sebagai blocking step — informational sahaja
 - JIKA budget = 3 tercapai: stop tanya, auto-resolve baki fields dengan defaults, log dalam work order
 - JIKA user override assumption: accept, update field, proceed — jangan argue atau re-ask
+
+### SMART INTAKE FAIL-CLOSED RULES (v11.9)
+- JANGAN tanya soalan avatar (Q6/Q7) untuk SELLING_POSTER jika tiada avatar signal dalam request
+- JANGAN tanya 5ML vs 10ML untuk BOSMAX_SERUM jika visual jelas menunjukkan slim 5ML packaging
+- JANGAN expose "registry status", "NOT_FOUND", "TIER 1/2/3" dalam user-facing scan declaration
+- JANGAN tanya tentang subject/avatar apabila subject_mode = product_only sudah auto-resolved
+- JANGAN expose internal silo/compliance class dalam WORK ORDER yang dihantar ke user
+- Jika WORK ORDER diemit dalam OPERATOR MODE sahaja: boleh include technical fields
+- Jika WORK ORDER diemit dalam NEWBIE-SAFE MODE: suppress silo, compliance class, route letters, skill names
