@@ -37,6 +37,11 @@ Universal:
   product_scope
   platform
   language
+  batch_variation_mode
+  angle_lock
+  semantic_intent
+  copy_variant_count
+  visual_variation_level
 
 IMAGE batches:
   image_mix
@@ -53,6 +58,33 @@ MIXED batches:
   video_mix
 ```
 
+## Batch Variation Modes
+
+```yaml
+COPY_VARIANT_BATCH:
+  meaning: "one locked angle, one locked semantic intent, multiple wording variants"
+  default_when: "one clear angle + multiple poster/image outputs"
+  drift_forbidden:
+    - angle meaning
+    - product truth
+    - benefit direction
+    - compliance class
+    - target user mental block
+
+ANGLE_ROTATION_BATCH:
+  meaning: "multiple commercial angles intentionally rotated"
+  allowed_when:
+    - multiple angles provided
+    - user explicitly asks for angle exploration
+
+VISUAL_VARIANT_BATCH:
+  meaning: "same angle and copy direction, composition varies"
+
+MATRIX_BATCH:
+  meaning: "controlled angle x copy x visual matrix"
+  default_status: "NEEDS_REVIEW unless explicit"
+```
+
 ## Batch Hard Rules
 
 - Batch is not a new creative mode.
@@ -60,3 +92,4 @@ MIXED batches:
 - Every row in Variant Plan must resolve to a deterministic single-output route.
 - Do not emit batch prompts before Variant Plan is approved.
 - `VIDEO + BOSMAX_IMAGE_HANDOFF` inside a batch is valid only if the handoff pool truly exists.
+- If one clear angle is given for multiple poster/image outputs, default to `COPY_VARIANT_BATCH`, not `ANGLE_ROTATION_BATCH`.
