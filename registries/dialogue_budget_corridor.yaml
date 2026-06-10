@@ -10,8 +10,8 @@ guidance:
   status_logic:
     UNDERFILLED: final_word_count < minimum_words
     TARGET_RANGE: target_min_words <= final_word_count <= target_max_words
-    OVER SAFE: safe_max_words < final_word_count <= hard_ceiling_words
-    HARD FAIL: final_word_count > hard_ceiling_words
+    OVER_SAFE: target_max_words < final_word_count <= safe_max_words
+    HARD_FAIL: final_word_count > safe_max_words
 corridors:
   - language: BM
     pace_class: BRISK_UGC
