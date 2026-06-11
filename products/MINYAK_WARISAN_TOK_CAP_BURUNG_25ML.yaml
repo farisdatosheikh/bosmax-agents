@@ -1,0 +1,251 @@
+# BOSMAX PRODUCT REGISTRY — MINYAK_WARISAN_TOK_CAP_BURUNG_25ML
+# Version: v1.0 | Registered: 2026-06-11
+# Authority: POSTER_TEMPLATE_PRODUCT_TRUTH_PATCH
+# Purpose: Clean product truth source for Minyak Warisan Tok Cap Burung poster templates
+# ─────────────────────────────────────────────────────────────────
+
+schema_version: "1.0"
+
+# ─────────────────────────────────────────────
+# IDENTIFIERS
+# ─────────────────────────────────────────────
+product_id: "MINYAK_WARISAN_TOK_CAP_BURUNG_25ML"
+product_name: "Minyak Warisan Tok Cap Burung"
+product_aliases:
+  - "Minyak Warisan Tok Cap Burung"
+  - "Minyak Warisan Cap Burung"
+  - "Tok Cap Burung"
+  - "Cap Burung"
+brand: "Cap Burung"
+shop_name: ""                    # TBD — update when TikTok Shop registered
+tiktok_product_id: ""            # TBD
+fastmoss_product_name: ""        # TBD — update after Fastmoss lookup
+
+# ─────────────────────────────────────────────
+# CLASSIFICATION
+# ─────────────────────────────────────────────
+category: "Health & Wellness"
+sub_category: "Traditional Malay herbal oil / family-care oil"
+raw_category: "Health-Traditional Medicine-Minyak Angin & Urut"
+product_status: "Available"
+
+# ─────────────────────────────────────────────
+# PRODUCT PROFILE — CURRENT SOURCE OF TRUTH
+# ─────────────────────────────────────────────
+tagline: "Petua Turun Temurun."
+heritage_year: 1958
+product_type: "Traditional Malay herbal oil in a short compact capped glass bottle"
+packaging_type: "25ml short compact transparent green glass bottle with green herbal oil inside and a red ribbed screw cap. This is a capped oil bottle, not a roll-on, not a roller, not a pump, not a spray, and not a dropper."
+packaging_color: "Transparent green glass body showing green herbal oil inside, red ribbed screw cap, cream center label, teal/deep green label border, gold ornamental border, bird illustration."
+application_method: "Open cap and apply a small amount externally, then sapu / urut pada kulit. Do not describe as roll-on or roller application."
+external_use_only: true
+halal_status: "Halal-compatible (no alcohol, no animal-derived ingredients)"
+
+# ─────────────────────────────────────────────
+# PACKAGING NOTE — CRITICAL FOR AI IMAGE GENERATION
+# ─────────────────────────────────────────────
+packaging_note: >
+  Current uploaded reference shows Minyak Warisan Tok Cap Burung as a 25ml
+  short compact transparent green glass bottle with green oil inside and a red
+  ribbed screw cap. The bottle has a cream center label, teal/deep green border,
+  gold ornamental border, bird illustration, and visible 25ml size text. The
+  cap must remain closed. Do not show a roller ball, roll-on tip, pump, spray
+  nozzle, dropper, detached cap, or exposed applicator.
+
+# ─────────────────────────────────────────────
+# VARIANTS
+# ─────────────────────────────────────────────
+variants:
+  - variant_id: "25ML_CAPPED_GREEN_GLASS_BOTTLE"
+    variant_name: "25ml Capped Green Glass Bottle"
+    price_rm: null
+
+    scale_anchor_descriptor: "A short compact 25ml transparent green glass oil bottle with a red ribbed screw cap, small enough for home shelf, pouch, bedside, or family-care storage."
+
+    label_dna:
+      label_shape: "Rectangular label panel on compact bottle body"
+      label_base_color: "Cream center label panel with teal/deep green surrounding border"
+      border: "Gold ornamental border framing the cream label area"
+      layout: "Vertically centered traditional label identity with product name, bird illustration, heritage text, and size mark"
+      brand_name_text: "MINYAK WARISAN TOK CAP BURUNG"
+      bird_illustration: "Bird illustration on label, preserved exactly from the uploaded reference"
+      tagline_text: "Sejak 1958, Petua Turun Temurun"
+      size_text: "25ml"
+      overall_palette: "Cream, teal/deep green, gold, red cap, green oil"
+      label_style: "Traditional Malay heritage oil label, premium family-care look"
+
+      label_required:
+        - "MINYAK WARISAN TOK CAP BURUNG"
+        - "Sejak 1958"
+        - "Petua Turun Temurun"
+        - "25ml"
+        - "bird illustration"
+        - "cream label panel"
+        - "teal/deep green label border"
+        - "gold ornamental border"
+        - "red ribbed screw cap"
+        - "green oil inside"
+
+      label_forbidden:
+        - "5ML"
+        - "5ml"
+        - "30ML"
+        - "30ml"
+        - "WG40"
+        - "roll-on"
+        - "Roll-On"
+        - "roller ball"
+        - "roll-on applicator"
+        - "roller applicator"
+        - "lip-balm-size"
+        - "BOSMAX"
+        - "Serum"
+        - "spray nozzle"
+        - "dropper cap"
+        - "pump top"
+        - "detached cap"
+        - "exposed applicator"
+        - "black cap"
+        - "plain smooth cap"
+        - "amber apothecary bottle"
+        - "perfume bottle"
+        - "cosmetic serum bottle"
+        - "logo distortion or label morphing"
+        - "fake certification badge"
+        - "medical symbol"
+        - "before-after proof"
+
+    prompt_keywords:
+      - "25ml short compact transparent green glass bottle"
+      - "red ribbed screw cap closed"
+      - "green herbal oil visible inside transparent green glass"
+      - "cream center label panel"
+      - "teal deep green label border"
+      - "gold ornamental border"
+      - "MINYAK WARISAN TOK CAP BURUNG printed on label"
+      - "Sejak 1958 printed on label"
+      - "Petua Turun Temurun printed on label"
+      - "25ml printed on label"
+      - "bird illustration on label"
+      - "traditional Malay family-care herbal oil packaging"
+
+    image_prompt_locks:
+      reference_image_lock: >
+        [REFERENCE_IMAGE_LOCK]
+        Use the uploaded Minyak Warisan Tok Cap Burung product reference image
+        as the absolute product truth source. Preserve the exact short compact
+        transparent green glass bottle, green herbal oil inside, red ribbed
+        screw cap, cream label panel, teal/deep green label border, gold
+        ornamental border, bird illustration, and all visible label text
+        exactly as shown on the reference image. Preserve the words MINYAK
+        WARISAN TOK CAP BURUNG, Sejak 1958, Petua Turun Temurun, and 25ml if
+        visible. Do not redesign, relabel, recolor, resize, stretch, crop,
+        duplicate, modernize, simplify, or replace the product packaging.
+
+      local_edit_delta: >
+        [LOCAL_EDIT_DELTA]
+        Change only the background, lighting, surface, props, camera styling,
+        and poster overlay area. Do not change the bottle geometry, cap shape,
+        cap color, label layout, oil color, label text, label border, bird
+        illustration, or product scale. The red ribbed cap must remain fully
+        closed.
+
+      typography_and_branding_lock: >
+        [TYPOGRAPHY_AND_BRANDING_LOCK]
+        Keep the label crisp and unchanged: cream label panel, teal/deep green
+        border, gold ornamental border, bird illustration, MINYAK WARISAN TOK
+        CAP BURUNG, Sejak 1958, Petua Turun Temurun, and 25ml. Do not create a
+        new logo, do not alter the bird illustration, do not add fake claims,
+        and do not add unsupported label text.
+
+      spatial_math_and_proportions: >
+        [SPATIAL_MATH_AND_PROPORTIONS]
+        Maintain the short compact 25ml bottle proportion from the uploaded
+        reference image. The bottle should feel small, traditional, practical,
+        and family-care friendly, not elongated like perfume, not slim like
+        BOSMAX Serum, and not oversized. Keep the cap-to-bottle ratio, red
+        ribbed screw cap texture, transparent green glass body, and green oil
+        level believable and consistent with the reference.
+
+      output_specification: >
+        [OUTPUT_SPECIFICATION]
+        True-to-life commercial product poster rendering, TikTok Shop Malaysia,
+        vertical 9:16, 1080x1920px, sRGB, clean mobile-first hierarchy, sharp
+        readable product label, realistic glass reflections, premium traditional
+        family-care mood.
+
+      negative_lock: >
+        [NEGATIVE_LOCK]
+        No 5ML, no 30ML, no WG40 wording, no roll-on, no roller ball, no
+        roll-on applicator, no roller applicator, no lip-balm-size bottle, no
+        BOSMAX Serum, no black cylindrical bottle, no spray nozzle, no dropper
+        cap, no pump top, no detached cap, no exposed applicator, no black cap,
+        no plain smooth cap, no amber apothecary bottle, no perfume bottle, no
+        cosmetic serum bottle, no fake certification badge, no medical icon, no
+        before-after proof, no hospital cue, no patient scene, no crying baby
+        exploitation, no exposed baby body, no direct treatment scene, no label
+        distortion, no logo morphing, no fake label crop, no duplicated bottle.
+
+# ─────────────────────────────────────────────
+# COPYWRITING SAFETY — ACTIVE POSTER SYSTEM
+# ─────────────────────────────────────────────
+copywriting_safety:
+  allowed_phrasing:
+    - "sapu"
+    - "sapu nipis"
+    - "sapu perlahan"
+    - "urut perlahan"
+    - "botol kecil"
+    - "botol 25ml"
+    - "mudah simpan"
+    - "standby rumah"
+    - "standby beg"
+    - "letak tepi katil"
+    - "rasa selesa sikit"
+    - "rasa ringan sikit"
+    - "rasa cool sikit"
+    - "rasa kurang rimas sikit"
+  forbidden_phrasing:
+    - "5ML"
+    - "5ml"
+    - "30ML"
+    - "30ml"
+    - "roll-on"
+    - "Roll-On"
+    - "roller"
+    - "golek"
+    - "lip-balm-size"
+    - "BOSMAX"
+    - "Serum"
+    - "sembuh"
+    - "rawat"
+    - "ubati"
+    - "hilangkan"
+    - "jaminan"
+    - "100%"
+    - "pasti"
+    - "dijamin"
+
+# ─────────────────────────────────────────────
+# TEMPLATE SYSTEM READINESS
+# ─────────────────────────────────────────────
+poster_template_source_of_truth: true
+recommended_poster_template_prefix: "03A"
+video_template_prefix_reserved: "03B"
+recommended_master_templates:
+  - "03A-P1 — Product-Only Copy Landbank Poster"
+  - "03A-P2 — Avatar + Product Copy Landbank Poster"
+  - "03A-P3 — Regenerate Variation / Copy Swap Poster"
+
+# ─────────────────────────────────────────────
+# METADATA
+# ─────────────────────────────────────────────
+registered_by: "farisdatosheikh@gmail.com"
+registered_date: "2026-06-11"
+last_updated: "2026-06-11"
+status: "ACTIVE_PRODUCT_TRUTH"
+notes: |
+  Clean product truth registry for current Minyak Warisan Tok Cap Burung 25ml
+  poster template system. Created to prevent legacy 30ML/WG40/roll-on/BOSMAX
+  contamination from entering 03A poster templates. Use this file as the source
+  of truth for 03A-P1, 03A-P2, and 03A-P3 poster prompt templates.
