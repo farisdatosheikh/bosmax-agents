@@ -1,5 +1,5 @@
 # BOSMAX_CURRENT_STATE.md
-## BOSMAX v11.6 — Current Operating Snapshot
+## BOSMAX v11.10 — Current Operating Snapshot
 
 Read this file first at session start.
 Open `BOSMAX-LOG.md` only if this snapshot is insufficient or a historical audit is required.
@@ -8,7 +8,7 @@ Open `BOSMAX-LOG.md` only if this snapshot is insufficient or a historical audit
 
 ## Core State
 
-- Active orchestrator schema: `v11.6`
+- Active orchestrator schema: `v11.10`
 - Active posture: deterministic front-door + deterministic batch lane
 - Mandatory gates active:
   - `VISUAL INTAKE GATE`
@@ -38,10 +38,19 @@ Registered products in `products/`:
 - `BOSMAX_SERUM`
   - Sensitive stealth lane
   - Variants: `5ML`, `10ML`
-- `CAP_BURUNG_MINYAK`
-  - Direct-product traditional remedy lane
-  - Variant: `30ML_WG40_BOTTLE`
-  - Current packaging truth: WG40 clear glass bottle, red ribbed cap, stopper logic
+- `MINYAK_WARISAN_TOK_CAP_BURUNG_25ML`  ← ACTIVE (v11.10)
+  - Canonical product name: **Minyak Warisan Tok Cap Burung**
+  - Accepted aliases: Minyak Warisan Cap Burung, Cap Burung, Tok Cap Burung
+  - Direct-product traditional remedy lane (DIRECT)
+  - Variant: `25ML_GREEN_GLASS_BOTTLE`
+  - Current packaging truth: 25ml transparent green-tinted glass, red ribbed screw cap (NO roll-on, NO WG40)
+  - Active product truth source: `products/MINYAK_WARISAN_TOK_CAP_BURUNG_25ML.yaml`
+  - Template reference: `templates/poster/03A-P1_PRODUCT_ONLY_COPY_LANDBANK_POSTER.md`
+  - Notion intake: 100-row Copywriting Landbank, ANG-01 through ANG-10
+- `CAP_BURUNG_MINYAK`  ← LEGACY — DO NOT USE
+  - registry_status: LEGACY_DO_NOT_USE
+  - superseded_by: MINYAK_WARISAN_TOK_CAP_BURUNG_25ML
+  - Product intelligence will skip this file — see products/CAP_BURUNG_MINYAK.yaml
 - `MAVERIX_MAXOIL`
   - Sensitive stealth lane
   - Variant: `SET_5_BOTTLES`
@@ -55,6 +64,8 @@ No product currently has locked `subject_dna` or `last_source_image_handoff` in 
 
 ## Latest High-Value Milestones
 
+- `2026-06-14`: v11.10 ecosystem cleanup — Notion row intake adapter wired, legacy file blocked, subhook + operator_scene_direction added, canonical naming enforced, 03A-P1 template role clarified
+- `2026-06-11`: MINYAK_WARISAN_TOK_CAP_BURUNG_25ML registered (active product registry for 25ml green glass bottle)
 - `2026-06-03`: UGC / PGC / HYBRID authority stack installed
 - `2026-06-03`: Grok capability wording normalized
 - `2026-06-03`: Grok extension seam templates installed

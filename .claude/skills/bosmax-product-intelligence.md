@@ -66,13 +66,22 @@ platform:           dari PRE-FLIGHT (TikTok / Shopee / etc.)
 # Normalize product_name_raw → match against:
 #   product_name, product_aliases, product_id, variant_id, fastmoss_product_name
 
+# LEGACY GUARD — WAJIB CHECK SEBELUM RETURN ANY MATCH
+# Before returning any TIER 1 candidate, check:
+#   IF yaml_data.get("registry_status") == "LEGACY_DO_NOT_USE":
+#     → SKIP this file entirely
+#     → Log internally (not user-facing): "LEGACY FILE SKIPPED: products/{filename}"
+#     → Continue searching remaining .yaml files for a non-legacy match
+#     → Do NOT expose this log to normal user output
+#     → If skip leads to no other match: proceed to TIER 2
+
 # Match conditions (case-insensitive):
 # - Exact match: product_id atau product_name
 # - Alias match: mana-mana string dalam product_aliases
 # - Fuzzy match: brand name + partial product name
 # - Variant match: "5ML" → variant_id "5ML" dalam matched product
 
-# ON MATCH → return product_record (TIER 1 RESULT)
+# ON MATCH (non-legacy only) → return product_record (TIER 1 RESULT)
 ```
 
 **Jika TIER 1 match:**
@@ -303,6 +312,7 @@ product_record:
   copywriting:
     angle: ""
     hook: ""
+    subhook: ""        # Secondary hook / first body line. Rendered below hook in poster TOP ZONE.
     usp_1: ""
     usp_2: ""
     usp_3: ""
