@@ -107,20 +107,41 @@ PRODUCT DOMINANCE:
   viewer's first attention."
 
 ZONE LAYOUT (9:16):
-  TOP ZONE (top 10–15%):
+  TOP ZONE (top 10–25%):
     Hook text rendered as bold, high-contrast headline.
     Font size: large enough to read on mobile but must not exceed
     40% of product height in frame.
     Placement: top of frame, above product.
 
+    SUBHOOK ZONE (upper-mid, immediately below hook):
+    If copywriting.subhook is non-null:
+      Render subhook as a secondary headline / supporting copy line.
+      Font: medium weight, same color family as hook but smaller.
+      Placement: immediately below hook text, before the product zone.
+      Max 2 lines. Must not extend into the product centre zone.
+      DO NOT place subhook inside the product zone.
+      DO NOT combine subhook with USP chips — subhook is a headline, chips are benefit pills.
+      DO NOT drop subhook silently — if subhook exists, it MUST appear in the prompt.
+
   CENTRE ZONE (mid 50–60%):
     Product hero. Product occupies this zone as dominant element.
-    For TikTok 9:16 SELLING_POSTER: the product bottle should occupy
-    approximately 42–50% of the total frame height. This ensures the product
-    reads large and clear on mobile, while leaving adequate breathing room
-    for the hook zone above and the chips + CTA zone below.
+    For TikTok 9:16 SELLING_POSTER:
+      - product-only hero → product bottle occupies approximately 42–50%
+        of the total frame height
+      - presenter-assisted hero → product bottle occupies approximately
+        35–45% of the total frame height while remaining the first-read
+        element in front of the presenter plane
+    This ensures the product reads large and clear on mobile, while leaving
+    adequate breathing room for the hook zone above and the chips + CTA zone
+    below.
     FORBIDDEN: product so small it appears as a supporting prop under text.
     FORBIDDEN: product so large it leaves no room for commercial module zones.
+    If a presenter/avatar is present:
+      Presenter remains secondary, chest-up only, placed in upper-left or
+      upper-right, slightly behind the product plane with clear depth separation.
+      Preferred hand logic: empty hands or open-palm presenting gesture.
+      If hand-to-product contact is unavoidable, grip below the label line only
+      with zero label occlusion.
     [If archetype = SCALE_PROOF_AD or UGC_SCALE_AD]:
       Scale comparison object (key / hand / coin) placed directly
       adjacent to product. Both product and scale object sharp and clear.
@@ -233,10 +254,21 @@ CONSTRAINT 5 — FLAT OBJECT ENFORCEMENT (SCALE_PROOF_AD: key / coin / card):
 
 CONSTRAINT 6 — PRODUCT HEIGHT ENFORCEMENT (TikTok 9:16 SELLING_POSTER):
   MANDATORY PROMPT WORDING — inject into Block 1:
-  "The [product name] bottle occupies approximately 42–50% of the total frame height.
-  The product is large enough to read clearly on mobile, while leaving breathing room
-  for the hook zone above and the chips and CTA zone below.
-  The product is not a small prop supporting a text block — it is the hero."
+  "For product-only hero layouts, the [product name] bottle occupies approximately
+  42–50% of the total frame height. For presenter-assisted hero layouts, the
+  [product name] bottle occupies approximately 35–45% of the total frame height.
+  The product is large enough to read clearly on mobile, while leaving breathing
+  room for the hook zone above and the chips and CTA zone below. The product is
+  not a small prop supporting a text block — it is the hero."
+
+CONSTRAINT 7 — PRESENTER SECONDARY INTEGRATION (presenter-assisted SELLING_POSTER):
+  MANDATORY PROMPT WORDING — inject when avatar/presenter is present in Block 1:
+  "The presenter is a supporting trust layer, not the hero object."
+  "The presenter appears chest-up in the upper-left or upper-right area, slightly
+  behind the product plane with gentle depth separation."
+  "The product remains the sharpest and clearest object in the frame."
+  "Hands remain empty or use an open-palm presenting gesture near the product."
+  "If any hand touches the product, it stays below the label line with zero label occlusion."
 
 ANTI-PATTERN FAILSAFE (universal):
   FORBIDDEN rendering outputs:
@@ -246,6 +278,8 @@ ANTI-PATTERN FAILSAFE (universal):
   - Scale object that reads as a second hero or second product
   - Product label blocked, cropped, warped, or covered by any element
   - CTA rendered as a large, dominant, app-style button
+  - Presenter dominating the frame more than the product hero
+  - Presenter holding the product across the label area
   - Generic product photography shot with no commercial module hierarchy
   - Product occupying less than 35% of frame height (too small for TikTok mobile)
 ```
@@ -653,7 +687,31 @@ NOTE: image_guidance_scale (dulunya row 1) — parameter ini tidak wujud dalam V
 **STEP 1 — RECEIVE:** Ingest subject_dna JSON dan prose dari bosmax-subject-dna.
 Confirm semua subject_dna fields complete. ABORT jika null.
 
-**STEP 2 — BUILD SCENE:** Pilih scene context dari registry.
+**STEP 2 — BUILD SCENE:** Check `operator_scene_direction` first.
+
+```
+OPERATOR_SCENE_DIRECTION PROTOCOL:
+
+IF operator_scene_direction is non-null (from Notion Visual Seed or operator input):
+  → Use operator_scene_direction as PRIMARY input for scene selection.
+  → Extract from it: setting, props, mood, lighting cues, subject exclusions.
+  → Map to nearest CTX_ code from Scene Registry (or describe inline if no exact match).
+  → Honour explicitly stated subject exclusions (e.g., "no people", "no direct-use scene"):
+     these become hard constraints injected into the prompt as FORBIDDEN elements.
+  → operator_scene_direction SUPPLEMENTS the scene build — it does NOT override:
+     · product truth (product_record is sovereign)
+     · product identity locks (image_prompt_locks from YAML are sovereign)
+     · compliance guardrails
+     · label_forbidden list
+  → If operator_scene_direction conflicts with product truth or compliance,
+     honour the scene direction for environment/props/mood only,
+     and enforce product truth + compliance regardless.
+
+IF operator_scene_direction is null:
+  → Select scene context from Scene Registry (CTX_ codes) based on product category,
+     platform, and angle_group_id.
+```
+
 Pilih lighting profile. Declare Kelvin.
 Declare background depth dan surface materials secara teknikal.
 

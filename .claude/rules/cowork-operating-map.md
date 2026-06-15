@@ -31,6 +31,15 @@ The BOSMAX Cowork surface expects these files to exist in `.claude/skills/`:
 10. `bosmax-image-analyst.md`
 11. `bosmax-video-analyst.md`
 12. `bosmax-commercial-poster-director.md`
+13. `bosmax-notion-row-intake-adapter.md`  ← ADDED v11.10: Notion row → pipeline bridge
+
+## Template Files — Active
+
+| File | Status | Role |
+|---|---|---|
+| `templates/poster/03A-P1_PRODUCT_ONLY_COPY_LANDBANK_POSTER.md` | **ACTIVE** | Authoritative assembly format for Minyak Warisan Tok Cap Burung 25ml product-only poster. Defines input contract, product truth lock, 5 inline visual presets, copy injection rules, overlay zone hierarchy, compliance guardrails, negative lock, full prompt assembly format, and QA checklist. Reference when building 03A product-only poster prompts. NOT a template skeleton — it defines the FORMAT standard. |
+
+Sibling templates (not yet built): `03A-P2` (avatar+product), `03A-P3` (copy swap).
 
 ## Product Registry Notes
 
@@ -42,6 +51,19 @@ The BOSMAX Cowork surface expects these files to exist in `.claude/skills/`:
 ## Pipeline Sequences
 
 ```text
+Full Image Pipeline (Notion Row → SELLING_POSTER):
+Notion Row -> BOSMAX [NOTION ROW DETECTION] -> bosmax-notion-row-intake-adapter
+          -> BOSMAX [PRE-FLIGHT STEP 0: product lookup with canonical name]
+          -> bosmax-subject-dna
+          -> bosmax-commercial-poster-director (selected_module_stack)
+          -> bosmax-scene-engine [ingests subject_dna + module_stack
+                                  + copywriting.subhook + operator_scene_direction]
+          -> bosmax-compliance-gate -> bosmax-final-output-agent -> User
+
+NOTE: Notion rows supply: hook, subhook, USP 1/2/3, CTA, Visual Seed, Angle.
+      BOSMAX supplies: product truth, image_prompt_locks, compliance, layout, assembly.
+      Notion does NOT need to store prompt instructions — only structured copy data.
+
 Full Image Pipeline (VIDEO_SUPPORT):
 User -> BOSMAX [PRE-FLIGHT] -> bosmax-subject-dna
      -> bosmax-scene-engine

@@ -6,6 +6,18 @@
 schema_version: "1.0"
 
 # ─────────────────────────────────────────────
+# LEGACY GUARD — MACHINE-READABLE
+# ─────────────────────────────────────────────
+registry_status: LEGACY_DO_NOT_USE
+superseded_by: "MINYAK_WARISAN_TOK_CAP_BURUNG_25ML"
+legacy_reason: >
+  Superseded by products/MINYAK_WARISAN_TOK_CAP_BURUNG_25ML.yaml.
+  This file contains contaminated data: 30ML/WG40 bottle spec (wrong — active product is
+  25ml green glass), roll-on wording in A05 USP_3 and A07 USP_3 (BOSMAX Serum bleed).
+  Do not use for 03A poster templates, video prompts, or any new content generation.
+  All product lookup for Minyak Warisan Tok Cap Burung must resolve to MINYAK_WARISAN_TOK_CAP_BURUNG_25ML.
+
+# ─────────────────────────────────────────────
 # IDENTIFIERS
 # ─────────────────────────────────────────────
 product_id: "CAP_BURUNG_MINYAK"

@@ -54,6 +54,17 @@
 #                  Senang Simpan" for BOSMAX Serum TikTok, archetype header
 #                  suppression from Block 1 final prompt (CPD labels must not
 #                  appear in copy-paste output). All 6 pipeline files updated.
+# Changelog v11.10: Added bosmax-notion-row-intake-adapter detection at front-door.
+#                   Compact Notion rows with Product:/Mode:/Hook:/Visual Seed: keys
+#                   now invoke the adapter before NLU parsing. Adapter maps Notion
+#                   columns to BOSMAX pipeline fields deterministically. Added
+#                   subhook as first-class copywriting field (scene-engine TOP ZONE).
+#                   Added operator_scene_direction (from Visual Seed) as primary
+#                   scene input for scene-engine STEP 2. Added canonical naming
+#                   rule: Minyak Warisan Tok Cap Burung is the preferred output name;
+#                   Minyak Warisan Cap Burung accepted as alias. Legacy file
+#                   CAP_BURUNG_MINYAK.yaml marked LEGACY_DO_NOT_USE — product
+#                   intelligence skips it before returning any TIER 1 match.
 # Changelog v11.9.1: Newbie final-delivery shell locked for Mode A
 #                    SELLING_POSTER. Default newbie output is now limited to:
 #                    one short assumption line + final Block 1 copy-paste
@@ -107,6 +118,10 @@ Universal:
   avatar_image     → OPTIONAL untuk SELLING_POSTER product-only requests.
                      Jika tiada avatar signal dalam request, auto-default ke
                      subject_mode = product_only (STEP 1A). Jangan tanya.
+                     Explicit avatar reference identity tokens (contoh:
+                     `BOS_*`, `MWT_*`, atau approved presenter ID lain)
+                     dikira sebagai avatar signal dan MESTI suppress
+                     auto-default product_only.
   product_image
   product_name
   platform
@@ -168,6 +183,70 @@ single-output deterministic flow.
 
 Detailed batch types, intake contract, dan hard rules telah dipindah ke:
 - `.claude/rules/batch-lane.md`
+
+---
+
+## NOTION ROW INTAKE DETECTION — WAJIB SEBELUM NLU PARSING
+
+**Berlaku SEBELUM semua gate lain apabila input mengandungi structured Notion row keys.**
+
+### TRIGGER DETECTION
+
+Input diklasifikasikan sebagai Notion Row apabila tiga atau lebih keys ini hadir
+(case-insensitive, colon-terminated):
+
+```
+Product:  /  Mode:  /  Angle:  /  Hook:  /  Subhook:
+USP 1:  /  USP 2:  /  USP 3:  /  CTA:  /  Visual Seed:  /  Output:
+```
+
+### ACTION BILA NOTION ROW DETECTED
+
+```
+→ Jangan teruskan ke NLU free-form parsing
+→ Appoint bosmax-notion-row-intake-adapter DAHULU
+→ Adapter map semua Notion columns kepada BOSMAX pipeline fields
+→ Adapter return: notion_row_intake object
+→ Proceed ke PRE-FLIGHT STEP 0 dengan notion_row_intake sebagai input
+→ STEP 1 fields sudah resolved — skip NLU extraction untuk fields yang sudah ada
+→ Continue normal Route A SELLING_POSTER flow
+
+Key adapter actions (adapter handles these internally):
+  · Normalise product alias → canonical product name
+  · Map Mode → subject_mode
+  · Map Visual Seed → operator_scene_direction (for scene-engine)
+  · Map Subhook → copywriting.subhook (must not be dropped)
+  · Enforce TikTok CTA Tap rule
+  · Run copy contamination pre-check
+  · Apply defaults for absent columns
+```
+
+### CANONICAL PRODUCT NAMING RULE
+
+```
+Canonical name (preferred output):  Minyak Warisan Tok Cap Burung
+Accepted aliases (user input only):
+  - Minyak Warisan Cap Burung  → normalise to canonical
+  - Tok Cap Burung             → normalise to canonical
+  - Cap Burung                 → normalise to canonical
+  - Minyak Cap Burung          → normalise to canonical
+
+RULE: Final prompt output MESTI guna canonical name.
+      Alias hanya untuk input matching — tidak untuk output.
+      Jangan expose alias dalam user-facing generated prompt.
+```
+
+### FAIL-CLOSED RULES
+
+```
+- JANGAN treat Notion row sebagai final image prompt
+- JANGAN return template skeleton dengan {{PLACEHOLDER}} tak terisi
+- JANGAN skip adapter apabila Notion row structure jelas
+- JANGAN drop Subhook — ia MESTI di-map ke copywriting.subhook dan dihantar ke scene-engine
+- JANGAN drop Visual Seed — ia MESTI di-map ke operator_scene_direction
+- JIKA copy contamination check BLOCKED: ABORT row, surface exact reason
+- JIKA Compliance Status ≠ APPROVED dan column hadir: WARN sebelum proceed
+```
 
 ---
 
@@ -1440,7 +1519,8 @@ Detailed pipeline maps telah dipindah ke:
 - JANGAN tanya 5ML vs 10ML untuk BOSMAX_SERUM jika visual jelas menunjukkan slim 5ML packaging
 - JANGAN expose archetype header ("ARCHETYPE: SCALE_PROOF_AD") dalam final prompt kepada user
 - Final prompt MESTI bebas dari internal header labels: "selected_visual_ads_archetype:", "module_stack:"
-- Product height dalam SELLING_POSTER MESTI dinyatakan sebagai approx 42–50% frame height untuk TikTok 9:16
+- Product height dalam SELLING_POSTER MESTI conditional untuk TikTok 9:16:
+  product-only hero ≈ 42–50% frame height; presenter-assisted hero ≈ 35–45%
 - Default CTA untuk TikTok Shop MY (non-promo): "Tap Tengok Harga" — JANGAN guna "Klik untuk lihat harga"
 - Preferred chips untuk BOSMAX Serum TikTok: "5ML Roll-On | Muat Poket | Senang Simpan"
 - subject_mode auto-default (product_only) MESTI declare dalam STEP 1B assumptions apabila aktif
